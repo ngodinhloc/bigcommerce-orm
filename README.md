@@ -219,10 +219,12 @@ $myCustomerRepository = new MyCustomerRepository($entityManager);
 $customer = new Customer();
 $customer->setName('Your Name');
 $customerRepository->save($customer); // this will create a new Customer entity
+$entityManager->save($customer); // do the same as using the customerRepository
 
 $customer = $entityManager->getRepository(Customer::class)->find(100);
 $customer->setName('New Name');
 $customerRepository->save($customer); // this will update a the current Customer entity
+$entityManager->save($customer); // do the same as using the customerRepository
 </pre>
 
 #### Validations and Relations
