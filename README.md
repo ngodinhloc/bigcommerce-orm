@@ -202,7 +202,7 @@ $customerRepository = $entityManager->getRepository(Customer::class);
 <pre>
 use Bigcommerce\ORM\Repository
 
-class CustomerRepository extends Repository
+class MyCustomerRepository extends Repository
 {
     protected $className = Customer::class;
     
@@ -211,7 +211,7 @@ class CustomerRepository extends Repository
     }
 }
 
-$accountRepository = new AccountRepository($entityManager);
+$myCustomerRepository = new MyCustomerRepository($entityManager);
 </pre>
 
 #### Create and Update Entities
@@ -221,7 +221,7 @@ $customer->setName('Your Name');
 $customerRepository->save($customer); // this will create a new Customer entity
 
 $customer = $entityManager->getRepository(Customer::class)->find(100);
-$customer->setName('YourName');
+$customer->setName('New Name');
 $customerRepository->save($customer); // this will update a the current Customer entity
 </pre>
 
