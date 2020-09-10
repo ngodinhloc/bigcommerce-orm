@@ -3,11 +3,6 @@
          backupStaticAttributes="false" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true"
          convertWarningsToExceptions="true" beStrictAboutChangesToGlobalState="true" processIsolation="false"
          stopOnFailure="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-    <coverage>
-        <include>
-            <directory>src/*/</directory>
-        </include>
-    </coverage>
     <testsuites>
         <testsuite name="tests">
             <directory suffix="Test.php">./tests</directory>
