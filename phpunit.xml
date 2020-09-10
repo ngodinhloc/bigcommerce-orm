@@ -18,9 +18,9 @@
         <env name="APP_ENV" value="testing"/>
     </php>
     <filter>
-        <whitelist>
-            <directory>./src</directory>
-            <directory>./samples</directory>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+            <directory suffix=".php">./samples</directory>
         </whitelist>
     </filter>
 </phpunit>
