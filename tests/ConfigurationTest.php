@@ -14,12 +14,13 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ConfigurationTest extends BaseTestCase
 {
-    /** @var object|\Prophecy\Prophecy\ProphecySubjectInterface */
+    /** @var \Bigcommerce\ORM\Cache\FileCache\FileCachePool|\Prophecy\Prophecy\ProphecySubjectInterface */
     protected $cache;
 
-    /** @var object|\Prophecy\Prophecy\ProphecySubjectInterface */
+    /** @var \Symfony\Component\EventDispatcher\EventDispatcher|\Prophecy\Prophecy\ProphecySubjectInterface */
     protected $dispatcher;
 
+    /** @var \Monolog\Logger|\Prophecy\Prophecy\ProphecySubjectInterface */
     protected $logger;
 
     /** @var array */
