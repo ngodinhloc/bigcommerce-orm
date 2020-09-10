@@ -1,5 +1,5 @@
 # big-orm
-big-orm allows users to work with Bigcommerce v3-rest-api (or v2-rest-api) just like working with an orm
+big-orm allows users to work with Bigcommerce v3-rest-api just like working with an orm
 ## Installation
 composer.json
 <pre>
@@ -143,7 +143,7 @@ class Order extends Entity
 </pre>
  + @BC\BigObject(name="Customer",path="/customers"): indicate that this class is mapping to Bigcommerce customer object
  + @BC\Field(name="company") : indicate that the property is mapping to filed 'company' in Bigcommerce customer object
- 
+
 ### Customised Entities
 If users add customised fields, which only they know of, 
 then they can extend the standard entities to add their customised fields

@@ -1,0 +1,623 @@
+<?php
+declare(strict_types=1);
+
+namespace Bigcommerce\ORM;
+
+use Bigcommerce\ORM\Annotations\BigObject;
+use Bigcommerce\ORM\Annotations\Field;
+use Bigcommerce\ORM\Exceptions\EntityException;
+use Bigcommerce\ORM\Exceptions\MapperException;
+use Bigcommerce\ORM\Relation\ManyRelationInterface;
+use Bigcommerce\ORM\Relation\OneRelationInterface;
+use Bigcommerce\ORM\Relation\RelationInterface;
+use Bigcommerce\ORM\Validation\ValidationInterface;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use ReflectionClass;
+
+/**
+ * Class Mapper
+ * @package Bigcommerce\ORM
+ */
+class Mapper
+{
+
+    /** @var \Doctrine\Common\Annotations\AnnotationReader */
+    protected $reader;
+
+    const KEY_BY_FIELD_NAME = 1;
+    const KEY_BY_PROPERTY_NAME = 2;
+
+    /**
+     * Mapper constructor.
+     *
+     * @param \Doctrine\Common\Annotations\AnnotationReader|null $reader reader
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     */
+    public function __construct(AnnotationReader $reader = null)
+    {
+        $this->reader = $reader ?: new AnnotationReader();
+    }
+
+    /**
+     * Get object type of entity
+     *
+     * @param \Bigcommerce\ORM\Entity|null $entity
+     * @return string
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getObjectType(Entity $entity = null)
+    {
+        $reflectionClass = $this->reflect($entity);
+        /* @var \Bigcommerce\ORM\Annotations\BigObject $object */
+        $object = $this->reader->getClassAnnotation($reflectionClass, BigObject::class);
+        if (!$object->name) {
+            throw new MapperException(MapperException::MSG_OBJECT_TYPE_NOT_FOUND . get_class($entity));
+        }
+
+        return $object->name;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entity|null $entity
+     * @return \Bigcommerce\ORM\Annotations\BigObject|object
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getClassAnnotation(Entity $entity = null)
+    {
+        $reflectionClass = $this->reflect($entity);
+
+        return $this->reader->getClassAnnotation($reflectionClass, BigObject::class);
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Annotations\BigObject|null $bigObject
+     * @param \Bigcommerce\ORM\Entity $entity
+     * @param int|null $parentId
+     * @return string
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getPath(BigObject $bigObject = null, Entity $entity = null, int $parentId = null)
+    {
+        $path = $bigObject->path;
+        if (!strpos($path, '{id}')) {
+            return $path;
+        }
+
+        if (!empty($entity) && !empty($bigObject->parentField)) {
+            $parentField = $this->getPropertyValueByFieldName($entity, $bigObject->parentField);
+            if (!empty($parentField)) {
+                $parentId = $parentField;
+            }
+        }
+
+        if (empty($parentId)) {
+            throw new MapperException(MapperException::MSG_NO_PARENT_ID);
+        }
+
+        return str_replace('{id}', $parentId, $path);
+    }
+
+    /**
+     * Patch object properties with data array
+     *
+     * @param \Bigcommerce\ORM\Entity|null $entity
+     * @param array $array array
+     * @param bool $propertyOnly
+     * @return \Bigcommerce\ORM\Entity
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function patch(Entity $entity = null, array $array = [], bool $propertyOnly = false)
+    {
+        $reflectionClass = $this->reflect($entity);
+        $properties = $reflectionClass->getProperties();
+        foreach ($properties as $property) {
+            $annotations = $this->reader->getPropertyAnnotations($property);
+            foreach ($annotations as $annotation) {
+                if ($annotation instanceof Field) {
+                    if (isset($array[$annotation->name])) {
+                        $this->setPropertyValue($entity, $property, $array[$annotation->name]);
+                    }
+                }
+            }
+        }
+
+        $this->setPropertyValueByName($entity, 'isPatched', true);
+
+        if ($propertyOnly == true) {
+            return $entity;
+        }
+
+        $bigObject = $this->getClassAnnotation($entity);
+        $metadata = $this->getMetadata($bigObject, $properties);
+        $this->setPropertyValueByName($entity, 'metadata', $metadata);
+
+        if (!empty($autoIncludes = $metadata->getAutoIncludes())) {
+            $this->patchAutoIncludes($entity, $autoIncludes, $array);
+        }
+
+        return $entity;
+    }
+
+    /**
+     * Patch object properties with data array
+     *
+     * @param \Bigcommerce\ORM\Entity|null $entity
+     * @return array
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getAutoIncludes(Entity $entity = null)
+    {
+        $reflectionClass = $this->reflect($entity);
+        $properties = $reflectionClass->getProperties();
+
+        $includes = [];
+        foreach ($properties as $property) {
+            $annotations = $this->reader->getPropertyAnnotations($property);
+            foreach ($annotations as $annotation) {
+                if ($annotation instanceof RelationInterface) {
+                    if ($annotation->auto === true && $annotation->include == true) {
+                        $includes[] = $annotation->name;
+                    }
+                }
+            }
+        }
+
+
+        return $includes;
+    }
+
+    /**
+     * Check for entity required fields
+     *
+     * @param \Bigcommerce\ORM\Entity|null $entity
+     * @return bool|array
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function checkRequiredFields(Entity $entity = null)
+    {
+        if ($entity->isPatched() !== true) {
+            $entity = $this->patch($entity, []);
+        }
+
+        if (empty($entity->getMetadata()->getRequiredFields())) {
+            return true;
+        }
+
+        $missingFields = [];
+        /* @var \ReflectionProperty $property */
+        foreach ($entity->getMetadata()->getRequiredFields() as $property) {
+            if ($this->getPropertyValue($entity, $property) === null) {
+                $missingFields[] = $property->name;
+            }
+        }
+
+        if (empty($missingFields)) {
+            return true;
+        }
+
+        return $missingFields;
+    }
+
+    /**
+     * Get none readonly data
+     *
+     * @param \Bigcommerce\ORM\Entity|null $entity
+     * @param array $data
+     * @return array
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getNoneReadonlyData(Entity $entity = null, array $data = null)
+    {
+        if ($entity->isPatched() !== true) {
+            $entity = $this->patch($entity, []);
+        }
+
+        if (empty($data)) {
+            $data = $this->toArray($entity);
+        }
+
+        if (empty($readonlyFields = $entity->getMetadata()->getReadonlyFields())) {
+            return $data;
+        }
+
+        return array_diff_key($data, $readonlyFields);
+    }
+
+    /**
+     * @param array|null $data
+     * @return bool
+     */
+    public function checkNoneReadonlyData(array $data = null)
+    {
+        if (empty($data)) {
+            return false;
+        }
+
+        foreach ($data as $field => $value) {
+            if ($value !== null) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check for entity validations
+     *
+     * @param \Bigcommerce\ORM\Entity|null $entity
+     * @return bool|array
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function checkRequiredValidations(Entity $entity = null)
+    {
+        if ($entity->isPatched() !== true) {
+            $entity = $this->patch($entity, []);
+        }
+
+        if (empty($entity->getMetadata()->getRequiredValidations())) {
+            return true;
+        }
+
+        $validationRules = [];
+        /* @var \ReflectionProperty $property */
+        foreach ($entity->getMetadata()->getRequiredValidations() as $rule) {
+            $property = $rule['property'];
+            $annotation = $rule['annotation'];
+            if ($annotation instanceof ValidationInterface) {
+                $validator = $annotation->getValidator($this);
+                $check = $validator->validate($entity, $property, $annotation);
+                if (!$check) {
+                    $validationRules[] = $property->name . ": " . get_class($annotation);
+                }
+            }
+        }
+
+        if (empty($validationRules)) {
+            return true;
+        }
+
+        return $validationRules;
+    }
+
+    /**
+     * Get array of entity
+     *
+     * @param \Bigcommerce\ORM\Entity|null $entity
+     * @param int $key
+     * @see \Bigcommerce\ORM\Mapper::KEY_BY_FIELD_NAME
+     * @see \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME
+     * @return array
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function toArray(Entity $entity = null, int $key = self::KEY_BY_FIELD_NAME)
+    {
+        $reflectionClass = $this->reflect($entity);
+        $properties = $reflectionClass->getProperties();
+
+        $array = [];
+        switch ($key) {
+            case self::KEY_BY_PROPERTY_NAME:
+                /** @var \ReflectionProperty $property */
+                foreach ($properties as $property) {
+                    $annotation = $this->reader->getPropertyAnnotation($property, Field::class);
+                    if ($annotation instanceof Field) {
+                        $array[$property->getName()] = $this->getPropertyValue($entity, $property);
+                    }
+                }
+                break;
+            case self::KEY_BY_FIELD_NAME:
+            default:
+                /** @var \ReflectionProperty $property */
+                foreach ($properties as $property) {
+                    $annotation = $this->reader->getPropertyAnnotation($property, Field::class);
+                    if ($annotation instanceof Field) {
+                        $array[$annotation->name] = $this->getPropertyValue($entity, $property);
+                    }
+                }
+                break;
+        }
+
+        return $array;
+    }
+
+    /**
+     * Set property value
+     *
+     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @param \ReflectionProperty $property property
+     * @param mixed $value value
+     * @return void
+     */
+    public function setPropertyValue(Entity $entity, \ReflectionProperty $property, $value)
+    {
+        $property->setAccessible(true);
+        $property->setValue($entity, $value);
+    }
+
+    /**
+     * Get property value
+     *
+     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @param \ReflectionProperty $property property
+     * @return mixed
+     */
+    public function getPropertyValue(Entity $entity, \ReflectionProperty $property)
+    {
+        if ($property instanceof \ReflectionProperty) {
+            $property->setAccessible(true);
+
+            return $property->getValue($entity);
+        }
+
+        return null;
+    }
+
+    /**
+     * Set property value by name
+     *
+     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @param string $propertyName name
+     * @param mixed $value value
+     * @return void
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function setPropertyValueByName(Entity &$entity, string $propertyName, $value)
+    {
+        $property = $this->getProperty($entity, $propertyName);
+        $this->setPropertyValue($entity, $property, $value);
+    }
+
+    /**
+     * Get property value by name
+     *
+     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @param string $propertyName name
+     * @return mixed
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getPropertyValueByName(Entity $entity, string $propertyName)
+    {
+        $property = $this->getProperty($entity, $propertyName);
+
+        return $this->getPropertyValue($entity, $property);
+    }
+
+    /**
+     * Get value of a property by field name
+     *
+     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @param string $fieldName field name
+     * @return mixed
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getPropertyValueByFieldName(Entity $entity, $fieldName)
+    {
+        $reflectionClass = $this->reflect($entity);
+        $properties = $reflectionClass->getProperties();
+
+        foreach ($properties as $property) {
+            $annotation = $this->reader->getPropertyAnnotation($property, Field::class);
+            if ($annotation instanceof Field && $annotation->name == $fieldName) {
+                return $this->getPropertyValue($entity, $property);
+            }
+        }
+
+        throw new MapperException(MapperException::MSG_NO_FIELD_FOUND . $fieldName);
+    }
+
+    /**
+     * Get enity property by property name
+     *
+     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @param string $propertyName name
+     * @return bool|\ReflectionProperty
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getProperty(Entity $entity, string $propertyName)
+    {
+        $reflectionClass = $this->reflect($entity);
+        $properties = $reflectionClass->getProperties();
+        foreach ($properties as $property) {
+            if ($property->name == $propertyName) {
+                return $property;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Create Entity object from class name
+     *
+     * @param string $class class name
+     * @return \Bigcommerce\ORM\Entity
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function object($class)
+    {
+        try {
+            $object = new $class();
+        } catch (\Exception $exception) {
+            throw new MapperException(MapperException::MGS_INVALID_CLASS_NAME . $class);
+        }
+
+        return $object;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @return \ReflectionClass
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function reflect(Entity $entity)
+    {
+        try {
+            $reflectionClass = new ReflectionClass(get_class($entity));
+            $this->register();
+        } catch (\ReflectionException $exception) {
+            throw new MapperException(MapperException::MGS_FAILED_TO_CREATE_REFLECT_CLASS . $exception->getMessage());
+        }
+
+        return $reflectionClass;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entity $entity
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     */
+    public function checkEntity(Entity $entity)
+    {
+        if (!$entity instanceof Entity) {
+            throw new EntityException(EntityException::MSG_NOT_ENTITY_INSTANCE);
+        }
+    }
+
+    /**
+     * @param string $className
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     */
+    public function checkClass(string $className)
+    {
+        if (empty($className)) {
+            throw new EntityException(EntityException::MSG_EMPTY_CLASS_NAME);
+        }
+    }
+
+    /**
+     * @param int $id
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     */
+    public function checkId(int $id)
+    {
+        if (empty($id)) {
+            throw new EntityException(EntityException::MSG_ID_IS_NOT_PROVIDED);
+        }
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entity|null $entity
+     * @param array|null $autoIncludes
+     * @param array|null $array
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    private function patchAutoIncludes(Entity &$entity = null, array $autoIncludes = null, array $array = null)
+    {
+        foreach ($autoIncludes as $propertyName => $include) {
+            $property = $include['property'];
+            $annotation = $include['annotation'];
+            if (isset($array[$annotation->name])) {
+                if ($annotation instanceof ManyRelationInterface) {
+                    $propertyValue = $this->includesToCollection($array[$annotation->name], $annotation->targetClass);
+                    $this->setPropertyValue($entity, $property, $propertyValue);
+                }
+                if ($annotation instanceof OneRelationInterface) {
+                    $object = $this->object($annotation->targetClass);
+                    $propertyValue = $this->patch($object, $array[$annotation->name]);
+                    $this->setPropertyValue($entity, $property, $propertyValue);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param array $array
+     * @param string $className
+     * @return array
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    private function includesToCollection(array $array = [], string $className = null)
+    {
+        $collections = [];
+        if (!empty($array)) {
+            foreach ($array as $item) {
+                $object = $this->object($className);
+                $relationEntity = $this->patch($object, $item);
+                $collections[] = $relationEntity;
+            }
+        }
+
+        return $collections;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Annotations\BigObject $bigObject
+     * @param \ReflectionProperty[] $properties
+     * @return \Bigcommerce\ORM\Metadata
+     */
+    private function getMetadata(BigObject $bigObject = null, array $properties = null)
+    {
+        $relationFields = [];
+        $autoLoads = [];
+        $autoIncludes = [];
+        $requiredFields = [];
+        $readonlyFields = [];
+        $customisedFields = [];
+        $requiredValidations = [];
+        $uploadFiles = [];
+
+        foreach ($properties as $property) {
+            $annotations = $this->reader->getPropertyAnnotations($property);
+            foreach ($annotations as $annotation) {
+                if ($annotation instanceof Field) {
+                    if ($annotation->required == true) {
+                        $requiredFields[$property->name] = $property;
+                    }
+                    if ($annotation->readonly == true) {
+                        $readonlyFields[$annotation->name] = $property;
+                    }
+                    if ($annotation->customised == true) {
+                        $customisedFields[$annotation->name] = $property;
+                    }
+                    if ($annotation->upload == true) {
+                        $uploadFiles[$annotation->name] = $property;
+                    }
+                }
+
+                if ($annotation instanceof RelationInterface) {
+                    $relationFields[$property->name] = ['property' => $property, 'annotation' => $annotation];
+                    if ($annotation->auto === true && $annotation->include == true) {
+                        $autoIncludes[$property->name] = ['property' => $property, 'annotation' => $annotation];
+                    }
+
+                    if ($annotation->auto === true && $annotation->include == false) {
+                        $autoLoads[$property->name] = ['property' => $property, 'annotation' => $annotation];
+                    }
+                }
+
+                if ($annotation instanceof ValidationInterface) {
+                    if ($annotation->validate === true) {
+                        $requiredValidations[$property->name] = ['property' => $property, 'annotation' => $annotation];
+                    }
+                }
+            }
+        }
+
+        $metadata = new Metadata();
+        $metadata
+            ->setBigObject($bigObject)
+            ->setReadonlyFields($readonlyFields)
+            ->setRequiredFields($requiredFields)
+            ->setCustomisedFields($customisedFields)
+            ->setRelationFields($relationFields)
+            ->setAutoIncludes($autoIncludes)
+            ->setAutoLoads($autoLoads)
+            ->setRequiredValidations($requiredValidations)
+            ->setUploadFiles($uploadFiles);
+
+        return $metadata;
+    }
+
+    /**
+     * Register annotation classes
+     *
+     * @return void
+     */
+    private function register()
+    {
+        if (class_exists(AnnotationRegistry::class)) {
+            AnnotationRegistry::registerLoader('class_exists');
+        }
+    }
+}
