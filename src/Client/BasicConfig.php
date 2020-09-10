@@ -21,7 +21,7 @@ class BasicConfig extends AbstractConfig
     /**
      * BasicConfig constructor.
      *
-     * @param array $config config
+     * @param array|null $config config
      * [
      *  'storeUrl' =>
      *  'username' =>
