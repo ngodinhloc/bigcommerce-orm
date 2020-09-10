@@ -237,6 +237,32 @@ $entityManager->save($category24);
 @see: [samples/categories_and_products.php](./samples/categories_and_products.php) 
 for more examples of how to query, create and update entities
 
+### Query objects: count, findAll, findBy, find
+```php
+/** count number of customers */
+$count = $entityManager->count(\Bigcommerce\ORM\Entities\Customer::class);
+echo $count . PHP_EOL;
+
+/** get all customers */
+$allCustomers = $entityManager->findAll(\Bigcommerce\ORM\Entities\Customer::class);
+
+/** get some customers by queries */
+$queryBuilder = new \Bigcommerce\ORM\QueryBuilder();
+$queryBuilder
+    ->whereIn('id', [1, 2])
+    ->whereLike('name', 'Ken1')
+    ->page(1)->limit(50)
+    ->orderBy('date_created', 'desc')
+    ->order(['last_name' => 'asc']);
+$someCustomers = $entityManager->findBy(\Bigcommerce\ORM\Entities\Customer::class, null, $queryBuilder);
+
+/** get one customer by id */
+/** @var \Bigcommerce\ORM\Entities\Customer $customer3 */
+$customer3 = $entityManager->find(\Bigcommerce\ORM\Entities\Customer::class, 1);
+
+```
+@see: [samples/customers_and_addresses.php](./samples/customers_and_addresses.php)
+
 ### Repositories
 ```php
 $customerRepo = new \Bigcommerce\ORM\Repositories\CustomerRepository($entityManager);
