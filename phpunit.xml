@@ -20,7 +20,9 @@
     <filter>
         <whitelist>
             <directory suffix=".php">./src</directory>
-            <directory suffix=".php">./samples</directory>
+            <exclude>
+                <directory suffix=".php">./samples</directory>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>
