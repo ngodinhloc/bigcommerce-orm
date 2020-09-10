@@ -241,7 +241,6 @@ for more examples of how to query, create and update entities
 ```php
 /** count number of customers */
 $count = $entityManager->count(\Bigcommerce\ORM\Entities\Customer::class);
-echo $count . PHP_EOL;
 
 /** get all customers */
 $allCustomers = $entityManager->findAll(\Bigcommerce\ORM\Entities\Customer::class);
