@@ -8,6 +8,7 @@ use Bigcommerce\ORM\Client\Client;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\EntityManager;
 use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\QueryBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class EntityManagerTest extends BaseTestCase
@@ -54,24 +55,6 @@ class EntityManagerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\EntityManager::findAll
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function testFindAll()
-    {
-        $class = Customer::class;
-        $parentId = null;
-        $order = ['date_created' => 'asc'];
-        $expected = [];
-        $findAll = $this->entityManager->findAll($class, $parentId, $order, false);
-
-        $this->assertEquals($expected, $findAll);
-    }
-
-    /**
      * @covers \Bigcommerce\ORM\EntityManager::count
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
@@ -88,16 +71,81 @@ class EntityManagerTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bigcommerce\ORM\EntityManager::findAll
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function testFindAll()
+    {
+        $class = Customer::class;
+        $parentId = null;
+        $order = ['date_created' => 'asc'];
+        $expectedResult = [];
+        $findAll = $this->entityManager->findAll($class, $parentId, $order, false);
+
+        $this->assertEquals($expectedResult, $findAll);
+    }
+
+    /**
+     * @covers \Bigcommerce\ORM\EntityManager::findBy
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function testFindBy()
+    {
+        $class = Customer::class;
+        $parentId = null;
+        $queryBuilder = new QueryBuilder();
+        $queryBuilder->whereIn('id', [1, 2, 3]);
+        $expectedResult = [];
+        $findBy = $this->entityManager->findBy($class, $parentId, $queryBuilder, false);
+
+        $this->assertEquals($expectedResult, $findBy);
+    }
+
+    /**
+     * @covers \Bigcommerce\ORM\EntityManager::find
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function testFind()
+    {
+        $class = Customer::class;
+        $parentId = null;
+        $expectedId = 1;
+        $customer = $this->entityManager->find($class, $expectedId, $parentId, false);
+
+        $this->assertInstanceOf(Customer::class, $customer);
+        $this->assertEquals($expectedId, $customer->getId());
+    }
+
+    /**
      * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
      */
     private function getClient()
     {
         $expectCount = 2;
-        $path = "/someUrl";
-        $queryString = 'sort=date_created:asc';
+        $path = '/someUrl';
+        $findAllQuery = 'sort=date_created:asc';
+        $findAllResult = [];
+
+        $findByQuery = 'id:in=1,2,3';
+        $findByResult = [];
+
+        $findQuery = 'id:in=1';
+        $findResult = ['id' => 1];
+
         $client = $this->prophet->prophesize(Client::class);
         $client->count($path)->willReturn($expectCount);
-        $client->findAll($path . "?" . $queryString)->willReturn([]);
+        $client->findAll($path . "?" . $findAllQuery)->willReturn($findAllResult);
+        $client->findBy($path . "?" . $findByQuery)->willReturn($findByResult);
+        $client->find($path . "?" . $findQuery)->willReturn($findResult);
 
         return $client->reveal();
     }
@@ -107,17 +155,22 @@ class EntityManagerTest extends BaseTestCase
      */
     private function getMapper()
     {
+        $path = "/someUrl";
         $class = Customer::class;
         $object = new Customer();
+        $patchedObject = $object->setId(1);
         $bigObject = new BigObject([]);
-        $path = "/someUrl";
+        $autoIncludes = [];
+        $findResult = ['id' => 1];
 
         $mapper = $this->prophet->prophesize(Mapper::class);
         $mapper->checkClass($class)->willReturn(true);
         $mapper->object($class)->willReturn($object);
         $mapper->getClassAnnotation($object)->willReturn($bigObject);
         $mapper->getPath($bigObject, null, null)->willReturn($path);
-        $mapper->getAutoIncludes($object)->willReturn([]);
+        $mapper->getAutoIncludes($object)->willReturn($autoIncludes);
+        $mapper->patch($object, $findResult)->willReturn($patchedObject);
+        $mapper->checkId(1)->willReturn(true);
 
         return $mapper->reveal();
     }

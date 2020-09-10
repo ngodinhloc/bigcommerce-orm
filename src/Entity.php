@@ -69,7 +69,7 @@ class Entity
     /**
      * @return \Bigcommerce\ORM\Metadata
      */
-    public function getMetadata(): \Bigcommerce\ORM\Metadata
+    public function getMetadata()
     {
         return $this->metadata;
     }
