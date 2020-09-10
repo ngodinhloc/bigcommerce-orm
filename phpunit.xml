@@ -15,5 +15,6 @@
     </testsuites>
     <php>
         <env name="APP_ENV" value="testing"/>
+        <env name="CODECOV_TOKEN" value="c30ab44e-0098-411f-ae90-8ba610c2eb4d"/>
     </php>
 </phpunit>
