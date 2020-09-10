@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php" backupGlobals="false"
-         backupStaticAttributes="false" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true" beStrictAboutChangesToGlobalState="true" processIsolation="false"
-         stopOnFailure="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+<phpunit bootstrap="vendor/autoload.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         beStrictAboutChangesToGlobalState="true"
+         processIsolation="false"
+         stopOnFailure="false">
     <testsuites>
         <testsuite name="tests">
             <directory suffix="Test.php">./tests</directory>
@@ -10,6 +16,11 @@
     </testsuites>
     <php>
         <env name="APP_ENV" value="testing"/>
-        <env name="CODECOV_TOKEN" value="c30ab44e-0098-411f-ae90-8ba610c2eb4d"/>
     </php>
+    <filter>
+        <whitelist>
+            <directory>src/*/</directory>
+            <directory>samples/*/</directory>
+        </whitelist>
+    </filter>
 </phpunit>
