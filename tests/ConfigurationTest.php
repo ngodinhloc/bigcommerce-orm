@@ -56,6 +56,7 @@ class ConfigurationTest extends BaseTestCase
     {
         $this->credentials = $this->getBasicCredential();
         $this->configuration = new Configuration();
+
         $this->configuration
             ->setCredentials($this->credentials)
             ->setOptions($this->options)
@@ -70,6 +71,7 @@ class ConfigurationTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bigcommerce\ORM\Configuration::__construct
      * @covers \Bigcommerce\ORM\Configuration::configEntityManager
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      * @throws \Doctrine\Common\Annotations\AnnotationException
@@ -104,6 +106,7 @@ class ConfigurationTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bigcommerce\ORM\Configuration::__construct
      * @covers \Bigcommerce\ORM\Configuration::configEntityManager
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      * @throws \Doctrine\Common\Annotations\AnnotationException
