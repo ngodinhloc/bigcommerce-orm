@@ -2,13 +2,19 @@
 [![Software license][ico-license]](README.md)
 [![Build status][ico-travis]][link-travis]
 [![Coverage][ico-codecov]][link-codecov]
+[![Version][ico-version-stable]][link-packagist]
+[![Download][ico-downloads-monthly]][link-downloads]
 
 [ico-license]: https://img.shields.io/github/license/nrk/predis.svg?style=flat-square
 [ico-travis]: https://travis-ci.com/ngodinhloc/big-orm.svg?branch=master
 [ico-codecov]: https://codecov.io/gh/ngodinhloc/big-orm/branch/master/graph/badge.svg
+[ico-version-stable]: https://img.shields.io/packagist/v/bigcommerce/orm.svg
+[ico-downloads-monthly]: https://img.shields.io/packagist/dm/bigcommerce/orm.svg
 
-[link-codecov]: https://codecov.io/gh/ngodinhloc/big-orm
 [link-travis]: https://travis-ci.com/ngodinhloc/big-orm
+[link-codecov]: https://codecov.io/gh/ngodinhloc/big-orm
+[link-packagist]: https://packagist.org/packages/bigcommerce/orm
+[link-downloads]: https://packagist.org/packages/bigcommerce/orm/stats
 
 Bigcommerce ORM (big-orm) allows users to work with Bigcommerce v3-rest-api just like working with an orm
 
