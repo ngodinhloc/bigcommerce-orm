@@ -22,26 +22,20 @@ try {
     $count = $entityManager->count(\Bigcommerce\ORM\Entities\Category::class);
     echo $count . PHP_EOL;
 
-    /** get all categories */
+    /** find all categories */
     $allCategories = $entityManager->findAll(\Bigcommerce\ORM\Entities\Category::class, null, null, true);
-    /** @var \Bigcommerce\ORM\Entities\Category $category1 */
-    $category1 = $allCategories[0];
-    $name1 = $category1->getName();
-    echo $name1 . PHP_EOL;
+    echo count($allCategories) . PHP_EOL;
 
-    /** get some categories by queries */
+    /** find some categories by queries */
     $queryBuilder = new \Bigcommerce\ORM\QueryBuilder();
     $queryBuilder
         ->whereIn('id', [18, 21, 24])
         ->page(1)
         ->limit(50);
     $someCategories = $entityManager->findBy(\Bigcommerce\ORM\Entities\Category::class, null, $queryBuilder, true);
-    /** @var \Bigcommerce\ORM\Entities\Category $category2 */
-    $category2 = $someCategories[1];
-    $name2 = $category2->getName();
-    echo $name2 . PHP_EOL;
+    echo count($someCategories) . PHP_EOL;
 
-    /** get one category by id */
+    /** find one category by id*/
     $category24 = $entityManager->find(\Bigcommerce\ORM\Entities\Category::class, 24, null, true);
     /** @var \Bigcommerce\ORM\Entities\Category $category24 */
     $parent = $category24->getParent();
@@ -54,7 +48,7 @@ try {
     $newDescription = $category24->getDescription();
     echo $newDescription . PHP_EOL;
 
-    /** get one product  */
+    /** find one product by id */
     $product111 = $entityManager->find(\Bigcommerce\ORM\Entities\Product::class, 111, null, true);
     /** @var \Bigcommerce\ORM\Entities\Product $product111 */
     $name111 = $product111->getName();

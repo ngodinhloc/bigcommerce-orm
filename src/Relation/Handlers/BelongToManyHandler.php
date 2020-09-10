@@ -6,6 +6,7 @@ namespace Bigcommerce\ORM\Relation\Handlers;
 use Bigcommerce\ORM\Entity;
 use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Relation\AbstractHandler;
+use Bigcommerce\ORM\Relation\BelongToRelationInterface;
 use Bigcommerce\ORM\Relation\RelationHandlerInterface;
 use Bigcommerce\ORM\Relation\RelationInterface;
 
@@ -20,7 +21,7 @@ class BelongToManyHandler extends AbstractHandler implements RelationHandlerInte
      * @param \ReflectionProperty $property property
      * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation relation
      * @param array $data
-     * @param int $parentId
+     * @param int|null $parentId
      * @return void
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
@@ -29,7 +30,7 @@ class BelongToManyHandler extends AbstractHandler implements RelationHandlerInte
     public function handle(Entity &$entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, int $parentId = null)
     {
         /* @var \Bigcommerce\ORM\Annotations\BelongToMany $annotation */
-        if (!isset($data[$annotation->field]) || empty($data[$annotation->field])) {
+        if (!isset($annotation->field) || !isset($data[$annotation->field]) || empty($data[$annotation->field])) {
             return;
         }
 
@@ -45,7 +46,14 @@ class BelongToManyHandler extends AbstractHandler implements RelationHandlerInte
         $mapper = $this->entityManager->getMapper();
         $queryBuilder = new QueryBuilder();
         $queryBuilder->whereIn($annotation->targetField, $value);
-        $collections = $this->entityManager->findBy($annotation->targetClass, $parentId, $queryBuilder, $annotation->auto);
+
+        $auto = $annotation->auto;
+        /** BelongRelationInterface: force auto = false to prevent the loop (child -> parent -> child) */
+        if ($this instanceof BelongToRelationInterface) {
+            $auto = false;
+        }
+
+        $collections = $this->entityManager->findBy($annotation->targetClass, $parentId, $queryBuilder, $auto);
         $mapper->setPropertyValue($entity, $property, $collections);
     }
 }

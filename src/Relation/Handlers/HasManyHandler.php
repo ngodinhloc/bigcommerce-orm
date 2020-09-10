@@ -20,7 +20,7 @@ class HasManyHandler extends AbstractHandler implements RelationHandlerInterface
      * @param \ReflectionProperty $property property
      * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation relation
      * @param array $data
-     * @param int $parentId
+     * @param int|null $parentId
      * @return void
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
@@ -29,7 +29,7 @@ class HasManyHandler extends AbstractHandler implements RelationHandlerInterface
     public function handle(Entity &$entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, int $parentId = null)
     {
         /* @var \Bigcommerce\ORM\Annotations\HasMany $annotation */
-        if (!isset($data[$annotation->field]) || empty($data[$annotation->field])) {
+        if (!isset($annotation->field) || !isset($data[$annotation->field]) || empty($data[$annotation->field])) {
             return;
         }
 
