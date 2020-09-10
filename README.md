@@ -1,5 +1,17 @@
-# big-orm
-big-orm allows users to work with Bigcommerce v3-rest-api just like working with an orm
+# Bigcommerce ORM
+[![Software license][ico-license]](README.md)
+[![Build status][ico-travis]][link-travis]
+[![Coverage][ico-codecov]][link-codecov]
+
+[ico-license]: https://img.shields.io/github/license/nrk/predis.svg?style=flat-square
+[ico-travis]: https://travis-ci.com/ngodinhloc/big-orm.svg?branch=master
+[ico-codecov]: https://codecov.io/gh/ngodinhloc/big-orm/branch/master/graph/badge.svg
+
+[link-codecov]: https://codecov.io/gh/ngodinhloc/big-orm
+[link-travis]: https://travis-ci.com/ngodinhloc/big-orm
+
+Bigcommerce ORM (big-orm) allows users to work with Bigcommerce v3-rest-api just like working with an orm
+
 ## Installation
 composer.json
 <pre>
