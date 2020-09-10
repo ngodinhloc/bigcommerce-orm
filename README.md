@@ -425,4 +425,4 @@ Sample log messages
 [2020-09-08T02:59:29.549405+00:00] local_logger.DEBUG: Finish querying objects. Query: /customers?id:in=1&include=addresses [] []
 ```
 
-@see: [samples/working_with_event_logger.php](./samples/working_with_event_logger.php)
+@see: [samples/working_with_logger.php](./samples/working_with_logger.php)
