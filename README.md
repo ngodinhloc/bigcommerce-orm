@@ -82,7 +82,7 @@ $entityManager = $config->configEntityManager();
 </pre>
 @see: [samples/full_configs.php](./samples/full_configs.php)
 
-## Working with multiple store managers
+#### Working with multiple store managers
 <pre>
 /** config multiple store managers */
 $firstCredential = [
@@ -119,7 +119,8 @@ $secondStoreManager = $managerFactory->getEntityManager('secondStore');
 </pre>
 @see: [samples/multiple_managers.php](./samples/multiple_managers.php)
 
-## Create entities
+## Sample codes
+#### Create entities
 <pre>
 /** create new object and set data */
 $review1 = new \Bigcommerce\ORM\Entities\ProductReview();
@@ -152,7 +153,7 @@ $review3 = $entityManager->patch($review3, $data);
 </pre>
 @see: [samples/entities.php](./samples/entities.php)
 
-### Customised entities
+#### Customised entities
 If users add customised fields, which only they know of, 
 then they can extend the standard entities to add their customised fields
 - MyApp\Entities\CustomisedOrderProduct
@@ -179,14 +180,14 @@ class MyProduct extends Product
 </pre>
 @see: [samples/Entities/MyProduct.php](./samples/Entities/MyProduct.php)
 
-### Repositories
+#### Repositories
 <pre>
 $customerRepo = new \Bigcommerce\ORM\Repositories\CustomerRepository($entityManager);
 $customers = $customerRepo->findAll();
 </pre>
 @see: [samples/repositories.php](./samples/repositories.php)
 
-### Customised Repositories
+#### Customised Repositories
 <pre>
 $myRepo = new \Samples\Repositories\MyRepository($entityManager);
 $count = $myRepo->count();
@@ -216,7 +217,7 @@ $entityManager->save($category24);
 @see: [samples/categories_and_products.php](./samples/categories_and_products.php) 
 for more examples of how to query, create and update entities
 
-### Entities to array
+#### Entities to array
 <pre>
 $review1 = new \Bigcommerce\ORM\Entities\ProductReview();
 $review1
@@ -237,7 +238,7 @@ $array2 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_PROP
 </pre>
 @see: [samples/entity_to_array.php](./samples/entity_to_array.php)
 
-### Validations
+#### Validations
 <pre>
 class MyProduct extends Entity
 {
@@ -262,7 +263,7 @@ class MyProduct extends Entity
 
 @see: [samples/Entities/MyProduct.php](./samples/Entities/MyProduct.php)
 
-### Relations
+#### Relations
 <pre>
 class MyProduct extends Entity
 {
