@@ -27,7 +27,7 @@ composer require bigcommerce/orm
 
 ## Configuration
 ### Simple configs
-<pre>
+```php
 /** Legacy credentials */
 $basicCredentials = [
     'storeUrl' => 'https://store-velgoi8q0k.mybigcommerce.com',
@@ -46,11 +46,12 @@ $authCredentials = [
 ];
 $config = new \Bigcommerce\ORM\Configuration($authCredentials);
 $entityManager = $config->configEntityManager();
-</pre>
+```
+
 @see: [samples/simple_configs.php](./samples/simple_configs.php)
 
 ### Full configs
-<pre>
+```php
 $authCredentials = [
     'clientId' => 'acxu0p8rfh15m8n0fn4obuxmb52tgwk',
     'authToken' => 'cyfbhepc71mns8xnykv86wruxzh45wi',
@@ -79,11 +80,12 @@ $logger->pushHandler(new \Monolog\Handler\StreamHandler($logFile));
 
 $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options, $cachePool, $eventDispatcher, $logger);
 $entityManager = $config->configEntityManager();
-</pre>
+```
+
 @see: [samples/full_configs.php](./samples/full_configs.php)
 
 ### Working with multiple store managers
-<pre>
+```php
 /** config multiple store managers */
 $firstCredential = [
     'storeUrl' => 'https://store-velgoi8q0k.mybigcommerce.com',
@@ -116,12 +118,13 @@ $configs = [
 $managerFactory = new \Bigcommerce\ORM\ManagerFactory($configs);
 $firstStoreManager = $managerFactory->getEntityManager('firstStore');
 $secondStoreManager = $managerFactory->getEntityManager('secondStore');
-</pre>
+```
+
 @see: [samples/multiple_managers.php](./samples/multiple_managers.php)
 
 ## Sample codes
 ### Create entities
-<pre>
+```php
 /** create new object and set data */
 $review1 = new \Bigcommerce\ORM\Entities\ProductReview();
 $review1
@@ -150,14 +153,15 @@ $review2 = $entityManager->new(\Bigcommerce\ORM\Entities\ProductReview::class, $
 /** create new entity then patch it with data */
 $review3 = new \Bigcommerce\ORM\Entities\ProductReview();
 $review3 = $entityManager->patch($review3, $data);
-</pre>
+```
+
 @see: [samples/entities.php](./samples/entities.php)
 
 ### Customised entities
 If users add customised fields, which only they know of, 
 then they can extend the standard entities to add their customised fields
-- MyApp\Entities\CustomisedOrderProduct
-<pre>
+- MyApp\Entities\MyProduct
+```php
 namespace Samples\Entities;
 
 use Bigcommerce\ORM\Annotations as BC;
@@ -177,11 +181,12 @@ class MyProduct extends Product
      */
     protected $myCustomisedField;
 }
-</pre>
+```
+
 @see: [samples/Entities/MyProduct.php](./samples/Entities/MyProduct.php)
 
 ### Entities to array
-<pre>
+```php
 $review1 = new \Bigcommerce\ORM\Entities\ProductReview();
 $review1
     ->setProductId(111)
@@ -198,11 +203,12 @@ $array1 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_FIEL
 
 /** return array of entity : key by property name */
 $array2 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME);
-</pre>
+```
+
 @see: [samples/entity_to_array.php](./samples/entity_to_array.php)
 
 ### Save and Update Entities
-<pre>
+```php
 /** create a new product review */
 $newReview = new \Bigcommerce\ORM\Entities\ProductReview();
 $newReview
@@ -220,22 +226,25 @@ $entityManager->save($newReview);
 $category24 = $entityManager->find(\Bigcommerce\ORM\Entities\Category::class, 24);
 $category24->setDescription('This is new description');
 $entityManager->save($category24);
-</pre>
+```
+
 @see: [samples/categories_and_products.php](./samples/categories_and_products.php) 
 for more examples of how to query, create and update entities
 
 ### Repositories
-<pre>
+```php
 $customerRepo = new \Bigcommerce\ORM\Repositories\CustomerRepository($entityManager);
 $customers = $customerRepo->findAll();
-</pre>
+```
+
 @see: [samples/repositories.php](./samples/repositories.php)
 
 ### Customised Repositories
-<pre>
+```php
 $myRepo = new \Samples\Repositories\MyRepository($entityManager);
 $count = $myRepo->count();
-</pre>
+````
+
 @see: [samples/customised_repositories.php](./samples/customised_repositories.php)
 
 ### Validations
@@ -265,7 +274,7 @@ class MyProduct extends Entity
 @see: [samples/Entities/MyProduct.php](./samples/Entities/MyProduct.php)
 
 ### Relations
-<pre>
+```php
 class MyProduct extends Entity
 {
     /**
@@ -291,12 +300,12 @@ class MyProduct extends Entity
      * @BC\HasMany (name="reviews", targetClass="\Bigcommerce\ORM\Entities\ProductReview", field="id", targetField="product_id", auto=true)
      */
     protected $reviews;
-</pre>
+```
 
 @BC\HasOne(name="primary_image", targetClass="\Bigcommerce\ORM\Entities\ProductImage", field="id", targetField="product_id", include=true, auto=true)
 + The product has one primary image, which is an object of class Bigcommerce\ORM\Entities\ProductImage
 + The mapping field is from Product.id to ProductImage.product_id
-+ include=true: this resource will be loaded from included resources
++ include=true: this resource will be loaded from included resources. If include=false, the resources will be loaded by api. 
 + auto=true: this resource will be loaded when retrieving the product
 
 @BC\HasMany(name="images", targetClass="\Bigcommerce\ORM\Entities\ProductImage", field="id", targetField="product_id", include=true, auto=true)
