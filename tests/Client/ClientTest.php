@@ -33,6 +33,7 @@ class ClientTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bigcommerce\ORM\Client\Client::__construct
      * @covers \Bigcommerce\ORM\Client\Client::setConnection
      * @covers \Bigcommerce\ORM\Client\Client::setLogger
      * @covers \Bigcommerce\ORM\Client\Client::setCachePool
