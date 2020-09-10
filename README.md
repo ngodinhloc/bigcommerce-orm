@@ -78,13 +78,19 @@ $logFile = __DIR__ . "/logs/monolog.log";
 $logger = new \Monolog\Logger('local_logger');
 $logger->pushHandler(new \Monolog\Handler\StreamHandler($logFile));
 
-$config = new \Bigcommerce\ORM\Configuration($authCredentials, $options, $cachePool, $eventDispatcher, $logger);
+$config = new \Bigcommerce\ORM\Configuration(
+            $authCredentials, 
+            $options, 
+            $cachePool, 
+            $eventDispatcher, 
+            $logger
+        );
 $entityManager = $config->configEntityManager();
 ```
 
 @see: [samples/full_configs.php](./samples/full_configs.php)
 
-### Working with multiple store managers
+### Multiple store managers
 ```php
 /** config multiple store managers */
 $firstCredential = [
@@ -318,3 +324,103 @@ class MyProduct extends Entity
 + The product has many reviews, each review is an object of class Bigcommerce\ORM\Entities\ProductReview
 
 @see: [samples/Entities/MyProduct.php](./samples/Entities/MyProduct.php)
+
+### Working cache
+The Configuration accepts a \Psr\Cache\CacheItemPoolInterface to use as a cache engine. Big-orm includes a built-int cache engine named FileCachePool 
+```php
+$authCredentials = [
+    'clientId' => 'acxu0p8rfh15m8n0fn4obuxmb52tgwk',
+    'authToken' => 'cyfbhepc71mns8xnykv86wruxzh45wi',
+    'storeHash' => 'e87g0h02r5',
+    'baseUrl' => 'https://api.service.bcdev'
+];
+
+$cacheDir = __DIR__ . "/caches/";
+$cachePool = new \Bigcommerce\ORM\Cache\FileCache\FileCachePool($cacheDir);
+$config = new \Bigcommerce\ORM\Configuration($authCredentials, null, $cachePool);
+$entityManager = $config->configEntityManager();
+
+/** count number of customers */
+$count = $entityManager->count(\Bigcommerce\ORM\Entities\Customer::class);
+echo $count . PHP_EOL;
+```
+FileCachePool store caches in json format
+```json
+{"key":"\/customers","hitCount":2,"cacheTime":1599526337,"expiresAt":null,"expiresAfter":3600,"value":2}
+{"key":"\/customers?id:in=1&include=addresses","hitCount":5,"cacheTime":1599526343,"expiresAt":null,"expiresAfter":3600,"value":{"id":1,"address_count":1,"addresses":[{"id":1,"address1":"87 Longfield","address2":"U6","address_type":"residential","city":"Cabramatta","company":"","country":"Australia","country_code":"AU","customer_id":1,"first_name":"Ken","last_name":"Ngo","phone":"","postal_code":"2166","state_or_province":"New South Wales"}],"authentication":{"force_password_reset":false},"company":"","customer_group_id":0,"email":"ken.ngo@bigcommerce.com","first_name":"Ken","last_name":"Ngo","notes":"","phone":"","registration_ip_address":"10.9.0.86","tax_exempt_category":"","date_created":"2020-09-04T04:00:44Z","date_modified":"2020-09-04T04:00:44Z","accepts_product_review_abandoned_cart_emails":true,"channel_ids":[1]}}
+```
+
+@see: [samples/working_with_cache.php](./samples/working_with_cache.php)
+
+### Working with event dispatcher
+The Configuration accepts a \Symfony\Contracts\EventDispatcher\EventDispatcherInterface to use as event dispatcher. 
+The EntityManager emits two events: "Entity.Created" and "Entity.Updated".
+```php
+$authCredentials = [
+    'clientId' => 'acxu0p8rfh15m8n0fn4obuxmb52tgwk',
+    'authToken' => 'cyfbhepc71mns8xnykv86wruxzh45wi',
+    'storeHash' => 'e87g0h02r5',
+    'baseUrl' => 'https://api.service.bcdev'
+];
+
+$eventDispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
+$mySubscriber = new \Samples\Events\MySubscriber();
+$eventDispatcher->addSubscriber($mySubscriber);
+
+$config = new \Bigcommerce\ORM\Configuration($authCredentials, null, null, $eventDispatcher);
+$entityManager = $config->configEntityManager();
+
+/** create a new product review */
+$newReview = new \Bigcommerce\ORM\Entities\ProductReview();
+$newReview
+    ->setProductId(111)
+    ->setTitle('Great Product')
+    ->setText('I love this product so much')
+    ->setStatus('approved')
+    ->setRating(5)
+    ->setName('Ken Ngo')
+    ->setEmail('ken.ngo@bigcommerce.com')
+    ->setDateReviewed(date('c'));
+$entityManager->save($newReview); // Entity.Created will be dispatched
+
+/** update review */
+$newReview->setText('I love this product even more');
+$entityManager->save($newReview); // Entity.Updated will be dispatched
+```
+
+@see: [samples/working_with_event_dispatcher.php](./samples/working_with_event_dispatcher.php)
+
+### Working with logger
+The Configuration accepts a \Psr\Log\LoggerInterface to use as logger. 
+A debug message will be logged when EntityManager attempts to: query, update or creating objects.
+```php
+$authCredentials = [
+    'clientId' => 'acxu0p8rfh15m8n0fn4obuxmb52tgwk',
+    'authToken' => 'cyfbhepc71mns8xnykv86wruxzh45wi',
+    'storeHash' => 'e87g0h02r5',
+    'baseUrl' => 'https://api.service.bcdev'
+];
+$logFile = __DIR__ . "/logs/monolog.log";
+$logger = new \Monolog\Logger('local_logger');
+$logger->pushHandler(new \Monolog\Handler\StreamHandler($logFile));
+
+$config = new \Bigcommerce\ORM\Configuration($authCredentials, null, null, null, $logger);
+$entityManager = $config->configEntityManager();
+
+/** get one customer by id */
+/** @var \Bigcommerce\ORM\Entities\Customer $customer2 */
+$customer2 = $entityManager->find(\Bigcommerce\ORM\Entities\Customer::class, 1);
+$addresses2 = $customer2->getAddresses();
+$address2 = $addresses2[0];
+$country2 = $address2->getCountry();
+echo $country2 . PHP_EOL;
+```
+Sample log messages
+```text
+[2020-09-08T02:59:28.663848+00:00] local_logger.DEBUG: Start querying objects. Query: /customers [] []
+[2020-09-08T02:59:29.085553+00:00] local_logger.DEBUG: Finish querying objects. Query: /customers [] []
+[2020-09-08T02:59:29.105161+00:00] local_logger.DEBUG: Start querying objects. Query: /customers?sort=date_created:asc&include=addresses [] []
+[2020-09-08T02:59:29.363323+00:00] local_logger.DEBUG: Finish querying objects. Query: /customers?sort=date_created:asc&include=addresses [] []
+[2020-09-08T02:59:29.445989+00:00] local_logger.DEBUG: Start querying objects. Query: /customers?id:in=1&include=addresses [] []
+[2020-09-08T02:59:29.549405+00:00] local_logger.DEBUG: Finish querying objects. Query: /customers?id:in=1&include=addresses [] []
+```
