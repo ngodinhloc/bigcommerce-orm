@@ -26,7 +26,7 @@ composer require bigcommerce/orm
 </pre>
 
 ## Configuration
-#### Simple configs
+### Simple configs
 <pre>
 /** Legacy credentials */
 $basicCredentials = [
@@ -49,7 +49,7 @@ $entityManager = $config->configEntityManager();
 </pre>
 @see: [samples/simple_configs.php](./samples/simple_configs.php)
 
-#### Full configs
+### Full configs
 <pre>
 $authCredentials = [
     'clientId' => 'acxu0p8rfh15m8n0fn4obuxmb52tgwk',
@@ -82,7 +82,7 @@ $entityManager = $config->configEntityManager();
 </pre>
 @see: [samples/full_configs.php](./samples/full_configs.php)
 
-#### Working with multiple store managers
+### Working with multiple store managers
 <pre>
 /** config multiple store managers */
 $firstCredential = [
@@ -120,7 +120,7 @@ $secondStoreManager = $managerFactory->getEntityManager('secondStore');
 @see: [samples/multiple_managers.php](./samples/multiple_managers.php)
 
 ## Sample codes
-#### Create entities
+### Create entities
 <pre>
 /** create new object and set data */
 $review1 = new \Bigcommerce\ORM\Entities\ProductReview();
@@ -153,7 +153,7 @@ $review3 = $entityManager->patch($review3, $data);
 </pre>
 @see: [samples/entities.php](./samples/entities.php)
 
-#### Customised entities
+### Customised entities
 If users add customised fields, which only they know of, 
 then they can extend the standard entities to add their customised fields
 - MyApp\Entities\CustomisedOrderProduct
@@ -180,21 +180,28 @@ class MyProduct extends Product
 </pre>
 @see: [samples/Entities/MyProduct.php](./samples/Entities/MyProduct.php)
 
-#### Repositories
+### Entities to array
 <pre>
-$customerRepo = new \Bigcommerce\ORM\Repositories\CustomerRepository($entityManager);
-$customers = $customerRepo->findAll();
-</pre>
-@see: [samples/repositories.php](./samples/repositories.php)
+$review1 = new \Bigcommerce\ORM\Entities\ProductReview();
+$review1
+    ->setProductId(111)
+    ->setTitle('Great Product')
+    ->setText('I love this product so much')
+    ->setStatus('approved')
+    ->setRating(5)
+    ->setName('Ken Ngo')
+    ->setEmail('ken.ngo@bigcommerce.com')
+    ->setDateReviewed(date('c'));
+    
+/** return array of entity : key by field name */
+$array1 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_FIELD_NAME);
 
-#### Customised Repositories
-<pre>
-$myRepo = new \Samples\Repositories\MyRepository($entityManager);
-$count = $myRepo->count();
+/** return array of entity : key by property name */
+$array2 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME);
 </pre>
-@see: [samples/customised_repositories.php](./samples/customised_repositories.php)
+@see: [samples/entity_to_array.php](./samples/entity_to_array.php)
 
-#### Save and Update Entities
+### Save and Update Entities
 <pre>
 /** create a new product review */
 $newReview = new \Bigcommerce\ORM\Entities\ProductReview();
@@ -217,28 +224,21 @@ $entityManager->save($category24);
 @see: [samples/categories_and_products.php](./samples/categories_and_products.php) 
 for more examples of how to query, create and update entities
 
-#### Entities to array
+### Repositories
 <pre>
-$review1 = new \Bigcommerce\ORM\Entities\ProductReview();
-$review1
-    ->setProductId(111)
-    ->setTitle('Great Product')
-    ->setText('I love this product so much')
-    ->setStatus('approved')
-    ->setRating(5)
-    ->setName('Ken Ngo')
-    ->setEmail('ken.ngo@bigcommerce.com')
-    ->setDateReviewed(date('c'));
-    
-/** return array of entity : key by field name */
-$array1 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_FIELD_NAME);
-
-/** return array of entity : key by property name */
-$array2 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME);
+$customerRepo = new \Bigcommerce\ORM\Repositories\CustomerRepository($entityManager);
+$customers = $customerRepo->findAll();
 </pre>
-@see: [samples/entity_to_array.php](./samples/entity_to_array.php)
+@see: [samples/repositories.php](./samples/repositories.php)
 
-#### Validations
+#### Customised Repositories
+<pre>
+$myRepo = new \Samples\Repositories\MyRepository($entityManager);
+$count = $myRepo->count();
+</pre>
+@see: [samples/customised_repositories.php](./samples/customised_repositories.php)
+
+### Validations
 <pre>
 class MyProduct extends Entity
 {
@@ -263,7 +263,7 @@ class MyProduct extends Entity
 
 @see: [samples/Entities/MyProduct.php](./samples/Entities/MyProduct.php)
 
-#### Relations
+### Relations
 <pre>
 class MyProduct extends Entity
 {
