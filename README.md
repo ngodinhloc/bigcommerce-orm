@@ -239,7 +239,6 @@ $count = $myRepo->count();
 @see: [samples/customised_repositories.php](./samples/customised_repositories.php)
 
 ### Validations
-<pre>
 ```php
 class MyProduct extends Entity
 {
@@ -258,7 +257,7 @@ class MyProduct extends Entity
     protected $dateCreated;
 }
 ```
-</pre>
+
 + @BC\Field(name="email", required=true): indicate that this field is required. An exception will be thrown if a value is not provided when saving the entity.
 + @BC\Field(name="date_created", readonly=true): indicate that this field readonly.
 + @BC\Date(format="Y-m-d"): indicate this field is a Date. An exception will be thrown if provided value is not the in required format.
