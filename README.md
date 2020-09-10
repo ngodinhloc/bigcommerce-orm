@@ -231,7 +231,7 @@ $customers = $customerRepo->findAll();
 </pre>
 @see: [samples/repositories.php](./samples/repositories.php)
 
-#### Customised Repositories
+### Customised Repositories
 <pre>
 $myRepo = new \Samples\Repositories\MyRepository($entityManager);
 $count = $myRepo->count();
