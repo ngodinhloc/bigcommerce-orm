@@ -166,7 +166,7 @@ $review3 = $entityManager->patch($review3, $data);
 ### Customised entities
 If users add customised fields, which only they know of, 
 then they can extend the standard entities to add their customised fields
-- MyApp\Entities\MyProduct
+
 ```php
 namespace Samples\Entities;
 
