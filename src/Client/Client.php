@@ -171,7 +171,7 @@ class Client implements ClientInterface
 
         if ($this->hasCachePool()) {
             $cacheItem = $this->cachePool->getItem($query);
-            if ($cacheItem->isHit() && $cacheItem->isNotExpired()) {
+            if ($cacheItem->isHit()) {
                 return $cacheItem->get();
             }
         }

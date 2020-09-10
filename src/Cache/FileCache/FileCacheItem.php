@@ -132,7 +132,7 @@ class FileCacheItem implements CacheItemInterface
      */
     public function isHit()
     {
-        return $this->isHit;
+        return $this->isNotExpired() && $this->isHit;
     }
 
     /**
