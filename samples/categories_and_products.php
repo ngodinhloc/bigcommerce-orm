@@ -39,7 +39,7 @@ try {
     $someCategories = $entityManager->findBy(\Bigcommerce\ORM\Entities\Category::class, null, $queryBuilder, true);
     echo count($someCategories) . PHP_EOL;
 
-    /** find one category by id*/
+    /** find one category by id */
     $category24 = $entityManager->find(\Bigcommerce\ORM\Entities\Category::class, 24, null, true);
     /** @var \Bigcommerce\ORM\Entities\Category $category24 */
     $parent = $category24->getParent();
