@@ -14,6 +14,8 @@ class FileCacheItemTest extends BaseTestCase
     /**
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::__construct
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::setData
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::intervalToSeconds
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::isNotExpired
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::set
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::setIsHit
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::setExpiresAt
