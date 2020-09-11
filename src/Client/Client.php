@@ -50,6 +50,7 @@ class Client implements ClientInterface
      * @return int|bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function count(string $query = null)
     {
@@ -61,6 +62,7 @@ class Client implements ClientInterface
      * @return array|bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function findAll(string $query = null)
     {
@@ -72,6 +74,7 @@ class Client implements ClientInterface
      * @return array|bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function findBy(string $query = null)
     {
@@ -83,6 +86,7 @@ class Client implements ClientInterface
      * @return array|bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function find(string $query = null)
     {
@@ -124,12 +128,12 @@ class Client implements ClientInterface
     /**
      * @param string|null $path
      * @param array|null $data
-     * @param string|null $file
+     * @param array|null $files
      * @return array|false
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function update(string $path = null, array $data = null, string $file = null)
+    public function update(string $path = null, array $data = null, array $files = null)
     {
         $this->checkPath($path);
 
@@ -142,7 +146,7 @@ class Client implements ClientInterface
         }
 
         try {
-            $response = $this->connection->update($path, $data, $file);
+            $response = $this->connection->update($path, $data, $files);
         } catch (GuzzleException $e) {
             $content = $e->getResponse()->getBody()->getContents();
             throw new ClientException(ClientException::MSG_FAILED_TO_UPDATE_OBJECT . $content);
