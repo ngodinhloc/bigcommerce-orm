@@ -26,7 +26,7 @@ class HasManyHandler extends AbstractHandler implements RelationHandlerInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Exception
      */
-    public function handle(Entity &$entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, int $parentId = null)
+    public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, int $parentId = null)
     {
         /* @var \Bigcommerce\ORM\Annotations\HasMany $annotation */
         if (!isset($annotation->field) || !isset($data[$annotation->field]) || empty($data[$annotation->field])) {

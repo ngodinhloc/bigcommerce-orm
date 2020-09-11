@@ -27,7 +27,7 @@ class BelongToOneHandler extends AbstractHandler implements RelationHandlerInter
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Exception
      */
-    public function handle(Entity &$entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, int $parentId = null)
+    public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, int $parentId = null)
     {
         /* @var \Bigcommerce\ORM\Annotations\BelongToOne $annotation */
         if (!isset($annotation->field) || !isset($data[$annotation->field]) || empty($data[$annotation->field])) {
@@ -49,7 +49,7 @@ class BelongToOneHandler extends AbstractHandler implements RelationHandlerInter
 
         $auto = $annotation->auto;
         /** BelongRelationInterface: force auto = false to prevent the loop (child -> parent -> child) */
-        if ($this instanceof BelongToRelationInterface) {
+        if ($annotation instanceof BelongToRelationInterface) {
             $auto = false;
         }
 
