@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Tests\Client;
 
 use Bigcommerce\ORM\Client\AuthConfig;
-use Bigcommerce\ORM\Client\BasicConfig;
 use Tests\BaseTestCase;
 
 class AuthConfigTest extends BaseTestCase
@@ -12,6 +11,31 @@ class AuthConfigTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Client\AuthConfig */
     protected $authConfig;
 
+    /**
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::__construct
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setTimeout
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setDebug
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setProxy
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setApiVersion
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setVerify
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setContentType
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setBaseUrl
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setStoreHash
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setAuthToken
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setClientId
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getTimeout
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getStorePrefix
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getPathPrefix
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiUrl
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getProxy
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiVersion
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getContentType
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getStoreHash
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getAuthToken
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getClientId
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getBaseUrl
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     */
     public function testSettersAndGetters()
     {
         $authCredentials = [
