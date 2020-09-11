@@ -119,7 +119,7 @@ class ProductImage extends Entity
     /**
      * @return int
      */
-    public function getSortOrder(): int
+    public function getSortOrder()
     {
         return $this->sortOrder;
     }
@@ -173,7 +173,7 @@ class ProductImage extends Entity
     /**
      * @return string
      */
-    public function getImageUrl(): string
+    public function getImageUrl()
     {
         return $this->imageUrl;
     }

@@ -52,7 +52,7 @@ class Category extends Entity
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -70,7 +70,7 @@ class Category extends Entity
     /**
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription()
     {
         return $this->description;
     }
@@ -88,7 +88,7 @@ class Category extends Entity
     /**
      * @return int
      */
-    public function getSortOrder(): int
+    public function getSortOrder()
     {
         return $this->sortOrder;
     }
@@ -106,7 +106,7 @@ class Category extends Entity
     /**
      * @return string
      */
-    public function getPageTitle(): string
+    public function getPageTitle()
     {
         return $this->pageTitle;
     }
@@ -124,7 +124,7 @@ class Category extends Entity
     /**
      * @return int
      */
-    public function getParentId(): int
+    public function getParentId()
     {
         return $this->parentId;
     }

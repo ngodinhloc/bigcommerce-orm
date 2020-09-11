@@ -92,18 +92,18 @@ class Address extends Entity
     protected $state;
 
     /**
-     * @return string
+     * @return int
      */
-    public function getCustomerId(): string
+    public function getCustomerId()
     {
         return $this->customerId;
     }
 
     /**
-     * @param string $customerId
+     * @param int $customerId
      * @return \Bigcommerce\ORM\Entities\Address
      */
-    public function setCustomerId(string $customerId): Address
+    public function setCustomerId(int $customerId): Address
     {
         $this->customerId = $customerId;
         return $this;
@@ -112,7 +112,7 @@ class Address extends Entity
     /**
      * @return string
      */
-    public function getAddress1(): string
+    public function getAddress1()
     {
         return $this->address1;
     }
@@ -130,7 +130,7 @@ class Address extends Entity
     /**
      * @return string
      */
-    public function getAddress2(): string
+    public function getAddress2()
     {
         return $this->address2;
     }
@@ -148,7 +148,7 @@ class Address extends Entity
     /**
      * @return string
      */
-    public function getAddressType(): string
+    public function getAddressType()
     {
         return $this->addressType;
     }
@@ -166,7 +166,7 @@ class Address extends Entity
     /**
      * @return string
      */
-    public function getCity(): string
+    public function getCity()
     {
         return $this->city;
     }
@@ -184,7 +184,7 @@ class Address extends Entity
     /**
      * @return string
      */
-    public function getCompany(): string
+    public function getCompany()
     {
         return $this->company;
     }
@@ -202,7 +202,7 @@ class Address extends Entity
     /**
      * @return string
      */
-    public function getCountry(): string
+    public function getCountry()
     {
         return $this->country;
     }
@@ -220,7 +220,7 @@ class Address extends Entity
     /**
      * @return string
      */
-    public function getCountryCode(): string
+    public function getCountryCode()
     {
         return $this->countryCode;
     }
@@ -238,7 +238,7 @@ class Address extends Entity
     /**
      * @return string
      */
-    public function getFirstName(): string
+    public function getFirstName()
     {
         return $this->firstName;
     }
@@ -256,7 +256,7 @@ class Address extends Entity
     /**
      * @return string
      */
-    public function getLastName(): string
+    public function getLastName()
     {
         return $this->lastName;
     }
@@ -274,7 +274,7 @@ class Address extends Entity
     /**
      * @return string
      */
-    public function getPhone(): string
+    public function getPhone()
     {
         return $this->phone;
     }
@@ -292,7 +292,7 @@ class Address extends Entity
     /**
      * @return string
      */
-    public function getPostalCode(): string
+    public function getPostalCode()
     {
         return $this->postalCode;
     }
@@ -310,7 +310,7 @@ class Address extends Entity
     /**
      * @return string
      */
-    public function getState(): string
+    public function getState()
     {
         return $this->state;
     }

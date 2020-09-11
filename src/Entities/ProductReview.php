@@ -80,7 +80,7 @@ class ProductReview extends Entity
     /**
      * @return int
      */
-    public function getProductId(): int
+    public function getProductId()
     {
         return $this->productId;
     }
@@ -98,7 +98,7 @@ class ProductReview extends Entity
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getTitle()
     {
         return $this->title;
     }
@@ -116,7 +116,7 @@ class ProductReview extends Entity
     /**
      * @return string
      */
-    public function getText(): string
+    public function getText()
     {
         return $this->text;
     }
