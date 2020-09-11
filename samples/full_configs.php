@@ -11,7 +11,8 @@ $options = [
     'verify' => false,
     'timeout' => 60,
     'contentType' => 'application/json',
-    'debug' => true
+    'debug' => true,
+    'proxy' => null
 ];
 
 try {

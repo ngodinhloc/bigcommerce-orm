@@ -113,7 +113,7 @@ class Product extends Entity
 
     /**
      * @var \Bigcommerce\ORM\Entities\ProductReview[]
-     * @BC\HasMany (name="reviews", targetClass="\Bigcommerce\ORM\Entities\ProductReview", field="id", targetField="product_id", auto=true)
+     * @BC\HasMany(name="reviews", targetClass="\Bigcommerce\ORM\Entities\ProductReview", field="id", targetField="product_id", auto=true)
      */
     protected $reviews;
 

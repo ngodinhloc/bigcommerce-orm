@@ -11,11 +11,15 @@ $options = [
     'verify' => false,
     'timeout' => 60,
     'contentType' => 'application/json',
-    'debug' => true
+    'debug' => true,
+    'proxy' => null
 ];
 
 try {
-    $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options);
+    $cacheDir = __DIR__ . "/caches/";
+    $cachePool = new \Bigcommerce\ORM\Cache\FileCache\FileCachePool($cacheDir);
+
+    $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options, $cachePool);
     $entityManager = $config->configEntityManager();
 
     /** count the number of categories */
@@ -40,7 +44,7 @@ try {
     /** @var \Bigcommerce\ORM\Entities\Category $category24 */
     $parent = $category24->getParent();
     $name24 = $category24->getName();
-    echo $name24;
+    echo $name24. PHP_EOL;
 
     /** update a category */
     $category24->setDescription('This is new description');

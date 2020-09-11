@@ -27,7 +27,7 @@ class MySubscriber implements EventSubscriberInterface
     {
         $entity = $event->getEntity();
         $name = $event->getName();
-        echo $name;
+        echo $name . PHP_EOL;
     }
 
     /**
@@ -37,7 +37,7 @@ class MySubscriber implements EventSubscriberInterface
     {
         $entity = $event->getEntity();
         $name = $event->getName();
-        echo $name;
+        echo $name . PHP_EOL;
     }
 
 }
