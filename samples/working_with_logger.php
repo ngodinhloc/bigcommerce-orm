@@ -41,6 +41,11 @@ try {
     $country2 = $address2->getCountry();
     echo $country2 . PHP_EOL;
 
+    $path = '/catalog/products/{id}/modifers/{id}/values';
+    $replace = [1,2];
+    $str = str_replace('{id}', $replace, $path);
+    echo $str;
+
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
