@@ -101,18 +101,18 @@ $entityManager = $config->configEntityManager();
 /** config multiple store managers */
 $firstCredential = [
     'storeUrl' => 'https://store-velgoi8q0k.mybigcommerce.com',
-    'username' => 'test',
-    'apiKey' => '2525df56477f58e5868c240ee5228b0b5d4367c4'
+    'username' => '***',
+    'apiKey' => '***'
 ];
 
 $configuration = new Bigcommerce\ORM\Configuration($firstCredential);
 $firstEntityManger = $configuration->configEntityManager();
 
 $secondCredential = [
-    'clientId' => 'acxu0p8rfh15m8n0fn4obuxmb52tgwk',
-    'authToken' => 'cyfbhepc71mns8xnykv86wruxzh45wi',
-    'storeHash' => 'e87g0h02r5',
-    'baseUrl' => 'https://api.service.bcdev'
+    'clientId' => '***',
+    'authToken' => '***',
+    'storeHash' => '***',
+    'baseUrl' => 'https://api.bigcommerce.com'
 ];
 $configuration = new Bigcommerce\ORM\Configuration($secondCredential);
 $secondEntityManger = $configuration->configEntityManager();
