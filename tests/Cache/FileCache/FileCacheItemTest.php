@@ -33,18 +33,19 @@ class FileCacheItemTest extends BaseTestCase
     public function testSettersAndGetters()
     {
         $cacheTime = time();
+        $tomorrow = new \DateTime('tomorrow');
         $data = [
             'key' => 'key',
             'hitCount' => 2,
             'cacheTime' => $cacheTime,
-            'expiresAt' => new \DateTime('tomorrow'),
+            'expiresAt' => $tomorrow,
             'expiresAfter' => 3600,
             'value' => 'value'
         ];
         $this->cacheItem = new FileCacheItem($data);
         $this->assertEquals($data['key'], $this->cacheItem->getKey());
         $this->assertEquals($data['hitCount'], $this->cacheItem->getHitCount());
-        $this->assertEquals($data['expiresAt'], $this->cacheItem->getExpiresAt());
+        $this->assertEquals($tomorrow->getTimestamp(), $this->cacheItem->getExpiresAt());
         $this->assertEquals($data['expiresAfter'], $this->cacheItem->getExpiresAfter());
         $this->assertEquals($data['value'], $this->cacheItem->get());
         $this->assertEquals($data['cacheTime'], $this->cacheItem->getCacheTime());
@@ -65,7 +66,19 @@ class FileCacheItemTest extends BaseTestCase
         $this->assertEquals($cacheTime, $this->cacheItem->getCacheTime());
         $this->assertEquals(7200, $this->cacheItem->getExpiresAfter());
         $this->assertEquals('newKey', $this->cacheItem->getKey());
-        $this->assertEquals($tomorrow, $this->cacheItem->getExpiresAt());
+        $this->assertEquals($tomorrow->getTimestamp(), $this->cacheItem->getExpiresAt());
+
+        $yesterday = new \DateTime('yesterday');
+        $oneHour = new \DateInterval('PT1H');
+        $this->cacheItem->setExpiresAt($yesterday);
+        $this->assertEquals(false, $this->cacheItem->isNotExpired());
+
+        $this->cacheItem
+            ->setCacheTime($yesterday)
+            ->setExpiresAfter($oneHour)
+            ->setExpiresAt($yesterday);
+        $this->assertEquals(false, $this->cacheItem->isNotExpired());
+
     }
 
     /**
@@ -76,16 +89,25 @@ class FileCacheItemTest extends BaseTestCase
     public function testToArray()
     {
         $cacheTime = time();
+        $now = new \DateTime('now');
         $data = [
             'key' => 'key',
             'hitCount' => 2,
             'cacheTime' => $cacheTime,
-            'expiresAt' => new \DateTime('now'),
+            'expiresAt' => $now,
+            'expiresAfter' => 3600,
+            'value' => 'value'
+        ];
+        $expected = [
+            'key' => 'key',
+            'hitCount' => 2,
+            'cacheTime' => $cacheTime,
+            'expiresAt' => $now->getTimestamp(),
             'expiresAfter' => 3600,
             'value' => 'value'
         ];
         $this->cacheItem = new FileCacheItem($data);
         $array = $this->cacheItem->toArray();
-        $this->assertEquals($data, $array);
+        $this->assertEquals($expected, $array);
     }
 }

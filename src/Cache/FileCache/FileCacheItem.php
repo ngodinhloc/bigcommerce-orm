@@ -25,7 +25,7 @@ class FileCacheItem implements CacheItemInterface
     /** @var int */
     protected $cacheTime;
 
-    /** @var \DateTime */
+    /** @var int */
     protected $expiresAt;
 
     public function __construct(array $data = null)
@@ -110,17 +110,18 @@ class FileCacheItem implements CacheItemInterface
      */
     public function isNotExpired()
     {
+        $now = time();
         if ($this->expiresAt) {
-            if ($this->expiresAt < date_create()) {
+            if ($this->expiresAt < $now) {
                 return false;
             }
 
-            if (($this->cacheTime + $this->expiresAfter) < time()) {
+            if (($this->cacheTime + $this->expiresAfter) < $now) {
                 return false;
             }
         }
 
-        if ($this->cacheTime + $this->expiresAfter < time()) {
+        if ($this->cacheTime + $this->expiresAfter < $now) {
             return false;
         }
 
@@ -195,7 +196,7 @@ class FileCacheItem implements CacheItemInterface
     }
 
     /**
-     * @return \DateTime
+     * @return int
      */
     public function getExpiresAt()
     {
@@ -229,7 +230,7 @@ class FileCacheItem implements CacheItemInterface
         if ($expiresAfter instanceof \DateInterval) {
             $expiresAfter = $this->intervalToSeconds($expiresAfter);
         }
-        if(is_int($expiresAfter)) {
+        if (is_int($expiresAfter)) {
             $this->expiresAfter = $expiresAfter;
         }
         return $this;
@@ -244,7 +245,7 @@ class FileCacheItem implements CacheItemInterface
         if ($cacheTime instanceof \DateInterval) {
             $cacheTime = $this->intervalToSeconds($cacheTime);
         }
-        if(is_int($cacheTime)) {
+        if (is_int($cacheTime)) {
             $this->cacheTime = $cacheTime;
         }
         return $this;
@@ -257,6 +258,9 @@ class FileCacheItem implements CacheItemInterface
     public function setExpiresAt(\DateTime $expiresAt)
     {
         if ($expiresAt instanceof \DateTime) {
+            $expiresAt = $expiresAt->getTimestamp();
+        }
+        if (is_int($expiresAt)) {
             $this->expiresAt = $expiresAt;
         }
         return $this;
