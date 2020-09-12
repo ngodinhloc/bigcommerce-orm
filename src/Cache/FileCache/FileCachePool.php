@@ -227,6 +227,6 @@ class FileCachePool implements CacheItemPoolInterface
      */
     public function saveDeferred(CacheItemInterface $item)
     {
-        return false;
+        return $this->save($item);
     }
 }
