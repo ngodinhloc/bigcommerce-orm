@@ -48,7 +48,7 @@ $authCredentials = [
     'clientId' => '***',
     'authToken' => '***',
     'storeHash' => '***',
-    'baseUrl' => 'https://api.service.bcdev'
+    'baseUrl' => 'https://api.bigcommerce.com'
 ];
 $config = new \Bigcommerce\ORM\Configuration($authCredentials);
 $entityManager = $config->configEntityManager();
@@ -59,10 +59,10 @@ $entityManager = $config->configEntityManager();
 ### Full configs
 ```php
 $authCredentials = [
-    'clientId' => 'acxu0p8rfh15m8n0fn4obuxmb52tgwk',
-    'authToken' => 'cyfbhepc71mns8xnykv86wruxzh45wi',
-    'storeHash' => 'e87g0h02r5',
-    'baseUrl' => 'https://api.service.bcdev'
+    'clientId' => '***',
+    'authToken' => '***',
+    'storeHash' => '***',
+    'baseUrl' => 'https://api.bigcommerce.com'
 ];
 $options = [
     'verify' => false,
