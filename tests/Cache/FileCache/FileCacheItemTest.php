@@ -72,11 +72,11 @@ class FileCacheItemTest extends BaseTestCase
         $oneHour = new \DateInterval('PT1H');
         $this->cacheItem->expiresAt($yesterday);
         $this->assertEquals(false, $this->cacheItem->isNotExpired());
+        $this->assertEquals(false, $this->cacheItem->isHit());
 
         $this->cacheItem
             ->cachesAt($yesterday)
-            ->expiresAfter($oneHour)
-            ->expiresAt($yesterday);
+            ->expiresAfter($oneHour);
         $this->assertEquals(false, $this->cacheItem->isNotExpired());
 
     }
