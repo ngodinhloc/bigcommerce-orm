@@ -57,7 +57,7 @@ class FileCachePoolTest extends BaseTestCase
         $this->expectExceptionMessage(FileCachePoolException::MSG_INVALID_CACHE_DIR . $cacheDir);
         $this->cache = new FileCachePool($cacheDir);
 
-        $cacheDir = __DIR__;
+        $cacheDir = __DIR__.'/caches';
         $this->cache = new FileCachePool($cacheDir);
         $this->assertEquals($cacheDir, $this->cache->getCacheDir());
 
@@ -95,6 +95,9 @@ class FileCachePoolTest extends BaseTestCase
         $this->assertEquals($item3, $get);
         $this->cache->deleteItem('key3');
         $this->assertEquals([], $this->cache->getItemPool());
+        $this->cache->saveDeferred($item3);
+        $get = $this->cache->getItem('key3');
+        $this->assertEquals($item3, $get);
         $this->cache->clear();
     }
 
