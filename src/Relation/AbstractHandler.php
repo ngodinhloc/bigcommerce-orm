@@ -23,4 +23,23 @@ abstract class AbstractHandler
     {
         $this->entityManager = $entityManager;
     }
+
+    /**
+     * @return \Bigcommerce\ORM\EntityManager
+     */
+    public function getEntityManager(): \Bigcommerce\ORM\EntityManager
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\EntityManager $entityManager
+     * @return \Bigcommerce\ORM\Relation\AbstractHandler
+     */
+    public function setEntityManager(\Bigcommerce\ORM\EntityManager $entityManager): AbstractHandler
+    {
+        $this->entityManager = $entityManager;
+        return $this;
+    }
+
 }

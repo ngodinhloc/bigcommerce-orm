@@ -9,12 +9,12 @@ use Tests\BaseTestCase;
 class ResourceTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Annotations\Resource */
-    protected $resource;
+    protected $annotation;
 
-    public function testBigObject(){
-        $this->resource = new Resource(['name' => 'Customer', 'path' => '/customers', 'parentField' => null]);
-        $this->assertEquals('Customer', $this->resource->name);
-        $this->assertEquals('/customers', $this->resource->path);
-        $this->assertEquals(null, $this->resource->parentField);
+    public function testResource(){
+        $this->annotation = new Resource(['name' => 'Customer', 'path' => '/customers', 'parentField' => null]);
+        $this->assertEquals('Customer', $this->annotation->name);
+        $this->assertEquals('/customers', $this->annotation->path);
+        $this->assertEquals(null, $this->annotation->parentField);
     }
 }
