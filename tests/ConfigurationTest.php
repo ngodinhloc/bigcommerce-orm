@@ -7,6 +7,7 @@ use Bigcommerce\ORM\Cache\FileCache\FileCachePool;
 use Bigcommerce\ORM\Client\AuthConfig;
 use Bigcommerce\ORM\Client\BasicConfig;
 use Bigcommerce\ORM\Client\Client;
+use Bigcommerce\ORM\Client\Exceptions\ConfigException;
 use Bigcommerce\ORM\Configuration;
 use Bigcommerce\ORM\EntityManager;
 use Monolog\Logger;
@@ -71,6 +72,18 @@ class ConfigurationTest extends BaseTestCase
         $this->assertEquals($this->logger, $this->configuration->getLogger());
     }
 
+    /**
+     * @covers \Bigcommerce\ORM\Configuration::__construct
+     * @covers \Bigcommerce\ORM\Configuration::configEntityManager
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     */
+    public function testInvalidCredentials(){
+        $this->configuration = new Configuration([]);
+        $this->expectException(ConfigException::class);
+        $this->expectExceptionMessage(ConfigException::MSG_MISSING_CONFIG);
+        $this->configuration->configEntityManager();
+    }
     /**
      * @covers \Bigcommerce\ORM\Configuration::__construct
      * @covers \Bigcommerce\ORM\Configuration::configEntityManager
@@ -176,7 +189,8 @@ class ConfigurationTest extends BaseTestCase
             'verify' => false,
             'timeout' => 60,
             'contentType' => 'application/json',
-            'debug' => true
+            'debug' => true,
+            'proxy' => 'tcp:localhost:8080'
         ];
     }
 

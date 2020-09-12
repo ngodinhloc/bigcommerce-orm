@@ -46,6 +46,38 @@ class ManagerFactoryTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bigcommerce\ORM\ManagerFactory::__construct
+     * @covers \Bigcommerce\ORM\ManagerFactory::getEntityManager
+     * @covers \Bigcommerce\ORM\ManagerFactory::getManager
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ManagerFactoryException
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     */
+    public function testConfigNotFound()
+    {
+        $this->factory = new ManagerFactory($this->configs);
+        $invalidConfig = 'invalidConfigName';
+        $this->expectException(ManagerFactoryException::class);
+        $this->expectExceptionMessage(ManagerFactoryException::MGS_CONFIG_NOT_FOUND . $invalidConfig);
+        $this->factory->getEntityManager($invalidConfig);
+    }
+
+    /**
+     * @covers \Bigcommerce\ORM\ManagerFactory::getEntityManager
+     * @covers \Bigcommerce\ORM\ManagerFactory::getManager
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ManagerFactoryException
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     */
+    public function testCredentialsNotFound()
+    {
+        $missingCredentialConfig = 'thirdStore';
+        $this->expectException(ManagerFactoryException::class);
+        $this->expectExceptionMessage(ManagerFactoryException::MGS_CREDENTIALS_NOT_FOUND . $missingCredentialConfig);
+        $this->factory->getEntityManager($missingCredentialConfig);
+    }
+
+    /**
      * @covers \Bigcommerce\ORM\ManagerFactory::getEntityManager
      * @covers \Bigcommerce\ORM\ManagerFactory::getManager
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
@@ -54,21 +86,11 @@ class ManagerFactoryTest extends BaseTestCase
      */
     public function testGetEntityManager()
     {
-        $invalidConfig = 'invalidConfigName';
-        $this->expectException(ManagerFactoryException::class);
-        $this->expectDeprecationMessage(ManagerFactoryException::MGS_CONFIG_NOT_FOUND . $invalidConfig);
-        $this->factory->getEntityManager($invalidConfig);
-
-        $missingCredentialConfig = 'thirdStore';
-        $this->expectException(ManagerFactoryException::class);
-        $this->expectDeprecationMessage(ManagerFactoryException::MGS_CREDENTIALS_NOT_FOUND . $missingCredentialConfig);
-        $this->factory->getEntityManager($missingCredentialConfig);
-
         $firstStore = 'firstStore';
         $firstManager = $this->factory->getEntityManager($firstStore);
         $this->assertInstanceOf(EntityManager::class, $firstManager);
 
         $firstManagerFromPool = $this->factory->getEntityManager($firstStore);
-        $this->assertEquals($firstStore, $firstManagerFromPool);
+        $this->assertInstanceOf(EntityManager::class, $firstManagerFromPool);
     }
 }

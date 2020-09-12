@@ -102,8 +102,8 @@ class Configuration
             $config->setContentType($this->options['contentType']);
         }
 
-        if (isset($this->credentials['debug'])) {
-            $config->setDebug($this->credentials['debug']);
+        if (isset($this->options['debug'])) {
+            $config->setDebug($this->options['debug']);
         }
 
         $connection = new Connection($config);
