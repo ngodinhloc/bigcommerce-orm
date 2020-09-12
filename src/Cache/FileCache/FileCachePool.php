@@ -64,6 +64,21 @@ class FileCachePool implements CacheItemPoolInterface
     }
 
     /**
+     * @param array $keys
+     * @return array|\Traversable
+     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     */
+    public function getItems(array $keys = array())
+    {
+        $items = [];
+        foreach ($keys as $key) {
+            $items[$key] = $this->getItem($key);
+        }
+
+        return $items;
+    }
+
+    /**
      * @param \Psr\Cache\CacheItemInterface $item
      * @return $this|bool
      */
@@ -165,33 +180,53 @@ class FileCachePool implements CacheItemPoolInterface
         return $this;
     }
 
-    public function getItems(array $keys = array())
-    {
-        // TODO: Implement getItems() method.
-    }
-
+    /**
+     * @param string $key
+     * @return bool
+     */
     public function hasItem($key)
     {
-        // TODO: Implement hasItem() method.
+        $hash = $this->hashKey($key);
+        return isset($this->itemPool[$hash]);
     }
 
+    /**
+     * @return bool|void
+     */
     public function clear()
     {
-        // TODO: Implement clear() method.
+        $this->itemPool = null;
     }
 
+    /**
+     * @param string $key
+     * @return bool|void
+     */
     public function deleteItem($key)
     {
-        // TODO: Implement deleteItem() method.
+        $hash = $this->hashKey($key);
+        if (isset($this->itemPool[$hash])) {
+            unset($this->itemPool[$hash]);
+        }
     }
 
+    /**
+     * @param array $keys
+     * @return bool|void
+     */
     public function deleteItems(array $keys)
     {
-        // TODO: Implement deleteItems() method.
+        foreach ($keys as $key) {
+            $this->deleteItem($key);
+        }
     }
 
+    /**
+     * @param \Psr\Cache\CacheItemInterface $item
+     * @return bool|void
+     */
     public function saveDeferred(CacheItemInterface $item)
     {
-        // TODO: Implement saveDeferred() method.
+        return false;
     }
 }
