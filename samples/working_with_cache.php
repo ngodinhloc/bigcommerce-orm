@@ -15,7 +15,7 @@ $options = [
 ];
 
 try {
-    $cacheDir = __DIR__ . "/caches/";
+    $cacheDir = __DIR__ . "/caches";
     $cachePool = new \Bigcommerce\ORM\Cache\FileCache\FileCachePool($cacheDir);
     $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options, $cachePool);
     $entityManager = $config->configEntityManager();

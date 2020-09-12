@@ -37,6 +37,18 @@ class FileCachePool implements CacheItemPoolInterface
     }
 
     /**
+     * @param \Psr\Cache\CacheItemInterface $item
+     * @return $this|bool
+     */
+    public function save(CacheItemInterface $item)
+    {
+        $hash = $this->hashKey($item->getKey());
+        $this->itemPool[$hash] = $item;
+
+        return $this;
+    }
+
+    /**
      * @param string $key
      * @return \Psr\Cache\CacheItemInterface|null
      * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
@@ -79,18 +91,6 @@ class FileCachePool implements CacheItemPoolInterface
     }
 
     /**
-     * @param \Psr\Cache\CacheItemInterface $item
-     * @return $this|bool
-     */
-    public function save(CacheItemInterface $item)
-    {
-        $hash = $this->hashKey($item->getKey());
-        $this->itemPool[$hash] = $item;
-
-        return $this;
-    }
-
-    /**
      * @return bool
      * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
      */
@@ -102,7 +102,7 @@ class FileCachePool implements CacheItemPoolInterface
 
         foreach ($this->itemPool as $hash => $item) {
             /** @var \Bigcommerce\ORM\Cache\FileCache\FileCacheItem $item */
-            $file = $this->cacheDir . $hash;
+            $file = $this->cacheDir .DIRECTORY_SEPARATOR. $hash;
             if ($item->isNotExpired()) {
                 $data = $item->toArray();
                 $json = json_encode($data);
@@ -131,7 +131,7 @@ class FileCachePool implements CacheItemPoolInterface
      * @param string|null $key
      * @return string
      */
-    private function hashKey(string $key = null)
+    public function hashKey(string $key = null)
     {
         return md5($key);
     }
@@ -146,7 +146,7 @@ class FileCachePool implements CacheItemPoolInterface
     private function retrieve(string $hash)
     {
         $data = null;
-        $file = $this->cacheDir . $hash;
+        $file = $this->cacheDir .DIRECTORY_SEPARATOR. $hash;
         if (file_exists($file)) {
             try {
                 $content = file_get_contents($file);
@@ -229,4 +229,23 @@ class FileCachePool implements CacheItemPoolInterface
     {
         return $this->save($item);
     }
+
+    /**
+     * @return \Psr\Cache\CacheItemInterface[]
+     */
+    public function getItemPool()
+    {
+        return $this->itemPool;
+    }
+
+    /**
+     * @param \Psr\Cache\CacheItemInterface[] $itemPool
+     * @return \Bigcommerce\ORM\Cache\FileCache\FileCachePool
+     */
+    public function setItemPool(array $itemPool): FileCachePool
+    {
+        $this->itemPool = $itemPool;
+        return $this;
+    }
+
 }
