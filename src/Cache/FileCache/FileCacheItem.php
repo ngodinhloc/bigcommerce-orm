@@ -116,7 +116,7 @@ class FileCacheItem implements CacheItemInterface
     }
 
     /**
-     * @param \DateTime|int $cacheAt
+     * @param \DateTimeInterface|int $cacheAt
      * @return $this|\Bigcommerce\ORM\Cache\FileCache\FileCacheItem
      */
     public function cachesAt($cacheAt)
@@ -142,12 +142,12 @@ class FileCacheItem implements CacheItemInterface
      * @param \DateTimeInterface|null $expiration
      * @return \Bigcommerce\ORM\Cache\FileCache\FileCacheItem
      */
-    public function expiresAt($expiration)
+    public function expiresAt($expiration = null)
     {
         if ($expiration instanceof \DateTime) {
             $expiration = $expiration->getTimestamp();
         }
-        if (is_int($expiration)) {
+        if (is_int($expiration) || is_null($expiration)) {
             $this->expiresAt = $expiration;
         }
         return $this;
