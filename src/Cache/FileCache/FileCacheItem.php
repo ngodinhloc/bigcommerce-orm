@@ -116,13 +116,13 @@ class FileCacheItem implements CacheItemInterface
     }
 
     /**
-     * @param \DateInterval|int $cacheAt
+     * @param \DateTime|int $cacheAt
      * @return $this|\Bigcommerce\ORM\Cache\FileCache\FileCacheItem
      */
     public function cachesAt($cacheAt)
     {
-        if ($cacheAt instanceof \DateInterval) {
-            $cacheAt = $this->intervalToSeconds($cacheAt);
+        if ($cacheAt instanceof \DateTime) {
+            $cacheAt = $cacheAt->getTimestamp();
         }
         if (is_int($cacheAt)) {
             $this->cachesAt = $cacheAt;
@@ -131,7 +131,7 @@ class FileCacheItem implements CacheItemInterface
     }
 
     /**
-     * @return \DateInterval|int
+     * @return \DateTime|int
      */
     public function getCachesAt()
     {
