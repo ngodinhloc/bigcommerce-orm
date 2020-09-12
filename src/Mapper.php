@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM;
 
-use Bigcommerce\ORM\Annotations\BigObject;
+use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Annotations\Field;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
@@ -49,43 +49,43 @@ class Mapper
     public function getObjectType(Entity $entity = null)
     {
         $reflectionClass = $this->reflect($entity);
-        /* @var \Bigcommerce\ORM\Annotations\BigObject $object */
-        $object = $this->reader->getClassAnnotation($reflectionClass, BigObject::class);
-        if (!$object->name) {
+        /* @var \Bigcommerce\ORM\Annotations\Resource $resource */
+        $resource = $this->reader->getClassAnnotation($reflectionClass, Resource::class);
+        if (!$resource->name) {
             throw new MapperException(MapperException::MSG_OBJECT_TYPE_NOT_FOUND . get_class($entity));
         }
 
-        return $object->name;
+        return $resource->name;
     }
 
     /**
      * @param \Bigcommerce\ORM\Entity|null $entity
-     * @return \Bigcommerce\ORM\Annotations\BigObject|object
+     * @return \Bigcommerce\ORM\Annotations\Resource|object
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function getClassAnnotation(Entity $entity = null)
     {
         $reflectionClass = $this->reflect($entity);
 
-        return $this->reader->getClassAnnotation($reflectionClass, BigObject::class);
+        return $this->reader->getClassAnnotation($reflectionClass, Resource::class);
     }
 
     /**
-     * @param \Bigcommerce\ORM\Annotations\BigObject|null $bigObject
-     * @param \Bigcommerce\ORM\Entity $entity
+     * @param \Bigcommerce\ORM\Annotations\Resource|null $resource
+     * @param \Bigcommerce\ORM\Entity|null $entity
      * @param int|null $parentId
      * @return string
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function getPath(BigObject $bigObject = null, Entity $entity = null, int $parentId = null)
+    public function getPath(Resource $resource = null, Entity $entity = null, int $parentId = null)
     {
-        $path = $bigObject->path;
+        $path = $resource->path;
         if (!strpos($path, '{id}')) {
             return $path;
         }
 
-        if (!empty($entity) && !empty($bigObject->parentField)) {
-            $parentField = $this->getPropertyValueByFieldName($entity, $bigObject->parentField);
+        if (!empty($entity) && !empty($resource->parentField)) {
+            $parentField = $this->getPropertyValueByFieldName($entity, $resource->parentField);
             if (!empty($parentField)) {
                 $parentId = $parentField;
             }
@@ -542,11 +542,11 @@ class Mapper
     }
 
     /**
-     * @param \Bigcommerce\ORM\Annotations\BigObject $bigObject
+     * @param \Bigcommerce\ORM\Annotations\Resource|null $resource
      * @param \ReflectionProperty[] $properties
      * @return \Bigcommerce\ORM\Metadata
      */
-    private function getMetadata(BigObject $bigObject = null, array $properties = null)
+    private function getMetadata(Resource $resource = null, array $properties = null)
     {
         $relationFields = [];
         $autoLoads = [];
@@ -596,7 +596,7 @@ class Mapper
 
         $metadata = new Metadata();
         $metadata
-            ->setBigObject($bigObject)
+            ->setResource($resource)
             ->setReadonlyFields($readonlyFields)
             ->setRequiredFields($requiredFields)
             ->setCustomisedFields($customisedFields)

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Bigcommerce\ORM\Annotations\BigObject;
+use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Metadata;
 
 class MetadataTest extends BaseTestCase
@@ -18,7 +18,7 @@ class MetadataTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\Metadata::setBigObject
+     * @covers \Bigcommerce\ORM\Metadata::setResource
      * @covers \Bigcommerce\ORM\Metadata::setRelationFields
      * @covers \Bigcommerce\ORM\Metadata::setUploadFiles
      * @covers \Bigcommerce\ORM\Metadata::setAutoIncludes
@@ -27,7 +27,7 @@ class MetadataTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Metadata::setReadonlyFields
      * @covers \Bigcommerce\ORM\Metadata::setAutoLoads
      * @covers \Bigcommerce\ORM\Metadata::setRequiredFields
-     * @covers \Bigcommerce\ORM\Metadata::getBigObject
+     * @covers \Bigcommerce\ORM\Metadata::getResource
      * @covers \Bigcommerce\ORM\Metadata::getRelationFields
      * @covers \Bigcommerce\ORM\Metadata::getUploadFiles
      * @covers \Bigcommerce\ORM\Metadata::getAutoIncludes
@@ -39,9 +39,9 @@ class MetadataTest extends BaseTestCase
      */
     public function testSettersAndGetters()
     {
-        $bigObject = new BigObject([]);
+        $bigObject = new Resource([]);
         $this->metadata
-            ->setBigObject($bigObject)
+            ->setResource($bigObject)
             ->setRelationFields([])
             ->setUploadFiles([])
             ->setAutoIncludes([])
@@ -50,7 +50,7 @@ class MetadataTest extends BaseTestCase
             ->setReadonlyFields([])
             ->setAutoLoads([])
             ->setRequiredFields([]);
-        $this->assertEquals($bigObject, $this->metadata->getBigObject());
+        $this->assertEquals($bigObject, $this->metadata->getResource());
         $this->assertEquals([], $this->metadata->getRelationFields());
         $this->assertEquals([], $this->metadata->getUploadFiles());
         $this->assertEquals([], $this->metadata->getAutoIncludes());

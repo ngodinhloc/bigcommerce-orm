@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Bigcommerce\ORM\Annotations\BigObject;
+use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Mapper;
 
@@ -37,7 +37,7 @@ class MapperTest extends BaseTestCase
      */
     public function testGetClassAnnotation(){
         $classAnnotation = $this->mapper->getClassAnnotation($this->customer);
-        $this->assertInstanceOf(BigObject::class, $classAnnotation);
+        $this->assertInstanceOf(Resource::class, $classAnnotation);
         $this->assertEquals('Customer', $classAnnotation->name);
         $this->assertEquals('/customers', $classAnnotation->path);
         $this->assertNull($classAnnotation->parentField);

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Bigcommerce\ORM\Annotations\BigObject;
+use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Client\Client;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\EntityManager;
@@ -159,7 +159,7 @@ class EntityManagerTest extends BaseTestCase
         $class = Customer::class;
         $object = new Customer();
         $patchedObject = $object->setId(1);
-        $bigObject = new BigObject([]);
+        $bigObject = new Resource([]);
         $autoIncludes = [];
         $findResult = ['id' => 1];
 

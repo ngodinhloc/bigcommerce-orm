@@ -8,7 +8,7 @@ use Doctrine\Common\Annotations\Annotation;
 /**
  * @Annotation
  */
-class BigObject extends Annotation
+class Resource extends Annotation
 {
     public $name;
     public $path;

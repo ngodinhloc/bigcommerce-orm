@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM;
 
-use Bigcommerce\ORM\Annotations\BigObject;
+use Bigcommerce\ORM\Annotations\Resource;
 
 class Metadata
 {
     /**
-     * @var \Bigcommerce\ORM\Annotations\BigObject
+     * @var \Bigcommerce\ORM\Annotations\Resource
      */
-    protected $bigObject;
+    protected $resource;
 
     /**
      * @var array
@@ -53,20 +53,20 @@ class Metadata
     protected $uploadFiles;
 
     /**
-     * @return \Bigcommerce\ORM\Annotations\BigObject
+     * @return \Bigcommerce\ORM\Annotations\Resource
      */
-    public function getBigObject()
+    public function getResource()
     {
-        return $this->bigObject;
+        return $this->resource;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Annotations\BigObject $bigObject
+     * @param \Bigcommerce\ORM\Annotations\Resource $resource
      * @return \Bigcommerce\ORM\Metadata
      */
-    public function setBigObject(BigObject $bigObject): Metadata
+    public function setResource(Resource $resource): Metadata
     {
-        $this->bigObject = $bigObject;
+        $this->resource = $resource;
         return $this;
     }
 

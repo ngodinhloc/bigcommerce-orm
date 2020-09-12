@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Entity;
 /**
  * Class ProductImage
  * @package Bigcommerce\ORM\Entities
- * @BC\BigObject(name="ProductImage", path="/catalog/products/{id}/images", parentField="product_id")
+ * @BC\Resource(name="ProductImage", path="/catalog/products/{id}/images", parentField="product_id")
  */
 class ProductImage extends Entity
 {
