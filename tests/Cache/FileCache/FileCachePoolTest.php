@@ -48,6 +48,9 @@ class FileCachePoolTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::__construct
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getCacheDir
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::setCacheDir
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::setItemPool
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItemPool
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::clear
      * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
      */
     public function testSettersAndGetters()
@@ -69,6 +72,9 @@ class FileCachePoolTest extends BaseTestCase
         $this->cache->clear();
     }
 
+    /**
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::hashKey
+     */
     public function testHashKey()
     {
         $key = 'key1';
@@ -76,6 +82,13 @@ class FileCachePoolTest extends BaseTestCase
         $this->assertEquals(md5($key), $hash);
     }
 
+    /**
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::save
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::saveDeferred
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::hasItem
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::deleteItem
+     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     */
     public function testSave()
     {
         $cacheTime = time();
@@ -101,6 +114,10 @@ class FileCachePoolTest extends BaseTestCase
         $this->cache->clear();
     }
 
+    /**
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::deleteItems
+     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     */
     public function testGetItems()
     {
         $items = [];
@@ -115,6 +132,10 @@ class FileCachePoolTest extends BaseTestCase
         $this->assertEquals([], $this->cache->getItemPool());
     }
 
+    /**
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::commit
+     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     */
     public function testCommit()
     {
         $this->cache->setItemPool([]);
@@ -124,13 +145,18 @@ class FileCachePoolTest extends BaseTestCase
         foreach ($this->items as $item) {
             $this->cache->save($item);
         }
-        $commit = $this->cache->commit();
-        $this->assertEquals(true, $commit);
+        $file1 = $this->cache->getCacheDir() . DIRECTORY_SEPARATOR . md5('key1');
+        $file2 = $this->cache->getCacheDir() . DIRECTORY_SEPARATOR . md5('key2');
+        unset($this->cache);
 
-        $this->assertFileExists($this->cache->getCacheDir() . DIRECTORY_SEPARATOR . md5('key1'));
-        $this->assertFileExists($this->cache->getCacheDir() . DIRECTORY_SEPARATOR . md5('key2'));
+        $this->assertFileExists($file1);
+        $this->assertFileExists($file2);
     }
 
+    /**
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::retrieve
+     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     */
     public function testRetrieve()
     {
         $item = $this->cache->getItem('key1');
