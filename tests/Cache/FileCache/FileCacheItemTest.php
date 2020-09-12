@@ -29,6 +29,7 @@ class FileCacheItemTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::getExpiresAt
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::getKey
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::getHitCount
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::isHit
      */
     public function testSettersAndGetters()
     {
@@ -72,6 +73,7 @@ class FileCacheItemTest extends BaseTestCase
         $oneHour = new \DateInterval('PT1H');
         $this->cacheItem->expiresAt($yesterday);
         $this->assertEquals(false, $this->cacheItem->isNotExpired());
+        $this->cacheItem->setIsHit(true);
         $isHit = $this->cacheItem->isHit();
         $this->assertEquals(false, $isHit);
 
