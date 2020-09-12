@@ -37,7 +37,7 @@ class FileCacheItemTest extends BaseTestCase
             'key' => 'key',
             'hitCount' => 2,
             'cacheTime' => $cacheTime,
-            'expiresAt' => new \DateTime('2020-09-12'),
+            'expiresAt' => new \DateTime('tomorrow'),
             'expiresAfter' => 3600,
             'value' => 'value'
         ];
@@ -49,7 +49,7 @@ class FileCacheItemTest extends BaseTestCase
         $this->assertEquals($data['value'], $this->cacheItem->get());
         $this->assertEquals($data['cacheTime'], $this->cacheItem->getCacheTime());
 
-        $tomorrow = new \DateTime('2020-09-12');
+        $tomorrow = new \DateTime('tomorrow');
         $this->cacheItem
             ->setIsHit(true)
             ->set('newValue')
@@ -80,7 +80,7 @@ class FileCacheItemTest extends BaseTestCase
             'key' => 'key',
             'hitCount' => 2,
             'cacheTime' => $cacheTime,
-            'expiresAt' => new \DateTime('2020-09-12'),
+            'expiresAt' => new \DateTime('now'),
             'expiresAfter' => 3600,
             'value' => 'value'
         ];
