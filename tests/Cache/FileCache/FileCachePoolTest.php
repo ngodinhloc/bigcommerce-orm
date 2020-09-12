@@ -46,10 +46,10 @@ class FileCachePoolTest extends BaseTestCase
 
     /**
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::__construct
-     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getCacheDir
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::setCacheDir
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::setItemPool
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItemPool
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getCacheDir
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::clear
      * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
      */
@@ -86,6 +86,7 @@ class FileCachePoolTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::save
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::saveDeferred
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::hasItem
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItem
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::deleteItem
      * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
      */
@@ -115,6 +116,7 @@ class FileCachePoolTest extends BaseTestCase
     }
 
     /**
+     *@covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItems
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::deleteItems
      * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
      */
@@ -130,6 +132,7 @@ class FileCachePoolTest extends BaseTestCase
 
         $this->cache->deleteItems(['key1', 'key2']);
         $this->assertEquals([], $this->cache->getItemPool());
+        $this->cache->clear();
     }
 
     /**
@@ -147,10 +150,10 @@ class FileCachePoolTest extends BaseTestCase
         }
         $file1 = $this->cache->getCacheDir() . DIRECTORY_SEPARATOR . md5('key1');
         $file2 = $this->cache->getCacheDir() . DIRECTORY_SEPARATOR . md5('key2');
-        unset($this->cache);
 
         $this->assertFileExists($file1);
         $this->assertFileExists($file2);
+        $this->cache->clear();
     }
 
     /**
@@ -161,5 +164,6 @@ class FileCachePoolTest extends BaseTestCase
     {
         $item = $this->cache->getItem('key1');
         $this->assertEquals('key1', $item->getKey());
+        $this->cache->clear();
     }
 }
