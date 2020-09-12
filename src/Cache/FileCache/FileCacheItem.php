@@ -23,7 +23,7 @@ class FileCacheItem implements CacheItemInterface
     protected $expiresAfter = 3600;
 
     /** @var int */
-    protected $cacheTime;
+    protected $cachesAt;
 
     /** @var int */
     protected $expiresAt;
@@ -41,7 +41,7 @@ class FileCacheItem implements CacheItemInterface
         return [
             'key' => $this->getKey(),
             'hitCount' => $this->getHitCount(),
-            'cacheTime' => $this->getCacheTime(),
+            'cacheTime' => $this->getCachesAt(),
             'expiresAt' => $this->getExpiresAt(),
             'expiresAfter' => $this->getExpiresAfter(),
             'value' => $this->get(),
@@ -61,17 +61,17 @@ class FileCacheItem implements CacheItemInterface
             $this->setHitCount($data['hitCount']);
         }
 
-        $this->cacheTime = time();
+        $this->cachesAt = time();
         if (isset($data['cacheTime'])) {
-            $this->setCacheTime($data['cacheTime']);
+            $this->cachesAt($data['cacheTime']);
         }
 
         if (isset($data['expiresAfter'])) {
-            $this->setExpiresAfter($data['expiresAfter']);
+            $this->expiresAfter($data['expiresAfter']);
         }
 
         if (isset($data['expiresAt'])) {
-            $this->setExpiresAt($data['expiresAt']);
+            $this->expiresAt($data['expiresAt']);
         }
 
         if (isset($data['value'])) {
@@ -98,11 +98,90 @@ class FileCacheItem implements CacheItemInterface
     }
 
     /**
+     * @param mixed $value
+     * @return $this|\Bigcommerce\ORM\Cache\FileCache\FileCacheItem
+     */
+    public function set($value)
+    {
+        $this->value = $value;
+        return $this;
+    }
+
+    /**
      * @return mixed|string
      */
     public function get()
     {
         return $this->value;
+    }
+
+    /**
+     * @param \DateInterval|int $cacheAt
+     * @return $this|\Bigcommerce\ORM\Cache\FileCache\FileCacheItem
+     */
+    public function cachesAt($cacheAt)
+    {
+        if ($cacheAt instanceof \DateInterval) {
+            $cacheAt = $this->intervalToSeconds($cacheAt);
+        }
+        if (is_int($cacheAt)) {
+            $this->cachesAt = $cacheAt;
+        }
+        return $this;
+    }
+
+    /**
+     * @return \DateInterval|int
+     */
+    public function getCachesAt()
+    {
+        return $this->cachesAt;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $expiration
+     * @return \Bigcommerce\ORM\Cache\FileCache\FileCacheItem
+     */
+    public function expiresAt($expiration)
+    {
+        if ($expiration instanceof \DateTime) {
+            $expiration = $expiration->getTimestamp();
+        }
+        if (is_int($expiration)) {
+            $this->expiresAt = $expiration;
+        }
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
+
+    /**
+     * @param \DateInterval|int|null $time seconds
+     * @return $this|\Bigcommerce\ORM\Cache\FileCache\FileCacheItem
+     */
+    public function expiresAfter($time)
+    {
+        if ($time instanceof \DateInterval) {
+            $time = $this->intervalToSeconds($time);
+        }
+        if (is_int($time)) {
+            $this->expiresAfter = $time;
+        }
+        return $this;
+    }
+
+    /**
+     * @return \DateInterval|int
+     */
+    public function getExpiresAfter()
+    {
+        return $this->expiresAfter;
     }
 
     /**
@@ -116,24 +195,16 @@ class FileCacheItem implements CacheItemInterface
                 return false;
             }
 
-            if (($this->cacheTime + $this->expiresAfter) < $now) {
+            if (($this->cachesAt + $this->expiresAfter) < $now) {
                 return false;
             }
         }
 
-        if ($this->cacheTime + $this->expiresAfter < $now) {
+        if (($this->cachesAt + $this->expiresAfter) < $now) {
             return false;
         }
 
         return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isHit()
-    {
-        return $this->isNotExpired() && $this->isHit;
     }
 
     /**
@@ -150,65 +221,11 @@ class FileCacheItem implements CacheItemInterface
     }
 
     /**
-     * @param mixed $value
-     * @return $this|\Bigcommerce\ORM\Cache\FileCache\FileCacheItem
+     * @return bool
      */
-    public function set($value)
+    public function isHit()
     {
-        $this->value = $value;
-        return $this;
-    }
-
-    /**
-     * @param \DateTimeInterface|null $expiration
-     * @return \Bigcommerce\ORM\Cache\FileCache\FileCacheItem
-     */
-    public function expiresAt($expiration)
-    {
-        $this->expiresAt = $expiration;
-        return $this;
-    }
-
-    /**
-     * @param \DateInterval|int|null $time seconds
-     * @return $this|\Bigcommerce\ORM\Cache\FileCache\FileCacheItem
-     */
-    public function expiresAfter($time)
-    {
-        $this->expiresAfter = $time;
-        return $this;
-    }
-
-    /**
-     * @return \DateInterval|int
-     */
-    public function getCacheTime()
-    {
-        return $this->cacheTime;
-    }
-
-    /**
-     * @return \DateInterval|int
-     */
-    public function getExpiresAfter()
-    {
-        return $this->expiresAfter;
-    }
-
-    /**
-     * @return int
-     */
-    public function getExpiresAt()
-    {
-        return $this->expiresAt;
-    }
-
-    /**
-     * @return int
-     */
-    public function getHitCount()
-    {
-        return $this->hitCount;
+        return $this->isNotExpired() && $this->isHit;
     }
 
     /**
@@ -222,48 +239,11 @@ class FileCacheItem implements CacheItemInterface
     }
 
     /**
-     * @param \DateInterval|int $expiresAfter
-     * @return $this|\Bigcommerce\ORM\Cache\FileCache\FileCacheItem
+     * @return int
      */
-    public function setExpiresAfter($expiresAfter)
+    public function getHitCount()
     {
-        if ($expiresAfter instanceof \DateInterval) {
-            $expiresAfter = $this->intervalToSeconds($expiresAfter);
-        }
-        if (is_int($expiresAfter)) {
-            $this->expiresAfter = $expiresAfter;
-        }
-        return $this;
-    }
-
-    /**
-     * @param \DateInterval|int $cacheTime
-     * @return $this|\Bigcommerce\ORM\Cache\FileCache\FileCacheItem
-     */
-    public function setCacheTime($cacheTime)
-    {
-        if ($cacheTime instanceof \DateInterval) {
-            $cacheTime = $this->intervalToSeconds($cacheTime);
-        }
-        if (is_int($cacheTime)) {
-            $this->cacheTime = $cacheTime;
-        }
-        return $this;
-    }
-
-    /**
-     * @param \DateTime $expiresAt
-     * @return $this|\Bigcommerce\ORM\Cache\FileCache\FileCacheItem
-     */
-    public function setExpiresAt(\DateTime $expiresAt)
-    {
-        if ($expiresAt instanceof \DateTime) {
-            $expiresAt = $expiresAt->getTimestamp();
-        }
-        if (is_int($expiresAt)) {
-            $this->expiresAt = $expiresAt;
-        }
-        return $this;
+        return $this->hitCount;
     }
 
     /**

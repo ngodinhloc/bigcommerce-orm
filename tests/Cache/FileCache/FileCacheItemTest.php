@@ -18,14 +18,14 @@ class FileCacheItemTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::isNotExpired
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::set
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::setIsHit
-     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::setExpiresAt
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::expiresAt
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::setKey
-     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::setExpiresAfter
-     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::setCacheTime
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::expiresAfter
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::cachesAt
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::setHitCount
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::get
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::getExpiresAfter
-     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::getCacheTime
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::getCachesAt
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::getExpiresAt
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::getKey
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCacheItem::getHitCount
@@ -48,35 +48,35 @@ class FileCacheItemTest extends BaseTestCase
         $this->assertEquals($tomorrow->getTimestamp(), $this->cacheItem->getExpiresAt());
         $this->assertEquals($data['expiresAfter'], $this->cacheItem->getExpiresAfter());
         $this->assertEquals($data['value'], $this->cacheItem->get());
-        $this->assertEquals($data['cacheTime'], $this->cacheItem->getCacheTime());
+        $this->assertEquals($data['cacheTime'], $this->cacheItem->getCachesAt());
 
         $tomorrow = new \DateTime('tomorrow');
         $this->cacheItem
             ->setIsHit(true)
             ->set('newValue')
             ->setHitCount(3)
-            ->setCacheTime($cacheTime)
-            ->setExpiresAfter(7200)
+            ->cachesAt($cacheTime)
+            ->expiresAfter(7200)
             ->setKey('newKey')
-            ->setExpiresAt($tomorrow);
+            ->expiresAt($tomorrow);
 
         $this->assertEquals(true, $this->cacheItem->isHit());
         $this->assertEquals('newValue', $this->cacheItem->get());
         $this->assertEquals(3, $this->cacheItem->getHitCount());
-        $this->assertEquals($cacheTime, $this->cacheItem->getCacheTime());
+        $this->assertEquals($cacheTime, $this->cacheItem->getCachesAt());
         $this->assertEquals(7200, $this->cacheItem->getExpiresAfter());
         $this->assertEquals('newKey', $this->cacheItem->getKey());
         $this->assertEquals($tomorrow->getTimestamp(), $this->cacheItem->getExpiresAt());
 
         $yesterday = new \DateTime('yesterday');
         $oneHour = new \DateInterval('PT1H');
-        $this->cacheItem->setExpiresAt($yesterday);
+        $this->cacheItem->expiresAt($yesterday);
         $this->assertEquals(false, $this->cacheItem->isNotExpired());
 
         $this->cacheItem
-            ->setCacheTime($yesterday)
-            ->setExpiresAfter($oneHour)
-            ->setExpiresAt($yesterday);
+            ->cachesAt($yesterday)
+            ->expiresAfter($oneHour)
+            ->expiresAt($yesterday);
         $this->assertEquals(false, $this->cacheItem->isNotExpired());
 
     }
