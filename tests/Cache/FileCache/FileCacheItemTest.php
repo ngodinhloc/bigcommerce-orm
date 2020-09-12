@@ -72,7 +72,8 @@ class FileCacheItemTest extends BaseTestCase
         $oneHour = new \DateInterval('PT1H');
         $this->cacheItem->expiresAt($yesterday);
         $this->assertEquals(false, $this->cacheItem->isNotExpired());
-        $this->assertEquals(false, $this->cacheItem->isHit());
+        $isHit = $this->cacheItem->isHit();
+        $this->assertEquals(false, $isHit);
 
         $expiredAt = new \DateTime(date("Y-m-d", strtotime("+2 day")));
         $this->cacheItem
