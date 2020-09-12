@@ -35,7 +35,7 @@ class MyProduct extends Entity
 
     /**
      * @var \Bigcommerce\ORM\Entities\ProductImage
-     * @BC\HasOne(name="primary_image", targetClass="\Bigcommerce\ORM\Entities\ProductImage", field="id", targetField="product_id", include=true, auto=true)
+     * @BC\HasOneTest(name="primary_image", targetClass="\Bigcommerce\ORM\Entities\ProductImage", field="id", targetField="product_id", include=true, auto=true)
      */
     protected $primaryImage;
 
