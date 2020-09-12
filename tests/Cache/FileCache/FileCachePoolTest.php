@@ -46,24 +46,31 @@ class FileCachePoolTest extends BaseTestCase
 
     /**
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::__construct
-     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::setCacheDir
-     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::setItemPool
-     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItemPool
-     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getCacheDir
-     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::clear
      * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
      */
-    public function testSettersAndGetters()
+    public function testConstruct()
     {
         $cacheDir = 'invalidDir';
         $this->expectException(FileCachePoolException::class);
         $this->expectExceptionMessage(FileCachePoolException::MSG_INVALID_CACHE_DIR . $cacheDir);
         $this->cache = new FileCachePool($cacheDir);
+    }
 
-        $cacheDir = __DIR__.'/caches';
+    /**
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::__construct
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::setCacheDir
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getCacheDir
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::setItemPool
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItemPool
+     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     */
+    public function testSettersAndGetters()
+    {
+        $cacheDir = __DIR__;
         $this->cache = new FileCachePool($cacheDir);
         $this->assertEquals($cacheDir, $this->cache->getCacheDir());
 
+        $cacheDir = __DIR__.'/caches';
         $this->cache->setCacheDir($cacheDir);
         $this->assertEquals($cacheDir, $this->cache->getCacheDir());
 
@@ -84,10 +91,12 @@ class FileCachePoolTest extends BaseTestCase
 
     /**
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::save
-     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::saveDeferred
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::hasItem
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItem
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::deleteItem
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItemPool
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::saveDeferred
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::clear
      * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
      */
     public function testSave()
@@ -116,8 +125,11 @@ class FileCachePoolTest extends BaseTestCase
     }
 
     /**
-     *@covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItems
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::save
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItems
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::deleteItems
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItemPool
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::clear
      * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
      */
     public function testGetItems()
@@ -136,6 +148,25 @@ class FileCachePoolTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItem
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::retrieve
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::clear
+     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     */
+    public function testRetrieve()
+    {
+        $item4 = $this->cache->getItem('key4');
+        $this->assertEquals(null, $item4->getKey());
+
+        $item = $this->cache->getItem('key1');
+        $this->assertEquals('key1', $item->getKey());
+        $this->cache->clear();
+    }
+
+    /**
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::setItemPool
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::save
+     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getCacheDir
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::commit
      * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
      */
@@ -150,20 +181,9 @@ class FileCachePoolTest extends BaseTestCase
         }
         $file1 = $this->cache->getCacheDir() . DIRECTORY_SEPARATOR . md5('key1');
         $file2 = $this->cache->getCacheDir() . DIRECTORY_SEPARATOR . md5('key2');
+        unset($this->cache);
 
         $this->assertFileExists($file1);
         $this->assertFileExists($file2);
-        $this->cache->clear();
-    }
-
-    /**
-     * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::retrieve
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
-     */
-    public function testRetrieve()
-    {
-        $item = $this->cache->getItem('key1');
-        $this->assertEquals('key1', $item->getKey());
-        $this->cache->clear();
     }
 }
