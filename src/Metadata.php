@@ -50,7 +50,7 @@ class Metadata
     /**
      * @var array
      */
-    protected $parentFields;
+    protected $paramFields;
 
     /**
      * @var array
@@ -227,18 +227,18 @@ class Metadata
     /**
      * @return array
      */
-    public function getParentFields(): array
+    public function getParamFields(): array
     {
-        return $this->parentFields;
+        return $this->paramFields;
     }
 
     /**
-     * @param array $parentFields
+     * @param array $paramFields
      * @return \Bigcommerce\ORM\Metadata
      */
-    public function setParentFields(array $parentFields): Metadata
+    public function setParamFields(array $paramFields): Metadata
     {
-        $this->parentFields = $parentFields;
+        $this->paramFields = $paramFields;
         return $this;
     }
 

@@ -79,10 +79,10 @@ class EntityManagerTest extends BaseTestCase
     public function testFindAll()
     {
         $class = Customer::class;
-        $parentId = [];
+        $pathParams = [];
         $order = ['date_created' => 'asc'];
         $expectedResult = [];
-        $findAll = $this->entityManager->findAll($class, $parentId, $order, false);
+        $findAll = $this->entityManager->findAll($class, $pathParams, $order, false);
 
         $this->assertEquals($expectedResult, $findAll);
     }
@@ -97,11 +97,11 @@ class EntityManagerTest extends BaseTestCase
     public function testFindBy()
     {
         $class = Customer::class;
-        $parentId = null;
+        $pathParams = null;
         $queryBuilder = new QueryBuilder();
         $queryBuilder->whereIn('id', [1, 2, 3]);
         $expectedResult = [];
-        $findBy = $this->entityManager->findBy($class, $parentId, $queryBuilder, false);
+        $findBy = $this->entityManager->findBy($class, $pathParams, $queryBuilder, false);
 
         $this->assertEquals($expectedResult, $findBy);
     }
@@ -116,9 +116,9 @@ class EntityManagerTest extends BaseTestCase
     public function testFind()
     {
         $class = Customer::class;
-        $parentId = null;
+        $pathParams = null;
         $expectedId = 1;
-        $customer = $this->entityManager->find($class, $expectedId, $parentId, false);
+        $customer = $this->entityManager->find($class, $expectedId, $pathParams, false);
 
         $this->assertInstanceOf(Customer::class, $customer);
         $this->assertEquals($expectedId, $customer->getId());

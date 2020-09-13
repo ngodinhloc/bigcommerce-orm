@@ -45,13 +45,13 @@ class BelongToManyHandlerTest extends BaseTestCase
         $annotation->field = 'categories';
         $annotation->targetField = 'id';
 
-        $parentId = null;
+        $pathParams = null;
         $data = [
             'categories' => [1, 2, 3]
         ];
 
         $this->handler = new BelongToManyHandler($this->entityManager);
-        $this->handler->handle($entity, $property, $annotation, $data, $parentId);
+        $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
         $categories = $entity->getCategories();
         $this->assertEquals([], $categories);
     }
@@ -67,9 +67,9 @@ class BelongToManyHandlerTest extends BaseTestCase
         $queryBuilder = new QueryBuilder();
         $queryBuilder->whereIn('id', [1, 2, 3]);
         $targetClass = Category::class;
-        $parentId = null;
+        $pathParams = null;
         $auto = false;
-        $manager->findBy($targetClass, $parentId, $queryBuilder, $auto)->willReturn([]);
+        $manager->findBy($targetClass, $pathParams, $queryBuilder, $auto)->willReturn([]);
 
         return $manager->reveal();
     }

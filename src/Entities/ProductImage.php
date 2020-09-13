@@ -15,7 +15,7 @@ class ProductImage extends Entity
 {
     /**
      * @var int
-     * @BC\Field(name="product_id", readonly=true, parent=true)
+     * @BC\Field(name="product_id", readonly=true, pathParam=true)
      */
     protected $productId;
 

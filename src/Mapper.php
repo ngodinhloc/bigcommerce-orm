@@ -13,7 +13,6 @@ use Bigcommerce\ORM\Relation\RelationInterface;
 use Bigcommerce\ORM\Validation\ValidationInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use phpDocumentor\Reflection\Types\False_;
 use ReflectionClass;
 
 /**
@@ -80,12 +79,12 @@ class Mapper
     {
         $resource = $entity->getMetadata()->getResource();
         $path = $resource->path;
-        $parentFields = $entity->getMetadata()->getParentFields();
-        if (empty($parentFields)) {
+        $paramFields = $entity->getMetadata()->getParamFields();
+        if (empty($paramFields)) {
             return $path;
         }
 
-        foreach ($parentFields as $fieldName => $property) {
+        foreach ($paramFields as $fieldName => $property) {
             $value = $this->getPropertyValue($entity, $property);
             if (empty($value)) {
                 throw new MapperException(MapperException::MSG_NO_PARENT_IDS . $fieldName);
@@ -137,7 +136,7 @@ class Mapper
             $this->patchAutoIncludes($entity, $autoIncludes, $array);
         }
 
-        if(!empty($inResultFields = $metadata->getInResultFields())){
+        if (!empty($inResultFields = $metadata->getInResultFields())) {
             $this->patchAutoIncludes($entity, $inResultFields, $array);
         }
 
@@ -562,7 +561,7 @@ class Mapper
         $customisedFields = [];
         $validationFields = [];
         $uploadFiles = [];
-        $parentFields = [];
+        $paramFields = [];
 
         foreach ($properties as $property) {
             $annotations = $this->reader->getPropertyAnnotations($property);
@@ -580,14 +579,14 @@ class Mapper
                     if ($annotation->upload == true) {
                         $uploadFiles[$annotation->name] = $property;
                     }
-                    if ($annotation->parent == true) {
-                        $parentFields[$annotation->name] = $property;
+                    if ($annotation->pathParam == true) {
+                        $paramFields[$annotation->name] = $property;
                     }
                 }
 
                 if ($annotation instanceof RelationInterface) {
                     $relationFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
-                    if ($annotation->auto === true && $annotation->from == 'include' ) {
+                    if ($annotation->auto === true && $annotation->from == 'include') {
                         $includeFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
                     }
 
@@ -595,7 +594,7 @@ class Mapper
                         $autoLoadFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
                     }
 
-                    if($annotation->from == 'result'){
+                    if ($annotation->from == 'result') {
                         $inResultFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
                     }
                 }
@@ -620,7 +619,7 @@ class Mapper
             ->setInResultFields($inResultFields)
             ->setValidationProperties($validationFields)
             ->setUploadFields($uploadFiles)
-            ->setParentFields($parentFields);
+            ->setParamFields($paramFields);
 
         return $metadata;
     }

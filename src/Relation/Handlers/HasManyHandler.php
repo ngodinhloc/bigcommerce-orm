@@ -20,13 +20,13 @@ class HasManyHandler extends AbstractHandler implements RelationHandlerInterface
      * @param \ReflectionProperty $property property
      * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation relation
      * @param array $data
-     * @param array|null $parentIds
+     * @param array|null $pathParams
      * @return void
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Exception
      */
-    public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, array $parentIds = null)
+    public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, array $pathParams = null)
     {
         /* @var \Bigcommerce\ORM\Annotations\HasMany $annotation */
         if (!isset($annotation->field) || !isset($data[$annotation->field]) || empty($data[$annotation->field])) {
@@ -38,15 +38,15 @@ class HasManyHandler extends AbstractHandler implements RelationHandlerInterface
             $values = [$values];
         }
 
-        if (empty($parentIds)) {
-            $parentIds = [$annotation->targetField => $entity->getId()];
+        if (empty($pathParams)) {
+            $pathParams = [$annotation->targetField => $entity->getId()];
         } else {
-            $parentIds = array_merge($parentIds, [$annotation->targetField => $entity->getId()]);
+            $pathParams = array_merge($pathParams, [$annotation->targetField => $entity->getId()]);
         }
 
         $queryBuilder = new QueryBuilder();
         $queryBuilder->whereIn($annotation->targetField, $values);
-        $collections = $this->entityManager->findBy($annotation->targetClass, $parentIds, $queryBuilder, $annotation->auto);
+        $collections = $this->entityManager->findBy($annotation->targetClass, $pathParams, $queryBuilder, $annotation->auto);
 
         $mapper = $this->entityManager->getMapper();
         $mapper->setPropertyValue($entity, $property, $collections);

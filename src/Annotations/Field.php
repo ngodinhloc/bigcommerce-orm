@@ -14,6 +14,6 @@ final class Field extends Annotation
     public $required = false;
     public $readonly = false;
     public $customised = false;
-    public $parent = false;
+    public $pathParam = false;
     public $upload = false;
 }

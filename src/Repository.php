@@ -28,20 +28,20 @@ class Repository
     }
 
     /**
-     * @param int|null $parentId
+     * @param array|null $pathParams
      * @return false|int
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function count(int $parentId = null)
+    public function count(array $pathParams = null)
     {
-        return $this->entityManager->count($this->className, $parentId);
+        return $this->entityManager->count($this->className, $pathParams);
     }
 
     /**
-     * @param int|null $parentId
+     * @param array|null $pathParams
      * @param array|null $orders
      * @param bool $auto
      * @return array|bool
@@ -50,15 +50,15 @@ class Repository
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function findAll(int $parentId = null, array $orders = null, bool $auto = false)
+    public function findAll(array $pathParams = null, array $orders = null, bool $auto = false)
     {
         $this->entityManager->getMapper()->checkClass($this->className);
 
-        return $this->entityManager->findAll($this->className, $parentId, $orders, $auto);
+        return $this->entityManager->findAll($this->className, $pathParams, $orders, $auto);
     }
 
     /**
-     * @param int|null $parentId
+     * @param array|null $pathParams
      * @param \Bigcommerce\ORM\QueryBuilder|null $queryBuilder
      * @param bool $auto
      * @return array|false
@@ -67,18 +67,18 @@ class Repository
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function findBy(int $parentId = null, QueryBuilder $queryBuilder = null, bool $auto = false)
+    public function findBy(array $pathParams = null, QueryBuilder $queryBuilder = null, bool $auto = false)
     {
         $this->entityManager->getMapper()->checkClass($this->className);
 
-        return $this->entityManager->findBy($this->className, $parentId, $queryBuilder, $auto);
+        return $this->entityManager->findBy($this->className, $pathParams, $queryBuilder, $auto);
     }
 
     /**
      * Find object by id
      *
      * @param int $id id
-     * @param int|null $parentId
+     * @param array|null $pathParams
      * @param bool $auto
      * @return \Bigcommerce\ORM\Entity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
@@ -86,11 +86,11 @@ class Repository
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function find(int $id, int $parentId = null, $auto = false)
+    public function find(int $id, array $pathParams = null, $auto = false)
     {
         $this->entityManager->getMapper()->checkClass($this->className);
 
-        return $this->entityManager->find($this->className, $id, $parentId, $auto);
+        return $this->entityManager->find($this->className, $id, $pathParams, $auto);
     }
 
     /**
