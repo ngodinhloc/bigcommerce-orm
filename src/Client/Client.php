@@ -113,9 +113,9 @@ class Client implements ClientInterface
             $response = $this->connection->create($path, $data, $files);
         } catch (GuzzleException $e) {
             $content = $e->getResponse()->getBody()->getContents();
-            throw new ClientException(ClientException::MSG_FAILED_TO_CREATE_OBJECT . $content);
+            throw new ClientException(sprintf(ClientException::MSG_FAILED_TO_CREATE_OBJECT, $path, $content));
         } catch (Exception $e) {
-            throw new ClientException(ClientException::MSG_FAILED_TO_CREATE_OBJECT . $e->getMessage());
+            throw new ClientException(sprintf(ClientException::MSG_FAILED_TO_CREATE_OBJECT, $path, $e->getMessage()));
         }
 
         if ($this->logger) {
@@ -149,9 +149,9 @@ class Client implements ClientInterface
             $response = $this->connection->update($path, $data, $files);
         } catch (GuzzleException $e) {
             $content = $e->getResponse()->getBody()->getContents();
-            throw new ClientException(ClientException::MSG_FAILED_TO_UPDATE_OBJECT . $content);
+            throw new ClientException(sprintf(ClientException::MSG_FAILED_TO_UPDATE_OBJECT, $path, $content));
         } catch (Exception $e) {
-            throw new ClientException(ClientException::MSG_FAILED_TO_UPDATE_OBJECT . $e->getMessage());
+            throw new ClientException(sprintf(ClientException::MSG_FAILED_TO_UPDATE_OBJECT, $path, $e->getMessage()));
         }
 
         if ($this->hasLogger()) {
@@ -188,9 +188,9 @@ class Client implements ClientInterface
             $response = $this->connection->query($query);
         } catch (GuzzleException $e) {
             $content = $e->getResponse()->getBody()->getContents();
-            throw new ClientException(ClientException::MSG_FAILED_TO_QUERY_OBJECT . $content);
+            throw new ClientException(sprintf(ClientException::MSG_FAILED_TO_QUERY_OBJECT, $query, $content));
         } catch (\Exception $e) {
-            throw new ClientException(ClientException::MSG_FAILED_TO_QUERY_OBJECT . $e->getMessage());
+            throw new ClientException(sprintf(ClientException::MSG_FAILED_TO_QUERY_OBJECT, $query, $e->getMessage()));
         }
 
         if ($this->hasLogger()) {
@@ -214,14 +214,16 @@ class Client implements ClientInterface
     /**
      * @return bool
      */
-    private function hasLogger(){
+    private function hasLogger()
+    {
         return ($this->logger instanceof LoggerInterface);
     }
 
     /**
      * @return bool
      */
-    private function hasCachePool(){
+    private function hasCachePool()
+    {
         return ($this->cachePool instanceof CacheItemPoolInterface);
     }
 

@@ -87,13 +87,13 @@ class Mapper
         foreach ($paramFields as $fieldName => $property) {
             $value = $this->getPropertyValue($entity, $property);
             if (empty($value)) {
-                throw new MapperException(MapperException::MSG_NO_PARENT_IDS . $fieldName);
+                throw new MapperException(sprintf(MapperException::MSG_MISSING_PATH_PARAMS, $path, $fieldName));
             }
             $path = str_replace("{{$fieldName}}", $value, $path);
         }
 
         if (preg_match('/{.*}/', $path)) {
-            throw new MapperException(MapperException::MSG_NO_PARENT_IDS . $path);
+            throw new MapperException(sprintf(MapperException::MSG_PATH_PARAMS_REQUIRED, $path));
         }
 
         return $path;
