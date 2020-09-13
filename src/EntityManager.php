@@ -46,20 +46,20 @@ class EntityManager
      * Count the total number of object
      *
      * @param string|null $className
-     * @param int|null $parentId
+     * @param array|null $parentIds
      * @return int|false
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function count(string $className = null, int $parentId = null)
+    public function count(string $className = null, array $parentIds = null)
     {
         $this->mapper->checkClass($className);
 
-        $object = $this->mapper->object($className);
-        $bigObject = $this->mapper->getClassAnnotation($object);
-        $path = $this->mapper->getPath($bigObject, null, $parentId);
+        $entity = $this->mapper->object($className);
+        $entity = $this->mapper->patch($entity, $parentIds);
+        $path = $this->mapper->getResourcePath($entity);
 
         return $this->client->count($path);
     }
@@ -68,7 +68,7 @@ class EntityManager
      * Find all object of a class name
      *
      * @param string|null $className class
-     * @param int|null $parentId
+     * @param array|null $parentIds
      * @param array|null $order order
      * @param bool $auto lazy loading
      * @return array|bool
@@ -77,31 +77,31 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function findAll(string $className = null, int $parentId = null, array $order = null, bool $auto = false)
+    public function findAll(string $className = null, array $parentIds = null, array $order = null, bool $auto = false)
     {
         $this->mapper->checkClass($className);
 
         $object = $this->mapper->object($className);
-        $bigObject = $this->mapper->getClassAnnotation($object);
-        $path = $this->mapper->getPath($bigObject, null, $parentId);
-        $autoIncludes = $this->mapper->getAutoIncludes($object);
+        $entity = $this->mapper->patch($object, $parentIds);
+        $path = $this->mapper->getResourcePath($entity);
+        $autoIncludes = $entity->getMetadata()->getAutoIncludes();
 
         $queryBuilder = new QueryBuilder();
         if (!empty($order)) {
             $queryBuilder->order($order);
         }
-        $queryString = $queryBuilder->include($autoIncludes)->getQueryString();
+        $queryString = $queryBuilder->include(array_keys($autoIncludes))->getQueryString();
         $result = $this->client->findAll($path . "?" . $queryString);
 
-        return $this->arrayToCollection($result, $className, $parentId, $auto);
+        return $this->arrayToCollection($result, $className, $parentIds, $auto);
     }
 
     /**
      * Query objects by conditions
      *
      * @param string|null $className
-     * @param int|null $parentId
-     * @param \Bigcommerce\ORM\QueryBuilder $queryBuilder
+     * @param array|null $parentIds
+     * @param \Bigcommerce\ORM\QueryBuilder|null $queryBuilder
      * @param bool $auto
      * @return array|false
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
@@ -109,24 +109,24 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function findBy(string $className = null, int $parentId = null, QueryBuilder $queryBuilder = null, $auto = false)
+    public function findBy(string $className = null, array $parentIds = null, QueryBuilder $queryBuilder = null, $auto = false)
     {
         $this->mapper->checkClass($className);
 
         $object = $this->mapper->object($className);
-        $bigObject = $this->mapper->getClassAnnotation($object);
-        $path = $this->mapper->getPath($bigObject, null, $parentId);
-        $autoIncludes = $this->mapper->getAutoIncludes($object);
-        $queryString = $queryBuilder->include($autoIncludes)->getQueryString();
+        $entity = $this->mapper->patch($object, $parentIds);
+        $path = $this->mapper->getResourcePath($entity);
+        $autoIncludes = $entity->getMetadata()->getAutoLoads();
+        $queryString = $queryBuilder->include(array_keys($autoIncludes))->getQueryString();
         $result = $this->client->findBy($path . "?" . $queryString);
 
-        return $this->arrayToCollection($result, $className, $parentId, $auto);
+        return $this->arrayToCollection($result, $className, $parentIds, $auto);
     }
 
     /**
      * @param string|null $className
      * @param int|null $id
-     * @param int|null $parentId
+     * @param array|null $parentIds
      * @param bool $auto
      * @return \Bigcommerce\ORM\Entity|false
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
@@ -134,25 +134,25 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws Exceptions\MapperException
      */
-    public function find(string $className = null, int $id = null, int $parentId = null, bool $auto = false)
+    public function find(string $className = null, int $id = null, array $parentIds = null, bool $auto = false)
     {
         $this->mapper->checkClass($className);
         $this->mapper->checkId($id);
 
         $object = $this->mapper->object($className);
-        $bigObject = $this->mapper->getClassAnnotation($object);
-        $path = $this->mapper->getPath($bigObject, null, $parentId);
-        $autoIncludes = $this->mapper->getAutoIncludes($object);
+        $entity = $this->mapper->patch($object, $parentIds);
+        $path = $this->mapper->getResourcePath($entity);
+        $autoIncludes = $entity->getMetadata()->getAutoLoads();
 
         $queryBuilder = new QueryBuilder();
-        $query = $queryBuilder->whereIn('id', [$id])->include($autoIncludes)->getQueryString();
+        $query = $queryBuilder->whereIn('id', [$id])->include(array_keys($autoIncludes))->getQueryString();
         $result = $this->client->find($path . "?" . $query);
 
         if (empty($result)) {
             return false;
         }
 
-        $entity = $this->mapper->patch($object, $result);
+        $entity = $this->mapper->patch($entity, $result);
         if ($auto == false) {
             return $entity;
         }
@@ -162,7 +162,7 @@ class EntityManager
         }
 
         // auto loading
-        return $this->autoLoad($entity, $result, $parentId);
+        return $this->autoLoad($entity, $result, $parentIds);
     }
 
     /**
@@ -195,8 +195,7 @@ class EntityManager
             throw new EntityException(EntityException::MSG_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
         }
 
-        $bigObject = $this->mapper->getClassAnnotation($entity);
-        $path = $this->mapper->getPath($bigObject, $entity);
+        $path = $this->mapper->getResourcePath($entity);
         $data = $this->mapper->getNoneReadonlyData($entity);
 
         // update entity
@@ -211,7 +210,7 @@ class EntityManager
     /**
      * Update entity : allow to update entity with array of data
      *
-     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @param \Bigcommerce\ORM\Entity|null $entity entity
      * @param array $data [fieldName => value]
      * @return bool
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
@@ -241,9 +240,8 @@ class EntityManager
             return true;
         }
 
-        $bigObject = $this->mapper->getClassAnnotation($entity);
         $data = $this->mapper->getNoneReadonlyData($entity, $data);
-        $path = $this->mapper->getPath($bigObject, $entity);
+        $path = $this->mapper->getResourcePath($entity);
 
         return $this->updateEntity($entity, $data, $path);
     }
@@ -291,27 +289,28 @@ class EntityManager
     }
 
     /**
-     * @param array $array
-     * @param string $className
-     * @param int $parentId
+     * @param array|null $array
+     * @param string|null $className
+     * @param array|null $parentIds
      * @param bool $auto
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function arrayToCollection(array $array = [], string $className = null, int $parentId = null, bool $auto = false)
+    private function arrayToCollection(array $array = null, string $className = null, array $parentIds = null, bool $auto = false)
     {
         $collections = [];
         if (!empty($array)) {
             foreach ($array as $item) {
                 $object = $this->mapper->object($className);
-                $relationEntity = $this->mapper->patch($object, $item);
+                $data = array_merge($item, $parentIds);
+                $relationEntity = $this->mapper->patch($object, $data);
                 if ($auto == false) {
                     $collections[] = $relationEntity;
                 } else {
                     if (empty($relationEntity->getMetadata()->getAutoLoads())) {
                         $collections[] = $relationEntity;
                     } else {
-                        $collections[] = $this->autoLoad($relationEntity, $item, $parentId);
+                        $collections[] = $this->autoLoad($relationEntity, $item, $parentIds);
                     }
                 }
             }
@@ -323,12 +322,12 @@ class EntityManager
     /**
      * Load object in relations
      *
-     * @param \Bigcommerce\ORM\Entity $entity entity
-     * @param array $data
-     * @param int $parentId
+     * @param \Bigcommerce\ORM\Entity|null $entity entity
+     * @param array|null $data
+     * @param array|null $parentIds
      * @return \Bigcommerce\ORM\Entity
      */
-    private function autoLoad(Entity $entity = null, array $data = null, int $parentId = null)
+    private function autoLoad(Entity $entity = null, array $data = null, array $parentIds = null)
     {
         if (empty($entity) || empty($entity->getMetadata()->getAutoLoads())) {
             return $entity;
@@ -338,7 +337,7 @@ class EntityManager
             $annotation = $load['annotation'];
             if ($annotation instanceof RelationInterface) {
                 $handler = $annotation->getHandler($this);
-                $handler->handle($entity, $property, $annotation, $data, $parentId);
+                $handler->handle($entity, $property, $annotation, $data, $parentIds);
             }
         }
 

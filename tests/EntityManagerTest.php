@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Client\Client;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\EntityManager;
@@ -65,7 +64,7 @@ class EntityManagerTest extends BaseTestCase
     {
         $class = Customer::class;
         $expect = 2;
-        $count = $this->entityManager->count($class, null);
+        $count = $this->entityManager->count($class, []);
 
         $this->assertEquals($expect, $count);
     }
@@ -80,7 +79,7 @@ class EntityManagerTest extends BaseTestCase
     public function testFindAll()
     {
         $class = Customer::class;
-        $parentId = null;
+        $parentId = [];
         $order = ['date_created' => 'asc'];
         $expectedResult = [];
         $findAll = $this->entityManager->findAll($class, $parentId, $order, false);
@@ -130,49 +129,33 @@ class EntityManagerTest extends BaseTestCase
      */
     private function getClient()
     {
-        $expectCount = 2;
-        $path = '/someUrl';
-        $findAllQuery = 'sort=date_created:asc';
+        $countPath = '/customers';
+        $countReturn = 2;
+
+        $findAllPath = '/customers?sort=date_created:asc&include=addresses';
         $findAllResult = [];
 
-        $findByQuery = 'id:in=1,2,3';
+        $findByPath = '/customers?id:in=1,2,3';
         $findByResult = [];
 
-        $findQuery = 'id:in=1';
+        $findPath = '/customers?id:in=1';
         $findResult = ['id' => 1];
 
         $client = $this->prophet->prophesize(Client::class);
-        $client->count($path)->willReturn($expectCount);
-        $client->findAll($path . "?" . $findAllQuery)->willReturn($findAllResult);
-        $client->findBy($path . "?" . $findByQuery)->willReturn($findByResult);
-        $client->find($path . "?" . $findQuery)->willReturn($findResult);
+        $client->count($countPath)->willReturn($countReturn);
+        $client->findAll($findAllPath)->willReturn($findAllResult);
+        $client->findBy($findByPath)->willReturn($findByResult);
+        $client->find($findPath)->willReturn($findResult);
 
         return $client->reveal();
     }
 
     /**
-     * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
+     * @return \Bigcommerce\ORM\Mapper
      */
     private function getMapper()
     {
-        $path = "/someUrl";
-        $class = Customer::class;
-        $object = new Customer();
-        $patchedObject = $object->setId(1);
-        $bigObject = new Resource([]);
-        $autoIncludes = [];
-        $findResult = ['id' => 1];
-
-        $mapper = $this->prophet->prophesize(Mapper::class);
-        $mapper->checkClass($class)->willReturn(true);
-        $mapper->object($class)->willReturn($object);
-        $mapper->getClassAnnotation($object)->willReturn($bigObject);
-        $mapper->getPath($bigObject, null, null)->willReturn($path);
-        $mapper->getAutoIncludes($object)->willReturn($autoIncludes);
-        $mapper->patch($object, $findResult)->willReturn($patchedObject);
-        $mapper->checkId(1)->willReturn(true);
-
-        return $mapper->reveal();
+        return new Mapper();
     }
 
     /**

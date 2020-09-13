@@ -53,6 +53,11 @@ class Metadata
     protected $uploadFiles;
 
     /**
+     * @var array
+     */
+    protected $parentFields;
+
+    /**
      * @return \Bigcommerce\ORM\Annotations\Resource
      */
     public function getResource()
@@ -213,4 +218,23 @@ class Metadata
         $this->uploadFiles = $uploadFiles;
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function getParentFields(): array
+    {
+        return $this->parentFields;
+    }
+
+    /**
+     * @param array $parentFields
+     * @return \Bigcommerce\ORM\Metadata
+     */
+    public function setParentFields(array $parentFields): Metadata
+    {
+        $this->parentFields = $parentFields;
+        return $this;
+    }
+
 }

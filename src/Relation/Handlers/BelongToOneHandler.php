@@ -21,13 +21,13 @@ class BelongToOneHandler extends AbstractHandler implements RelationHandlerInter
      * @param \ReflectionProperty $property property
      * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation relation
      * @param array $data
-     * @param int|null $parentId
+     * @param array|null $parentIds
      * @return void
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Exception
      */
-    public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, int $parentId = null)
+    public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, array $parentIds = null)
     {
         /* @var \Bigcommerce\ORM\Annotations\BelongToOne $annotation */
         if (!isset($annotation->field) || !isset($data[$annotation->field]) || empty($data[$annotation->field])) {
@@ -39,8 +39,8 @@ class BelongToOneHandler extends AbstractHandler implements RelationHandlerInter
             $value = [$value];
         }
 
-        if (empty($parentId)) {
-            $parentId = $entity->getId();
+        if (empty($parentIds)) {
+            $parentIds = $entity->getId();
         }
 
         $mapper = $this->entityManager->getMapper();
@@ -53,7 +53,7 @@ class BelongToOneHandler extends AbstractHandler implements RelationHandlerInter
             $auto = false;
         }
 
-        $collections = $this->entityManager->findBy($annotation->targetClass, $parentId, $queryBuilder, $auto);
+        $collections = $this->entityManager->findBy($annotation->targetClass, $parentIds, $queryBuilder, $auto);
         $mapper->setPropertyValue($entity, $property, $collections[0]);
     }
 }

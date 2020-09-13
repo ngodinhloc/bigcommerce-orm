@@ -9,7 +9,7 @@ namespace Bigcommerce\ORM\Exceptions;
  */
 class MapperException extends BaseException
 {
-    const MSG_NO_PARENT_ID = "This object need a parent id to retrieve.";
+    const MSG_NO_PARENT_IDS = "This object need parent id(s) to retrieve: ";
     const MGS_FAILED_TO_CREATE_REFLECT_CLASS = 'Failed to create reflect class: ';
     const MSG_OBJECT_TYPE_NOT_FOUND = 'Object type not found. Check class annotation: ';
     const MGS_INVALID_CLASS_NAME = 'Class name not found: ';

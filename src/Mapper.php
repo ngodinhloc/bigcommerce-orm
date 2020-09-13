@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM;
 
-use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Annotations\Field;
+use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
 use Bigcommerce\ORM\Relation\ManyRelationInterface;
@@ -71,43 +71,40 @@ class Mapper
     }
 
     /**
-     * @param \Bigcommerce\ORM\Annotations\Resource|null $resource
      * @param \Bigcommerce\ORM\Entity|null $entity
-     * @param int|null $parentId
      * @return string
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function getPath(Resource $resource = null, Entity $entity = null, int $parentId = null)
+    public function getResourcePath(Entity $entity = null)
     {
+        $resource = $entity->getMetadata()->getResource();
         $path = $resource->path;
-        if (!strpos($path, '{id}')) {
+        $parentFields = $entity->getMetadata()->getParentFields();
+        if (empty($parentFields)) {
             return $path;
         }
 
-        if (!empty($entity) && !empty($resource->parentField)) {
-            $parentField = $this->getPropertyValueByFieldName($entity, $resource->parentField);
-            if (!empty($parentField)) {
-                $parentId = $parentField;
+        foreach ($parentFields as $field => $property) {
+            $value = $this->getPropertyValue($entity, $property);
+            if (empty($value)) {
+                throw new MapperException(MapperException::MSG_NO_PARENT_IDS . $field);
             }
+            $path = str_replace("{{$field}}", $value, $path);
         }
 
-        if (empty($parentId)) {
-            throw new MapperException(MapperException::MSG_NO_PARENT_ID);
-        }
-
-        return str_replace('{id}', $parentId, $path);
+        return $path;
     }
 
     /**
      * Patch object properties with data array
      *
      * @param \Bigcommerce\ORM\Entity|null $entity
-     * @param array $array array
+     * @param array|null $array array
      * @param bool $propertyOnly
      * @return \Bigcommerce\ORM\Entity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function patch(Entity $entity = null, array $array = [], bool $propertyOnly = false)
+    public function patch(Entity $entity = null, array $array = null, bool $propertyOnly = false)
     {
         $reflectionClass = $this->reflect($entity);
         $properties = $reflectionClass->getProperties();
@@ -128,8 +125,8 @@ class Mapper
             return $entity;
         }
 
-        $bigObject = $this->getClassAnnotation($entity);
-        $metadata = $this->getMetadata($bigObject, $properties);
+        $resource = $this->getClassAnnotation($entity);
+        $metadata = $this->getMetadata($resource, $properties);
         $this->setPropertyValueByName($entity, 'metadata', $metadata);
 
         if (!empty($autoIncludes = $metadata->getAutoIncludes())) {
@@ -146,7 +143,7 @@ class Mapper
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function getAutoIncludes(Entity $entity = null)
+    public function getAutoIncludeFields(Entity $entity = null)
     {
         $reflectionClass = $this->reflect($entity);
         $properties = $reflectionClass->getProperties();
@@ -286,10 +283,10 @@ class Mapper
      *
      * @param \Bigcommerce\ORM\Entity|null $entity
      * @param int $key
-     * @see \Bigcommerce\ORM\Mapper::KEY_BY_FIELD_NAME
-     * @see \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     * @see \Bigcommerce\ORM\Mapper::KEY_BY_FIELD_NAME
+     * @see \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME
      */
     public function toArray(Entity $entity = null, int $key = self::KEY_BY_FIELD_NAME)
     {
@@ -556,6 +553,7 @@ class Mapper
         $customisedFields = [];
         $requiredValidations = [];
         $uploadFiles = [];
+        $parentFields = [];
 
         foreach ($properties as $property) {
             $annotations = $this->reader->getPropertyAnnotations($property);
@@ -572,6 +570,9 @@ class Mapper
                     }
                     if ($annotation->upload == true) {
                         $uploadFiles[$annotation->name] = $property;
+                    }
+                    if ($annotation->parent == true) {
+                        $parentFields[$annotation->name] = $property;
                     }
                 }
 
@@ -604,7 +605,8 @@ class Mapper
             ->setAutoIncludes($autoIncludes)
             ->setAutoLoads($autoLoads)
             ->setRequiredValidations($requiredValidations)
-            ->setUploadFiles($uploadFiles);
+            ->setUploadFiles($uploadFiles)
+            ->setParentFields($parentFields);
 
         return $metadata;
     }

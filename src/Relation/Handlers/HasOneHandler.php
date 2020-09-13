@@ -20,13 +20,13 @@ class HasOneHandler extends AbstractHandler implements RelationHandlerInterface
      * @param \ReflectionProperty $property property
      * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation relation
      * @param array $data
-     * @param int|null $parentId
+     * @param array|null $parentIds
      * @return void
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Exception
      */
-    public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, int $parentId = null)
+    public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, array $parentIds = null)
     {
         /* @var \Bigcommerce\ORM\Annotations\HasOne $annotation */
         if (!isset($annotation->field) || !isset($data[$annotation->field]) || empty($data[$annotation->field])) {
@@ -38,14 +38,14 @@ class HasOneHandler extends AbstractHandler implements RelationHandlerInterface
             $value = [$value];
         }
 
-        if (empty($parentId)) {
-            $parentId = $entity->getId();
+        if (empty($parentIds)) {
+            $parentIds = $entity->getId();
         }
 
         $mapper = $this->entityManager->getMapper();
         $queryBuilder = new QueryBuilder();
         $queryBuilder->whereIn($annotation->targetField, $value);
-        $collections = $this->entityManager->findBy($annotation->targetClass, $parentId, $queryBuilder, $annotation->auto);
+        $collections = $this->entityManager->findBy($annotation->targetClass, $parentIds, $queryBuilder, $annotation->auto);
         $mapper->setPropertyValue($entity, $property, $collections[0]);
     }
 }

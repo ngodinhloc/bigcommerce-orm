@@ -9,13 +9,13 @@ use Bigcommerce\ORM\Entity;
 /**
  * Class ProductImage
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="ProductImage", path="/catalog/products/{id}/images", parentField="product_id")
+ * @BC\Resource(name="ProductImage", path="/catalog/products/{product_id}/images", parentField="product_id")
  */
 class ProductImage extends Entity
 {
     /**
      * @var int
-     * @BC\Field(name="product_id", readonly=true)
+     * @BC\Field(name="product_id", readonly=true, parent=true)
      */
     protected $productId;
 

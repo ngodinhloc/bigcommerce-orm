@@ -16,8 +16,8 @@ interface RelationHandlerInterface
      * @param \ReflectionProperty $property property
      * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation relation
      * @param array $data
-     * @param int|null $parentId
+     * @param array|null $parentIds
      * @return \Bigcommerce\ORM\Entity
      */
-    public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, int $parentId = null);
+    public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, array $parentIds = null);
 }
