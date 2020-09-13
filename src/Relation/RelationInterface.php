@@ -11,6 +11,7 @@ use Bigcommerce\ORM\EntityManager;
  */
 interface RelationInterface
 {
+
     /**
      * @param \Bigcommerce\ORM\EntityManager $entityManager entity manager
      * @return \Bigcommerce\ORM\Relation\RelationHandlerInterface

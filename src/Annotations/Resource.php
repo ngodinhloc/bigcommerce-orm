@@ -12,5 +12,4 @@ class Resource extends Annotation
 {
     public $name;
     public $path;
-    public $parentField;
 }

@@ -20,21 +20,21 @@ class MetadataTest extends BaseTestCase
     /**
      * @covers \Bigcommerce\ORM\Metadata::setResource
      * @covers \Bigcommerce\ORM\Metadata::setRelationFields
-     * @covers \Bigcommerce\ORM\Metadata::setUploadFiles
-     * @covers \Bigcommerce\ORM\Metadata::setAutoIncludes
-     * @covers \Bigcommerce\ORM\Metadata::setRequiredValidations
+     * @covers \Bigcommerce\ORM\Metadata::setUploadFields
+     * @covers \Bigcommerce\ORM\Metadata::setIncludeFields
+     * @covers \Bigcommerce\ORM\Metadata::setValidationProperties
      * @covers \Bigcommerce\ORM\Metadata::setCustomisedFields
      * @covers \Bigcommerce\ORM\Metadata::setReadonlyFields
-     * @covers \Bigcommerce\ORM\Metadata::setAutoLoads
+     * @covers \Bigcommerce\ORM\Metadata::setAutoLoadFields
      * @covers \Bigcommerce\ORM\Metadata::setRequiredFields
      * @covers \Bigcommerce\ORM\Metadata::getResource
      * @covers \Bigcommerce\ORM\Metadata::getRelationFields
-     * @covers \Bigcommerce\ORM\Metadata::getUploadFiles
-     * @covers \Bigcommerce\ORM\Metadata::getAutoIncludes
-     * @covers \Bigcommerce\ORM\Metadata::getRequiredValidations
+     * @covers \Bigcommerce\ORM\Metadata::getUploadFields
+     * @covers \Bigcommerce\ORM\Metadata::getIncludeFields
+     * @covers \Bigcommerce\ORM\Metadata::getValidationProperties
      * @covers \Bigcommerce\ORM\Metadata::getCustomisedFields
      * @covers \Bigcommerce\ORM\Metadata::getReadonlyFields
-     * @covers \Bigcommerce\ORM\Metadata::getAutoLoads
+     * @covers \Bigcommerce\ORM\Metadata::getAutoLoadFields
      * @covers \Bigcommerce\ORM\Metadata::getRequiredFields
      */
     public function testSettersAndGetters()
@@ -43,21 +43,21 @@ class MetadataTest extends BaseTestCase
         $this->metadata
             ->setResource($bigObject)
             ->setRelationFields([])
-            ->setUploadFiles([])
-            ->setAutoIncludes([])
-            ->setRequiredValidations([])
+            ->setUploadFields([])
+            ->setIncludeFields([])
+            ->setValidationProperties([])
             ->setCustomisedFields([])
             ->setReadonlyFields([])
-            ->setAutoLoads([])
+            ->setAutoLoadFields([])
             ->setRequiredFields([]);
         $this->assertEquals($bigObject, $this->metadata->getResource());
         $this->assertEquals([], $this->metadata->getRelationFields());
-        $this->assertEquals([], $this->metadata->getUploadFiles());
-        $this->assertEquals([], $this->metadata->getAutoIncludes());
-        $this->assertEquals([], $this->metadata->getRequiredValidations());
+        $this->assertEquals([], $this->metadata->getUploadFields());
+        $this->assertEquals([], $this->metadata->getIncludeFields());
+        $this->assertEquals([], $this->metadata->getValidationProperties());
         $this->assertEquals([], $this->metadata->getCustomisedFields());
         $this->assertEquals([], $this->metadata->getReadonlyFields());
-        $this->assertEquals([], $this->metadata->getAutoLoads());
+        $this->assertEquals([], $this->metadata->getAutoLoadFields());
         $this->assertEquals([], $this->metadata->getRequiredFields());
     }
 }

@@ -20,12 +20,17 @@ class Metadata
     /**
      * @var array
      */
-    protected $autoIncludes;
+    protected $includeFields;
 
     /**
      * @var array
      */
-    protected $autoLoads;
+    protected $autoLoadFields;
+
+    /**
+     * @var array
+     */
+    protected $inResultFields;
 
     /**
      * @var array
@@ -45,17 +50,17 @@ class Metadata
     /**
      * @var array
      */
-    protected $requiredValidations;
-
-    /**
-     * @var array
-     */
-    protected $uploadFiles;
-
-    /**
-     * @var array
-     */
     protected $parentFields;
+
+    /**
+     * @var array
+     */
+    protected $uploadFields;
+
+    /**
+     * @var array
+     */
+    protected $validationProperties;
 
     /**
      * @return \Bigcommerce\ORM\Annotations\Resource
@@ -96,36 +101,36 @@ class Metadata
     /**
      * @return array
      */
-    public function getAutoIncludes(): array
+    public function getIncludeFields(): array
     {
-        return $this->autoIncludes;
+        return $this->includeFields;
     }
 
     /**
-     * @param array $autoIncludes
+     * @param array $includeFields
      * @return \Bigcommerce\ORM\Metadata
      */
-    public function setAutoIncludes(array $autoIncludes): Metadata
+    public function setIncludeFields(array $includeFields): Metadata
     {
-        $this->autoIncludes = $autoIncludes;
+        $this->includeFields = $includeFields;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getAutoLoads(): array
+    public function getAutoLoadFields(): array
     {
-        return $this->autoLoads;
+        return $this->autoLoadFields;
     }
 
     /**
-     * @param array $autoLoads
+     * @param array $autoLoadFields
      * @return \Bigcommerce\ORM\Metadata
      */
-    public function setAutoLoads(array $autoLoads): Metadata
+    public function setAutoLoadFields(array $autoLoadFields): Metadata
     {
-        $this->autoLoads = $autoLoads;
+        $this->autoLoadFields = $autoLoadFields;
         return $this;
     }
 
@@ -186,36 +191,36 @@ class Metadata
     /**
      * @return array
      */
-    public function getRequiredValidations(): array
+    public function getValidationProperties(): array
     {
-        return $this->requiredValidations;
+        return $this->validationProperties;
     }
 
     /**
-     * @param array $requiredValidations
+     * @param array $validationProperties
      * @return \Bigcommerce\ORM\Metadata
      */
-    public function setRequiredValidations(array $requiredValidations): Metadata
+    public function setValidationProperties(array $validationProperties): Metadata
     {
-        $this->requiredValidations = $requiredValidations;
+        $this->validationProperties = $validationProperties;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getUploadFiles(): array
+    public function getUploadFields(): array
     {
-        return $this->uploadFiles;
+        return $this->uploadFields;
     }
 
     /**
-     * @param array $uploadFiles
+     * @param array $uploadFields
      * @return \Bigcommerce\ORM\Metadata
      */
-    public function setUploadFiles(array $uploadFiles): Metadata
+    public function setUploadFields(array $uploadFields): Metadata
     {
-        $this->uploadFiles = $uploadFiles;
+        $this->uploadFields = $uploadFields;
         return $this;
     }
 
@@ -237,4 +242,21 @@ class Metadata
         return $this;
     }
 
+    /**
+     * @return array
+     */
+    public function getInResultFields()
+    {
+        return $this->inResultFields;
+    }
+
+    /**
+     * @param array $inResultFields
+     * @return \Bigcommerce\ORM\Metadata
+     */
+    public function setInResultFields(array $inResultFields): Metadata
+    {
+        $this->inResultFields = $inResultFields;
+        return $this;
+    }
 }

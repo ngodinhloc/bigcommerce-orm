@@ -18,7 +18,7 @@ class HasMany extends Annotation implements HasRelationInterface, ManyRelationIn
     public $targetClass;
     public $field;
     public $targetField;
-    public $include = false;
+    public $from = 'api';   // api, include, result
     public $auto = false;
 
     /**

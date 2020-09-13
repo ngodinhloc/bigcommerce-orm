@@ -18,7 +18,7 @@ class HasOne extends Annotation implements HasRelationInterface, OneRelationInte
     public $targetClass;
     public $field;
     public $targetField;
-    public $include = false;
+    public $from = 'api';   // api, include, result
     public $auto = false;
 
     /**

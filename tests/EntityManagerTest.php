@@ -135,10 +135,10 @@ class EntityManagerTest extends BaseTestCase
         $findAllPath = '/customers?sort=date_created:asc&include=addresses';
         $findAllResult = [];
 
-        $findByPath = '/customers?id:in=1,2,3';
+        $findByPath = '/customers?id:in=1,2,3&include=addresses';
         $findByResult = [];
 
-        $findPath = '/customers?id:in=1';
+        $findPath = '/customers/1?include=addresses';
         $findResult = ['id' => 1];
 
         $client = $this->prophet->prophesize(Client::class);

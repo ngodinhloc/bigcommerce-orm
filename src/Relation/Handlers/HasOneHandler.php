@@ -39,7 +39,7 @@ class HasOneHandler extends AbstractHandler implements RelationHandlerInterface
         }
 
         if (empty($parentIds)) {
-            $parentIds = $entity->getId();
+            $parentIds = [$annotation->targetField => $entity->getId()];
         }
 
         $mapper = $this->entityManager->getMapper();

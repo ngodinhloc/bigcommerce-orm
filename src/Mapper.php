@@ -13,6 +13,7 @@ use Bigcommerce\ORM\Relation\RelationInterface;
 use Bigcommerce\ORM\Validation\ValidationInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use phpDocumentor\Reflection\Types\False_;
 use ReflectionClass;
 
 /**
@@ -84,12 +85,16 @@ class Mapper
             return $path;
         }
 
-        foreach ($parentFields as $field => $property) {
+        foreach ($parentFields as $fieldName => $property) {
             $value = $this->getPropertyValue($entity, $property);
             if (empty($value)) {
-                throw new MapperException(MapperException::MSG_NO_PARENT_IDS . $field);
+                throw new MapperException(MapperException::MSG_NO_PARENT_IDS . $fieldName);
             }
-            $path = str_replace("{{$field}}", $value, $path);
+            $path = str_replace("{{$fieldName}}", $value, $path);
+        }
+
+        if (preg_match('/{.*}/', $path)) {
+            throw new MapperException(MapperException::MSG_NO_PARENT_IDS . $path);
         }
 
         return $path;
@@ -120,17 +125,20 @@ class Mapper
         }
 
         $this->setPropertyValueByName($entity, 'isPatched', true);
+        $resource = $this->getClassAnnotation($entity);
+        $metadata = $this->getMetadata($resource, $properties);
+        $this->setPropertyValueByName($entity, 'metadata', $metadata);
 
         if ($propertyOnly == true) {
             return $entity;
         }
 
-        $resource = $this->getClassAnnotation($entity);
-        $metadata = $this->getMetadata($resource, $properties);
-        $this->setPropertyValueByName($entity, 'metadata', $metadata);
-
-        if (!empty($autoIncludes = $metadata->getAutoIncludes())) {
+        if (!empty($autoIncludes = $metadata->getIncludeFields())) {
             $this->patchAutoIncludes($entity, $autoIncludes, $array);
+        }
+
+        if(!empty($inResultFields = $metadata->getInResultFields())){
+            $this->patchAutoIncludes($entity, $inResultFields, $array);
         }
 
         return $entity;
@@ -153,7 +161,7 @@ class Mapper
             $annotations = $this->reader->getPropertyAnnotations($property);
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof RelationInterface) {
-                    if ($annotation->auto === true && $annotation->include == true) {
+                    if ($annotation->auto === true && $annotation->where == 'include') {
                         $includes[] = $annotation->name;
                     }
                 }
@@ -174,7 +182,7 @@ class Mapper
     public function checkRequiredFields(Entity $entity = null)
     {
         if ($entity->isPatched() !== true) {
-            $entity = $this->patch($entity, []);
+            $entity = $this->patch($entity, [], true);
         }
 
         if (empty($entity->getMetadata()->getRequiredFields())) {
@@ -183,9 +191,9 @@ class Mapper
 
         $missingFields = [];
         /* @var \ReflectionProperty $property */
-        foreach ($entity->getMetadata()->getRequiredFields() as $property) {
+        foreach ($entity->getMetadata()->getRequiredFields() as $fieldName => $property) {
             if ($this->getPropertyValue($entity, $property) === null) {
-                $missingFields[] = $property->name;
+                $missingFields[$fieldName] = $property->name;
             }
         }
 
@@ -200,14 +208,14 @@ class Mapper
      * Get none readonly data
      *
      * @param \Bigcommerce\ORM\Entity|null $entity
-     * @param array $data
+     * @param array|null $data
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function getNoneReadonlyData(Entity $entity = null, array $data = null)
     {
         if ($entity->isPatched() !== true) {
-            $entity = $this->patch($entity, []);
+            $entity = $this->patch($entity, [], true);
         }
 
         if (empty($data)) {
@@ -250,23 +258,23 @@ class Mapper
     public function checkRequiredValidations(Entity $entity = null)
     {
         if ($entity->isPatched() !== true) {
-            $entity = $this->patch($entity, []);
+            $entity = $this->patch($entity, [], true);
         }
 
-        if (empty($entity->getMetadata()->getRequiredValidations())) {
+        if (empty($entity->getMetadata()->getValidationProperties())) {
             return true;
         }
 
         $validationRules = [];
         /* @var \ReflectionProperty $property */
-        foreach ($entity->getMetadata()->getRequiredValidations() as $rule) {
+        foreach ($entity->getMetadata()->getValidationProperties() as $propertyName => $rule) {
             $property = $rule['property'];
             $annotation = $rule['annotation'];
             if ($annotation instanceof ValidationInterface) {
                 $validator = $annotation->getValidator($this);
                 $check = $validator->validate($entity, $property, $annotation);
                 if (!$check) {
-                    $validationRules[] = $property->name . ": " . get_class($annotation);
+                    $validationRules[$propertyName] = $property->name . ": " . get_class($annotation);
                 }
             }
         }
@@ -499,9 +507,9 @@ class Mapper
      * @param array|null $array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function patchAutoIncludes(Entity &$entity = null, array $autoIncludes = null, array $array = null)
+    private function patchAutoIncludes(Entity $entity = null, array $autoIncludes = null, array $array = null)
     {
-        foreach ($autoIncludes as $propertyName => $include) {
+        foreach ($autoIncludes as $fieldName => $include) {
             $property = $include['property'];
             $annotation = $include['annotation'];
             if (isset($array[$annotation->name])) {
@@ -511,7 +519,7 @@ class Mapper
                 }
                 if ($annotation instanceof OneRelationInterface) {
                     $object = $this->object($annotation->targetClass);
-                    $propertyValue = $this->patch($object, $array[$annotation->name]);
+                    $propertyValue = $this->patch($object, $array[$annotation->name], true);
                     $this->setPropertyValue($entity, $property, $propertyValue);
                 }
             }
@@ -520,7 +528,7 @@ class Mapper
 
     /**
      * @param array $array
-     * @param string $className
+     * @param string|null $className
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
@@ -530,7 +538,7 @@ class Mapper
         if (!empty($array)) {
             foreach ($array as $item) {
                 $object = $this->object($className);
-                $relationEntity = $this->patch($object, $item);
+                $relationEntity = $this->patch($object, $item, true);
                 $collections[] = $relationEntity;
             }
         }
@@ -546,12 +554,13 @@ class Mapper
     private function getMetadata(Resource $resource = null, array $properties = null)
     {
         $relationFields = [];
-        $autoLoads = [];
-        $autoIncludes = [];
+        $autoLoadFields = [];
+        $includeFields = [];
+        $inResultFields = [];
         $requiredFields = [];
         $readonlyFields = [];
         $customisedFields = [];
-        $requiredValidations = [];
+        $validationFields = [];
         $uploadFiles = [];
         $parentFields = [];
 
@@ -560,7 +569,7 @@ class Mapper
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof Field) {
                     if ($annotation->required == true) {
-                        $requiredFields[$property->name] = $property;
+                        $requiredFields[$annotation->name] = $property;
                     }
                     if ($annotation->readonly == true) {
                         $readonlyFields[$annotation->name] = $property;
@@ -577,19 +586,23 @@ class Mapper
                 }
 
                 if ($annotation instanceof RelationInterface) {
-                    $relationFields[$property->name] = ['property' => $property, 'annotation' => $annotation];
-                    if ($annotation->auto === true && $annotation->include == true) {
-                        $autoIncludes[$property->name] = ['property' => $property, 'annotation' => $annotation];
+                    $relationFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
+                    if ($annotation->auto === true && $annotation->from == 'include' ) {
+                        $includeFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
                     }
 
-                    if ($annotation->auto === true && $annotation->include == false) {
-                        $autoLoads[$property->name] = ['property' => $property, 'annotation' => $annotation];
+                    if ($annotation->auto === true && $annotation->from == 'api') {
+                        $autoLoadFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
+                    }
+
+                    if($annotation->from == 'result'){
+                        $inResultFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
                     }
                 }
 
                 if ($annotation instanceof ValidationInterface) {
                     if ($annotation->validate === true) {
-                        $requiredValidations[$property->name] = ['property' => $property, 'annotation' => $annotation];
+                        $validationFields[$property->name] = ['property' => $property, 'annotation' => $annotation];
                     }
                 }
             }
@@ -602,10 +615,11 @@ class Mapper
             ->setRequiredFields($requiredFields)
             ->setCustomisedFields($customisedFields)
             ->setRelationFields($relationFields)
-            ->setAutoIncludes($autoIncludes)
-            ->setAutoLoads($autoLoads)
-            ->setRequiredValidations($requiredValidations)
-            ->setUploadFiles($uploadFiles)
+            ->setIncludeFields($includeFields)
+            ->setAutoLoadFields($autoLoadFields)
+            ->setInResultFields($inResultFields)
+            ->setValidationProperties($validationFields)
+            ->setUploadFields($uploadFiles)
             ->setParentFields($parentFields);
 
         return $metadata;

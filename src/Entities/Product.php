@@ -95,25 +95,25 @@ class Product extends Entity
 
     /**
      * @var \Bigcommerce\ORM\Entities\ProductImage
-     * @BC\HasOne(name="primary_image", targetClass="\Bigcommerce\ORM\Entities\ProductImage", field="id", targetField="product_id", include=true, auto=true)
+     * @BC\HasOne(name="primary_image", targetClass="\Bigcommerce\ORM\Entities\ProductImage", field="id", targetField="product_id", from="include", auto=true)
      */
     protected $primaryImage;
 
     /**
      * @var \Bigcommerce\ORM\Entities\ProductImage[]
-     * @BC\HasMany(name="images", targetClass="\Bigcommerce\ORM\Entities\ProductImage", field="id", targetField="product_id", include=true, auto=true)
+     * @BC\HasMany(name="images", targetClass="\Bigcommerce\ORM\Entities\ProductImage", field="id", targetField="product_id", from="include", auto=true)
      */
     protected $images;
 
     /**
      * @var \Bigcommerce\ORM\Entities\Category[]
-     * @BC\BelongToMany(name="categories", targetClass="\Bigcommerce\ORM\Entities\Category", field="categories", targetField="id", auto=true)
+     * @BC\BelongToMany(name="categories", targetClass="\Bigcommerce\ORM\Entities\Category", field="categories", targetField="id", from="api", auto=true)
      */
     protected $categories;
 
     /**
      * @var \Bigcommerce\ORM\Entities\ProductReview[]
-     * @BC\HasMany(name="reviews", targetClass="\Bigcommerce\ORM\Entities\ProductReview", field="id", targetField="product_id", auto=true)
+     * @BC\HasMany(name="reviews", targetClass="\Bigcommerce\ORM\Entities\ProductReview", field="id", targetField="product_id", from="api", auto=true)
      */
     protected $reviews;
 

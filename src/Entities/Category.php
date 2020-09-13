@@ -20,12 +20,6 @@ class Category extends Entity
     protected $name;
 
     /**
-     * @var int
-     * @BC\Field(name="parent_id")
-     */
-    protected $parentId;
-
-    /**
      * @var string
      * @BC\Field(name="description")
      */
@@ -44,8 +38,14 @@ class Category extends Entity
     protected $pageTitle;
 
     /**
+     * @var int
+     * @BC\Field(name="parent_id")
+     */
+    protected $parentId;
+
+    /**
      * @var \Bigcommerce\ORM\Entities\Category
-     * @BC\BelongToOne(name="parent", targetClass="\Bigcommerce\ORM\Entities\Category", field="parent_id", targetField="id", auto=true)
+     * @BC\BelongToOne(name="parent", targetClass="\Bigcommerce\ORM\Entities\Category", field="parent_id", targetField="id", from="api", auto=true)
      */
     protected $parent;
 

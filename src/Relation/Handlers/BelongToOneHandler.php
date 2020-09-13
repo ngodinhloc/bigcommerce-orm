@@ -39,9 +39,9 @@ class BelongToOneHandler extends AbstractHandler implements RelationHandlerInter
             $value = [$value];
         }
 
-        if (empty($parentIds)) {
-            $parentIds = $entity->getId();
-        }
+//        if (empty($parentIds)) {
+//            $parentIds = $entity->getId();
+//        }
 
         $mapper = $this->entityManager->getMapper();
         $queryBuilder = new QueryBuilder();

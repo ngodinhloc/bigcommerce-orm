@@ -58,7 +58,7 @@ class EntityManager
         $this->mapper->checkClass($className);
 
         $entity = $this->mapper->object($className);
-        $entity = $this->mapper->patch($entity, $parentIds);
+        $entity = $this->mapper->patch($entity, $parentIds, true);
         $path = $this->mapper->getResourcePath($entity);
 
         return $this->client->count($path);
@@ -82,9 +82,9 @@ class EntityManager
         $this->mapper->checkClass($className);
 
         $object = $this->mapper->object($className);
-        $entity = $this->mapper->patch($object, $parentIds);
+        $entity = $this->mapper->patch($object, $parentIds, true);
         $path = $this->mapper->getResourcePath($entity);
-        $autoIncludes = $entity->getMetadata()->getAutoIncludes();
+        $autoIncludes = $entity->getMetadata()->getIncludeFields();
 
         $queryBuilder = new QueryBuilder();
         if (!empty($order)) {
@@ -114,9 +114,9 @@ class EntityManager
         $this->mapper->checkClass($className);
 
         $object = $this->mapper->object($className);
-        $entity = $this->mapper->patch($object, $parentIds);
+        $entity = $this->mapper->patch($object, $parentIds, true);
         $path = $this->mapper->getResourcePath($entity);
-        $autoIncludes = $entity->getMetadata()->getAutoLoads();
+        $autoIncludes = $entity->getMetadata()->getIncludeFields();
         $queryString = $queryBuilder->include(array_keys($autoIncludes))->getQueryString();
         $result = $this->client->findBy($path . "?" . $queryString);
 
@@ -140,13 +140,13 @@ class EntityManager
         $this->mapper->checkId($id);
 
         $object = $this->mapper->object($className);
-        $entity = $this->mapper->patch($object, $parentIds);
+        $entity = $this->mapper->patch($object, $parentIds, true);
         $path = $this->mapper->getResourcePath($entity);
-        $autoIncludes = $entity->getMetadata()->getAutoLoads();
+        $autoIncludes = $entity->getMetadata()->getIncludeFields();
 
         $queryBuilder = new QueryBuilder();
-        $query = $queryBuilder->whereIn('id', [$id])->include(array_keys($autoIncludes))->getQueryString();
-        $result = $this->client->find($path . "?" . $query);
+        $query = $queryBuilder->include(array_keys($autoIncludes))->getQueryString();
+        $result = $this->client->find($path . "/{$id}?" . $query);
 
         if (empty($result)) {
             return false;
@@ -157,7 +157,7 @@ class EntityManager
             return $entity;
         }
         // No auto loading
-        if (empty($entity->getMetadata()->getAutoLoads())) {
+        if (empty($entity->getMetadata()->getAutoLoadFields())) {
             return $entity;
         }
 
@@ -182,7 +182,7 @@ class EntityManager
         $this->mapper->checkEntity($entity);
 
         if ($entity->isPatched() !== true) {
-            $entity = $this->mapper->patch($entity, []);
+            $entity = $this->mapper->patch($entity, [], true);
         }
 
         $checkRequiredProperties = $this->mapper->checkRequiredFields($entity);
@@ -228,7 +228,7 @@ class EntityManager
         }
 
         if ($entity->isPatched() !== true) {
-            $entity = $this->mapper->patch($entity, []);
+            $entity = $this->mapper->patch($entity, [], true);
         }
 
         $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
@@ -259,20 +259,20 @@ class EntityManager
         $this->mapper->checkClass($class);
         $object = $this->mapper->object($class);
 
-        return $this->mapper->patch($object, $data);
+        return $this->mapper->patch($object, $data, true);
     }
 
     /**
      * Patch entity with data array
      *
-     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @param \Bigcommerce\ORM\Entity|null $entity entity
      * @param array|null $array data
      * @return \Bigcommerce\ORM\Entity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function patch(Entity $entity = null, array $array = [])
     {
-        return $this->mapper->patch($entity, $array);
+        return $this->mapper->patch($entity, $array, true);
     }
 
     /**
@@ -302,12 +302,14 @@ class EntityManager
         if (!empty($array)) {
             foreach ($array as $item) {
                 $object = $this->mapper->object($className);
-                $data = array_merge($item, $parentIds);
-                $relationEntity = $this->mapper->patch($object, $data);
+                if (!empty($parentIds)) {
+                    $item = array_merge($item, $parentIds);
+                }
+                $relationEntity = $this->mapper->patch($object, $item);
                 if ($auto == false) {
                     $collections[] = $relationEntity;
                 } else {
-                    if (empty($relationEntity->getMetadata()->getAutoLoads())) {
+                    if (empty($relationEntity->getMetadata()->getAutoLoadFields())) {
                         $collections[] = $relationEntity;
                     } else {
                         $collections[] = $this->autoLoad($relationEntity, $item, $parentIds);
@@ -329,10 +331,10 @@ class EntityManager
      */
     private function autoLoad(Entity $entity = null, array $data = null, array $parentIds = null)
     {
-        if (empty($entity) || empty($entity->getMetadata()->getAutoLoads())) {
+        if (empty($entity) || empty($entity->getMetadata()->getAutoLoadFields())) {
             return $entity;
         }
-        foreach ($entity->getMetadata()->getAutoLoads() as $load) {
+        foreach ($entity->getMetadata()->getAutoLoadFields() as $fieldName => $load) {
             $property = $load['property'];
             $annotation = $load['annotation'];
             if ($annotation instanceof RelationInterface) {
@@ -361,14 +363,14 @@ class EntityManager
         }
 
         $files = [];
-        if (!empty($uploadFiles = $entity->getMetadata()->getUploadFiles())) {
-            foreach ($uploadFiles as $field => $property) {
+        if (!empty($uploadFields = $entity->getMetadata()->getUploadFields())) {
+            foreach ($uploadFields as $fieldName => $property) {
                 $location = $this->mapper->getPropertyValue($entity, $property);
                 if (!empty($location)) {
                     if (!file_exists($location)) {
                         throw new EntityException(EntityException::MSG_INVALID_UPLOAD_FILE . $location);
                     }
-                    $files[$field] = $location;
+                    $files[$fieldName] = $location;
                 }
             }
         }

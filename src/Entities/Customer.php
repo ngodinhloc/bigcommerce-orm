@@ -60,7 +60,7 @@ class Customer extends Entity
 
     /**
      * @var \Bigcommerce\ORM\Entities\Address[]
-     * @BC\HasMany(name="addresses", targetClass="\Bigcommerce\ORM\Entities\Address", field="id", targetField="customer_id", include=true, auto=true)
+     * @BC\HasMany(name="addresses", targetClass="\Bigcommerce\ORM\Entities\Address", field="id", targetField="customer_id", from="include", auto=true)
      */
     protected $addresses = [];
 

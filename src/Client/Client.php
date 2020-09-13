@@ -90,7 +90,7 @@ class Client implements ClientInterface
      */
     public function find(string $query = null)
     {
-        return $this->query($query, Result::RETURN_TYPE_FIRST);
+        return $this->query($query, Result::RETURN_TYPE_ONE);
     }
 
     /**

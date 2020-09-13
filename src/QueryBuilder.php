@@ -38,10 +38,10 @@ class QueryBuilder
 
     /**
      * @param string $field
-     * @param string $value
+     * @param mixed $value
      * @return \Bigcommerce\ORM\QueryBuilder
      */
-    public function whereEqual(string $field, string $value)
+    public function whereEqual(string $field, $value)
     {
         $this->query[$field] = $value;
 

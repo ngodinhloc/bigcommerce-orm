@@ -33,19 +33,22 @@ class HasManyHandler extends AbstractHandler implements RelationHandlerInterface
             return;
         }
 
-        $value = $data[$annotation->field];
-        if (!is_array($value)) {
-            $value = [$value];
+        $values = $data[$annotation->field];
+        if (!is_array($values)) {
+            $values = [$values];
         }
 
         if (empty($parentIds)) {
-            $parentIds = $entity->getId();
+            $parentIds = [$annotation->targetField => $entity->getId()];
+        } else {
+            $parentIds = array_merge($parentIds, [$annotation->targetField => $entity->getId()]);
         }
 
-        $mapper = $this->entityManager->getMapper();
         $queryBuilder = new QueryBuilder();
-        $queryBuilder->whereIn($annotation->targetField, $value);
+        $queryBuilder->whereIn($annotation->targetField, $values);
         $collections = $this->entityManager->findBy($annotation->targetClass, $parentIds, $queryBuilder, $annotation->auto);
+
+        $mapper = $this->entityManager->getMapper();
         $mapper->setPropertyValue($entity, $property, $collections);
     }
 }

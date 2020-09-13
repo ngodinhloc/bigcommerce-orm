@@ -18,7 +18,7 @@ class BelongToMany extends Annotation implements BelongToRelationInterface, Many
     public $targetClass;
     public $field;
     public $targetField;
-    public $include = false;
+    public $from = 'api';   // api, include, result
     public $auto = false;
 
     /**
