@@ -50,13 +50,7 @@ try {
     $country2 = $address2->getCountry();
     echo $country2 . PHP_EOL;
 
-    /** get one customer by id */
-    /** @var \Bigcommerce\ORM\Entities\Customer $customer3 */
-    $customer3 = $entityManager->find(\Bigcommerce\ORM\Entities\Customer::class, 1);
-    $addresses3 = $customer3->getAddresses();
-    $address3 = $addresses3[0];
-    $country3 = $address3->getCountry();
-    echo $country3 . PHP_EOL;
+    /** get one customer by id: you can't get customer by id (for privacy reason?) */
 
 } catch (\Exception $e) {
     echo $e->getMessage();

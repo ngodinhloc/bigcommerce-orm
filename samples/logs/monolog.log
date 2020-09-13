@@ -56,3 +56,8 @@
 [2020-09-11T06:24:25.914871+00:00] local_logger.DEBUG: Finish querying objects. Query: /customers?sort=date_created:asc&include=addresses [] []
 [2020-09-11T06:24:26.507910+00:00] local_logger.DEBUG: Start querying objects. Query: /customers?id:in=1&include=addresses [] []
 [2020-09-11T06:24:26.604641+00:00] local_logger.DEBUG: Finish querying objects. Query: /customers?id:in=1&include=addresses [] []
+[2020-09-13T08:30:51.863021+00:00] local_logger.DEBUG: Start querying objects. Query: /customers [] []
+[2020-09-13T08:30:52.082915+00:00] local_logger.DEBUG: Finish querying objects. Query: /customers [] []
+[2020-09-13T08:30:54.661525+00:00] local_logger.DEBUG: Start querying objects. Query: /customers?sort=date_created:asc&include=addresses [] []
+[2020-09-13T08:30:54.795421+00:00] local_logger.DEBUG: Finish querying objects. Query: /customers?sort=date_created:asc&include=addresses [] []
+[2020-09-13T08:30:55.402272+00:00] local_logger.DEBUG: Start querying objects. Query: /customers/1?include=addresses [] []

@@ -35,11 +35,6 @@ try {
     $firstStoreManager = $managerFactory->getEntityManager('firstStore');
     $secondStoreManager = $managerFactory->getEntityManager('secondStore');
 
-    $product = new \Bigcommerce\ORM\Entities\Product();
-    $product->setName('Multiple stores product');
-    $firstStoreManager->save($product);
-    $secondStoreManager->save($product);
-
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

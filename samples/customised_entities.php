@@ -15,11 +15,9 @@ try {
     /** create new object and set data */
     $myProduct = new \Samples\Entities\MyProduct();
     $myProduct
-        ->setName('My Product')
-        ->setDescription('My product with customised fields')
         ->setMyCustomisedField('This is my field');
     $entityManager->patch($myProduct);
-    echo $myProduct->getName();
+    echo $myProduct->getMyCustomisedField();
 
 } catch (\Exception $e) {
     echo $e->getMessage();

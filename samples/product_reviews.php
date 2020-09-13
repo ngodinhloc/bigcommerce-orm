@@ -74,7 +74,6 @@ try {
     $result = $entityManager->update($review49, $data);
     echo $result . PHP_EOL;
 
-
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

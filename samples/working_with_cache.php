@@ -29,15 +29,7 @@ try {
     /** @var \Bigcommerce\ORM\Entities\Customer $customer1 */
     $customer1 = $allCustomers[0];
     echo $customer1->getLastName() . PHP_EOL;
-
-    /** get one customer by id */
-    /** @var \Bigcommerce\ORM\Entities\Customer $customer2 */
-    $customer2 = $entityManager->find(\Bigcommerce\ORM\Entities\Customer::class, 1);
-    $addresses2 = $customer2->getAddresses();
-    $address2 = $addresses2[0];
-    $country2 = $address2->getCountry();
-    echo $country2 . PHP_EOL;
-
+    
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

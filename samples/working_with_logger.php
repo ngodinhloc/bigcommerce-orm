@@ -33,19 +33,6 @@ try {
     $customer1 = $allCustomers[0];
     echo $customer1->getLastName();
 
-    /** get one customer by id */
-    /** @var \Bigcommerce\ORM\Entities\Customer $customer2 */
-    $customer2 = $entityManager->find(\Bigcommerce\ORM\Entities\Customer::class, 1);
-    $addresses2 = $customer2->getAddresses();
-    $address2 = $addresses2[0];
-    $country2 = $address2->getCountry();
-    echo $country2 . PHP_EOL;
-
-    $path = '/catalog/products/{id}/modifers/{id}/values';
-    $replace = [1,2];
-    $str = str_replace('{id}', $replace, $path);
-    echo $str;
-
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
