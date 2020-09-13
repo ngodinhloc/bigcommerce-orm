@@ -40,6 +40,5 @@ class MapperTest extends BaseTestCase
         $this->assertInstanceOf(Resource::class, $classAnnotation);
         $this->assertEquals('Customer', $classAnnotation->name);
         $this->assertEquals('/customers', $classAnnotation->path);
-        $this->assertNull($classAnnotation->parentField);
     }
 }

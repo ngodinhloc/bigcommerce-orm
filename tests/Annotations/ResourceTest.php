@@ -12,9 +12,8 @@ class ResourceTest extends BaseTestCase
     protected $annotation;
 
     public function testResource(){
-        $this->annotation = new Resource(['name' => 'Customer', 'path' => '/customers', 'parentField' => null]);
+        $this->annotation = new Resource(['name' => 'Customer', 'path' => '/customers']);
         $this->assertEquals('Customer', $this->annotation->name);
         $this->assertEquals('/customers', $this->annotation->path);
-        $this->assertEquals(null, $this->annotation->parentField);
     }
 }
