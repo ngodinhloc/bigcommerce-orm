@@ -463,3 +463,59 @@ Sample log messages
 ```
 
 @see: [samples/working_with_logger.php](./samples/working_with_logger.php)
+
+### Debug, Verify, Proxy
+```php
+$options = [
+    'verify' => true,
+    'timeout' => 60,
+    'contentType' => 'application/json',
+    'debug' => true,
+    'proxy' => null
+];
+```
+Big-orm will produce useful debug messages:
+- Verify peer
+```text
+* Hostname api.service.bcdev was found in DNS cache
+*   Trying 10.133.136.65...
+* TCP_NODELAY set
+* Connected to api.service.bcdev (10.133.136.65) port 443 (#1)
+* ALPN, offering http/1.1
+* successfully set certificate verify locations:
+*   CAfile: /usr/local/etc/openssl@1.1/cert.pem
+  CApath: none
+* SSL re-using session ID
+* old SSL session ID is stale, removing
+* SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384
+* ALPN, server did not agree to a protocol
+* Server certificate:
+*  subject: C=AU; ST=New South Wales; O=BigCommerce Pty. Ltd.; OU=Technical Operations; CN=*.store.bcdev; emailAddress=serverops@bigcommerce.com
+*  start date: Dec 19 23:16:39 2017 GMT
+*  expire date: Dec 18 23:16:39 2020 GMT
+*  subjectAltName: host "api.service.bcdev" matched cert's "*.service.bcdev"
+*  issuer: C=AU; ST=New South Wales; L=Sydney; O=BigCommerce Pty. Ltd.; OU=Technical Operations; CN=BigCommerce Internal Root CA; emailAddress=serverops@bigcommerce.com
+*  SSL certificate verify ok.
+```
+- Request and response
+```text
+> GET /stores/e87g0h02r5/v3/catalog/products/111/modifiers/116/values HTTP/1.1
+Host: api.service.bcdev
+User-Agent: GuzzleHttp/7
+X-Auth-Client: acxu0p8rfh15m8n0fn4obuxmb52tgwk
+X-Auth-Token: cyfbhepc71mns8xnykv86wruxzh45wi
+Accept: application/json
+
+< HTTP/1.1 200 OK
+< Date: Sun, 13 Sep 2020 23:03:21 GMT
+< bc-store-id: 10006319
+< X-Request-ID: 2d5e48799e4ed3776125157c2463ef3e
+< bc-auth-client: acxu0p8rfh15m8n0fn4obuxmb52tgwk
+< X-Rate-Limit-Requests-Left: 447
+< X-Rate-Limit-Time-Reset-Ms: 20649
+< X-Rate-Limit-Requests-Quota: 450
+< X-Rate-Limit-Time-Window-Ms: 30000
+< Transfer-Encoding: chunked
+< Content-Type: application/json
+
+```
