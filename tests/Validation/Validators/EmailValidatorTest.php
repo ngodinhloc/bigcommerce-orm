@@ -25,6 +25,8 @@ class EmailValidatorTest extends BaseTestCase
     /**
      * @covers \Bigcommerce\ORM\Validation\Validators\EmailValidator::__construct
      * @covers \Bigcommerce\ORM\Validation\Validators\EmailValidator::validate
+     * @covers \Bigcommerce\ORM\Validation\Validators\EmailValidator::setMapper
+     * @covers \Bigcommerce\ORM\Validation\Validators\EmailValidator::getMapper
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
