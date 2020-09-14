@@ -74,10 +74,10 @@ class QueryBuilder
 
     /**
      * @param string $field
-     * @param string $value
+     * @param mixed $value
      * @return \Bigcommerce\ORM\QueryBuilder
      */
-    public function whereMin(string $field, string $value)
+    public function whereMin(string $field, $value)
     {
         $this->query["$field:min"] = $value;
 
@@ -86,10 +86,10 @@ class QueryBuilder
 
     /**
      * @param string $field
-     * @param string $value
+     * @param mixed $value
      * @return \Bigcommerce\ORM\QueryBuilder
      */
-    public function whereMax(string $field, string $value)
+    public function whereMax(string $field, $value)
     {
         $this->query["$field:max"] = $value;
 

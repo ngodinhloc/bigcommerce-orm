@@ -40,6 +40,23 @@ try {
     /** @var \Bigcommerce\ORM\Entities\ProductModifierValue $modifierValue103 */
     echo $modifierValue103->getId() . PHP_EOL;
 
+    /** update product modifier value: 103 */
+    $modifierValue103->setLabel('XS');
+    $entityManager->save($modifierValue103);
+    echo $modifierValue103->getLabel() . PHP_EOL;
+
+    /** create a new modifier value: product_id = 111, option_id = 116 */
+    $newValue = new \Bigcommerce\ORM\Entities\ProductModifierValue();
+    $newValue
+        ->setProductId(111)
+        ->setModifierId(116)
+        ->setLabel('S')
+        ->setSortOrder(1)
+        ->setIsDefault(false)
+        ->setAdjusters([]);
+    $entityManager->save($newValue);
+    echo $newValue->getId();
+
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

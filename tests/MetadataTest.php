@@ -49,7 +49,9 @@ class MetadataTest extends BaseTestCase
             ->setCustomisedFields([])
             ->setReadonlyFields([])
             ->setAutoLoadFields([])
-            ->setRequiredFields([]);
+            ->setRequiredFields([])
+            ->setInResultFields([])
+            ->setParamFields([]);
         $this->assertEquals($bigObject, $this->metadata->getResource());
         $this->assertEquals([], $this->metadata->getRelationFields());
         $this->assertEquals([], $this->metadata->getUploadFields());
@@ -59,5 +61,7 @@ class MetadataTest extends BaseTestCase
         $this->assertEquals([], $this->metadata->getReadonlyFields());
         $this->assertEquals([], $this->metadata->getAutoLoadFields());
         $this->assertEquals([], $this->metadata->getRequiredFields());
+        $this->assertEquals([], $this->metadata->getInResultFields());
+        $this->assertEquals([], $this->metadata->getParamFields());
     }
 }

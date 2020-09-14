@@ -27,7 +27,7 @@ class ProductModifierValue extends Entity
 
     /**
      * @var string
-     * @BC\Field(name="label", readonly=true)
+     * @BC\Field(name="label")
      */
     protected $label;
 
@@ -53,7 +53,7 @@ class ProductModifierValue extends Entity
      * @var array
      * @BC\Field(name="adjusters")
      */
-    protected $adjusters;
+    protected $adjusters = [];
 
     /**
      * @return int
