@@ -34,7 +34,7 @@ class Customer extends Entity
     /**
      * @var string
      * @BC\Field(name="email")
-     * @BC\Email
+     * @BC\Email(validate=true)
      */
     protected $email;
 

@@ -10,6 +10,7 @@ use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductModifier;
 use Bigcommerce\ORM\Entities\ProductModifierValue;
 use Bigcommerce\ORM\Entities\ProductReview;
+use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\Metadata;
@@ -53,37 +54,56 @@ class MapperTest extends BaseTestCase
         $this->assertEquals('/customers', $classAnnotation->path);
     }
 
-    public function getResourcePath()
+    public function testResourcePath()
     {
         $path = $this->mapper->getResourcePath($this->customer);
         $this->assertEquals('/customers', $path);
-
-        $review = new ProductReview();
-        $this->expectException(MapperException::class);
-        $this->expectExceptionMessage(sprintf(MapperException::MSG_MISSING_PATH_PARAMS, '/catalogs/products/{product_id}/reviews', 'product_id'));
     }
 
-    public function getResourcePath2()
+    public function testResourcePath2()
     {
         $value = new ProductModifierValue();
         $value->setProductId(111);
-        $path = $this->mapper->getResourcePath($value);
         $this->expectException(MapperException::class);
-        $this->expectExceptionMessage(sprintf(MapperException::MSG_PATH_PARAMS_REQUIRED, '/catalogs/products/{product_id}/modifiers/{option_id}/values'));
+        $path = $this->mapper->getResourcePath($value);
     }
 
-    public function getResourcePath3()
+    public function testResourcePath3()
     {
         $review = new ProductReview();
         $review->setProductId(111);
         $path = $this->mapper->getResourcePath($review);
-        $this->assertEquals('/catalogs/products/111/reviews', $path);
+        $this->assertEquals('/catalog/products/111/reviews', $path);
     }
 
     public function testPatch()
     {
         $product = new Product();
-        $product = $this->mapper->patch($product, ['name' => 'Product Name', 'type' => 'physic']);
+        $data = [
+            'name' => 'Product Name',
+            'type' => 'physic',
+            'primary_image' => [
+                "id" => 372,
+                "product_id" => 111,
+                "is_thumbnail" => true,
+                "sort_order" => 1,
+                "description" => "",
+                "image_file" => "lamp.jpg",
+            ],
+            'images' => [
+                [
+                    "id" => 372,
+                    "product_id" => 111,
+                    "is_thumbnail" => false,
+                    "sort_order" => 1,
+                    "description" => "",
+                    "image_file" => "lamp.jpg",
+                ],
+            ]
+        ];
+
+        /** @var Product $product */
+        $product = $this->mapper->patch($product, $data);
         $this->assertTrue($product->isPatched());
 
         $metadata = $product->getMetadata();
@@ -101,6 +121,9 @@ class MapperTest extends BaseTestCase
         $this->assertEquals(2, count($autoLoadFields));
         $this->assertEquals(1, count($requiredFields));
         $this->assertEquals(3, count($readonlyFields));
+
+        $primaryImage = $product->getPrimaryImage();
+        $this->assertEquals('lamp.jpg', $primaryImage->getImageFile());
 
         $modifier = new ProductModifier();
         $modifier = $this->mapper->patch($modifier, ['name' => 'Modifier Name']);
@@ -141,7 +164,8 @@ class MapperTest extends BaseTestCase
         $this->assertEquals($expected, $data);
     }
 
-    public function checkNoneReadOnlyData(){
+    public function testCheckNoneReadOnlyData()
+    {
         $expected = [
             'name' => 'name',
             'display_name' => 'display name',
@@ -153,5 +177,98 @@ class MapperTest extends BaseTestCase
 
         $check = $this->mapper->checkNoneReadonlyData($expected);
         $this->assertTrue($check);
+    }
+
+    public function testCheckRequiredValidations()
+    {
+        $customer = new Customer();
+        $customer->setEmail('kenngo');
+        $check = $this->mapper->checkRequiredValidations($customer);
+        $expected = [
+            'email' => 'email: Bigcommerce\ORM\Annotations\Email'
+        ];
+
+        $this->assertEquals($expected, $check);
+    }
+
+    public function testToArray()
+    {
+        $modifier = new ProductModifier();
+        $modifier
+            ->setName('Name')
+            ->setType('file')
+            ->setDisplayName('Display Name');
+        $expected = [
+            'product_id' => null,
+            'name' => 'Name',
+            'display_name' => 'Display Name',
+            'type' => 'file',
+            'required' => false,
+            'sort_order' => null,
+            'config' => null,
+            'id' => null
+        ];
+        $array = $this->mapper->toArray($modifier);
+        $this->assertEquals($expected, $array);
+
+        $expected = [
+            'productId' => null,
+            'name' => 'Name',
+            'displayName' => 'Display Name',
+            'type' => 'file',
+            'required' => false,
+            'sortOrder' => null,
+            'config' => null,
+            'id' => null
+        ];
+
+        $array = $this->mapper->toArray($modifier, Mapper::KEY_BY_PROPERTY_NAME);
+        $this->assertEquals($expected, $array);
+    }
+
+    public function testGetPropertyValueByName()
+    {
+        $modifier = new ProductModifier();
+        $modifier
+            ->setName('Name')
+            ->setType('file')
+            ->setDisplayName('Display Name');
+        $value = $this->mapper->getPropertyValueByName($modifier, 'name');
+        $this->assertEquals('Name', $value);
+    }
+
+    public function testGetPropertyValueByFieldName()
+    {
+        $modifier = new ProductModifier();
+        $modifier
+            ->setName('Name')
+            ->setType('file')
+            ->setDisplayName('Display Name');
+        $value = $this->mapper->getPropertyValueByFieldName($modifier, 'display_name');
+        $this->assertEquals('Display Name', $value);
+    }
+
+    public function testObject()
+    {
+        $object = $this->mapper->object(Customer::class);
+        $this->assertInstanceOf(Customer::class, $object);
+    }
+
+    public function testCheckEntity()
+    {
+        $this->expectException(EntityException::class);
+        $this->mapper->checkEntity(null);
+    }
+
+    public function testCheckClass()
+    {
+        $this->expectException(EntityException::class);
+        $this->mapper->checkClass('');
+    }
+
+    public function testCheckId()
+    {
+        $this->expectException(EntityException::class);
+        $this->mapper->checkId(0);
     }
 }

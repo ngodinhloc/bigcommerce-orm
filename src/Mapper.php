@@ -77,6 +77,10 @@ class Mapper
      */
     public function getResourcePath(Entity $entity = null)
     {
+        if ($entity->isPatched() !== true) {
+            $entity = $this->patch($entity, [], true);
+        }
+
         $resource = $entity->getMetadata()->getResource();
         $path = $resource->path;
         $paramFields = $entity->getMetadata()->getParamFields();
@@ -156,13 +160,13 @@ class Mapper
             $entity = $this->patch($entity, [], true);
         }
 
-        if (empty($entity->getMetadata()->getRequiredFields())) {
+        if (empty($requiredFields = $entity->getMetadata()->getRequiredFields())) {
             return true;
         }
 
         $missingFields = [];
         /* @var \ReflectionProperty $property */
-        foreach ($entity->getMetadata()->getRequiredFields() as $fieldName => $property) {
+        foreach ($requiredFields as $fieldName => $property) {
             if ($this->getPropertyValue($entity, $property) === null) {
                 $missingFields[$fieldName] = $property->name;
             }
@@ -232,13 +236,13 @@ class Mapper
             $entity = $this->patch($entity, [], true);
         }
 
-        if (empty($entity->getMetadata()->getValidationProperties())) {
+        if (empty($validationProperties = $entity->getMetadata()->getValidationProperties())) {
             return true;
         }
 
         $validationRules = [];
         /* @var \ReflectionProperty $property */
-        foreach ($entity->getMetadata()->getValidationProperties() as $propertyName => $rule) {
+        foreach ($validationProperties as $propertyName => $rule) {
             $property = $rule['property'];
             $annotation = $rule['annotation'];
             if ($annotation instanceof ValidationInterface) {
@@ -440,10 +444,10 @@ class Mapper
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entity $entity
+     * @param \Bigcommerce\ORM\Entity|null $entity
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function checkEntity(Entity $entity)
+    public function checkEntity(Entity $entity = null)
     {
         if (!$entity instanceof Entity) {
             throw new EntityException(EntityException::MSG_NOT_ENTITY_INSTANCE);
@@ -451,10 +455,10 @@ class Mapper
     }
 
     /**
-     * @param string $className
+     * @param string|null $className
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function checkClass(string $className)
+    public function checkClass(string $className = null)
     {
         if (empty($className)) {
             throw new EntityException(EntityException::MSG_EMPTY_CLASS_NAME);
@@ -462,10 +466,10 @@ class Mapper
     }
 
     /**
-     * @param int $id
+     * @param int|null $id
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function checkId(int $id)
+    public function checkId(int $id = null)
     {
         if (empty($id)) {
             throw new EntityException(EntityException::MSG_ID_IS_NOT_PROVIDED);
