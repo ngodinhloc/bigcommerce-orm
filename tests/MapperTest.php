@@ -4,8 +4,15 @@ declare(strict_types=1);
 namespace Tests;
 
 use Bigcommerce\ORM\Annotations\Resource;
+use Bigcommerce\ORM\Entities\Address;
 use Bigcommerce\ORM\Entities\Customer;
+use Bigcommerce\ORM\Entities\Product;
+use Bigcommerce\ORM\Entities\ProductModifier;
+use Bigcommerce\ORM\Entities\ProductModifierValue;
+use Bigcommerce\ORM\Entities\ProductReview;
+use Bigcommerce\ORM\Exceptions\MapperException;
 use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Metadata;
 
 class MapperTest extends BaseTestCase
 {
@@ -23,10 +30,13 @@ class MapperTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bigcommerce\ORM\Mapper::__construct
      * @covers \Bigcommerce\ORM\Mapper::getObjectType
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function testGetObjectType(){
+    public function testGetObjectType()
+    {
+        $this->mapper = new Mapper();
         $objectType = $this->mapper->getObjectType($this->customer);
         $this->assertEquals('Customer', $objectType);
     }
@@ -35,10 +45,113 @@ class MapperTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Mapper::getClassAnnotation
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function testGetClassAnnotation(){
+    public function testGetClassAnnotation()
+    {
         $classAnnotation = $this->mapper->getClassAnnotation($this->customer);
         $this->assertInstanceOf(Resource::class, $classAnnotation);
         $this->assertEquals('Customer', $classAnnotation->name);
         $this->assertEquals('/customers', $classAnnotation->path);
+    }
+
+    public function getResourcePath()
+    {
+        $path = $this->mapper->getResourcePath($this->customer);
+        $this->assertEquals('/customers', $path);
+
+        $review = new ProductReview();
+        $this->expectException(MapperException::class);
+        $this->expectExceptionMessage(sprintf(MapperException::MSG_MISSING_PATH_PARAMS, '/catalogs/products/{product_id}/reviews', 'product_id'));
+    }
+
+    public function getResourcePath2()
+    {
+        $value = new ProductModifierValue();
+        $value->setProductId(111);
+        $path = $this->mapper->getResourcePath($value);
+        $this->expectException(MapperException::class);
+        $this->expectExceptionMessage(sprintf(MapperException::MSG_PATH_PARAMS_REQUIRED, '/catalogs/products/{product_id}/modifiers/{option_id}/values'));
+    }
+
+    public function getResourcePath3()
+    {
+        $review = new ProductReview();
+        $review->setProductId(111);
+        $path = $this->mapper->getResourcePath($review);
+        $this->assertEquals('/catalogs/products/111/reviews', $path);
+    }
+
+    public function testPatch()
+    {
+        $product = new Product();
+        $product = $this->mapper->patch($product, ['name' => 'Product Name', 'type' => 'physic']);
+        $this->assertTrue($product->isPatched());
+
+        $metadata = $product->getMetadata();
+        $resource = $metadata->getResource();
+        $relationFields = $metadata->getRelationFields();
+        $includeFields = $metadata->getIncludeFields();
+        $autoLoadFields = $metadata->getAutoLoadFields();
+        $requiredFields = $metadata->getRequiredFields();
+        $readonlyFields = $metadata->getReadonlyFields();
+
+        $this->assertInstanceOf(Metadata::class, $metadata);
+        $this->assertInstanceOf(Resource::class, $resource);
+        $this->assertEquals(4, count($relationFields));
+        $this->assertEquals(2, count($includeFields));
+        $this->assertEquals(2, count($autoLoadFields));
+        $this->assertEquals(1, count($requiredFields));
+        $this->assertEquals(3, count($readonlyFields));
+
+        $modifier = new ProductModifier();
+        $modifier = $this->mapper->patch($modifier, ['name' => 'Modifier Name']);
+        $this->assertTrue($modifier->isPatched());
+    }
+
+    public function testCheckRequiredFields()
+    {
+        $product = new Product();
+        $check = $this->mapper->checkRequiredFields($product);
+        $this->assertEquals(['name' => 'name'], $check);
+
+        $address = new Address();
+        $check = $this->mapper->checkRequiredFields($address);
+        $this->assertEquals(true, $check);
+    }
+
+    public function testGetNoneReadonlyData()
+    {
+        $modifier = new ProductModifier();
+        $modifier
+            ->setProductId(111)
+            ->setSortOrder(2)
+            ->setName('name')
+            ->setDisplayName('display name')
+            ->setType('type')
+            ->setConfig(['sku' => 111]);
+        $expected = [
+            'name' => 'name',
+            'display_name' => 'display name',
+            'type' => 'type',
+            'required' => false,
+            'sort_order' => 2,
+            'config' => ['sku' => 111]
+        ];
+
+        $data = $this->mapper->getNoneReadonlyData($modifier, []);
+        $this->assertEquals($expected, $data);
+    }
+
+    public function checkNoneReadOnlyData(){
+        $expected = [
+            'name' => 'name',
+            'display_name' => 'display name',
+            'type' => 'type',
+            'required' => false,
+            'sort_order' => 2,
+            'config' => ['sku' => 111]
+        ];
+
+        $check = $this->mapper->checkNoneReadonlyData($expected);
+        $this->assertTrue($check);
     }
 }

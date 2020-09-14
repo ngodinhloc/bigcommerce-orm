@@ -144,34 +144,6 @@ class Mapper
     }
 
     /**
-     * Patch object properties with data array
-     *
-     * @param \Bigcommerce\ORM\Entity|null $entity
-     * @return array
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function getAutoIncludeFields(Entity $entity = null)
-    {
-        $reflectionClass = $this->reflect($entity);
-        $properties = $reflectionClass->getProperties();
-
-        $includes = [];
-        foreach ($properties as $property) {
-            $annotations = $this->reader->getPropertyAnnotations($property);
-            foreach ($annotations as $annotation) {
-                if ($annotation instanceof RelationInterface) {
-                    if ($annotation->auto === true && $annotation->where == 'include') {
-                        $includes[] = $annotation->name;
-                    }
-                }
-            }
-        }
-
-
-        return $includes;
-    }
-
-    /**
      * Check for entity required fields
      *
      * @param \Bigcommerce\ORM\Entity|null $entity

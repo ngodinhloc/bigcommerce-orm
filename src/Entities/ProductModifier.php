@@ -21,7 +21,7 @@ class ProductModifier extends Entity
 
     /**
      * @var string
-     * @BC\Field(name="name", readonly=true)
+     * @BC\Field(name="name")
      */
     protected $name;
 
