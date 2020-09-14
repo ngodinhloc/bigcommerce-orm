@@ -40,7 +40,7 @@ class FileCachePoolTest extends BaseTestCase
         $item1 = new FileCacheItem($data1);
         $item2 = new FileCacheItem($data2);
         $this->items = [$item1, $item2];
-        $cacheDir = __DIR__ . '/caches';
+        $cacheDir = dirname(dirname(__DIR__)) . '/assets/caches';
         $this->cache = new FileCachePool($cacheDir);
     }
 

@@ -362,19 +362,7 @@ class EntityManager
             throw new EntityException(EntityException::MSG_EMPTY_NONE_READONLY_DATA);
         }
 
-        $files = [];
-        if (!empty($uploadFields = $entity->getMetadata()->getUploadFields())) {
-            foreach ($uploadFields as $fieldName => $property) {
-                $location = $this->mapper->getPropertyValue($entity, $property);
-                if (!empty($location)) {
-                    if (!file_exists($location)) {
-                        throw new EntityException(EntityException::MSG_INVALID_UPLOAD_FILE . $location);
-                    }
-                    $files[$fieldName] = $location;
-                }
-            }
-        }
-
+        $files = $this->getUploadFiles($entity);
         $result = $this->client->create($path, $data, $files);
         if (!empty($result)) {
             $this->mapper->patch($entity, $result, true);
@@ -400,6 +388,7 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
     private function updateEntity(Entity $entity, array $data, string $path)
     {
@@ -408,7 +397,8 @@ class EntityManager
         }
 
         $path = $path . "/{$entity->getId()}";
-        $result = $this->client->update($path, $data);
+        $files = $this->getUploadFiles($entity);
+        $result = $this->client->update($path, $data, $files);
         if (!empty($result)) {
             $this->mapper->patch($entity, $result, true);
             $this->mapper->setPropertyValueByName($entity, 'isNew', false);
@@ -423,6 +413,29 @@ class EntityManager
         }
 
         return false;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entity $entity
+     * @return array
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     */
+    private function getUploadFiles(Entity $entity)
+    {
+        $files = [];
+        if (!empty($uploadFields = $entity->getMetadata()->getUploadFields())) {
+            foreach ($uploadFields as $fieldName => $property) {
+                $location = $this->mapper->getPropertyValue($entity, $property);
+                if (!empty($location)) {
+                    if (!file_exists($location)) {
+                        throw new EntityException(EntityException::MSG_INVALID_UPLOAD_FILE . $location);
+                    }
+                    $files[$fieldName] = $location;
+                }
+            }
+        }
+
+        return $files;
     }
 
     /**

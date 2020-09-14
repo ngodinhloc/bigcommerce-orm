@@ -46,14 +46,14 @@ class Customer extends Entity
 
     /**
      * @var string
-     * @BC\Field(name="date_created")
+     * @BC\Field(name="date_created", readonly=true)
      * @BC\Date()
      */
     protected $dateCreated;
 
     /**
      * @var string
-     * @BC\Field(name="date_modified")
+     * @BC\Field(name="date_modified", readonly=true)
      * @BC\Date()
      */
     protected $dateModified;

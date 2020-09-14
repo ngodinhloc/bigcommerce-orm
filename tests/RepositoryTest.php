@@ -6,6 +6,7 @@ namespace Tests;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\EntityManager;
 use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Repository;
 
 class RepositoryTest extends BaseTestCase
@@ -25,6 +26,7 @@ class RepositoryTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bigcommerce\ORM\Repository::__construct
      * @covers \Bigcommerce\ORM\Repository::setEntityManager
      * @covers \Bigcommerce\ORM\Repository::setClassName
      * @covers \Bigcommerce\ORM\Repository::getEntityManager
@@ -32,6 +34,7 @@ class RepositoryTest extends BaseTestCase
      */
     public function testSettersAndGetters()
     {
+        $this->repository = new Repository($this->entityManager);
         $this->repository
             ->setClassName(Customer::class)
             ->setEntityManager($this->entityManager);
@@ -65,6 +68,24 @@ class RepositoryTest extends BaseTestCase
         $this->assertEquals([], $findAll);
     }
 
+    public function testFindBy(){
+        $findBy = $this->repository->findBy(null, $this->getQueryBuilder(), false);
+        $this->assertEquals([], $findBy);
+    }
+
+    public function testFind(){
+        $id = 1;
+        $customer = $this->repository->find($id, null, false);
+        $this->assertInstanceOf(Customer::class, $customer);
+        $this->assertEquals(1, $customer->getId());
+    }
+
+    private function getQueryBuilder(){
+        $queryBuilder = new QueryBuilder();
+        $queryBuilder->whereEqual('id',1);
+
+        return $queryBuilder;
+    }
     /**
      * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
      */
@@ -74,6 +95,10 @@ class RepositoryTest extends BaseTestCase
         $entityManager->count(Customer::class, null)->willReturn(2);
         $entityManager->getMapper()->willReturn(new Mapper());
         $entityManager->findAll(Customer::class, null, null, false)->willReturn([]);
+        $entityManager->findBy(Customer::class, null, $this->getQueryBuilder(), false)->willReturn([]);
+        $customer = new Customer();
+        $customer->setId(1);
+        $entityManager->find(Customer::class, 1, null, false)->willReturn($customer);
 
         return $entityManager->reveal();
     }

@@ -121,7 +121,7 @@ class Repository
     }
 
     /**
-     * @param \Bigcommerce\ORM\EntityManager $entityManager entity manager
+     * @param \Bigcommerce\ORM\EntityManager|null $entityManager entity manager
      * @return \Bigcommerce\ORM\Repository
      */
     public function setEntityManager(EntityManager $entityManager = null)

@@ -5,9 +5,12 @@ namespace Tests;
 
 use Bigcommerce\ORM\Client\Client;
 use Bigcommerce\ORM\Entities\Customer;
+use Bigcommerce\ORM\Entities\Product;
+use Bigcommerce\ORM\Entities\ProductImage;
 use Bigcommerce\ORM\EntityManager;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\QueryBuilder;
+use Bigcommerce\ORM\Repository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class EntityManagerTest extends BaseTestCase
@@ -43,6 +46,7 @@ class EntityManagerTest extends BaseTestCase
      */
     public function testSettersAndGetters()
     {
+        $this->entityManager = new EntityManager($this->client, $this->mapper, $this->dispatcher);
         $this->entityManager
             ->setClient($this->client)
             ->setMapper($this->mapper)
@@ -118,10 +122,102 @@ class EntityManagerTest extends BaseTestCase
         $class = Customer::class;
         $pathParams = null;
         $expectedId = 1;
-        $customer = $this->entityManager->find($class, $expectedId, $pathParams, false);
+        $customer = $this->entityManager->find($class, $expectedId, $pathParams, true);
 
         $this->assertInstanceOf(Customer::class, $customer);
         $this->assertEquals($expectedId, $customer->getId());
+    }
+
+    public function testFindProduct()
+    {
+        /** @var Product $product */
+        $product = $this->entityManager->find(Product::class, 1, null, true);
+        $this->assertInstanceOf(Product::class, $product);
+        $this->assertEquals(1, $product->getId());
+        $primaryImage = $product->getPrimaryImage();
+        $this->assertInstanceOf(ProductImage::class, $primaryImage);
+        $images = $product->getImages();
+        $this->assertEquals(1, count($images));
+    }
+
+    public function testCreate()
+    {
+        $customer = $this->getCustomer();
+        $this->entityManager->save($customer);
+        $this->assertEquals(1, $customer->getId());
+    }
+
+    public function testUpdate()
+    {
+        $customer = $this->getCustomer();
+        $customer->setId(1);
+        $data = [
+            'company' => 'BC',
+            'first_name' => 'Ken',
+            'last_name' => 'Ngo',
+            'email' => 'ken.ngo@bigcommmerce.com',
+            'phone' => '0123456789'
+        ];
+        $this->entityManager->update($customer, $data);
+        $this->assertEquals(1, $customer->getId());
+    }
+
+    public function testUpdateWithData()
+    {
+        $file = __DIR__ . '/assets/images/lamp.jpg';
+        $image = new ProductImage();
+        $image->setProductId(111)->setId(1)->setImageFile($file);
+        $this->entityManager->save($image);
+        $this->assertEquals(1, $image->getId());
+    }
+
+    public function testNew()
+    {
+        /** @var Customer $customer */
+        $customer = $this->entityManager->new(Customer::class, $data = [
+            'company' => 'BC',
+            'first_name' => 'Ken',
+            'last_name' => 'Ngo',
+            'email' => 'ken.ngo@bigcommmerce.com',
+            'phone' => '0123456789'
+        ]);
+        $this->assertInstanceOf(Customer::class, $customer);
+        $this->assertEquals('BC', $customer->getCompany());
+    }
+
+    public function testPatch()
+    {
+        $customer = new Customer();
+        $data = [
+            'company' => 'BC',
+            'first_name' => 'Ken',
+            'last_name' => 'Ngo',
+            'email' => 'ken.ngo@bigcommmerce.com',
+            'phone' => '0123456789'
+        ];
+        $customer = $this->entityManager->patch($customer, $data);
+        $this->assertEquals('BC', $customer->getCompany());
+    }
+
+    public function testToArray()
+    {
+        $customer = new Customer();
+        $data = [
+            'company' => 'BC',
+            'first_name' => 'Ken',
+            'last_name' => 'Ngo',
+            'email' => 'ken.ngo@bigcommmerce.com',
+            'phone' => '0123456789'
+        ];
+        $customer = $this->entityManager->patch($customer, $data);
+        $array = $this->entityManager->toArray($customer);
+        $this->assertArrayHasKey('company', $array);
+    }
+
+    public function testGetRepository()
+    {
+        $repo = $this->entityManager->getRepository(Customer::class);
+        $this->assertInstanceOf(Repository::class, $repo);
     }
 
     /**
@@ -141,13 +237,104 @@ class EntityManagerTest extends BaseTestCase
         $findPath = '/customers/1?include=addresses';
         $findResult = ['id' => 1];
 
+        $savePath = '/customers';
+        $data = [
+            'company' => 'BC',
+            'first_name' => 'Ken',
+            'last_name' => 'Ngo',
+            'email' => 'ken.ngo@bigcommmerce.com',
+            'phone' => '0123456789'
+        ];
+        $createResult = [
+            'id' => 1,
+            'company' => 'BC',
+            'first_name' => 'Ken',
+            'last_name' => 'Ngo',
+            'email' => 'ken.ngo@bigcommmerce.com',
+            'phone' => '0123456789'
+        ];
+        $updatePath = '/customers/1';
+
+        $findProduct = '/catalog/products/1?include=primary_image,images';
+        $findReview = '/catalog/products/1/reviews?product_id:in=1';
+
+        $updateImage = '/catalog/products/111/images/1';
+
+        $file = __DIR__ . '/assets/images/lamp.jpg';
+        $files =  ["image_file" => $file];
+        $imageData = [
+            "is_thumbnail" => false,
+            "sort_order" => null,
+            "description" => null,
+            "image_file" => $file,
+            "image_url" => null,
+            "url_zoom" => null,
+            "url_standard" => null,
+            "url_thumbnail" => null,
+            "url_tiny" => null,
+            "date_modified" => null
+        ];
+        $reviews = [
+            [
+                'product_id' => 1,
+                'title' => 'Title',
+                'text' => 'some text'
+            ],
+        ];
+
         $client = $this->prophet->prophesize(Client::class);
         $client->count($countPath)->willReturn($countReturn);
         $client->findAll($findAllPath)->willReturn($findAllResult);
         $client->findBy($findByPath)->willReturn($findByResult);
+        $client->findBy($findReview)->willReturn($reviews);
         $client->find($findPath)->willReturn($findResult);
+        $client->find($findProduct)->willReturn($this->getProductData());
+        $client->create($savePath, $data, [])->willReturn($createResult);
+        $client->update($updatePath, $data, [])->willReturn($createResult);
+        $client->update($updateImage, $imageData, $files)->willReturn(['id' => 1]);
 
         return $client->reveal();
+    }
+
+    private function getProductData()
+    {
+        return [
+            'id' => 1,
+            'name' => 'Product Name',
+            'type' => 'physic',
+            'primary_image' => [
+                "id" => 372,
+                "product_id" => 111,
+                "is_thumbnail" => true,
+                "sort_order" => 1,
+                "description" => "",
+                "image_file" => "lamp.jpg",
+            ],
+            'images' => [
+                [
+                    "id" => 372,
+                    "product_id" => 111,
+                    "is_thumbnail" => false,
+                    "sort_order" => 1,
+                    "description" => "",
+                    "image_file" => "lamp.jpg",
+                ],
+            ]
+        ];
+    }
+
+    private function getCustomer()
+    {
+        $customer = new Customer();
+        $mapper = $this->getMapper();
+        $customer = $mapper->patch($customer, $data = [
+            'company' => 'BC',
+            'first_name' => 'Ken',
+            'last_name' => 'Ngo',
+            'email' => 'ken.ngo@bigcommmerce.com',
+            'phone' => '0123456789'
+        ]);
+        return $customer;
     }
 
     /**
@@ -163,8 +350,6 @@ class EntityManagerTest extends BaseTestCase
      */
     private function getDispatcher()
     {
-        $dispatcher = $this->prophet->prophesize(EventDispatcher::class);
-
-        return $dispatcher->reveal();
+        return new EventDispatcher();
     }
 }
