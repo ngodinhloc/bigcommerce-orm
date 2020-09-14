@@ -161,10 +161,10 @@ class ProductImage extends Entity
     }
 
     /**
-     * @param string $imageFile
+     * @param string|null $imageFile
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setImageFile(string $imageFile): ProductImage
+    public function setImageFile(string $imageFile = null): ProductImage
     {
         $this->imageFile = $imageFile;
         return $this;

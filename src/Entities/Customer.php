@@ -168,10 +168,10 @@ class Customer extends Entity
     }
 
     /**
-     * @param string $dateCreated
+     * @param string|null $dateCreated
      * @return \Bigcommerce\ORM\Entities\Customer
      */
-    public function setDateCreated(string $dateCreated): Customer
+    public function setDateCreated(string $dateCreated = null): Customer
     {
         $this->dateCreated = $dateCreated;
         return $this;
@@ -186,10 +186,10 @@ class Customer extends Entity
     }
 
     /**
-     * @param string $dateModified
+     * @param string|null $dateModified
      * @return \Bigcommerce\ORM\Entities\Customer
      */
-    public function setDateModified(string $dateModified): Customer
+    public function setDateModified(string $dateModified = null): Customer
     {
         $this->dateModified = $dateModified;
         return $this;
