@@ -3,10 +3,16 @@ declare(strict_types=1);
 
 namespace Tests\Client;
 
+use Bigcommerce\ORM\Cache\FileCache\FileCacheItem;
 use Bigcommerce\ORM\Cache\FileCache\FileCachePool;
 use Bigcommerce\ORM\Client\Client;
 use Bigcommerce\ORM\Client\Connection;
+use Bigcommerce\ORM\Client\Exceptions\ClientException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Stream\Stream;
 use Monolog\Logger;
+use Prophecy\Argument;
 use Tests\BaseTestCase;
 
 class ClientTest extends BaseTestCase
@@ -54,9 +60,112 @@ class ClientTest extends BaseTestCase
         $this->assertEquals($this->connection, $this->client->getConnection());
     }
 
+    public function testCount()
+    {
+        $count = $this->client->count('/customers');
+        $this->assertEquals(1, $count);
+    }
+
+    public function testFindAll()
+    {
+        $findAll = $this->client->findAll('/customers');
+        $this->assertEquals(1, count($findAll));
+    }
+
+    public function testFindBy()
+    {
+        $findBy = $this->client->findBy('/customers?id:in=1,2,3');
+        $this->assertEquals(1, count($findBy));
+    }
+
+    public function testFind()
+    {
+        $find = $this->client->find('/customers/1');
+        $this->assertIsArray($find);
+    }
+
+    public function testFindThrowGuzzleException()
+    {
+        $this->expectException(ClientException::class);
+        $this->client->find('/customers/2');
+    }
+
+    public function testFindThrowException()
+    {
+        $this->expectException(ClientException::class);
+        $this->client->find('/customers/3');
+    }
+
+    public function testCreate()
+    {
+        $data = ['id' => 1];
+        $create = $this->client->create('/customers', $data, []);
+        $this->assertIsArray($create);
+    }
+
+    public function testCreateThrowGuzzleException()
+    {
+        $data = ['id' => 1];
+        $this->expectException(ClientException::class);
+        $this->client->create('/customers/2', $data, []);
+    }
+
+    public function testCreateThrowException()
+    {
+        $data = ['id' => 1];
+        $this->expectException(ClientException::class);
+        $this->client->create('/customers/3', $data, []);
+    }
+
+    public function testUpdate()
+    {
+        $data = ['id' => 1];
+        $update = $this->client->update('/customers/1', $data, []);
+        $this->assertIsArray($update);
+    }
+
+    public function testUpdateThrowGuzzleException()
+    {
+        $data = ['id' => 1];
+        $this->expectException(ClientException::class);
+        $this->client->update('/customers/2', $data, []);
+    }
+
+    public function testUpdateThrowException()
+    {
+        $data = ['id' => 1];
+        $this->expectException(ClientException::class);
+        $this->client->update('/customers/3', $data, []);
+    }
+
     private function getConnection()
     {
+        $many = [
+            'data' => [
+                '0' => ['id' => 1]
+            ]
+        ];
+        $headers = ['api_version' => 'v3'];
+        $body = Stream::factory(json_encode($many));
+        $response = new Response(200, $headers, $body);
+        $request = new Request('GET', 'http://www.someurl.com');
+
         $connection = $this->prophet->prophesize(Connection::class);
+        $connection->query('/customers')->willReturn($response);
+        $connection->query('/customers?id:in=1,2,3')->willReturn($response);
+        $connection->query('/customers')->willReturn($response);
+        $connection->query('/customers/1')->willReturn($response);
+        $connection->create('/customers', ['id' => 1], [])->willReturn($response);
+        $connection->update('/customers/1', ['id' => 1], [])->willReturn($response);
+        $guzzleException = new \GuzzleHttp\Exception\ClientException('Guzzle Client Exception', $request, $response);
+        $exception = new \Exception('Exception error');
+
+        $connection->query('/customers/2')->willThrow($guzzleException);
+        $connection->query('/customers/3')->willThrow($exception);
+        $connection->create('/customers/2', ['id' => 1], [])->willThrow($guzzleException);
+        $connection->create('/customers/3', ['id' => 1], [])->willThrow($exception);
+        $connection->update('/customers/2', ['id' => 1], [])->willThrow($guzzleException);
+        $connection->update('/customers/3', ['id' => 1], [])->willThrow($exception);
 
         return $connection->reveal();
     }
@@ -64,7 +173,10 @@ class ClientTest extends BaseTestCase
     private function getCache()
     {
         $cache = $this->prophet->prophesize(FileCachePool::class);
-
+        $cacheItem = new FileCacheItem();
+        $cacheItem->setIsHit(false);
+        $cache->getItem(Argument::any())->willReturn($cacheItem);
+        $cache->save(Argument::any())->willReturn(true);
         return $cache->reveal();
     }
 

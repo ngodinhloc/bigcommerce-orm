@@ -147,7 +147,6 @@ class Connection
 
         if ($this->config instanceof BasicConfig) {
             $this->auth = [$this->config->getUsername(), $this->config->getApiKey()];
-
         }
 
         if ($this->config instanceof AuthConfig) {
