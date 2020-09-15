@@ -31,12 +31,11 @@ class BelongToManyHandlerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::__construct
+     * @covers \Bigcommerce\ORM\Relation\AbstractHandler::__construct
+     * @covers \Bigcommerce\ORM\Relation\AbstractHandler::setEntityManager
+     * @covers \Bigcommerce\ORM\Relation\AbstractHandler::getEntityManager
+     * @covers \Bigcommerce\ORM\Relation\AbstractHandler::getManyRelationValue
      * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::handle
-     * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::setEntityManager
-     * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::getEntityManager
-     * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::getOneRelationValue
-     * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::getManyRelationValue
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException

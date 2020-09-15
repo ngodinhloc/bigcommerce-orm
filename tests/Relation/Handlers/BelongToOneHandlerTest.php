@@ -34,7 +34,8 @@ class BelongToOneHandlerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToOneHandler::__construct
+     * @covers \Bigcommerce\ORM\Relation\AbstractHandler::__construct
+     * @covers \Bigcommerce\ORM\Relation\AbstractHandler::getOneRelationValue
      * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToOneHandler::handle
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException

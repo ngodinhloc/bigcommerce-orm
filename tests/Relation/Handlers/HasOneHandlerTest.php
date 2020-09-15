@@ -37,7 +37,8 @@ class HasOneHandlerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\Relation\Handlers\HasOneHandler::__construct
+     * @covers \Bigcommerce\ORM\Relation\AbstractHandler::__construct
+     * @covers \Bigcommerce\ORM\Relation\AbstractHandler::getOneRelationValue
      * @covers \Bigcommerce\ORM\Relation\Handlers\HasOneHandler::handle
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
