@@ -4,12 +4,28 @@ declare(strict_types=1);
 namespace Tests\Client;
 
 use Bigcommerce\ORM\Client\AuthConfig;
+use Bigcommerce\ORM\Client\Exceptions\ConfigException;
 use Tests\BaseTestCase;
 
 class AuthConfigTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Client\AuthConfig */
     protected $authConfig;
+
+    /**
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::__construct
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     */
+    public function testConstruct()
+    {
+        $authCredentials = [
+            'authToken' => 'authToken',
+            'storeHash' => 'storeHash',
+            'baseUrl' => 'baseUrl'
+        ];
+        $this->expectException(ConfigException::class);
+        $this->authConfig = new AuthConfig($authCredentials);
+    }
 
     /**
      * @covers \Bigcommerce\ORM\Client\AuthConfig::__construct
@@ -34,6 +50,7 @@ class AuthConfigTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getAuthToken
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getClientId
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getBaseUrl
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::isDebug
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      */
     public function testSettersAndGetters()
@@ -63,6 +80,7 @@ class AuthConfigTest extends BaseTestCase
         $this->assertEquals(false, $this->authConfig->isDebug());
 
         $this->authConfig->setDebug(true)
+            ->setTimeout(60)
             ->setProxy('proxy')
             ->setApiVersion('v3')
             ->setContentType('application/x-www-form-urlencoded')
@@ -72,7 +90,7 @@ class AuthConfigTest extends BaseTestCase
             ->setStoreHash('hash')
             ->setBaseUrl('url');
 
-
+        $this->assertEquals(60, $this->authConfig->getTimeout());
         $this->assertEquals(true, $this->authConfig->isDebug());
         $this->assertEquals('proxy', $this->authConfig->getProxy());
         $this->assertEquals('v3', $this->authConfig->getApiVersion());

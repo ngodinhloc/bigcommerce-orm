@@ -27,8 +27,7 @@ class Result
     }
 
     /**
-     * @param string $returnType
-     * @param
+     * @param string|null $returnType
      * @return array|int|bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */

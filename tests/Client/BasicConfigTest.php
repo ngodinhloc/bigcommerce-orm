@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\Client;
 
 use Bigcommerce\ORM\Client\BasicConfig;
+use Bigcommerce\ORM\Client\Exceptions\ConfigException;
 use Tests\BaseTestCase;
 
 class BasicConfigTest extends BaseTestCase
@@ -12,6 +13,20 @@ class BasicConfigTest extends BaseTestCase
     protected $basicConfig;
 
     /**
+     * @covers \Bigcommerce\ORM\Client\BasicConfig::__construct
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigExceptions
+     */
+    public function testConstruct(){
+        $basicCredentials = [
+            'username' => 'username',
+            'apiKey' => 'apiKey'
+        ];
+        $this->expectException(ConfigException::class);
+        $this->basicConfig = new BasicConfig($basicCredentials);
+    }
+
+    /**
+     * @covers \Bigcommerce\ORM\Client\BasicConfig::__construct
      * @covers \Bigcommerce\ORM\Client\BasicConfig::setContentType
      * @covers \Bigcommerce\ORM\Client\BasicConfig::setApiKey
      * @covers \Bigcommerce\ORM\Client\BasicConfig::setUsername
