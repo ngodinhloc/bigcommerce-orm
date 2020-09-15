@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bigcommerce\ORM\Relation;
 
 use Bigcommerce\ORM\EntityManager;
+use Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException;
 
 /**
  * Class AbstractHandler
@@ -17,17 +18,54 @@ abstract class AbstractHandler
     /**
      * AbstractHandler constructor.
      *
-     * @param \Bigcommerce\ORM\EntityManager $entityManager entity manager
+     * @param \Bigcommerce\ORM\EntityManager|null $entityManager entity manager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager = null)
     {
         $this->entityManager = $entityManager;
     }
 
     /**
+     * @param null $value
+     * @return int
+     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     */
+    protected function getOneRelationValue($value = null)
+    {
+        if (is_int($value)) {
+            return $value;
+        }
+
+        throw new HandlerException(HandlerException::ERROR_INVALID_ONE_RELATION_VALUE . json_encode($value));
+    }
+
+    /**
+     * @param null $value
+     * @return array|int[]
+     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     */
+    protected function getManyRelationValue($value = null)
+    {
+        if (is_int($value)) {
+            return [$value];
+        }
+
+        if (is_array($value)) {
+            foreach ($value as $item) {
+                if (!is_int($item)) {
+                    throw new HandlerException(HandlerException::ERROR_INVALID_MANY_RELATION_VALUE . json_encode($item));
+                }
+            }
+            return $value;
+        }
+
+        throw new HandlerException(HandlerException::ERROR_INVALID_MANY_RELATION_VALUE . json_encode($value));
+    }
+
+    /**
      * @return \Bigcommerce\ORM\EntityManager
      */
-    public function getEntityManager(): \Bigcommerce\ORM\EntityManager
+    public function getEntityManager()
     {
         return $this->entityManager;
     }

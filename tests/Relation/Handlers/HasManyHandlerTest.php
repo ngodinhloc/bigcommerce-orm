@@ -3,18 +3,19 @@ declare(strict_types=1);
 
 namespace Tests\Relation\Handlers;
 
-use Bigcommerce\ORM\Annotations\BelongToMany;
-use Bigcommerce\ORM\Entities\Category;
+use Bigcommerce\ORM\Annotations\HasMany;
 use Bigcommerce\ORM\Entities\Product;
+use Bigcommerce\ORM\Entities\ProductReview;
 use Bigcommerce\ORM\EntityManager;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler;
+use Bigcommerce\ORM\Relation\Handlers\HasManyHandler;
 use Tests\BaseTestCase;
 
-class BelongToManyHandlerTest extends BaseTestCase
+class HasManyHandlerTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler */
+    /** @var \Bigcommerce\ORM\Relation\Handlers\HasManyHandler */
     protected $handler;
 
     /** @var \Bigcommerce\ORM\Mapper */
@@ -31,12 +32,8 @@ class BelongToManyHandlerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::__construct
-     * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::handle
-     * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::setEntityManager
-     * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::getEntityManager
-     * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::getOneRelationValue
-     * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::getManyRelationValue
+     * @covers \Bigcommerce\ORM\Relation\Handlers\HasManyHandler::__construct
+     * @covers \Bigcommerce\ORM\Relation\Handlers\HasManyHandler::handle
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
@@ -44,24 +41,22 @@ class BelongToManyHandlerTest extends BaseTestCase
     public function testHandle()
     {
         $entity = new Product();
-        $property = $this->mapper->getProperty($entity, 'categories');
-        $annotation = new BelongToMany([]);
-        $annotation->targetClass = Category::class;
-        $annotation->field = 'categories';
+        $entity->setId(1);
+        $property = $this->mapper->getProperty($entity, 'reviews');
+        $annotation = new HasMany([]);
+        $annotation->targetClass = ProductReview::class;
+        $annotation->field = 'reviews';
         $annotation->targetField = 'id';
 
         $pathParams = null;
         $data = [
-            'categories' => [1, 2, 3]
+            'reviews' => [1, 2, 3]
         ];
 
-        $this->handler = new BelongToManyHandler();
-        $this->handler->setEntityManager($this->entityManager);
-        $this->assertEquals($this->entityManager, $this->handler->getEntityManager());
-
+        $this->handler = new HasManyHandler($this->entityManager);
         $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
-        $categories = $entity->getCategories();
-        $this->assertEquals([], $categories);
+        $reviews = $entity->getReviews();
+        $this->assertEquals([], $reviews);
     }
 
     /**
@@ -74,8 +69,8 @@ class BelongToManyHandlerTest extends BaseTestCase
 
         $queryBuilder = new QueryBuilder();
         $queryBuilder->whereIn('id', [1, 2, 3]);
-        $targetClass = Category::class;
-        $pathParams = null;
+        $targetClass = ProductReview::class;
+        $pathParams = ['id' => 1];
         $auto = false;
         $manager->findBy($targetClass, $pathParams, $queryBuilder, $auto)->willReturn([]);
 

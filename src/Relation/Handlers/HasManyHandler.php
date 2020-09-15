@@ -6,6 +6,7 @@ namespace Bigcommerce\ORM\Relation\Handlers;
 use Bigcommerce\ORM\Entity;
 use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Relation\AbstractHandler;
+use Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException;
 use Bigcommerce\ORM\Relation\RelationHandlerInterface;
 use Bigcommerce\ORM\Relation\RelationInterface;
 
@@ -24,6 +25,7 @@ class HasManyHandler extends AbstractHandler implements RelationHandlerInterface
      * @return void
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
      * @throws \Exception
      */
     public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, array $pathParams = null)
@@ -33,10 +35,7 @@ class HasManyHandler extends AbstractHandler implements RelationHandlerInterface
             return;
         }
 
-        $values = $data[$annotation->field];
-        if (!is_array($values)) {
-            $values = [$values];
-        }
+        $values = $this->getManyRelationValue($data[$annotation->field]);
 
         if (empty($pathParams)) {
             $pathParams = [$annotation->targetField => $entity->getId()];
@@ -47,7 +46,6 @@ class HasManyHandler extends AbstractHandler implements RelationHandlerInterface
         $queryBuilder = new QueryBuilder();
         $queryBuilder->whereIn($annotation->targetField, $values);
         $collections = $this->entityManager->findBy($annotation->targetClass, $pathParams, $queryBuilder, $annotation->auto);
-
         $mapper = $this->entityManager->getMapper();
         $mapper->setPropertyValue($entity, $property, $collections);
     }

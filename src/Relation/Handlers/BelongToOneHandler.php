@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace Bigcommerce\ORM\Relation\Handlers;
 
 use Bigcommerce\ORM\Entity;
-use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Relation\AbstractHandler;
-use Bigcommerce\ORM\Relation\BelongToRelationInterface;
+use Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException;
 use Bigcommerce\ORM\Relation\RelationHandlerInterface;
 use Bigcommerce\ORM\Relation\RelationInterface;
 
@@ -34,22 +33,11 @@ class BelongToOneHandler extends AbstractHandler implements RelationHandlerInter
             return;
         }
 
-        $value = $data[$annotation->field];
-        if (!is_array($value)) {
-            $value = [$value];
-        }
-
-        $mapper = $this->entityManager->getMapper();
-        $queryBuilder = new QueryBuilder();
-        $queryBuilder->whereIn($annotation->targetField, $value);
-
-        $auto = $annotation->auto;
+        $value = $this->getOneRelationValue($data[$annotation->field]);
         /** BelongRelationInterface: force auto = false to prevent the loop (child -> parent -> child) */
-        if ($annotation instanceof BelongToRelationInterface) {
-            $auto = false;
-        }
-
-        $collections = $this->entityManager->findBy($annotation->targetClass, $pathParams, $queryBuilder, $auto);
-        $mapper->setPropertyValue($entity, $property, $collections[0]);
+        $auto = false;
+        $find = $this->entityManager->find($annotation->targetClass, $value, $pathParams, $auto);
+        $mapper = $this->entityManager->getMapper();
+        $mapper->setPropertyValue($entity, $property, $find);
     }
 }

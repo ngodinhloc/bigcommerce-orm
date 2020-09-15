@@ -6,7 +6,7 @@ namespace Bigcommerce\ORM\Relation\Handlers;
 use Bigcommerce\ORM\Entity;
 use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Relation\AbstractHandler;
-use Bigcommerce\ORM\Relation\BelongToRelationInterface;
+use Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException;
 use Bigcommerce\ORM\Relation\RelationHandlerInterface;
 use Bigcommerce\ORM\Relation\RelationInterface;
 
@@ -25,6 +25,7 @@ class BelongToManyHandler extends AbstractHandler implements RelationHandlerInte
      * @return void
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
      * @throws \Exception
      */
     public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, array $pathParams = null)
@@ -34,22 +35,13 @@ class BelongToManyHandler extends AbstractHandler implements RelationHandlerInte
             return;
         }
 
-        $value = $data[$annotation->field];
-        if (!is_array($value)) {
-            $value = [$value];
-        }
-
-        $mapper = $this->entityManager->getMapper();
+        $value = $this->getManyRelationValue($data[$annotation->field]);
+        /** BelongRelationInterface: force auto = false to prevent the loop (child -> parent -> child) */
+        $auto = false;
         $queryBuilder = new QueryBuilder();
         $queryBuilder->whereIn($annotation->targetField, $value);
-
-        $auto = $annotation->auto;
-        /** BelongRelationInterface: force auto = false to prevent the loop (child -> parent -> child) */
-        if ($annotation instanceof BelongToRelationInterface) {
-            $auto = false;
-        }
-
         $collections = $this->entityManager->findBy($annotation->targetClass, $pathParams, $queryBuilder, $auto);
+        $mapper = $this->entityManager->getMapper();
         $mapper->setPropertyValue($entity, $property, $collections);
     }
 }

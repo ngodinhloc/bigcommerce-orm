@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Bigcommerce\ORM\Relation\Handlers;
 
 use Bigcommerce\ORM\Entity;
-use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Relation\AbstractHandler;
+use Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException;
 use Bigcommerce\ORM\Relation\RelationHandlerInterface;
 use Bigcommerce\ORM\Relation\RelationInterface;
 
@@ -33,19 +33,16 @@ class HasOneHandler extends AbstractHandler implements RelationHandlerInterface
             return;
         }
 
-        $value = $data[$annotation->field];
-        if (!is_array($value)) {
-            $value = [$value];
-        }
+        $value = $this->getOneRelationValue($data[$annotation->field]);
 
         if (empty($pathParams)) {
             $pathParams = [$annotation->targetField => $entity->getId()];
+        } else {
+            $pathParams = array_merge($pathParams, [$annotation->targetField => $entity->getId()]);
         }
 
+        $find = $this->entityManager->find($annotation->targetClass, $value, $pathParams, $annotation->auto);
         $mapper = $this->entityManager->getMapper();
-        $queryBuilder = new QueryBuilder();
-        $queryBuilder->whereIn($annotation->targetField, $value);
-        $collections = $this->entityManager->findBy($annotation->targetClass, $pathParams, $queryBuilder, $annotation->auto);
-        $mapper->setPropertyValue($entity, $property, $collections[0]);
+        $mapper->setPropertyValue($entity, $property, $find);
     }
 }
