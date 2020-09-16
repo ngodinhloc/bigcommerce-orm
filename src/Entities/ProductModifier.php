@@ -181,7 +181,7 @@ class ProductModifier extends Entity
      * @param array $config
      * @return \Bigcommerce\ORM\Entities\ProductModifier
      */
-    public function setConfig(array $config): ProductModifier
+    public function setConfig(array $config = null): ProductModifier
     {
         $this->config = $config;
         return $this;
@@ -199,7 +199,7 @@ class ProductModifier extends Entity
      * @param \Bigcommerce\ORM\Entities\ProductModifierValue[] $optionValues
      * @return \Bigcommerce\ORM\Entities\ProductModifier
      */
-    public function setOptionValues(array $optionValues): ProductModifier
+    public function setOptionValues(array $optionValues = null): ProductModifier
     {
         $this->optionValues = $optionValues;
         return $this;

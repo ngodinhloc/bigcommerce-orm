@@ -336,16 +336,16 @@ class Product extends Entity
     /**
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function getPrimaryImage(): \Bigcommerce\ORM\Entities\ProductImage
+    public function getPrimaryImage()
     {
         return $this->primaryImage;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\ProductImage $primaryImage
+     * @param \Bigcommerce\ORM\Entities\ProductImage|null $primaryImage
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setPrimaryImage(\Bigcommerce\ORM\Entities\ProductImage $primaryImage): Product
+    public function setPrimaryImage(ProductImage $primaryImage = null): Product
     {
         $this->primaryImage = $primaryImage;
         return $this;
@@ -363,7 +363,7 @@ class Product extends Entity
      * @param \Bigcommerce\ORM\Entities\ProductImage[] $images
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setImages(array $images): Product
+    public function setImages(array $images = null): Product
     {
         $this->images = $images;
         return $this;

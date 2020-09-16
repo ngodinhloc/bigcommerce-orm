@@ -139,7 +139,7 @@ class ProductModifierValue extends Entity
      * @param mixed $valueData
      * @return \Bigcommerce\ORM\Entities\ProductModifierValue
      */
-    public function setValueData($valueData)
+    public function setValueData($valueData = null)
     {
         $this->valueData = $valueData;
         return $this;
@@ -172,10 +172,10 @@ class ProductModifierValue extends Entity
     }
 
     /**
-     * @param array $adjusters
+     * @param array|null $adjusters
      * @return \Bigcommerce\ORM\Entities\ProductModifierValue
      */
-    public function setAdjusters(array $adjusters): ProductModifierValue
+    public function setAdjusters(array $adjusters = null): ProductModifierValue
     {
         $this->adjusters = $adjusters;
         return $this;
