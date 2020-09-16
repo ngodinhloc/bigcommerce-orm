@@ -60,7 +60,7 @@ $config = new \Bigcommerce\ORM\Configuration($authCredentials);
 $entityManager = $config->configEntityManager();
 ```
 
-@see: [samples/simple_configs.php](./samples/simple_configs.php)
+@see: [samples/config_simple.php](./samples/config_simple.php)
 
 ### Full configs
 ```php
@@ -100,7 +100,7 @@ $config = new \Bigcommerce\ORM\Configuration(
 $entityManager = $config->configEntityManager();
 ```
 
-@see: [samples/full_configs.php](./samples/full_configs.php)
+@see: [samples/config_full.php](./samples/config_full.php)
 
 ### Multiple store managers
 ```php
