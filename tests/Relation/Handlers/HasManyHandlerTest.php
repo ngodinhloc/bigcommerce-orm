@@ -58,6 +58,33 @@ class HasManyHandlerTest extends BaseTestCase
         $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
         $reviews = $entity->getReviews();
         $this->assertEquals([], $reviews);
+
+        $pathParams = ['category_id' => 2];
+        $this->handler = new HasManyHandler($this->entityManager);
+        $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
+        $reviews = $entity->getReviews();
+        $this->assertEquals([], $reviews);
+    }
+
+    public function testHandleEarlyReturn()
+    {
+        $entity = new Product();
+        $entity->setId(1);
+        $property = $this->mapper->getProperty($entity, 'reviews');
+        $annotation = new HasMany([]);
+        $annotation->targetClass = ProductReview::class;
+        $annotation->field = 'reviews';
+        $annotation->targetField = 'id';
+
+        $pathParams = ['category_id' => 2];
+        $data = [
+            'notReviews' => [1, 2, 3]
+        ];
+
+        $this->handler = new HasManyHandler($this->entityManager);
+        $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
+        $reviews = $entity->getReviews();
+        $this->assertNull($reviews);
     }
 
     /**
@@ -72,8 +99,11 @@ class HasManyHandlerTest extends BaseTestCase
         $queryBuilder->whereIn('id', [1, 2, 3]);
         $targetClass = ProductReview::class;
         $pathParams = ['id' => 1];
+        $pathParams2 = ['id' => 1, 'category_id' => 2];
         $auto = false;
         $manager->findBy($targetClass, $pathParams, $queryBuilder, $auto)->willReturn([]);
+        $manager->findBy($targetClass, $pathParams2, $queryBuilder, $auto)->willReturn([]);
+
 
         return $manager->reveal();
     }

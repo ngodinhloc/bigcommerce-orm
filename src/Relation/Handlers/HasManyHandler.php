@@ -37,7 +37,7 @@ class HasManyHandler extends AbstractHandler implements RelationHandlerInterface
 
         $values = $this->getManyRelationValue($data[$annotation->field]);
 
-        if (empty($pathParams)) {
+        if (!is_array($pathParams)) {
             $pathParams = [$annotation->targetField => $entity->getId()];
         } else {
             $pathParams = array_merge($pathParams, [$annotation->targetField => $entity->getId()]);

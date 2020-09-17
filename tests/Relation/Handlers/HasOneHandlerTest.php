@@ -63,6 +63,34 @@ class HasOneHandlerTest extends BaseTestCase
         $primary = $entity->getPrimaryImage();
         $this->assertInstanceOf(ProductImage::class, $primary);
         $this->assertEquals(1, $primary->getId());
+
+        $pathParams = ['category_id' => 2];
+        $this->handler = new HasOneHandler($this->entityManager);
+        $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
+        $primary = $entity->getPrimaryImage();
+        $this->assertInstanceOf(ProductImage::class, $primary);
+        $this->assertEquals(1, $primary->getId());
+    }
+
+    public function testHandleEarlyReturn()
+    {
+        $entity = new Product();
+        $entity->setId(1);
+        $property = $this->mapper->getProperty($entity, 'primaryImage');
+        $annotation = new HasOne([]);
+        $annotation->targetClass = ProductImage::class;
+        $annotation->field = 'primary_id';
+        $annotation->targetField = 'id';
+
+        $pathParams = null;
+        $data = [
+            'not_primary_id' => 1
+        ];
+
+        $this->handler = new HasOneHandler($this->entityManager);
+        $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
+        $primary = $entity->getPrimaryImage();
+        $this->assertNull($primary);
     }
 
     /**
@@ -77,8 +105,10 @@ class HasOneHandlerTest extends BaseTestCase
         $primary = new ProductImage();
         $primary->setId(1);
         $pathParams = ['id' => 1];
+        $pathParams2 = ['id' => 1, 'category_id' => 2];
         $auto = false;
         $manager->find($targetClass, 1, $pathParams, $auto)->willReturn($primary);
+        $manager->find($targetClass, 1, $pathParams2, $auto)->willReturn($primary);
 
         return $manager->reveal();
     }

@@ -10,6 +10,7 @@ use Bigcommerce\ORM\EntityManager;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler;
+use Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException;
 use Tests\BaseTestCase;
 
 class BelongToManyHandlerTest extends BaseTestCase
@@ -61,6 +62,46 @@ class BelongToManyHandlerTest extends BaseTestCase
         $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
         $categories = $entity->getCategories();
         $this->assertEquals([], $categories);
+    }
+
+    public function testHandleThrowException()
+    {
+        $entity = new Product();
+        $property = $this->mapper->getProperty($entity, 'categories');
+        $annotation = new BelongToMany([]);
+        $annotation->targetClass = Category::class;
+        $annotation->field = 'categories';
+        $annotation->targetField = 'id';
+
+        $pathParams = null;
+        $data = [
+            'categories' => [1, 2, 'invalidId']
+        ];
+
+        $this->handler = new BelongToManyHandler();
+        $this->handler->setEntityManager($this->entityManager);
+        $this->expectException(HandlerException::class);
+        $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
+    }
+
+    public function testHandleException()
+    {
+        $entity = new Product();
+        $property = $this->mapper->getProperty($entity, 'categories');
+        $annotation = new BelongToMany([]);
+        $annotation->targetClass = Category::class;
+        $annotation->field = 'categories';
+        $annotation->targetField = 'id';
+
+        $pathParams = null;
+        $data = [
+            'categories' => 'invalidIds'
+        ];
+
+        $this->handler = new BelongToManyHandler();
+        $this->handler->setEntityManager($this->entityManager);
+        $this->expectException(HandlerException::class);
+        $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
     }
 
     /**

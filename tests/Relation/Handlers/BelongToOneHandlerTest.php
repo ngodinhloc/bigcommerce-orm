@@ -3,16 +3,12 @@ declare(strict_types=1);
 
 namespace Tests\Relation\Handlers;
 
-use Bigcommerce\ORM\Annotations\BelongToMany;
 use Bigcommerce\ORM\Annotations\BelongToOne;
 use Bigcommerce\ORM\Entities\Category;
-use Bigcommerce\ORM\Entities\Customer;
-use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\EntityManager;
 use Bigcommerce\ORM\Mapper;
-use Bigcommerce\ORM\QueryBuilder;
-use Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler;
 use Bigcommerce\ORM\Relation\Handlers\BelongToOneHandler;
+use Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException;
 use Tests\BaseTestCase;
 
 class BelongToOneHandlerTest extends BaseTestCase
@@ -59,6 +55,45 @@ class BelongToOneHandlerTest extends BaseTestCase
         $parent = $entity->getParent();
         $this->assertInstanceOf(Category::class, $parent);
         $this->assertEquals(1, $parent->getId());
+    }
+
+    public function testHandleEarlyReturn()
+    {
+        $entity = new Category();
+        $property = $this->mapper->getProperty($entity, 'parent');
+        $annotation = new BelongToOne([]);
+        $annotation->targetClass = Category::class;
+        $annotation->field = 'parent';
+        $annotation->targetField = 'id';
+
+        $pathParams = null;
+        $data = [
+            'notParent' => 'invalidId'
+        ];
+
+        $this->handler = new BelongToOneHandler($this->entityManager);
+        $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
+        $parent = $entity->getParent();
+        $this->assertNull($parent);
+    }
+
+    public function testHandleException()
+    {
+        $entity = new Category();
+        $property = $this->mapper->getProperty($entity, 'parent');
+        $annotation = new BelongToOne([]);
+        $annotation->targetClass = Category::class;
+        $annotation->field = 'parent';
+        $annotation->targetField = 'id';
+
+        $pathParams = null;
+        $data = [
+            'parent' => 'invalidId'
+        ];
+
+        $this->handler = new BelongToOneHandler($this->entityManager);
+        $this->expectException(HandlerException::class);
+        $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
     }
 
     /**
