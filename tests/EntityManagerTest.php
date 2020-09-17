@@ -8,9 +8,11 @@ use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductImage;
 use Bigcommerce\ORM\EntityManager;
+use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Repository;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class EntityManagerTest extends BaseTestCase
@@ -171,6 +173,53 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(1, $image->getId());
     }
 
+    public function testDelete(){
+        $result = $this->entityManager->delete(Customer::class, null, [1,2]);
+        $this->assertTrue($result);
+    }
+
+    public function testBatchCreate(){
+
+        $data = $this->getBatchCreateData();
+        $customers = $this->entityManager->batchCreate(Customer::class, null, $data);
+        $this->assertEquals(2, count($customers));
+    }
+
+    public function testBatchUpdateEmpty(){
+        $data = $this->getBatchCreateData();
+        $customer1 = new Customer();
+        $customer2 = new Customer();
+        $customer1 = $this->mapper->patch($customer1, $data[0], true);
+        $customer2 = $this->mapper->patch($customer2, $data[1], true);
+
+        $result = $this->entityManager->batchUpdate([$customer1, $customer2]);
+        $this->assertEquals(false, $result);
+    }
+
+    public function testBatchUpdateDifferentClass(){
+        $data = $this->getBatchCreateData();
+        $customer1 = new Customer();
+        $customer1 = $this->mapper->patch($customer1, $data[0], true);
+        $product = new Product();
+
+        $this->expectException(EntityException::class);
+        $this->entityManager->batchUpdate([$customer1, $product]);
+    }
+
+
+    public function testBatchUpdate(){
+
+        $data = $this->getBatchReturnedData();
+        $customer1 = new Customer();
+        $customer2 = new Customer();
+        $customer1 = $this->mapper->patch($customer1, $data[0], true);
+        $customer2 = $this->mapper->patch($customer2, $data[1], true);
+
+        $customers = $this->entityManager->batchUpdate([$customer1, $customer2]);
+        $this->assertEquals(2, count($customers));
+    }
+
+
     public function testNew()
     {
         /** @var Customer $customer */
@@ -282,6 +331,8 @@ class EntityManagerTest extends BaseTestCase
             ],
         ];
 
+        $deletePath = '/customers?id:in=1,2';
+
         $client = $this->prophet->prophesize(Client::class);
         $client->count($countPath)->willReturn($countReturn);
         $client->findAll($findAllPath)->willReturn($findAllResult);
@@ -292,9 +343,54 @@ class EntityManagerTest extends BaseTestCase
         $client->create($savePath, $data, [])->willReturn($createResult);
         $client->update($updatePath, $data, [])->willReturn($createResult);
         $client->update($updateImage, $imageData, $files)->willReturn(['id' => 1]);
+        $client->delete($deletePath)->willReturn(true);
+        $client->create($savePath, $this->getBatchCreateData(), null, true)->willReturn($this->getBatchReturnedData());
+        $client->update($savePath, [], null, true)->willReturn([]);
+        $client->update($savePath, $this->getBatchReturnedData(), null, true)->willReturn($this->getBatchReturnedData());
 
         return $client->reveal();
     }
+
+    private function getBatchReturnedData(){
+        return [
+            [
+                'id' => 1,
+                'email' => 'ken7.ngo@bc.com',
+                'first_name' => 'Ken',
+                'last_name' => 'Ngo',
+                'company' => 'BC',
+                'phone' => '123456789'
+            ],
+            [
+                'id' => 2,
+                'email' => 'ken8.ngo@bc.com',
+                'first_name' => 'Ken',
+                'last_name' => 'Ngo',
+                'company' => 'BC',
+                'phone' => '123456789'
+            ]
+        ];
+    }
+
+    private function getBatchCreateData(){
+       return [
+            [
+                'email' => 'ken7.ngo@bc.com',
+                'first_name' => 'Ken',
+                'last_name' => 'Ngo',
+                'company' => 'BC',
+                'phone' => '123456789'
+            ],
+            [
+                'email' => 'ken8.ngo@bc.com',
+                'first_name' => 'Ken',
+                'last_name' => 'Ngo',
+                'company' => 'BC',
+                'phone' => '123456789'
+            ]
+        ];
+    }
+
 
     private function getProductData()
     {

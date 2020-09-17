@@ -247,6 +247,85 @@ class EntityManager
     }
 
     /**
+     * Delete multiple entities
+     * @param string|null $className
+     * @param array|null $pathParams
+     * @param array $ids
+     * @return mixed
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function delete(string $className = null, array $pathParams = null, array $ids = [])
+    {
+        $this->mapper->checkClass($className);
+
+        $object = $this->mapper->object($className);
+        $entity = $this->mapper->patch($object, $pathParams, true);
+        $path = $this->mapper->getResourcePath($entity);
+
+        $queryBuilder = new QueryBuilder();
+        $query = $queryBuilder->whereIn('id', array_values($ids))->getQueryString();
+        return $this->client->delete($path . "?" . $query);
+    }
+
+    /**
+     * Create multiple entities of the same class. Batch create does not upload files
+     * @param string|null $className
+     * @param array|null $pathParams
+     * @param array $items
+     * @return array|false
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function batchCreate(string $className = null, array $pathParams = null, array $items = [])
+    {
+        $this->mapper->checkClass($className);
+
+        $object = $this->mapper->object($className);
+        $entity = $this->mapper->patch($object, $pathParams, true);
+        $path = $this->mapper->getResourcePath($entity);
+
+        $result = $this->client->create($path, $items, null, true);
+        if (!empty($result)) {
+            $entities = [];
+            foreach ($result as $item) {
+                $entities[] = $this->new($className, $item);
+            }
+            return $entities;
+        }
+
+        return false;
+    }
+
+    /**
+     * Update multiple entities of the same class. Batch update does not upload files
+     * @param array|\Bigcommerce\ORM\Entity[] $entities
+     * @param array|null $pathParams
+     * @return array|false
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     */
+    public function batchUpdate(array $entities = null, array $pathParams = null)
+    {
+        $first = current($entities);
+        $className = get_class($first);
+        $first = $this->mapper->patch($first, $pathParams, true);
+        $path = $this->mapper->getResourcePath($first);
+        $data = $this->getBatchUpdateData($className, $entities);
+
+        $result = $this->client->update($path, $data, null, true);
+        if (!empty($result)) {
+            return $this->getUpdatedEntities($entities, $result);
+        }
+
+        return false;
+    }
+
+    /**
      * Create an entity from data
      * @param string|null $class
      * @param array|null $data
@@ -286,6 +365,57 @@ class EntityManager
     public function toArray(Entity $entity, int $key = Mapper::KEY_BY_FIELD_NAME)
     {
         return $this->mapper->toArray($entity, $key);
+    }
+
+    /**
+     * @param string|null $className
+     * @param \Bigcommerce\ORM\Entity[]|null $entities
+     * @return array
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    private function getBatchUpdateData(string $className = null, array &$entities = null)
+    {
+        $data = [];
+        foreach ($entities as $entity) {
+            if ($className != get_class($entity)) {
+                throw new EntityException(EntityException::MSG_DIFFERENT_CLASS_NAME);
+            }
+
+            if (empty($entity->getId())) {
+                continue;
+            }
+
+            $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
+            if ($checkRequiredValidations !== true) {
+                throw new EntityException(EntityException::MSG_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
+            }
+
+            $entities[$entity->getId()] = $entity;
+            $noneReadonlyData = $this->mapper->getNoneReadonlyData($entity);
+            $data[] = array_merge($noneReadonlyData, ['id' => $entity->getId()]);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entity[]|null $entities
+     * @param array|null $result
+     * @return array
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    private function getUpdatedEntities(array $entities = null, array $result = null)
+    {
+        $output = [];
+        foreach ($result as $data) {
+            if (isset($entities[$data['id']])) {
+                $entity = $entities[$data['id']];
+                $output[] = $this->mapper->patch($entity, $data, true);
+            }
+        }
+
+        return $output;
     }
 
     /**

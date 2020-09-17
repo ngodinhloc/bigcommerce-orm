@@ -41,19 +41,21 @@ interface ClientInterface
      * @param string|null $path
      * @param array|null $data
      * @param array|null $files
+     * @param bool $batch
      * @return array|bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function create(string $path = null, array $data = null, array $files = null);
+    public function create(string $path = null, array $data = null, array $files = null, bool $batch = false);
 
     /**
      * @param string|null $path
      * @param array|null $data
      * @param array|null $files
+     * @param bool $batch
      * @return array|bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function update(string $path = null, array $data = null, array $files = null);
+    public function update(string $path = null, array $data = null, array $files = null, bool $batch = false);
 }

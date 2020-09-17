@@ -16,4 +16,5 @@ class EntityException extends BaseException
     const MSG_NOT_ENTITY_INSTANCE = 'Object is not an instance of Entity';
     const MSG_EMPTY_NONE_READONLY_DATA = 'There is not any none readonly data field provided.';
     const MSG_INVALID_UPLOAD_FILE = 'Upload is not an valid file: ';
+    const MSG_DIFFERENT_CLASS_NAME = 'Batching only update entities of the same class.';
 }

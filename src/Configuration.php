@@ -98,8 +98,8 @@ class Configuration
             $config->setTimeout($this->options['timeout']);
         }
 
-        if (isset($this->options['contentType'])) {
-            $config->setContentType($this->options['contentType']);
+        if (isset($this->options['accept'])) {
+            $config->setAccept($this->options['accept']);
         }
 
         if (isset($this->options['debug'])) {

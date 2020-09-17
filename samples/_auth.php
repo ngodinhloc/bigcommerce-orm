@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'clientId' => 'acxu0p8rfh15m8n0fn4obuxmb52tgwk',
-    'authToken' => 'cyfbhepc71mns8xnykv86wruxzh45wi',
-    'storeHash' => 'e87g0h02r5',
+    'clientId' => 'thw5k39py6p508zpf4v0z40yaqclwjw',
+    'authToken' => 'ok7f5je9moa46hplonns646contbyco',
+    'storeHash' => 'y9s2z9d1ki',
     'baseUrl' => 'https://api.service.bcdev'
 ];

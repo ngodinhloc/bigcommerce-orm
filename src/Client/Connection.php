@@ -93,6 +93,15 @@ class Connection
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
+    public function delete(string $path = null){
+        return $this->client->delete($this->apiUrl . $path, $this->requestOptions);
+    }
+
+    /**
+     * @param string|null $path
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     private function get(string $path = null)
     {
         return $this->client->get($this->apiUrl . $path, $this->requestOptions);
@@ -144,6 +153,7 @@ class Connection
     private function setup()
     {
         $this->apiUrl = $this->config->getApiUrl();
+        $this->addRequestHeader('Content-Type', AbstractConfig::CONTENT_TYPE_JSON);
 
         if ($this->config instanceof BasicConfig) {
             $this->auth = [$this->config->getUsername(), $this->config->getApiKey()];
@@ -154,8 +164,8 @@ class Connection
             $this->addRequestHeader('X-Auth-Token', $this->config->getAuthToken());
         }
 
-        if (!empty($this->config->getContentType())) {
-            $this->addRequestHeader('Accept', $this->config->getContentType());
+        if (!empty($this->config->getAccept())) {
+            $this->addRequestHeader('Accept', $this->config->getAccept());
         }
 
         if (!empty($this->config->getTimeout())) {

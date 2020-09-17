@@ -31,6 +31,8 @@ class Client implements ClientInterface
     const LOG_UPDATE_FINISH = 'Finish updating objects. Path: %s .Data: %s';
     const LOG_CREATE_START = 'Start creating objects. Path: %s. Data: %s';
     const LOG_CREATE_FINISH = 'Finish creating objects. Path: %s. Data: %s';
+    const LOG_DELETE_START = 'Start deleting objects. Query: %s';
+    const LOG_DELETE_FINISH = 'Finish deleting objects. Query: %s';
 
     /**
      * Client constructor.
@@ -97,11 +99,12 @@ class Client implements ClientInterface
      * @param string|null $path
      * @param array|null $data
      * @param array|null $files
+     * @param bool $batch
      * @return array
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function create(string $path = null, array $data = null, array $files = null)
+    public function create(string $path = null, array $data = null, array $files = null, bool $batch = false)
     {
         $this->checkPath($path);
 
@@ -122,6 +125,10 @@ class Client implements ClientInterface
             $this->logger->debug(sprintf(self::LOG_CREATE_FINISH, $path, json_encode($data)));
         }
 
+        if ($batch == true) {
+            return (new Result($response))->get(Result::RETURN_TYPE_ALL);
+        }
+
         return (new Result($response))->get(Result::RETURN_TYPE_ONE);
     }
 
@@ -129,11 +136,12 @@ class Client implements ClientInterface
      * @param string|null $path
      * @param array|null $data
      * @param array|null $files
+     * @param bool $batch
      * @return array|false
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function update(string $path = null, array $data = null, array $files = null)
+    public function update(string $path = null, array $data = null, array $files = null, bool $batch = false)
     {
         $this->checkPath($path);
 
@@ -158,7 +166,41 @@ class Client implements ClientInterface
             $this->logger->debug(sprintf(self::LOG_UPDATE_FINISH, $path, json_encode($data)));
         }
 
+        if ($batch == true) {
+            return (new Result($response))->get(Result::RETURN_TYPE_ALL);
+        }
+
         return (new Result($response))->get(Result::RETURN_TYPE_ONE);
+    }
+
+    /**
+     * @param string|null $path
+     * @return array|bool|int
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
+    public function delete(string $path = null)
+    {
+        $this->checkPath($path);
+
+        if ($this->logger) {
+            $this->logger->debug(sprintf(self::LOG_DELETE_START, $path));
+        }
+
+        try {
+            $response = $this->connection->delete($path);
+        } catch (GuzzleException $e) {
+            $content = $e->getResponse()->getBody()->getContents();
+            throw new ClientException(sprintf(ClientException::MSG_FAILED_TO_CREATE_OBJECT, $path, $content));
+        } catch (Exception $e) {
+            throw new ClientException(sprintf(ClientException::MSG_FAILED_TO_CREATE_OBJECT, $path, $e->getMessage()));
+        }
+
+        if ($this->logger) {
+            $this->logger->debug(sprintf(self::LOG_DELETE_FINISH, $path));
+        }
+
+        return (new Result($response))->get(Result::RETURN_TYPE_BOOL);
     }
 
     /**

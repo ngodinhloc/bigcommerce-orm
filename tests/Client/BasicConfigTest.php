@@ -14,7 +14,7 @@ class BasicConfigTest extends BaseTestCase
 
     /**
      * @covers \Bigcommerce\ORM\Client\BasicConfig::__construct
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigExceptions
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      */
     public function testConstruct(){
         $basicCredentials = [
@@ -27,7 +27,7 @@ class BasicConfigTest extends BaseTestCase
 
     /**
      * @covers \Bigcommerce\ORM\Client\BasicConfig::__construct
-     * @covers \Bigcommerce\ORM\Client\BasicConfig::setContentType
+     * @covers \Bigcommerce\ORM\Client\BasicConfig::setAccept
      * @covers \Bigcommerce\ORM\Client\BasicConfig::setApiKey
      * @covers \Bigcommerce\ORM\Client\BasicConfig::setUsername
      * @covers \Bigcommerce\ORM\Client\BasicConfig::setStoreUrl
@@ -39,7 +39,7 @@ class BasicConfigTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getApiKey
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getUsername
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getStoreUrl
-     * @covers \Bigcommerce\ORM\Client\BasicConfig::getContentType
+     * @covers \Bigcommerce\ORM\Client\BasicConfig::getAccept
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getApiVersion
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getProxy
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getApiUrl
@@ -67,14 +67,14 @@ class BasicConfigTest extends BaseTestCase
         $this->assertEquals(null, $this->basicConfig->getProxy());
         $this->assertEquals(false, $this->basicConfig->isVerify());
         $this->assertEquals(60, $this->basicConfig->getTimeout());
-        $this->assertEquals('application/json', $this->basicConfig->getContentType());
+        $this->assertEquals('application/json', $this->basicConfig->getAccept());
         $this->assertEquals('v3', $this->basicConfig->getApiVersion());
         $this->assertEquals(false, $this->basicConfig->isDebug());
 
         $this->basicConfig->setDebug(true)
             ->setProxy('proxy')
             ->setApiVersion('v3')
-            ->setContentType('application/x-www-form-urlencoded')
+            ->setAccept('application/json')
             ->setVerify(true)
             ->setStoreUrl('url')
             ->setUsername('username')
@@ -83,13 +83,13 @@ class BasicConfigTest extends BaseTestCase
         $this->assertEquals(true, $this->basicConfig->isDebug());
         $this->assertEquals('proxy', $this->basicConfig->getProxy());
         $this->assertEquals('v3', $this->basicConfig->getApiVersion());
-        $this->assertEquals('application/x-www-form-urlencoded', $this->basicConfig->getContentType());
+        $this->assertEquals('application/json', $this->basicConfig->getAccept());
         $this->assertEquals(true, $this->basicConfig->isVerify());
         $this->assertEquals('url', $this->basicConfig->getStoreUrl());
         $this->assertEquals('username', $this->basicConfig->getUsername());
         $this->assertEquals('key', $this->basicConfig->getApiKey());
 
-        $this->basicConfig->setContentType('invalidContentType');
-        $this->assertEquals('application/x-www-form-urlencoded', $this->basicConfig->getContentType());
+        $this->basicConfig->setAccept('invalidContentType');
+        $this->assertEquals('application/json', $this->basicConfig->getAccept());
     }
 }

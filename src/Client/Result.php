@@ -56,6 +56,9 @@ class Result
                     }
                 }
                 break;
+            case ResponseCodes::HTTP_NO_CONTENT:
+                /** delete entities return 204 */
+                return true;
         }
 
         return $result;

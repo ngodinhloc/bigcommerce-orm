@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'contentType' => 'application/json',
+    'accept' => 'application/json',
     'timeout' => 60,
     'verify' => true,
     'debug' => true,

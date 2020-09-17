@@ -120,7 +120,7 @@ class ConnectionTest extends BaseTestCase
         $authConfig = new AuthConfig($authCredentials);
         $authConfig
             ->setTimeout(60)
-            ->setContentType('application/json')
+            ->setAccept('application/json')
             ->setVerify(true)
             ->setDebug(true)
             ->setProxy('tcp://localhost:8080');

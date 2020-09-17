@@ -29,7 +29,7 @@ abstract class AbstractConfig
     protected $timeout = 60;
 
     /** @var string */
-    protected $contentType = self::CONTENT_TYPE_JSON;
+    protected $accept = self::CONTENT_TYPE_JSON;
 
     /** @var bool */
     protected $debug = false;
@@ -137,22 +137,23 @@ abstract class AbstractConfig
     /**
      * @return string
      */
-    public function getContentType()
+    public function getAccept()
     {
-        return $this->contentType;
+        return $this->accept;
     }
 
     /**
-     * @param string $contentType
+     * @param string $accept
      * @return \Bigcommerce\ORM\Client\AbstractConfig
      */
-    public function setContentType(string $contentType): AbstractConfig
+    public function setAccept(string $accept): AbstractConfig
     {
-        if (!in_array($contentType, [self::CONTENT_TYPE_JSON, self::CONTENT_TYPE_WWW])) {
+        /** Only accept json response */
+        if ($accept != self::CONTENT_TYPE_JSON) {
             return $this;
         }
 
-        $this->contentType = $contentType;
+        $this->accept = $accept;
         return $this;
     }
 

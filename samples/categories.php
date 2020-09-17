@@ -20,34 +20,39 @@ try {
     /** find some categories by queries */
     $queryBuilder = new \Bigcommerce\ORM\QueryBuilder();
     $queryBuilder
-        ->whereIn('id', [18, 21, 24])
+        ->whereIn('id', [18, 21])
         ->page(1)
         ->limit(50);
     $someCategories = $entityManager->findBy(\Bigcommerce\ORM\Entities\Category::class, null, $queryBuilder, true);
     echo count($someCategories) . PHP_EOL;
 
     /** find one category by id */
-    $category24 = $entityManager->find(\Bigcommerce\ORM\Entities\Category::class, 24, null, true);
-    /** @var \Bigcommerce\ORM\Entities\Category $category24 */
-    $parent = $category24->getParent();
-    $name24 = $category24->getName();
-    echo $name24. PHP_EOL;
+    $category21 = $entityManager->find(\Bigcommerce\ORM\Entities\Category::class, 21, null, true);
+    /** @var \Bigcommerce\ORM\Entities\Category $category21 */
+    $parent = $category21->getParent();
+    $name24 = $category21->getName();
+    echo $name24 . PHP_EOL;
 
     /** update a category */
-    $category24->setDescription('This is new description');
-    $entityManager->save($category24);
-    $newDescription = $category24->getDescription();
+    $category21->setDescription('This is new description');
+    $entityManager->save($category21);
+    $newDescription = $category21->getDescription();
     echo $newDescription . PHP_EOL;
 
-    /** find one product by id */
-    $product111 = $entityManager->find(\Bigcommerce\ORM\Entities\Product::class, 111, null, true);
-    /** @var \Bigcommerce\ORM\Entities\Product $product111 */
-    $name111 = $product111->getName();
-    $primaryImage111 = $product111->getPrimaryImage();
-    $images111 = $product111->getImages();
-    $categories111 = $product111->getCategories();
-    $reviews111 = $product111->getReviews();
-    echo $name111 . PHP_EOL;
+    /** create new category with parent = 21 */
+    $newCategory = new \Bigcommerce\ORM\Entities\Category();
+    $newCategory
+        ->setName('Cooking Stuffs 1')
+        ->setSortOrder(1)
+        ->setParentId(21)
+        ->setPageTitle('Cooking Stuffs')
+        ->setDescription('Cooking Stuffs');
+    $entityManager->save($newCategory);
+    echo $newCategory->getId();
+
+    /** remove newly created category */
+    $deleted = $entityManager->delete(\Bigcommerce\ORM\Entities\Category::class, null, [$newCategory->getId()]);
+    echo $deleted;
 
 } catch (\Exception $e) {
     echo $e->getMessage();

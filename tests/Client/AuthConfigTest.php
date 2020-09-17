@@ -34,7 +34,7 @@ class AuthConfigTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setProxy
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setApiVersion
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setVerify
-     * @covers \Bigcommerce\ORM\Client\AuthConfig::setContentType
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setAccept
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setBaseUrl
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setStoreHash
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setAuthToken
@@ -45,7 +45,7 @@ class AuthConfigTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiUrl
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getProxy
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiVersion
-     * @covers \Bigcommerce\ORM\Client\AuthConfig::getContentType
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getAccept
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getStoreHash
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getAuthToken
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getClientId
@@ -75,7 +75,7 @@ class AuthConfigTest extends BaseTestCase
         $this->assertEquals(null, $this->authConfig->getProxy());
         $this->assertEquals(false, $this->authConfig->isVerify());
         $this->assertEquals(60, $this->authConfig->getTimeout());
-        $this->assertEquals('application/json', $this->authConfig->getContentType());
+        $this->assertEquals('application/json', $this->authConfig->getAccept());
         $this->assertEquals('v3', $this->authConfig->getApiVersion());
         $this->assertEquals(false, $this->authConfig->isDebug());
 
@@ -83,7 +83,7 @@ class AuthConfigTest extends BaseTestCase
             ->setTimeout(60)
             ->setProxy('proxy')
             ->setApiVersion('v3')
-            ->setContentType('application/x-www-form-urlencoded')
+            ->setAccept('application/json')
             ->setVerify(true)
             ->setClientId('clientId')
             ->setAuthToken('authToken')
@@ -94,14 +94,14 @@ class AuthConfigTest extends BaseTestCase
         $this->assertEquals(true, $this->authConfig->isDebug());
         $this->assertEquals('proxy', $this->authConfig->getProxy());
         $this->assertEquals('v3', $this->authConfig->getApiVersion());
-        $this->assertEquals('application/x-www-form-urlencoded', $this->authConfig->getContentType());
+        $this->assertEquals('application/json', $this->authConfig->getAccept());
         $this->assertEquals(true, $this->authConfig->isVerify());
         $this->assertEquals('clientId', $this->authConfig->getClientId());
         $this->assertEquals('authToken', $this->authConfig->getAuthToken());
         $this->assertEquals('hash', $this->authConfig->getStoreHash());
         $this->assertEquals('url', $this->authConfig->getBaseUrl());
 
-        $this->authConfig->setContentType('invalidContentType');
-        $this->assertEquals('application/x-www-form-urlencoded', $this->authConfig->getContentType());
+        $this->authConfig->setAccept('invalidContentType');
+        $this->assertEquals('application/json', $this->authConfig->getAccept());
     }
 }
