@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Client;
 
+use Bigcommerce\ORM\Client\AbstractConfig;
 use Bigcommerce\ORM\Client\AuthConfig;
 use Bigcommerce\ORM\Client\Exceptions\ConfigException;
 use Tests\BaseTestCase;
@@ -103,5 +104,8 @@ class AuthConfigTest extends BaseTestCase
 
         $this->authConfig->setAccept('invalidContentType');
         $this->assertEquals('application/json', $this->authConfig->getAccept());
+
+        $this->authConfig->setApiVersion('v2');
+        $this->assertEquals(AbstractConfig::API_VERSION_V3, $this->authConfig->getApiVersion());
     }
 }

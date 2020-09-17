@@ -46,8 +46,6 @@ abstract class AbstractConfig
         if ($this instanceof AuthConfig) {
             return $this->getBaseUrl() . sprintf($this->getStorePrefix(), $this->getStoreHash());
         }
-
-        return null;
     }
 
     /**
@@ -106,9 +104,6 @@ abstract class AbstractConfig
      */
     public function setVerify(bool $verify): AbstractConfig
     {
-        if (!is_bool($verify)) {
-            return $this;
-        }
         $this->verify = $verify;
         return $this;
     }
@@ -127,9 +122,6 @@ abstract class AbstractConfig
      */
     public function setTimeout(float $timeout): AbstractConfig
     {
-        if (!is_float($timeout)) {
-            return $this;
-        }
         $this->timeout = $timeout;
         return $this;
     }
@@ -171,6 +163,7 @@ abstract class AbstractConfig
      */
     public function setApiVersion(string $apiVersion): AbstractConfig
     {
+        /** Only support API V3 */
         if (!in_array($apiVersion, [AbstractConfig::API_VERSION_V3])) {
             return $this;
         }
