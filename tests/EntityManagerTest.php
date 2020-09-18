@@ -60,22 +60,6 @@ class EntityManagerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\EntityManager::count
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function testCount()
-    {
-        $class = Customer::class;
-        $expect = 2;
-        $count = $this->entityManager->count($class, []);
-
-        $this->assertEquals($expect, $count);
-    }
-
-    /**
      * @covers \Bigcommerce\ORM\EntityManager::findAll
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException

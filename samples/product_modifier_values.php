@@ -14,10 +14,6 @@ try {
     /** @var \Bigcommerce\ORM\Entities\ProductModifier $modifier116 */
     echo $modifier116->getId() . PHP_EOL;
 
-    /** count the number of product modifier values : product_id = 111, option_id = 116 */
-    $count = $entityManager->count(\Bigcommerce\ORM\Entities\ProductModifierValue::class, ['product_id' => 111, 'option_id' => 116]);
-    echo $count . PHP_EOL;
-
     /** find all product modifier values => an exception will be threw because path params are missing */
 //    $allModifierValues = $entityManager->findAll(\Bigcommerce\ORM\Entities\ProductModifierValue::class, ['product_id' => 111]);
 

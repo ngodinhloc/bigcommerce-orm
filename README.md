@@ -255,9 +255,6 @@ for more examples of how to query, create and update entities
 
 ### Query objects: count, findAll, findBy, find
 ```php
-/** count number of customers */
-$count = $entityManager->count(\Bigcommerce\ORM\Entities\Customer::class);
-
 /** get all customers */
 $allCustomers = $entityManager->findAll(\Bigcommerce\ORM\Entities\Customer::class);
 
@@ -380,10 +377,6 @@ $cacheDir = __DIR__ . "/caches/";
 $cachePool = new \Bigcommerce\ORM\Cache\FileCache\FileCachePool($cacheDir);
 $config = new \Bigcommerce\ORM\Configuration($authCredentials, null, $cachePool);
 $entityManager = $config->configEntityManager();
-
-/** count number of customers */
-$count = $entityManager->count(\Bigcommerce\ORM\Entities\Customer::class);
-echo $count . PHP_EOL;
 ```
 FileCachePool store caches in json format
 ```json

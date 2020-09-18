@@ -8,10 +8,6 @@ try {
     $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options);
     $entityManager = $config->configEntityManager();
 
-    /** count number of customers */
-    $count = $entityManager->count(\Bigcommerce\ORM\Entities\Customer::class);
-    echo $count . PHP_EOL;
-
     /** get all customers */
     $allCustomers = $entityManager->findAll(\Bigcommerce\ORM\Entities\Customer::class);
     echo count($allCustomers) . PHP_EOL;

@@ -13,10 +13,6 @@ try {
     $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options, null, null, $logger);
     $entityManager = $config->configEntityManager();
 
-    /** count number of customers */
-    $count = $entityManager->count(\Bigcommerce\ORM\Entities\Customer::class);
-    echo $count . PHP_EOL;
-
     /** get all customers */
     $allCustomers = $entityManager->findAll(\Bigcommerce\ORM\Entities\Customer::class, null, ['date_created' => "asc"]);
     /** @var \Bigcommerce\ORM\Entities\Customer $customer1 */

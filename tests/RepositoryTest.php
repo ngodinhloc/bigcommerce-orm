@@ -44,19 +44,6 @@ class RepositoryTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\Repository::count
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function testCount()
-    {
-        $count = $this->repository->count();
-        $this->assertEquals(2, $count);
-    }
-
-    /**
      * @covers \Bigcommerce\ORM\Repository::findAll
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
@@ -92,7 +79,6 @@ class RepositoryTest extends BaseTestCase
     private function getEntityManager()
     {
         $entityManager = $this->prophet->prophesize(EntityManager::class);
-        $entityManager->count(Customer::class, null)->willReturn(2);
         $entityManager->getMapper()->willReturn(new Mapper());
         $entityManager->findAll(Customer::class, null, null, false)->willReturn([]);
         $entityManager->findBy(Customer::class, null, $this->getQueryBuilder(), false)->willReturn([]);

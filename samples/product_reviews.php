@@ -11,13 +11,6 @@ try {
     $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options, $cachePool);
     $entityManager = $config->configEntityManager();
 
-    /** count the number of product reviews => an exception will be threw because parent id(s) are missing */
-//    $count = $entityManager->count(\Bigcommerce\ORM\Entities\ProductReview::class);
-
-    /** count the number of product reviews : product_id = 111 */
-    $count = $entityManager->count(\Bigcommerce\ORM\Entities\ProductReview::class, ['product_id' => 111]);
-    echo $count . PHP_EOL;
-
     /** find all product reviews => an exception will be threw because parent id(s) are missing */
 //    $allReviews = $entityManager->findAll(\Bigcommerce\ORM\Entities\ProductReview::class);
 

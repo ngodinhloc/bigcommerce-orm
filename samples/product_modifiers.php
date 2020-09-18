@@ -9,13 +9,6 @@ try {
     $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options);
     $entityManager = $config->configEntityManager();
 
-    /** count the number of product modifiers => an exception will be threw because parent id(s) are missing */
-//    $count = $entityManager->count(\Bigcommerce\ORM\Entities\ProductModifier::class);
-
-    /** count the number of product reviews : product_id = 111 */
-    $count = $entityManager->count(\Bigcommerce\ORM\Entities\ProductModifier::class, ['product_id' => 111]);
-    echo $count . PHP_EOL;
-
     /** find all product reviews => an exception will be threw because path params are missing */
 //    $allReviews = $entityManager->findAll(\Bigcommerce\ORM\Entities\ProductReview::class);
 

@@ -43,28 +43,6 @@ class EntityManager
     }
 
     /**
-     * Count the total number of object
-     *
-     * @param string|null $className
-     * @param array|null $pathParams
-     * @return int|false
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     */
-    public function count(string $className = null, array $pathParams = null)
-    {
-        $this->mapper->checkClass($className);
-
-        $entity = $this->mapper->object($className);
-        $entity = $this->mapper->patch($entity, $pathParams, true);
-        $path = $this->mapper->getResourcePath($entity);
-
-        return $this->client->count($path);
-    }
-
-    /**
      * Find all object of a class name
      *
      * @param string|null $className class

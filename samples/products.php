@@ -9,10 +9,6 @@ try {
     $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options);
     $entityManager = $config->configEntityManager();
 
-    /** count the number of products */
-    $count = $entityManager->count(\Bigcommerce\ORM\Entities\Product::class);
-    echo $count . PHP_EOL;
-
     /** find all products */
     $allProducts = $entityManager->findAll(\Bigcommerce\ORM\Entities\Product::class, null, null, false);
     echo count($allProducts) . PHP_EOL;

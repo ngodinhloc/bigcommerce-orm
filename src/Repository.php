@@ -29,19 +29,6 @@ class Repository
 
     /**
      * @param array|null $pathParams
-     * @return false|int
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function count(array $pathParams = null)
-    {
-        return $this->entityManager->count($this->className, $pathParams);
-    }
-
-    /**
-     * @param array|null $pathParams
      * @param array|null $orders
      * @param bool $auto
      * @return array|bool
