@@ -12,4 +12,7 @@ class Resource extends Annotation
 {
     public $name;
     public $path;
+    public $findable = true;
+    public $creatable = true;
+    public $deletable = true;
 }

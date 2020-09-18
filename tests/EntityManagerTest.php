@@ -12,7 +12,7 @@ use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Repository;
-use phpDocumentor\Reflection\Types\This;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class EntityManagerTest extends BaseTestCase
@@ -121,12 +121,12 @@ class EntityManagerTest extends BaseTestCase
      */
     public function testFind()
     {
-        $class = Customer::class;
+        $class = Product::class;
         $pathParams = null;
         $expectedId = 1;
         $customer = $this->entityManager->find($class, $expectedId, $pathParams, true);
 
-        $this->assertInstanceOf(Customer::class, $customer);
+        $this->assertInstanceOf(Product::class, $customer);
         $this->assertEquals($expectedId, $customer->getId());
     }
 
@@ -142,11 +142,33 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(1, count($images));
     }
 
-    public function testCreate()
+    public function testFindThrowException()
+    {
+        $this->expectException(EntityException::class);
+        $this->entityManager->find(Customer::class, 1, null, false);
+    }
+
+    public function testCreateThrowException()
     {
         $customer = $this->getCustomer();
+        $this->expectException(EntityException::class);
         $this->entityManager->save($customer);
-        $this->assertEquals(1, $customer->getId());
+    }
+
+    public function testCreateRequiredFields()
+    {
+        $product = new Product();
+        $product->setDescription('Desc');
+        $this->expectException(EntityException::class);
+        $this->entityManager->save($product);
+    }
+
+    public function testCreate()
+    {
+        $product = new Product();
+        $product->setDescription('Desc')->setName('name');
+        $this->entityManager->save($product);
+        $this->assertEquals(1, $product->getId());
     }
 
     public function testUpdate()
@@ -173,19 +195,22 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(1, $image->getId());
     }
 
-    public function testDelete(){
-        $result = $this->entityManager->delete(Customer::class, null, [1,2]);
+    public function testDelete()
+    {
+        $result = $this->entityManager->delete(Customer::class, null, [1, 2]);
         $this->assertTrue($result);
     }
 
-    public function testBatchCreate(){
+    public function testBatchCreate()
+    {
 
         $data = $this->getBatchCreateData();
         $customers = $this->entityManager->batchCreate(Customer::class, null, $data);
         $this->assertEquals(2, count($customers));
     }
 
-    public function testBatchUpdateEmpty(){
+    public function testBatchUpdateEmpty()
+    {
         $data = $this->getBatchCreateData();
         $customer1 = new Customer();
         $customer2 = new Customer();
@@ -196,7 +221,8 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(false, $result);
     }
 
-    public function testBatchUpdateDifferentClass(){
+    public function testBatchUpdateDifferentClass()
+    {
         $data = $this->getBatchCreateData();
         $customer1 = new Customer();
         $customer1 = $this->mapper->patch($customer1, $data[0], true);
@@ -207,7 +233,8 @@ class EntityManagerTest extends BaseTestCase
     }
 
 
-    public function testBatchUpdate(){
+    public function testBatchUpdate()
+    {
 
         $data = $this->getBatchReturnedData();
         $customer1 = new Customer();
@@ -283,7 +310,7 @@ class EntityManagerTest extends BaseTestCase
         $findByPath = '/customers?id:in=1,2,3&include=addresses';
         $findByResult = [];
 
-        $findPath = '/customers/1?include=addresses';
+        $findPath = '/products/1?include=addresses';
         $findResult = ['id' => 1];
 
         $savePath = '/customers';
@@ -293,6 +320,12 @@ class EntityManagerTest extends BaseTestCase
             'last_name' => 'Ngo',
             'email' => 'ken.ngo@bigcommmerce.com',
             'phone' => '0123456789'
+        ];
+        $productPath = '/catalog/products';
+        $returnProduct = [
+            'id' => 1,
+            'name' => 'Product Name',
+            'type' => 'physic',
         ];
         $createResult = [
             'id' => 1,
@@ -310,7 +343,7 @@ class EntityManagerTest extends BaseTestCase
         $updateImage = '/catalog/products/111/images/1';
 
         $file = __DIR__ . '/assets/images/lamp.jpg';
-        $files =  ["image_file" => $file];
+        $files = ["image_file" => $file];
         $imageData = [
             "is_thumbnail" => false,
             "sort_order" => null,
@@ -340,7 +373,8 @@ class EntityManagerTest extends BaseTestCase
         $client->findBy($findReview)->willReturn($reviews);
         $client->find($findPath)->willReturn($findResult);
         $client->find($findProduct)->willReturn($this->getProductData());
-        $client->create($savePath, $data, [])->willReturn($createResult);
+        $client->create($savePath, $data, [])->willReturn($returnProduct);
+        $client->create($productPath, Argument::any(), [])->willReturn($returnProduct);
         $client->update($updatePath, $data, [])->willReturn($createResult);
         $client->update($updateImage, $imageData, $files)->willReturn(['id' => 1]);
         $client->delete($deletePath)->willReturn(true);
@@ -351,7 +385,8 @@ class EntityManagerTest extends BaseTestCase
         return $client->reveal();
     }
 
-    private function getBatchReturnedData(){
+    private function getBatchReturnedData()
+    {
         return [
             [
                 'id' => 1,
@@ -372,8 +407,9 @@ class EntityManagerTest extends BaseTestCase
         ];
     }
 
-    private function getBatchCreateData(){
-       return [
+    private function getBatchCreateData()
+    {
+        return [
             [
                 'email' => 'ken7.ngo@bc.com',
                 'first_name' => 'Ken',

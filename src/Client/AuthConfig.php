@@ -36,7 +36,7 @@ class AuthConfig extends AbstractConfig
     public function __construct(array $config = null)
     {
         if (!isset($config['clientId']) || !isset($config['authToken']) || !isset($config['storeHash'])) {
-            throw new ConfigException(ConfigException::MSG_MISSING_CONFIG . implode(",", self::REQUIRED_CONFIGURATION_DATA));
+            throw new ConfigException(ConfigException::ERROR_MISSING_CONFIG . implode(",", self::REQUIRED_CONFIGURATION_DATA));
         }
         $this->clientId = $config['clientId'];
         $this->authToken = $config['authToken'];

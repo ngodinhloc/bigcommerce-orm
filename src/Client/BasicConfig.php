@@ -32,7 +32,7 @@ class BasicConfig extends AbstractConfig
     public function __construct(array $config = null)
     {
         if (!isset($config['storeUrl']) || !isset($config['username']) || !isset($config['apiKey'])) {
-            throw new ConfigException(ConfigException::MSG_MISSING_CONFIG . implode(",", self::REQUIRED_CONFIGURATION_DATA));
+            throw new ConfigException(ConfigException::ERROR_MISSING_CONFIG . implode(",", self::REQUIRED_CONFIGURATION_DATA));
         }
         $this->storeUrl = $config['storeUrl'];
         $this->username = $config['username'];

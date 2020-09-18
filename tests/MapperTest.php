@@ -160,7 +160,7 @@ class MapperTest extends BaseTestCase
             'config' => ['sku' => 111]
         ];
 
-        $data = $this->mapper->getNoneReadonlyData($modifier, []);
+        $data = $this->mapper->getWritableFieldValues($modifier, []);
         $this->assertEquals($expected, $data);
     }
 
@@ -175,7 +175,7 @@ class MapperTest extends BaseTestCase
             'config' => ['sku' => 111]
         ];
 
-        $check = $this->mapper->checkNoneReadonlyData($expected);
+        $check = $this->mapper->checkWritableFields($expected);
         $this->assertTrue($check);
     }
 

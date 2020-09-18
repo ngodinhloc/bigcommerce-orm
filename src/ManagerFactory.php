@@ -32,7 +32,7 @@ class ManagerFactory
     public function getEntityManager(string $name)
     {
         if (!isset($this->configs[$name])) {
-            throw new ManagerFactoryException(ManagerFactoryException::MGS_CONFIG_NOT_FOUND . $name);
+            throw new ManagerFactoryException(ManagerFactoryException::ERROR_CONFIG_NOT_FOUND . $name);
         }
 
         if (isset($this->managerPool[$name])) {
@@ -53,7 +53,7 @@ class ManagerFactory
     private function getManager(string $name, array $config)
     {
         if (!isset($config['credentials'])) {
-            throw new ManagerFactoryException(ManagerFactoryException::MGS_CREDENTIALS_NOT_FOUND . $name);
+            throw new ManagerFactoryException(ManagerFactoryException::ERROR_CREDENTIALS_NOT_FOUND . $name);
         }
 
         $credentials = $config['credentials'];

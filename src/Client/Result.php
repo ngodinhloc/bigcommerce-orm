@@ -34,7 +34,7 @@ class Result
     public function get(string $returnType = null)
     {
         if (!$this->response) {
-            throw new ResultException(ResultException::MSG_NO_RESPONSE_PROVIDED);
+            throw new ResultException(ResultException::ERROR_NO_RESPONSE_PROVIDED);
         }
 
         $result = false;

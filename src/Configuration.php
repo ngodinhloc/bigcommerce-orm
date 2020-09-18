@@ -83,7 +83,7 @@ class Configuration
         } elseif (isset($this->credentials['storeUrl'])) {
             $config = new BasicConfig($this->credentials);
         } else {
-            throw new ConfigException(ConfigException::MSG_MISSING_CONFIG);
+            throw new ConfigException(ConfigException::ERROR_MISSING_CONFIG);
         }
 
         if (isset($this->options['proxy'])) {

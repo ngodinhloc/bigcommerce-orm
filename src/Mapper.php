@@ -52,7 +52,7 @@ class Mapper
         /* @var \Bigcommerce\ORM\Annotations\Resource $resource */
         $resource = $this->reader->getClassAnnotation($reflectionClass, Resource::class);
         if (!$resource->name) {
-            throw new MapperException(MapperException::MSG_OBJECT_TYPE_NOT_FOUND . get_class($entity));
+            throw new MapperException(MapperException::ERROR_OBJECT_TYPE_NOT_FOUND . get_class($entity));
         }
 
         return $resource->name;
@@ -91,13 +91,13 @@ class Mapper
         foreach ($paramFields as $fieldName => $property) {
             $value = $this->getPropertyValue($entity, $property);
             if (empty($value)) {
-                throw new MapperException(sprintf(MapperException::MSG_MISSING_PATH_PARAMS, $path, $fieldName));
+                throw new MapperException(sprintf(MapperException::ERROR_MISSING_PATH_PARAMS, $path, $fieldName));
             }
             $path = str_replace("{{$fieldName}}", $value, $path);
         }
 
         if (preg_match('/{.*}/', $path)) {
-            throw new MapperException(sprintf(MapperException::MSG_PATH_PARAMS_REQUIRED, $path));
+            throw new MapperException(sprintf(MapperException::ERROR_PATH_PARAMS_REQUIRED, $path));
         }
 
         return $path;
@@ -187,7 +187,7 @@ class Mapper
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function getNoneReadonlyData(Entity $entity = null, array $data = null)
+    public function getWritableFieldValues(Entity $entity = null, array $data = null)
     {
         if ($entity->isPatched() !== true) {
             $entity = $this->patch($entity, [], true);
@@ -208,7 +208,7 @@ class Mapper
      * @param array|null $data
      * @return bool
      */
-    public function checkNoneReadonlyData(array $data = null)
+    public function checkWritableFields(array $data = null)
     {
         if (empty($data)) {
             return false;
@@ -384,7 +384,7 @@ class Mapper
             }
         }
 
-        throw new MapperException(MapperException::MSG_NO_FIELD_FOUND . $fieldName);
+        throw new MapperException(MapperException::ERROR_NO_FIELD_FOUND . $fieldName);
     }
 
     /**
@@ -420,7 +420,7 @@ class Mapper
         try {
             $object = new $class();
         } catch (\Exception $exception) {
-            throw new MapperException(MapperException::MGS_INVALID_CLASS_NAME . $class);
+            throw new MapperException(MapperException::ERROR_INVALID_CLASS_NAME . $class);
         }
 
         return $object;
@@ -437,7 +437,7 @@ class Mapper
             $reflectionClass = new ReflectionClass(get_class($entity));
             $this->register();
         } catch (\ReflectionException $exception) {
-            throw new MapperException(MapperException::MGS_FAILED_TO_CREATE_REFLECT_CLASS . $exception->getMessage());
+            throw new MapperException(MapperException::ERROR_FAILED_TO_CREATE_REFLECT_CLASS . $exception->getMessage());
         }
 
         return $reflectionClass;
@@ -450,7 +450,7 @@ class Mapper
     public function checkEntity(Entity $entity = null)
     {
         if (!$entity instanceof Entity) {
-            throw new EntityException(EntityException::MSG_NOT_ENTITY_INSTANCE);
+            throw new EntityException(EntityException::ERROR_NOT_ENTITY_INSTANCE);
         }
     }
 
@@ -461,7 +461,7 @@ class Mapper
     public function checkClass(string $className = null)
     {
         if (empty($className)) {
-            throw new EntityException(EntityException::MSG_EMPTY_CLASS_NAME);
+            throw new EntityException(EntityException::ERROR_EMPTY_CLASS_NAME);
         }
     }
 
@@ -472,7 +472,7 @@ class Mapper
     public function checkId(int $id = null)
     {
         if (empty($id)) {
-            throw new EntityException(EntityException::MSG_ID_IS_NOT_PROVIDED);
+            throw new EntityException(EntityException::ERROR_ID_IS_NOT_PROVIDED);
         }
     }
 

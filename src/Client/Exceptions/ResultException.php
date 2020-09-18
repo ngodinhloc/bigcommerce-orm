@@ -6,5 +6,5 @@ use Bigcommerce\ORM\Exceptions\BaseException;
 
 class ResultException extends BaseException
 {
-    const MSG_NO_RESPONSE_PROVIDED = 'No response provided. Please set response.';
+    const ERROR_NO_RESPONSE_PROVIDED = 'No response provided. Please set response.';
 }

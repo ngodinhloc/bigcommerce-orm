@@ -52,7 +52,7 @@ class FileCachePoolTest extends BaseTestCase
     {
         $cacheDir = 'invalidDir';
         $this->expectException(FileCachePoolException::class);
-        $this->expectExceptionMessage(FileCachePoolException::MSG_INVALID_CACHE_DIR . $cacheDir);
+        $this->expectExceptionMessage(FileCachePoolException::ERROR_INVALID_CACHE_DIR . $cacheDir);
         $this->cache = new FileCachePool($cacheDir);
     }
 

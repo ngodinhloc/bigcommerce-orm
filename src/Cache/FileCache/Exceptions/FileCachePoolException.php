@@ -12,7 +12,7 @@ use Psr\Cache\CacheException;
  */
 class FileCachePoolException extends BaseException implements CacheException
 {
-    const MSG_INVALID_CACHE_DIR = 'Invalid cache dir: ';
+    const ERROR_INVALID_CACHE_DIR = 'Invalid cache dir: ';
     const ERROR_FAILED_ENCODE_DATA = 'Failed to encode data: ';
     const ERROR_FAILED_TO_PUT_CONTENT = 'Failed to put file content';
     const ERROR_FAILED_TO_GET_CONTENT = 'Failed to get file content';

@@ -39,7 +39,7 @@ try {
     echo count($updatedCustomers);
 
     /**
-     * you can't get customer by id
+     * you can't get customer by id . Please use findBy
      * you can't create one customer. Please use batchCreate
      */
 

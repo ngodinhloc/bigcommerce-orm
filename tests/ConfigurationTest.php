@@ -81,7 +81,7 @@ class ConfigurationTest extends BaseTestCase
     public function testInvalidCredentials(){
         $this->configuration = new Configuration([]);
         $this->expectException(ConfigException::class);
-        $this->expectExceptionMessage(ConfigException::MSG_MISSING_CONFIG);
+        $this->expectExceptionMessage(ConfigException::ERROR_MISSING_CONFIG);
         $this->configuration->configEntityManager();
     }
     /**

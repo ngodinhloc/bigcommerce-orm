@@ -58,7 +58,7 @@ class ManagerFactoryTest extends BaseTestCase
         $this->factory = new ManagerFactory($this->configs);
         $invalidConfig = 'invalidConfigName';
         $this->expectException(ManagerFactoryException::class);
-        $this->expectExceptionMessage(ManagerFactoryException::MGS_CONFIG_NOT_FOUND . $invalidConfig);
+        $this->expectExceptionMessage(ManagerFactoryException::ERROR_CONFIG_NOT_FOUND . $invalidConfig);
         $this->factory->getEntityManager($invalidConfig);
     }
 
@@ -73,7 +73,7 @@ class ManagerFactoryTest extends BaseTestCase
     {
         $missingCredentialConfig = 'thirdStore';
         $this->expectException(ManagerFactoryException::class);
-        $this->expectExceptionMessage(ManagerFactoryException::MGS_CREDENTIALS_NOT_FOUND . $missingCredentialConfig);
+        $this->expectExceptionMessage(ManagerFactoryException::ERROR_CREDENTIALS_NOT_FOUND . $missingCredentialConfig);
         $this->factory->getEntityManager($missingCredentialConfig);
     }
 

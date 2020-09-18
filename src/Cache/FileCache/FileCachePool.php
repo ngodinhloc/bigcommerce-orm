@@ -23,7 +23,7 @@ class FileCachePool implements CacheItemPoolInterface
     public function __construct(string $cacheDir = null)
     {
         if (!is_dir($cacheDir)) {
-            throw new FileCachePoolException(FileCachePoolException::MSG_INVALID_CACHE_DIR . $cacheDir);
+            throw new FileCachePoolException(FileCachePoolException::ERROR_INVALID_CACHE_DIR . $cacheDir);
         }
         $this->cacheDir = $cacheDir;
     }

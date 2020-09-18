@@ -141,6 +141,10 @@ class EntityManager
 
         $object = $this->mapper->object($className);
         $entity = $this->mapper->patch($object, $pathParams, true);
+        $resource = $entity->getMetadata()->getResource();
+        if ($resource->findable !== true) {
+            throw new EntityException(EntityException::ERROR_NOT_FINDABLE_RESOURCE . $resource->name);
+        }
         $path = $this->mapper->getResourcePath($entity);
         $autoIncludes = $entity->getMetadata()->getIncludeFields();
 
@@ -187,16 +191,16 @@ class EntityManager
 
         $checkRequiredProperties = $this->mapper->checkRequiredFields($entity);
         if ($checkRequiredProperties !== true) {
-            throw new EntityException(EntityException::MSG_REQUIRED_PROPERTIES . implode(", ", $checkRequiredProperties));
+            throw new EntityException(EntityException::ERROR_REQUIRED_PROPERTIES . implode(", ", $checkRequiredProperties));
         }
 
         $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
         if ($checkRequiredValidations !== true) {
-            throw new EntityException(EntityException::MSG_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
+            throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
         }
 
         $path = $this->mapper->getResourcePath($entity);
-        $data = $this->mapper->getNoneReadonlyData($entity);
+        $data = $this->mapper->getWritableFieldValues($entity);
 
         // update entity
         if (!empty($id = $entity->getId())) {
@@ -233,14 +237,14 @@ class EntityManager
 
         $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
         if ($checkRequiredValidations !== true) {
-            throw new EntityException(EntityException::MSG_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
+            throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
         }
 
-        if (!$this->mapper->checkNoneReadonlyData($data)) {
+        if (!$this->mapper->checkWritableFields($data)) {
             return true;
         }
 
-        $data = $this->mapper->getNoneReadonlyData($entity, $data);
+        $data = $this->mapper->getWritableFieldValues($entity, $data);
         $path = $this->mapper->getResourcePath($entity);
 
         return $this->updateEntity($entity, $data, $path);
@@ -261,6 +265,10 @@ class EntityManager
 
         $object = $this->mapper->object($className);
         $entity = $this->mapper->patch($object, $pathParams, true);
+        $resource = $entity->getMetadata()->getResource();
+        if ($resource->deletable !== true) {
+            throw new EntityException(EntityException::ERROR_NOT_DELETABLE_RESOURCE . $resource->name);
+        }
         $path = $this->mapper->getResourcePath($entity);
 
         $queryBuilder = new QueryBuilder();
@@ -379,7 +387,7 @@ class EntityManager
         $data = [];
         foreach ($entities as $entity) {
             if ($className != get_class($entity)) {
-                throw new EntityException(EntityException::MSG_DIFFERENT_CLASS_NAME);
+                throw new EntityException(EntityException::ERROR_DIFFERENT_CLASS_NAME);
             }
 
             if (empty($entity->getId())) {
@@ -388,11 +396,11 @@ class EntityManager
 
             $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
             if ($checkRequiredValidations !== true) {
-                throw new EntityException(EntityException::MSG_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
+                throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
             }
 
             $entities[$entity->getId()] = $entity;
-            $noneReadonlyData = $this->mapper->getNoneReadonlyData($entity);
+            $noneReadonlyData = $this->mapper->getWritableFieldValues($entity);
             $data[] = array_merge($noneReadonlyData, ['id' => $entity->getId()]);
         }
 
@@ -488,8 +496,13 @@ class EntityManager
      */
     private function createEntity(Entity $entity, array $data, string $path)
     {
-        if (!$this->mapper->checkNoneReadonlyData($data)) {
-            throw new EntityException(EntityException::MSG_EMPTY_NONE_READONLY_DATA);
+        $resource = $entity->getMetadata()->getResource();
+        if ($resource->creatable !== true) {
+            throw new EntityException(EntityException::ERROR_NOT_CREATABLE_RESOURCE . $resource->name);
+        }
+
+        if (!$this->mapper->checkWritableFields($data)) {
+            throw new EntityException(EntityException::ERROR_EMPTY_NONE_READONLY_DATA);
         }
 
         $files = $this->getUploadFiles($entity);
@@ -522,7 +535,7 @@ class EntityManager
      */
     private function updateEntity(Entity $entity, array $data, string $path)
     {
-        if (!$this->mapper->checkNoneReadonlyData($data)) {
+        if (!$this->mapper->checkWritableFields($data)) {
             return true;
         }
 
@@ -558,7 +571,7 @@ class EntityManager
                 $location = $this->mapper->getPropertyValue($entity, $property);
                 if (!empty($location)) {
                     if (!file_exists($location)) {
-                        throw new EntityException(EntityException::MSG_INVALID_UPLOAD_FILE . $location);
+                        throw new EntityException(EntityException::ERROR_INVALID_UPLOAD_FILE . $location);
                     }
                     $files[$fieldName] = $location;
                 }
