@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Entity;
 /**
  * Class AddressFormFieldValue
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="AddressFormFieldValue",path="/customers/form-field-values")
+ * @BC\Resource(name="AddressFormFieldValue", path="/customers/form-field-values")
  */
 class AddressFormFieldValue extends Entity
 {

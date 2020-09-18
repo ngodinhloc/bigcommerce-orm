@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Entity;
 /**
  * Class ProductMetafield
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="ProductMetafield",path="/catalog/products/{product_id}/metafields")
+ * @BC\Resource(name="ProductMetafield", path="/catalog/products/{product_id}/metafields")
  */
 class ProductMetafield extends Entity
 {

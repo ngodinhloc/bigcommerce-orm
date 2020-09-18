@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Entity;
 /**
  * Class ProductBulkPriceRule
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="ProductBulkPriceRule",path="/catalog/products/{product_id}/bulk-pricing-rules")
+ * @BC\Resource(name="ProductBulkPriceRule", path="/catalog/products/{product_id}/bulk-pricing-rules")
  */
 class ProductBulkPriceRule extends Entity
 {
