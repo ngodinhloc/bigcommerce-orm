@@ -208,7 +208,7 @@ class Mapper
      * @param array|null $data
      * @return bool
      */
-    public function checkWritableFields(array $data = null)
+    public function checkPropertyValues(array $data = null)
     {
         if (empty($data)) {
             return false;

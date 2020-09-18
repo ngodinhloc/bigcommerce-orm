@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use Bigcommerce\ORM\Client\Client;
+use Bigcommerce\ORM\Entities\Channel;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductImage;
@@ -112,6 +113,16 @@ class EntityManagerTest extends BaseTestCase
 
         $this->assertInstanceOf(Product::class, $customer);
         $this->assertEquals($expectedId, $customer->getId());
+
+        $result = $this->entityManager->find(Channel::class, 1, null);
+        $this->assertFalse($result);
+
+        $channel = $this->entityManager->find(Channel::class, 2, null);
+        $this->assertInstanceOf(Channel::class, $channel);
+
+        $channel = $this->entityManager->find(Channel::class, 2, null, true);
+        $this->assertInstanceOf(Channel::class, $channel);
+
     }
 
     public function testFindProduct()
@@ -124,6 +135,10 @@ class EntityManagerTest extends BaseTestCase
         $this->assertInstanceOf(ProductImage::class, $primaryImage);
         $images = $product->getImages();
         $this->assertEquals(1, count($images));
+
+        $product = $this->entityManager->find(Product::class, 1, null, false);
+        $this->assertInstanceOf(Product::class, $product);
+        $this->assertEquals(1, $product->getId());
     }
 
     public function testFindThrowException()
@@ -155,6 +170,14 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(1, $product->getId());
     }
 
+    public function testSaveThrowException()
+    {
+        $customer = new Customer();
+        $customer->setEmail('invalidEmail');
+        $this->expectException(EntityException::class);
+        $this->entityManager->save($customer);
+    }
+
     public function testUpdate()
     {
         $customer = $this->getCustomer();
@@ -179,10 +202,36 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(1, $image->getId());
     }
 
+    public function testUpdateEarlyReturn()
+    {
+        $image = new ProductImage();
+        $image->setId(1);
+        $result = $this->entityManager->update($image, []);
+        $this->assertEquals(true, $result);
+
+        $image->setProductId(2);
+        $result = $this->entityManager->update($image, ['product_id' => null]);
+        $this->assertTrue($result);
+    }
+
+    public function testUpdateThrowRequiredValidation()
+    {
+        $customer = new Customer();
+        $customer->setId(1)->setEmail('invalid');
+        $this->expectException(EntityException::class);
+        $this->entityManager->update($customer, ['company' => 'BC']);
+    }
+
     public function testDelete()
     {
         $result = $this->entityManager->delete(Customer::class, null, [1, 2]);
         $this->assertTrue($result);
+    }
+
+    public function testDeleteThrowException()
+    {
+        $this->expectException(EntityException::class);
+        $result = $this->entityManager->delete(Channel::class, null, [1, 2]);
     }
 
     public function testBatchCreate()
@@ -349,6 +398,7 @@ class EntityManagerTest extends BaseTestCase
         ];
 
         $deletePath = '/customers?id:in=1,2';
+        $channelPath = '/channels/1?';
 
         $client = $this->prophet->prophesize(Client::class);
         $client->count($countPath)->willReturn($countReturn);
@@ -357,6 +407,8 @@ class EntityManagerTest extends BaseTestCase
         $client->findBy($findReview)->willReturn($reviews);
         $client->find($findPath)->willReturn($findResult);
         $client->find($findProduct)->willReturn($this->getProductData());
+        $client->find($channelPath)->willReturn([]);
+        $client->find('/channels/2?')->willReturn(['id' => 2]);
         $client->create($savePath, $data, [])->willReturn($returnProduct);
         $client->create($productPath, Argument::any(), [])->willReturn($returnProduct);
         $client->update($updatePath, $data, [])->willReturn($createResult);
@@ -365,6 +417,7 @@ class EntityManagerTest extends BaseTestCase
         $client->create($savePath, $this->getBatchCreateData(), null, true)->willReturn($this->getBatchReturnedData());
         $client->update($savePath, [], null, true)->willReturn([]);
         $client->update($savePath, $this->getBatchReturnedData(), null, true)->willReturn($this->getBatchReturnedData());
+        $client->update('/catalog/products/2/images/1', Argument::any(), [])->willReturn(['id' => 1]);
 
         return $client->reveal();
     }

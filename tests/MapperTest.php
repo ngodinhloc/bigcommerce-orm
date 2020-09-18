@@ -175,7 +175,7 @@ class MapperTest extends BaseTestCase
             'config' => ['sku' => 111]
         ];
 
-        $check = $this->mapper->checkWritableFields($expected);
+        $check = $this->mapper->checkPropertyValues($expected);
         $this->assertTrue($check);
     }
 

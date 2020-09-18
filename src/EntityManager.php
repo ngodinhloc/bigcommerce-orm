@@ -218,7 +218,7 @@ class EntityManager
             throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
         }
 
-        if (!$this->mapper->checkWritableFields($data)) {
+        if (!$this->mapper->checkPropertyValues($data)) {
             return true;
         }
 
@@ -479,8 +479,8 @@ class EntityManager
             throw new EntityException(EntityException::ERROR_NOT_CREATABLE_RESOURCE . $resource->name);
         }
 
-        if (!$this->mapper->checkWritableFields($data)) {
-            throw new EntityException(EntityException::ERROR_EMPTY_NONE_READONLY_DATA);
+        if (!$this->mapper->checkPropertyValues($data)) {
+            throw new EntityException(EntityException::ERROR_EMPTY_PROPERTY_VALUES);
         }
 
         $files = $this->getUploadFiles($entity);
@@ -513,7 +513,7 @@ class EntityManager
      */
     private function updateEntity(Entity $entity, array $data, string $path)
     {
-        if (!$this->mapper->checkWritableFields($data)) {
+        if (!$this->mapper->checkPropertyValues($data)) {
             return true;
         }
 
