@@ -227,26 +227,30 @@ $array2 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_PROP
 
 ### Save and Update Entities
 ```php
-/** create a new product review */
-$newReview = new \Bigcommerce\ORM\Entities\ProductReview();
-$newReview
-    ->setProductId($product111->getId())
-    ->setTitle('Great Product')
-    ->setText('I love this product so much')
-    ->setStatus('approved')
-    ->setRating(5)
-    ->setName('Ken Ngo')
-    ->setEmail('ken.ngo@bigcommerce.com')
-    ->setDateReviewed(date('c'));
-$entityManager->save($newReview);
-    
-/** update a category */
-$category24 = $entityManager->find(\Bigcommerce\ORM\Entities\Category::class, 24);
-$category24->setDescription('This is new description');
-$entityManager->save($category24);
+/** create one product */
+$newProduct = new \Bigcommerce\ORM\Entities\Product();
+$newProduct
+    ->setDescription('New product description')
+    ->setName('New Product 2')
+    ->setType('digital')
+    ->setWeight(1)
+    ->setWidth(10)
+    ->setDepth(5)
+    ->setHeight(20)
+    ->setSku('sku2')
+    ->setPrice(100)
+    ->setBrandId(0)
+    ->setCategoryIds([18, 21]);
+$entityManager->save($newProduct);
+echo $newProduct->getId();
+
+/** update product */
+$newProduct->setDescription('This is product 111 description');
+$entityManager->save($newProduct);
+echo $newProduct->getDateModified();
 ```
 
-@see: [samples/categories_and_products.php](./samples/categories_and_products.php) 
+@see: [samples/products.php](./samples/products.php) 
 for more examples of how to query, create and update entities
 
 ### Query objects: count, findAll, findBy, find
@@ -272,7 +276,7 @@ $someCustomers = $entityManager->findBy(\Bigcommerce\ORM\Entities\Customer::clas
 $customer3 = $entityManager->find(\Bigcommerce\ORM\Entities\Customer::class, 1);
 
 ```
-@see: [samples/customers_and_addresses.php](./samples/customers_and_addresses.php)
+@see: [samples/customers.php](./samples/customers.php)
 
 ### Repositories
 ```php
