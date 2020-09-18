@@ -7,17 +7,17 @@ use Bigcommerce\ORM\Annotations as BC;
 use Bigcommerce\ORM\Entity;
 
 /**
- * Class CategoryMetafield
+ * Class ProductMetafield
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CategoryMetafield",path="/catalog/categories/{category_id}/metafields")
+ * @BC\Resource(name="ProductMetafield",path="/catalog/products/{product_id}/metafields")
  */
-class CategoryMetafield extends Entity
+class ProductMetafield extends Entity
 {
     /**
      * @var int
-     * @BC\Field(name="category_id", readonly=true, pathParam=true)
+     * @BC\Field(name="product_id", readonly=true, pathParam=true)
      */
-    protected $categoryId;
+    protected $productId;
 
     /**
      * @var string
@@ -63,31 +63,31 @@ class CategoryMetafield extends Entity
 
     /**
      * @var string
-     * @BC\Field(name="date_created")
+     * @BC\Field(name="created_at")
      */
     protected $dateCreated;
 
     /**
      * @var string
-     * @BC\Field(name="date_modified")
+     * @BC\Field(name="updated_at")
      */
     protected $dateModified;
 
     /**
      * @return int
      */
-    public function getCategoryId()
+    public function getProductId(): int
     {
-        return $this->categoryId;
+        return $this->productId;
     }
 
     /**
-     * @param int|null $categoryId
-     * @return \Bigcommerce\ORM\Entities\CategoryMetafield
+     * @param int|null $productId
+     * @return \Bigcommerce\ORM\Entities\ProductMetafield
      */
-    public function setCategoryId(int $categoryId = null): CategoryMetafield
+    public function setProductId(int $productId = null): ProductMetafield
     {
-        $this->categoryId = $categoryId;
+        $this->productId = $productId;
         return $this;
     }
 
@@ -101,9 +101,9 @@ class CategoryMetafield extends Entity
 
     /**
      * @param string|null $key
-     * @return \Bigcommerce\ORM\Entities\CategoryMetafield
+     * @return \Bigcommerce\ORM\Entities\ProductMetafield
      */
-    public function setKey(string $key = null): CategoryMetafield
+    public function setKey(string $key = null): ProductMetafield
     {
         $this->key = $key;
         return $this;
@@ -119,9 +119,9 @@ class CategoryMetafield extends Entity
 
     /**
      * @param string|null $value
-     * @return CategoryMetafield
+     * @return \Bigcommerce\ORM\Entities\ProductMetafield
      */
-    public function setValue(string $value = null): CategoryMetafield
+    public function setValue(string $value = null): ProductMetafield
     {
         $this->value = $value;
         return $this;
@@ -137,9 +137,9 @@ class CategoryMetafield extends Entity
 
     /**
      * @param string|null $namespace
-     * @return \Bigcommerce\ORM\Entities\CategoryMetafield
+     * @return \Bigcommerce\ORM\Entities\ProductMetafield
      */
-    public function setNamespace(string $namespace = null): CategoryMetafield
+    public function setNamespace(string $namespace = null): ProductMetafield
     {
         $this->namespace = $namespace;
         return $this;
@@ -155,9 +155,9 @@ class CategoryMetafield extends Entity
 
     /**
      * @param string|null $permissionSet
-     * @return \Bigcommerce\ORM\Entities\CategoryMetafield
+     * @return \Bigcommerce\ORM\Entities\ProductMetafield
      */
-    public function setPermissionSet(string $permissionSet = null): CategoryMetafield
+    public function setPermissionSet(string $permissionSet = null): ProductMetafield
     {
         $this->permissionSet = $permissionSet;
         return $this;
@@ -173,9 +173,9 @@ class CategoryMetafield extends Entity
 
     /**
      * @param string|null $resourceType
-     * @return \Bigcommerce\ORM\Entities\CategoryMetafield
+     * @return \Bigcommerce\ORM\Entities\ProductMetafield
      */
-    public function setResourceType(string $resourceType = null): CategoryMetafield
+    public function setResourceType(string $resourceType = null): ProductMetafield
     {
         $this->resourceType = $resourceType;
         return $this;
@@ -191,9 +191,9 @@ class CategoryMetafield extends Entity
 
     /**
      * @param int|null $resourceId
-     * @return \Bigcommerce\ORM\Entities\CategoryMetafield
+     * @return \Bigcommerce\ORM\Entities\ProductMetafield
      */
-    public function setResourceId(int $resourceId = null): CategoryMetafield
+    public function setResourceId(int $resourceId = null): ProductMetafield
     {
         $this->resourceId = $resourceId;
         return $this;
@@ -209,9 +209,9 @@ class CategoryMetafield extends Entity
 
     /**
      * @param string|null $description
-     * @return \Bigcommerce\ORM\Entities\CategoryMetafield
+     * @return \Bigcommerce\ORM\Entities\ProductMetafield
      */
-    public function setDescription(string $description = null): CategoryMetafield
+    public function setDescription(string $description = null): ProductMetafield
     {
         $this->description = $description;
         return $this;
@@ -227,9 +227,9 @@ class CategoryMetafield extends Entity
 
     /**
      * @param string|null $dateCreated
-     * @return \Bigcommerce\ORM\Entities\CategoryMetafield
+     * @return \Bigcommerce\ORM\Entities\ProductMetafield
      */
-    public function setDateCreated(string $dateCreated = null): CategoryMetafield
+    public function setDateCreated(string $dateCreated = null): ProductMetafield
     {
         $this->dateCreated = $dateCreated;
         return $this;
@@ -245,9 +245,9 @@ class CategoryMetafield extends Entity
 
     /**
      * @param string|null $dateModified
-     * @return CategoryMetafield
+     * @return \Bigcommerce\ORM\Entities\ProductMetafield
      */
-    public function setDateModified(string $dateModified = null): CategoryMetafield
+    public function setDateModified(string $dateModified = null): ProductMetafield
     {
         $this->dateModified = $dateModified;
         return $this;
