@@ -9,12 +9,12 @@ use Tests\BaseTestCase;
 class ProductComplexRuleTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\ProductComplexRule */
-    protected $rule;
+    protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->rule = new ProductComplexRule();
-        $this->rule
+        $this->entity = new ProductComplexRule();
+        $this->entity
             ->setProductId(1)
             ->setId(2)
             ->setImageUrl('url')
@@ -28,17 +28,17 @@ class ProductComplexRuleTest extends BaseTestCase
             ->setStop(true)
             ->setWeightAdjuster([]);
 
-        $this->assertEquals(1, $this->rule->getProductId());
-        $this->assertEquals(2, $this->rule->getId());
-        $this->assertEquals('url', $this->rule->getImageUrl());
-        $this->assertEquals(3, $this->rule->getSortOrder());
-        $this->assertEquals([], $this->rule->getConditions());
-        $this->assertEquals(true, $this->rule->isEnabled());
-        $this->assertEquals([], $this->rule->getPriceAdjuster());
-        $this->assertEquals(true, $this->rule->isPurchasingDisabled());
-        $this->assertEquals('message', $this->rule->getPurchasingDisabledMessage());
-        $this->assertEquals(false, $this->rule->isPurchasingHidden());
-        $this->assertEquals(true, $this->rule->isStop());
-        $this->assertEquals([], $this->rule->getWeightAdjuster());
+        $this->assertEquals(1, $this->entity->getProductId());
+        $this->assertEquals(2, $this->entity->getId());
+        $this->assertEquals('url', $this->entity->getImageUrl());
+        $this->assertEquals(3, $this->entity->getSortOrder());
+        $this->assertEquals([], $this->entity->getConditions());
+        $this->assertEquals(true, $this->entity->isEnabled());
+        $this->assertEquals([], $this->entity->getPriceAdjuster());
+        $this->assertEquals(true, $this->entity->isPurchasingDisabled());
+        $this->assertEquals('message', $this->entity->getPurchasingDisabledMessage());
+        $this->assertEquals(false, $this->entity->isPurchasingHidden());
+        $this->assertEquals(true, $this->entity->isStop());
+        $this->assertEquals([], $this->entity->getWeightAdjuster());
     }
 }

@@ -9,11 +9,11 @@ use Tests\BaseTestCase;
 class ProductImageTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\ProductImage */
-    protected $image;
+    protected $entity;
 
     public function testSettersAndGetters(){
-        $this->image = new ProductImage();
-        $this->image
+        $this->entity = new ProductImage();
+        $this->entity
             ->setDescription('Desc')
             ->setId(1)
             ->setDateModified('2020-09-16')
@@ -27,17 +27,17 @@ class ProductImageTest extends BaseTestCase
             ->setUrlTiny('urltiny')
             ->setUrlZoom('urlzoom');
 
-        $this->assertEquals('Desc', $this->image->getDescription());
-        $this->assertEquals(1, $this->image->getId());
-        $this->assertEquals('2020-09-16', $this->image->getDateModified());
-        $this->assertEquals(2, $this->image->getSortOrder());
-        $this->assertEquals('somefile', $this->image->getImageFile());
-        $this->assertEquals(111, $this->image->getProductId());
-        $this->assertEquals(true, $this->image->isThumbnail());
-        $this->assertEquals('urlstandard', $this->image->getUrlStandard());
-        $this->assertEquals('urlthumbnail', $this->image->getUrlThumbnail());
-        $this->assertEquals('urltiny', $this->image->getUrlTiny());
-        $this->assertEquals('urlzoom', $this->image->getUrlZoom());
-        $this->assertEquals('someurl', $this->image->getImageUrl());
+        $this->assertEquals('Desc', $this->entity->getDescription());
+        $this->assertEquals(1, $this->entity->getId());
+        $this->assertEquals('2020-09-16', $this->entity->getDateModified());
+        $this->assertEquals(2, $this->entity->getSortOrder());
+        $this->assertEquals('somefile', $this->entity->getImageFile());
+        $this->assertEquals(111, $this->entity->getProductId());
+        $this->assertEquals(true, $this->entity->isThumbnail());
+        $this->assertEquals('urlstandard', $this->entity->getUrlStandard());
+        $this->assertEquals('urlthumbnail', $this->entity->getUrlThumbnail());
+        $this->assertEquals('urltiny', $this->entity->getUrlTiny());
+        $this->assertEquals('urlzoom', $this->entity->getUrlZoom());
+        $this->assertEquals('someurl', $this->entity->getImageUrl());
     }
 }

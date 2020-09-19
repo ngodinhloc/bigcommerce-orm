@@ -9,19 +9,19 @@ use Tests\BaseTestCase;
 class CategoryImageTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\CategoryImage */
-    protected $image;
+    protected $entity;
 
     public function testSettersAndGetters(){
-        $this->image = new CategoryImage();
-        $this->image
+        $this->entity = new CategoryImage();
+        $this->entity
             ->setId(1)
             ->setImageUrl('someurl')
             ->setImageFile('somefile')
             ->setCategoryId(2);
 
-        $this->assertEquals(1, $this->image->getId());
-        $this->assertEquals('someurl', $this->image->getImageUrl());
-        $this->assertEquals('somefile', $this->image->getImageFile());
-        $this->assertEquals(2, $this->image->getCategoryId());
+        $this->assertEquals(1, $this->entity->getId());
+        $this->assertEquals('someurl', $this->entity->getImageUrl());
+        $this->assertEquals('somefile', $this->entity->getImageFile());
+        $this->assertEquals(2, $this->entity->getCategoryId());
     }
 }

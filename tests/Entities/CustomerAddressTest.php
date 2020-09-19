@@ -9,7 +9,7 @@ use Tests\BaseTestCase;
 class CustomerAddressTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\CustomerAddress */
-    protected $address;
+    protected $entity;
 
     /**
      * @covers \Bigcommerce\ORM\Entities\CustomerAddress::setId
@@ -43,8 +43,8 @@ class CustomerAddressTest extends BaseTestCase
      */
     public function testSettersAndGetters()
     {
-        $this->address = new CustomerAddress();
-        $this->address->setId(1)
+        $this->entity = new CustomerAddress();
+        $this->entity->setId(1)
             ->setAddress1('add1')
             ->setAddress2('add2')
             ->setAddressType('home')
@@ -59,20 +59,20 @@ class CustomerAddressTest extends BaseTestCase
             ->setPostalCode('2000')
             ->setState('NSW');
 
-        $this->assertEquals(1, $this->address->getId());
-        $this->assertEquals('add1', $this->address->getAddress1());
-        $this->assertEquals('add2', $this->address->getAddress2());
-        $this->assertEquals('home', $this->address->getAddressType());
-        $this->assertEquals('sydney', $this->address->getCity());
-        $this->assertEquals('bc', $this->address->getCompany());
-        $this->assertEquals('australia', $this->address->getCountry());
-        $this->assertEquals('AU', $this->address->getCountryCode());
-        $this->assertEquals(100, $this->address->getCustomerId());
-        $this->assertEquals('Ken', $this->address->getFirstName());
-        $this->assertEquals('Ngo', $this->address->getLastName());
-        $this->assertEquals('0123456789', $this->address->getPhone());
-        $this->assertEquals('2000', $this->address->getPostalCode());
-        $this->assertEquals('NSW', $this->address->getState());
+        $this->assertEquals(1, $this->entity->getId());
+        $this->assertEquals('add1', $this->entity->getAddress1());
+        $this->assertEquals('add2', $this->entity->getAddress2());
+        $this->assertEquals('home', $this->entity->getAddressType());
+        $this->assertEquals('sydney', $this->entity->getCity());
+        $this->assertEquals('bc', $this->entity->getCompany());
+        $this->assertEquals('australia', $this->entity->getCountry());
+        $this->assertEquals('AU', $this->entity->getCountryCode());
+        $this->assertEquals(100, $this->entity->getCustomerId());
+        $this->assertEquals('Ken', $this->entity->getFirstName());
+        $this->assertEquals('Ngo', $this->entity->getLastName());
+        $this->assertEquals('0123456789', $this->entity->getPhone());
+        $this->assertEquals('2000', $this->entity->getPostalCode());
+        $this->assertEquals('NSW', $this->entity->getState());
 
     }
 }

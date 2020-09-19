@@ -9,22 +9,22 @@ use Tests\BaseTestCase;
 class CustomerFormFieldValueTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\CustomerFormFieldValue */
-    protected $value;
+    protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->value = new CustomerFormFieldValue();
-        $this->value
+        $this->entity = new CustomerFormFieldValue();
+        $this->entity
             ->setCustomerId(1)
             ->setAddressId(3)
             ->setId(2)
             ->setName('age')
             ->setValue(30);
 
-        $this->assertEquals(1, $this->value->getCustomerId());
-        $this->assertEquals(2, $this->value->getId());
-        $this->assertEquals('age', $this->value->getName());
-        $this->assertEquals(30, $this->value->getValue());
-        $this->assertEquals(3, $this->value->getAddressId());
+        $this->assertEquals(1, $this->entity->getCustomerId());
+        $this->assertEquals(2, $this->entity->getId());
+        $this->assertEquals('age', $this->entity->getName());
+        $this->assertEquals(30, $this->entity->getValue());
+        $this->assertEquals(3, $this->entity->getAddressId());
     }
 }

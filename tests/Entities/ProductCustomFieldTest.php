@@ -9,20 +9,20 @@ use Tests\BaseTestCase;
 class ProductCustomFieldTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\ProductCustomField */
-    protected $field;
+    protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->field = new ProductCustomField();
-        $this->field
+        $this->entity = new ProductCustomField();
+        $this->entity
             ->setId(1)
             ->setProductId(2)
             ->setName('age')
             ->setValue(30);
 
-        $this->assertEquals(1, $this->field->getId());
-        $this->assertEquals(2, $this->field->getProductId());
-        $this->assertEquals('age', $this->field->getName());
-        $this->assertEquals(30, $this->field->getValue());
+        $this->assertEquals(1, $this->entity->getId());
+        $this->assertEquals(2, $this->entity->getProductId());
+        $this->assertEquals('age', $this->entity->getName());
+        $this->assertEquals(30, $this->entity->getValue());
     }
 }

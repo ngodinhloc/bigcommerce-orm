@@ -9,12 +9,12 @@ use Tests\BaseTestCase;
 class ProductReviewTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\ProductReview */
-    protected $review;
+    protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->review = new ProductReview();
-        $this->review
+        $this->entity = new ProductReview();
+        $this->entity
             ->setProductId(111)
             ->setId(1)
             ->setName('Ken')
@@ -27,16 +27,16 @@ class ProductReviewTest extends BaseTestCase
             ->setRating(5)
             ->setStatus('approved');
 
-        $this->assertEquals(111, $this->review->getProductId());
-        $this->assertEquals(1, $this->review->getId());
-        $this->assertEquals('Ken', $this->review->getName());
-        $this->assertEquals('2020-09-16', $this->review->getDateModified());
-        $this->assertEquals('2020-09-15', $this->review->getDateCreated());
-        $this->assertEquals('ken.ngo@bigcommerce.com', $this->review->getEmail());
-        $this->assertEquals('I love this product', $this->review->getText());
-        $this->assertEquals('2020-09-15', $this->review->getDateReviewed());
-        $this->assertEquals('approved', $this->review->getStatus());
-        $this->assertEquals('Good product', $this->review->getTitle());
-        $this->assertEquals(5, $this->review->getRating());
+        $this->assertEquals(111, $this->entity->getProductId());
+        $this->assertEquals(1, $this->entity->getId());
+        $this->assertEquals('Ken', $this->entity->getName());
+        $this->assertEquals('2020-09-16', $this->entity->getDateModified());
+        $this->assertEquals('2020-09-15', $this->entity->getDateCreated());
+        $this->assertEquals('ken.ngo@bigcommerce.com', $this->entity->getEmail());
+        $this->assertEquals('I love this product', $this->entity->getText());
+        $this->assertEquals('2020-09-15', $this->entity->getDateReviewed());
+        $this->assertEquals('approved', $this->entity->getStatus());
+        $this->assertEquals('Good product', $this->entity->getTitle());
+        $this->assertEquals(5, $this->entity->getRating());
     }
 }

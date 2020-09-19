@@ -9,12 +9,12 @@ use Tests\BaseTestCase;
 class ChannelTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\Channel */
-    protected $channel;
+    protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->channel = new Channel();
-        $this->channel
+        $this->entity = new Channel();
+        $this->entity
             ->setName('name')
             ->setId(1)
             ->setDateCreated('2020-09-16')
@@ -24,13 +24,13 @@ class ChannelTest extends BaseTestCase
             ->setIsEnabled(true)
             ->setPlatform('BC');
 
-        $this->assertEquals('name', $this->channel->getName());
-        $this->assertEquals(1, $this->channel->getId());
-        $this->assertEquals('2020-09-16', $this->channel->getDateCreated());
-        $this->assertEquals('2020-09-17', $this->channel->getDateModified());
-        $this->assertEquals('web', $this->channel->getType());
-        $this->assertEquals('012', $this->channel->getExternalId());
-        $this->assertEquals(true, $this->channel->isEnabled());
-        $this->assertEquals('BC', $this->channel->getPlatform());
+        $this->assertEquals('name', $this->entity->getName());
+        $this->assertEquals(1, $this->entity->getId());
+        $this->assertEquals('2020-09-16', $this->entity->getDateCreated());
+        $this->assertEquals('2020-09-17', $this->entity->getDateModified());
+        $this->assertEquals('web', $this->entity->getType());
+        $this->assertEquals('012', $this->entity->getExternalId());
+        $this->assertEquals(true, $this->entity->isEnabled());
+        $this->assertEquals('BC', $this->entity->getPlatform());
     }
 }

@@ -9,11 +9,11 @@ use Tests\BaseTestCase;
 class CustomerTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\Customer */
-    protected $customer;
+    protected $entity;
 
     public function testSettersAndGetters(){
-        $this->customer = new Customer();
-        $this->customer
+        $this->entity = new Customer();
+        $this->entity
             ->setId(1)
             ->setEmail('ken.ngo@bigcommerce.com')
             ->setDateCreated('2020-09-15')
@@ -24,14 +24,14 @@ class CustomerTest extends BaseTestCase
             ->setDateModified('2020-09-15')
             ->setAddresses([]);
 
-        $this->assertEquals(1, $this->customer->getId());
-        $this->assertEquals('ken.ngo@bigcommerce.com', $this->customer->getEmail());
-        $this->assertEquals('2020-09-15', $this->customer->getDateCreated());
-        $this->assertEquals('0123456789', $this->customer->getPhone());
-        $this->assertEquals('BC', $this->customer->getCompany());
-        $this->assertEquals('Ngo', $this->customer->getLastName());
-        $this->assertEquals('Ken', $this->customer->getFirstName());
-        $this->assertEquals('2020-09-15', $this->customer->getDateModified());
-        $this->assertEquals([], $this->customer->getAddresses());
+        $this->assertEquals(1, $this->entity->getId());
+        $this->assertEquals('ken.ngo@bigcommerce.com', $this->entity->getEmail());
+        $this->assertEquals('2020-09-15', $this->entity->getDateCreated());
+        $this->assertEquals('0123456789', $this->entity->getPhone());
+        $this->assertEquals('BC', $this->entity->getCompany());
+        $this->assertEquals('Ngo', $this->entity->getLastName());
+        $this->assertEquals('Ken', $this->entity->getFirstName());
+        $this->assertEquals('2020-09-15', $this->entity->getDateModified());
+        $this->assertEquals([], $this->entity->getAddresses());
     }
 }

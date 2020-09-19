@@ -9,12 +9,12 @@ use Tests\BaseTestCase;
 class ProductTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\Product */
-    protected $product;
+    protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->product = new Product();
-        $this->product
+        $this->entity = new Product();
+        $this->entity
             ->setDateModified('2020-09-16')
             ->setDateCreated('2020-09-15')
             ->setId(1)
@@ -34,23 +34,23 @@ class ProductTest extends BaseTestCase
             ->setWeight(10)
             ->setWidth(20);
 
-        $this->assertEquals('2020-09-16', $this->product->getDateModified());
-        $this->assertEquals('2020-09-15', $this->product->getDateCreated());
-        $this->assertEquals(1, $this->product->getId());
-        $this->assertEquals('Desc', $this->product->getDescription());
-        $this->assertEquals('Name', $this->product->getName());
-        $this->assertEquals('type', $this->product->getType());
-        $this->assertEquals(2, $this->product->getBrandId());
-        $this->assertEquals([], $this->product->getCategories());
-        $this->assertEquals([1, 2, 3], $this->product->getCategoryIds());
-        $this->assertEquals(5, $this->product->getDepth());
-        $this->assertEquals(15, $this->product->getHeight());
-        $this->assertEquals([], $this->product->getImages());
-        $this->assertEquals(100, $this->product->getPrice());
-        $this->assertEquals(null, $this->product->getPrimaryImage());
-        $this->assertEquals([], $this->product->getReviews());
-        $this->assertEquals('sku', $this->product->getSku());
-        $this->assertEquals(10, $this->product->getWeight());
-        $this->assertEquals(20, $this->product->getWidth());
+        $this->assertEquals('2020-09-16', $this->entity->getDateModified());
+        $this->assertEquals('2020-09-15', $this->entity->getDateCreated());
+        $this->assertEquals(1, $this->entity->getId());
+        $this->assertEquals('Desc', $this->entity->getDescription());
+        $this->assertEquals('Name', $this->entity->getName());
+        $this->assertEquals('type', $this->entity->getType());
+        $this->assertEquals(2, $this->entity->getBrandId());
+        $this->assertEquals([], $this->entity->getCategories());
+        $this->assertEquals([1, 2, 3], $this->entity->getCategoryIds());
+        $this->assertEquals(5, $this->entity->getDepth());
+        $this->assertEquals(15, $this->entity->getHeight());
+        $this->assertEquals([], $this->entity->getImages());
+        $this->assertEquals(100, $this->entity->getPrice());
+        $this->assertEquals(null, $this->entity->getPrimaryImage());
+        $this->assertEquals([], $this->entity->getReviews());
+        $this->assertEquals('sku', $this->entity->getSku());
+        $this->assertEquals(10, $this->entity->getWeight());
+        $this->assertEquals(20, $this->entity->getWidth());
     }
 }

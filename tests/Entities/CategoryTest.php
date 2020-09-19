@@ -9,13 +9,13 @@ use Tests\BaseTestCase;
 class CategoryTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\Category */
-    protected $category;
+    protected $entity;
 
     public function testSettersAndGetters(){
-        $this->category = new Category();
+        $this->entity = new Category();
         $parent = new Category();
         $parent->setId(2);
-        $this->category
+        $this->entity
             ->setId(1)
             ->setName('Name')
             ->setSortOrder(1)
@@ -24,12 +24,12 @@ class CategoryTest extends BaseTestCase
             ->setParentId(1)
             ->setParent($parent);
 
-        $this->assertEquals(1, $this->category->getId());
-        $this->assertEquals('Name', $this->category->getName());
-        $this->assertEquals(1, $this->category->getSortOrder());
-        $this->assertEquals('Description', $this->category->getDescription());
-        $this->assertEquals('Title', $this->category->getPageTitle());
-        $this->assertEquals(1, $this->category->getParentId());
-        $this->assertEquals($parent, $this->category->getParent());
+        $this->assertEquals(1, $this->entity->getId());
+        $this->assertEquals('Name', $this->entity->getName());
+        $this->assertEquals(1, $this->entity->getSortOrder());
+        $this->assertEquals('Description', $this->entity->getDescription());
+        $this->assertEquals('Title', $this->entity->getPageTitle());
+        $this->assertEquals(1, $this->entity->getParentId());
+        $this->assertEquals($parent, $this->entity->getParent());
     }
 }

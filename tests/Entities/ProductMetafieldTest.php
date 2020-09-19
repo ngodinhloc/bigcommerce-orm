@@ -9,12 +9,12 @@ use Tests\BaseTestCase;
 class ProductMetafieldTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\ProductMetafield */
-    protected $field;
+    protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->field = new ProductMetafield();
-        $this->field
+        $this->entity = new ProductMetafield();
+        $this->entity
             ->setValue('value')
             ->setProductId(2)
             ->setId(3)
@@ -27,16 +27,16 @@ class ProductMetafieldTest extends BaseTestCase
             ->setKey('age')
             ->setDescription('desc');
 
-        $this->assertEquals('value', $this->field->getValue());
-        $this->assertEquals(2, $this->field->getProductId());
-        $this->assertEquals(3, $this->field->getId());
-        $this->assertEquals('2020-09-17', $this->field->getDateModified());
-        $this->assertEquals('2020-09-16', $this->field->getDateCreated());
-        $this->assertEquals('file', $this->field->getResourceType());
-        $this->assertEquals(4, $this->field->getResourceId());
-        $this->assertEquals('read', $this->field->getPermissionSet());
-        $this->assertEquals('namespace', $this->field->getNamespace());
-        $this->assertEquals('age', $this->field->getKey());
-        $this->assertEquals('desc', $this->field->getDescription());
+        $this->assertEquals('value', $this->entity->getValue());
+        $this->assertEquals(2, $this->entity->getProductId());
+        $this->assertEquals(3, $this->entity->getId());
+        $this->assertEquals('2020-09-17', $this->entity->getDateModified());
+        $this->assertEquals('2020-09-16', $this->entity->getDateCreated());
+        $this->assertEquals('file', $this->entity->getResourceType());
+        $this->assertEquals(4, $this->entity->getResourceId());
+        $this->assertEquals('read', $this->entity->getPermissionSet());
+        $this->assertEquals('namespace', $this->entity->getNamespace());
+        $this->assertEquals('age', $this->entity->getKey());
+        $this->assertEquals('desc', $this->entity->getDescription());
     }
 }

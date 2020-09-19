@@ -9,12 +9,12 @@ use Tests\BaseTestCase;
 class CategoryMetafieldTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\CategoryMetafield */
-    protected $meta;
+    protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->meta = new CategoryMetafield();
-        $this->meta
+        $this->entity = new CategoryMetafield();
+        $this->entity
             ->setCategoryId(1)
             ->setId(2)
             ->setDescription('desc')
@@ -27,16 +27,16 @@ class CategoryMetafieldTest extends BaseTestCase
             ->setResourceId(10)
             ->setResourceType('type');
 
-        $this->assertEquals(1, $this->meta->getCategoryId());
-        $this->assertEquals(2, $this->meta->getId());
-        $this->assertEquals('desc', $this->meta->getDescription());
-        $this->assertEquals('2020-09-16', $this->meta->getDateCreated());
-        $this->assertEquals('2020-09-17', $this->meta->getDateModified());
-        $this->assertEquals('key', $this->meta->getKey());
-        $this->assertEquals('123', $this->meta->getValue());
-        $this->assertEquals('namespace', $this->meta->getNamespace());
-        $this->assertEquals('perm', $this->meta->getPermissionSet());
-        $this->assertEquals(10, $this->meta->getResourceId());
-        $this->assertEquals('type', $this->meta->getResourceType());
+        $this->assertEquals(1, $this->entity->getCategoryId());
+        $this->assertEquals(2, $this->entity->getId());
+        $this->assertEquals('desc', $this->entity->getDescription());
+        $this->assertEquals('2020-09-16', $this->entity->getDateCreated());
+        $this->assertEquals('2020-09-17', $this->entity->getDateModified());
+        $this->assertEquals('key', $this->entity->getKey());
+        $this->assertEquals('123', $this->entity->getValue());
+        $this->assertEquals('namespace', $this->entity->getNamespace());
+        $this->assertEquals('perm', $this->entity->getPermissionSet());
+        $this->assertEquals(10, $this->entity->getResourceId());
+        $this->assertEquals('type', $this->entity->getResourceType());
     }
 }

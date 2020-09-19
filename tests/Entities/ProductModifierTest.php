@@ -9,11 +9,11 @@ use Tests\BaseTestCase;
 class ProductModifierTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\ProductModifier */
-    protected $modifier;
+    protected $entity;
 
     public function testSettersAndGetters(){
-        $this->modifier = new ProductModifier();
-        $this->modifier
+        $this->entity = new ProductModifier();
+        $this->entity
             ->setProductId(111)
             ->setSortOrder(1)
             ->setId(2)
@@ -24,14 +24,14 @@ class ProductModifierTest extends BaseTestCase
             ->setOptionValues([])
             ->setRequired(false);
 
-        $this->assertEquals(111, $this->modifier->getProductId());
-        $this->assertEquals(1, $this->modifier->getSortOrder());
-        $this->assertEquals(2, $this->modifier->getId());
-        $this->assertEquals('file', $this->modifier->getType());
-        $this->assertEquals('upload_file', $this->modifier->getName());
-        $this->assertEquals('Upload File', $this->modifier->getDisplayName());
-        $this->assertEquals([], $this->modifier->getConfig());
-        $this->assertEquals([], $this->modifier->getOptionValues());
-        $this->assertEquals(false, $this->modifier->isRequired());
+        $this->assertEquals(111, $this->entity->getProductId());
+        $this->assertEquals(1, $this->entity->getSortOrder());
+        $this->assertEquals(2, $this->entity->getId());
+        $this->assertEquals('file', $this->entity->getType());
+        $this->assertEquals('upload_file', $this->entity->getName());
+        $this->assertEquals('Upload File', $this->entity->getDisplayName());
+        $this->assertEquals([], $this->entity->getConfig());
+        $this->assertEquals([], $this->entity->getOptionValues());
+        $this->assertEquals(false, $this->entity->isRequired());
     }
 }

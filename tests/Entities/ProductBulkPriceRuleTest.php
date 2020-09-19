@@ -9,12 +9,12 @@ use Tests\BaseTestCase;
 class ProductBulkPriceRuleTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\ProductBulkPriceRule */
-    protected $rule;
+    protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->rule = new ProductBulkPriceRule();
-        $this->rule
+        $this->entity = new ProductBulkPriceRule();
+        $this->entity
             ->setId(1)
             ->setType('type')
             ->setProductId(2)
@@ -22,11 +22,11 @@ class ProductBulkPriceRuleTest extends BaseTestCase
             ->setQuantityMax(200)
             ->setQuantityMin(50);
 
-        $this->assertEquals(1, $this->rule->getId());
-        $this->assertEquals('type', $this->rule->getType());
-        $this->assertEquals(2, $this->rule->getProductId());
-        $this->assertEquals(100, $this->rule->getAmount());
-        $this->assertEquals(200, $this->rule->getQuantityMax());
-        $this->assertEquals(50, $this->rule->getQuantityMin());
+        $this->assertEquals(1, $this->entity->getId());
+        $this->assertEquals('type', $this->entity->getType());
+        $this->assertEquals(2, $this->entity->getProductId());
+        $this->assertEquals(100, $this->entity->getAmount());
+        $this->assertEquals(200, $this->entity->getQuantityMax());
+        $this->assertEquals(50, $this->entity->getQuantityMin());
     }
 }
