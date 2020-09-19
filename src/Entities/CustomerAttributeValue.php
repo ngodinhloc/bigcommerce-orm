@@ -14,39 +14,39 @@ use Bigcommerce\ORM\Entity;
 class CustomerAttributeValue extends Entity
 {
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="customer_id")
      */
     protected $customerId;
 
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="attribute_id")
      */
     protected $attributeId;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="attribute_value")
      */
     protected $attributeValue;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_created", readonly=true)
      */
     protected $dateCreated;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_modified", readonly=true)
      */
     protected $dateModified;
 
     /**
-     * @return string
+     * @return int|null
      */
-    public function getCustomerId()
+    public function getCustomerId(): ?int
     {
         return $this->customerId;
     }
@@ -55,16 +55,16 @@ class CustomerAttributeValue extends Entity
      * @param int|null $customerId
      * @return \Bigcommerce\ORM\Entities\CustomerAttributeValue
      */
-    public function setCustomerId(int $customerId = null): CustomerAttributeValue
+    public function setCustomerId(?int $customerId): CustomerAttributeValue
     {
         $this->customerId = $customerId;
         return $this;
     }
 
     /**
-     * @return string
+     * @return int|null
      */
-    public function getAttributeId()
+    public function getAttributeId(): ?int
     {
         return $this->attributeId;
     }
@@ -73,52 +73,16 @@ class CustomerAttributeValue extends Entity
      * @param int|null $attributeId
      * @return \Bigcommerce\ORM\Entities\CustomerAttributeValue
      */
-    public function setAttributeId(int $attributeId = null): CustomerAttributeValue
+    public function setAttributeId(?int $attributeId): CustomerAttributeValue
     {
         $this->attributeId = $attributeId;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateCreated()
-    {
-        return $this->dateCreated;
-    }
-
-    /**
-     * @param string|null $dateCreated
-     * @return \Bigcommerce\ORM\Entities\CustomerAttributeValue
-     */
-    public function setDateCreated(string $dateCreated = null): CustomerAttributeValue
-    {
-        $this->dateCreated = $dateCreated;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDateModified()
-    {
-        return $this->dateModified;
-    }
-
-    /**
-     * @param string|null $dateModified
-     * @return \Bigcommerce\ORM\Entities\CustomerAttributeValue
-     */
-    public function setDateModified(string $dateModified = null): CustomerAttributeValue
-    {
-        $this->dateModified = $dateModified;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAttributeValue()
+    public function getAttributeValue(): ?string
     {
         return $this->attributeValue;
     }
@@ -127,9 +91,45 @@ class CustomerAttributeValue extends Entity
      * @param string|null $attributeValue
      * @return \Bigcommerce\ORM\Entities\CustomerAttributeValue
      */
-    public function setAttributeValue(string $attributeValue = null): CustomerAttributeValue
+    public function setAttributeValue(?string $attributeValue): CustomerAttributeValue
     {
         $this->attributeValue = $attributeValue;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDateCreated(): ?string
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * @param string|null $dateCreated
+     * @return \Bigcommerce\ORM\Entities\CustomerAttributeValue
+     */
+    public function setDateCreated(?string $dateCreated): CustomerAttributeValue
+    {
+        $this->dateCreated = $dateCreated;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDateModified(): ?string
+    {
+        return $this->dateModified;
+    }
+
+    /**
+     * @param string|null $dateModified
+     * @return \Bigcommerce\ORM\Entities\CustomerAttributeValue
+     */
+    public function setDateModified(?string $dateModified): CustomerAttributeValue
+    {
+        $this->dateModified = $dateModified;
         return $this;
     }
 }

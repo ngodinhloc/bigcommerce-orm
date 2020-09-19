@@ -14,27 +14,27 @@ use Bigcommerce\ORM\Entity;
 class ProductCustomField extends Entity
 {
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="product_id", readonly=true, pathParam=true)
      */
     protected $productId;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="name")
      */
     protected $name;
 
     /**
-     * @var mixed
+     * @var mixed|null
      * @BC\Field(name="value")
      */
     protected $value;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getProductId()
+    public function getProductId(): ?int
     {
         return $this->productId;
     }
@@ -43,16 +43,16 @@ class ProductCustomField extends Entity
      * @param int|null $productId
      * @return \Bigcommerce\ORM\Entities\ProductCustomField
      */
-    public function setProductId(int $productId = null): ProductCustomField
+    public function setProductId(?int $productId): ProductCustomField
     {
         $this->productId = $productId;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -61,14 +61,14 @@ class ProductCustomField extends Entity
      * @param string|null $name
      * @return \Bigcommerce\ORM\Entities\ProductCustomField
      */
-    public function setName(string $name = null): ProductCustomField
+    public function setName(?string $name): ProductCustomField
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return mixed|null
      */
     public function getValue()
     {
@@ -76,13 +76,12 @@ class ProductCustomField extends Entity
     }
 
     /**
-     * @param mixed $value
+     * @param mixed|null $value
      * @return \Bigcommerce\ORM\Entities\ProductCustomField
      */
-    public function setValue($value = null)
+    public function setValue($value): ProductCustomField
     {
         $this->value = $value;
         return $this;
     }
-
 }

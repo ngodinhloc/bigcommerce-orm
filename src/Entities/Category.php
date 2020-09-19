@@ -14,147 +14,146 @@ use Bigcommerce\ORM\Entity;
 class Category extends Entity
 {
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="name")
      */
     protected $name;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="description")
      */
     protected $description;
 
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="sort_order")
      */
     protected $sortOrder;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="page_title")
      */
     protected $pageTitle;
 
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="parent_id")
      */
     protected $parentId;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\Category
+     * @var \Bigcommerce\ORM\Entities\Category|null
      * @BC\BelongToOne(name="parent", targetClass="\Bigcommerce\ORM\Entities\Category", field="parent_id", targetField="id", from="api", auto=true)
      */
     protected $parent;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return \Bigcommerce\ORM\Entities\Category
      */
-    public function setName(string $name): Category
+    public function setName(?string $name): Category
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * @param string $description
+     * @param string|null $description
      * @return \Bigcommerce\ORM\Entities\Category
      */
-    public function setDescription(string $description): Category
+    public function setDescription(?string $description): Category
     {
         $this->description = $description;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getSortOrder()
+    public function getSortOrder(): ?int
     {
         return $this->sortOrder;
     }
 
     /**
-     * @param int $sortOrder
+     * @param int|null $sortOrder
      * @return \Bigcommerce\ORM\Entities\Category
      */
-    public function setSortOrder(int $sortOrder): Category
+    public function setSortOrder(?int $sortOrder): Category
     {
         $this->sortOrder = $sortOrder;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPageTitle()
+    public function getPageTitle(): ?string
     {
         return $this->pageTitle;
     }
 
     /**
-     * @param string $pageTitle
+     * @param string|null $pageTitle
      * @return \Bigcommerce\ORM\Entities\Category
      */
-    public function setPageTitle(string $pageTitle): Category
+    public function setPageTitle(?string $pageTitle): Category
     {
         $this->pageTitle = $pageTitle;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getParentId()
+    public function getParentId(): ?int
     {
         return $this->parentId;
     }
 
     /**
-     * @param int $parentId
+     * @param int|null $parentId
      * @return \Bigcommerce\ORM\Entities\Category
      */
-    public function setParentId(int $parentId): Category
+    public function setParentId(?int $parentId): Category
     {
         $this->parentId = $parentId;
         return $this;
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\Category
+     * @return \Bigcommerce\ORM\Entities\Category|null
      */
-    public function getParent()
+    public function getParent(): ?\Bigcommerce\ORM\Entities\Category
     {
         return $this->parent;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\Category $parent
+     * @param \Bigcommerce\ORM\Entities\Category|null $parent
      * @return \Bigcommerce\ORM\Entities\Category
      */
-    public function setParent(\Bigcommerce\ORM\Entities\Category $parent): Category
+    public function setParent(?\Bigcommerce\ORM\Entities\Category $parent): Category
     {
         $this->parent = $parent;
         return $this;
     }
-
 }

@@ -14,247 +14,246 @@ use Bigcommerce\ORM\Entity;
 class ProductReview extends Entity
 {
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="product_id", readonly=true, pathParam=true)
      */
     protected $productId;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="title")
      */
     protected $title;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="text")
      */
     protected $text;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="status")
      */
     protected $status;
 
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="rating")
      */
     protected $rating;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="email")
      * @BC\Email(validate=true)
      */
     protected $email;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="name")
      */
     protected $name;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_reviewed")
      * @BC\Date
      */
     protected $dateReviewed;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_created", readonly=true)
      * @BC\Date
      */
     protected $dateCreated;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_modified", readonly=true)
      * @BC\Date
      */
     protected $dateModified;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getProductId()
+    public function getProductId(): ?int
     {
         return $this->productId;
     }
 
     /**
-     * @param int $productId
+     * @param int|null $productId
      * @return \Bigcommerce\ORM\Entities\ProductReview
      */
-    public function setProductId(int $productId): ProductReview
+    public function setProductId(?int $productId): ProductReview
     {
         $this->productId = $productId;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
     /**
-     * @param string $title
+     * @param string|null $title
      * @return \Bigcommerce\ORM\Entities\ProductReview
      */
-    public function setTitle(string $title): ProductReview
+    public function setTitle(?string $title): ProductReview
     {
         $this->title = $title;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getText()
+    public function getText(): ?string
     {
         return $this->text;
     }
 
     /**
-     * @param string $text
+     * @param string|null $text
      * @return \Bigcommerce\ORM\Entities\ProductReview
      */
-    public function setText(string $text): ProductReview
+    public function setText(?string $text): ProductReview
     {
         $this->text = $text;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getStatus()
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
     /**
-     * @param string $status
+     * @param string|null $status
      * @return \Bigcommerce\ORM\Entities\ProductReview
      */
-    public function setStatus(string $status): ProductReview
+    public function setStatus(?string $status): ProductReview
     {
         $this->status = $status;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getRating()
+    public function getRating(): ?int
     {
         return $this->rating;
     }
 
     /**
-     * @param int $rating
+     * @param int|null $rating
      * @return \Bigcommerce\ORM\Entities\ProductReview
      */
-    public function setRating(int $rating): ProductReview
+    public function setRating(?int $rating): ProductReview
     {
         $this->rating = $rating;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
     /**
-     * @param string $email
+     * @param string|null $email
      * @return \Bigcommerce\ORM\Entities\ProductReview
      */
-    public function setEmail(string $email): ProductReview
+    public function setEmail(?string $email): ProductReview
     {
         $this->email = $email;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return \Bigcommerce\ORM\Entities\ProductReview
      */
-    public function setName(string $name): ProductReview
+    public function setName(?string $name): ProductReview
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateCreated()
+    public function getDateReviewed(): ?string
+    {
+        return $this->dateReviewed;
+    }
+
+    /**
+     * @param string|null $dateReviewed
+     * @return \Bigcommerce\ORM\Entities\ProductReview
+     */
+    public function setDateReviewed(?string $dateReviewed): ProductReview
+    {
+        $this->dateReviewed = $dateReviewed;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDateCreated(): ?string
     {
         return $this->dateCreated;
     }
 
     /**
-     * @param string $dateCreated
+     * @param string|null $dateCreated
      * @return \Bigcommerce\ORM\Entities\ProductReview
      */
-    public function setDateCreated(string $dateCreated): ProductReview
+    public function setDateCreated(?string $dateCreated): ProductReview
     {
         $this->dateCreated = $dateCreated;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateModified()
+    public function getDateModified(): ?string
     {
         return $this->dateModified;
     }
 
     /**
-     * @param string $dateModified
+     * @param string|null $dateModified
      * @return \Bigcommerce\ORM\Entities\ProductReview
      */
-    public function setDateModified(string $dateModified): ProductReview
+    public function setDateModified(?string $dateModified): ProductReview
     {
         $this->dateModified = $dateModified;
         return $this;
     }
-
-    /**
-     * @return string
-     */
-    public function getDateReviewed()
-    {
-        return $this->dateReviewed;
-    }
-
-    /**
-     * @param string $dateReviewed
-     * @return \Bigcommerce\ORM\Entities\ProductReview
-     */
-    public function setDateReviewed(string $dateReviewed): ProductReview
-    {
-        $this->dateReviewed = $dateReviewed;
-        return $this;
-    }
-
 }

@@ -14,75 +14,75 @@ use Bigcommerce\ORM\Entity;
 class ProductComplexRule extends Entity
 {
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="product_id", readonly=true, pathParam=true)
      */
     protected $productId;
 
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="sort_order")
      */
     protected $sortOrder;
 
     /**
-     * @var bool
+     * @var bool|null
      * @BC\Field(name="enabled")
      */
-    protected $enabled = false;
+    protected $enabled;
 
     /**
-     * @var bool
+     * @var bool|null
      * @BC\Field(name="stop")
      */
-    protected $stop = false;
+    protected $stop;
 
     /**
-     * @var array
+     * @var array|null
      * @BC\Field(name="price_adjuster")
      */
     protected $priceAdjuster;
 
     /**
-     * @var array
+     * @var array|null
      * @BC\Field(name="weight_adjuster")
      */
     protected $weightAdjuster;
 
     /**
-     * @var bool
+     * @var bool|null
      * @BC\Field(name="purchasing_disabled")
      */
-    protected $purchasingDisabled = false;
+    protected $purchasingDisabled;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="purchasing_disabled_message")
      */
     protected $purchasingDisabledMessage;
 
     /**
-     * @var bool
+     * @var bool|null
      * @BC\Field(name="purchasing_hidden")
      */
-    protected $purchasingHidden = false;
+    protected $purchasingHidden;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="image_url")
      */
     protected $imageUrl;
 
     /**
-     * @var array
+     * @var array|null
      * @BC\Field(name="conditions")
      */
     protected $conditions;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getProductId()
+    public function getProductId(): ?int
     {
         return $this->productId;
     }
@@ -91,16 +91,16 @@ class ProductComplexRule extends Entity
      * @param int|null $productId
      * @return \Bigcommerce\ORM\Entities\ProductComplexRule
      */
-    public function setProductId(int $productId = null): ProductComplexRule
+    public function setProductId(?int $productId): ProductComplexRule
     {
         $this->productId = $productId;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getSortOrder()
+    public function getSortOrder(): ?int
     {
         return $this->sortOrder;
     }
@@ -109,52 +109,52 @@ class ProductComplexRule extends Entity
      * @param int|null $sortOrder
      * @return \Bigcommerce\ORM\Entities\ProductComplexRule
      */
-    public function setSortOrder(int $sortOrder = null): ProductComplexRule
+    public function setSortOrder(?int $sortOrder): ProductComplexRule
     {
         $this->sortOrder = $sortOrder;
         return $this;
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isEnabled()
+    public function isEnabled(): ?bool
     {
         return $this->enabled;
     }
 
     /**
-     * @param bool $enabled
+     * @param bool|null $enabled
      * @return \Bigcommerce\ORM\Entities\ProductComplexRule
      */
-    public function setEnabled(bool $enabled = false): ProductComplexRule
+    public function setEnabled(?bool $enabled): ProductComplexRule
     {
         $this->enabled = $enabled;
         return $this;
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isStop()
+    public function isStop(): ?bool
     {
         return $this->stop;
     }
 
     /**
-     * @param bool $stop
+     * @param bool|null $stop
      * @return \Bigcommerce\ORM\Entities\ProductComplexRule
      */
-    public function setStop(bool $stop = false): ProductComplexRule
+    public function setStop(?bool $stop): ProductComplexRule
     {
         $this->stop = $stop;
         return $this;
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function getPriceAdjuster()
+    public function getPriceAdjuster(): ?array
     {
         return $this->priceAdjuster;
     }
@@ -163,16 +163,16 @@ class ProductComplexRule extends Entity
      * @param array|null $priceAdjuster
      * @return \Bigcommerce\ORM\Entities\ProductComplexRule
      */
-    public function setPriceAdjuster(array $priceAdjuster = null): ProductComplexRule
+    public function setPriceAdjuster(?array $priceAdjuster): ProductComplexRule
     {
         $this->priceAdjuster = $priceAdjuster;
         return $this;
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function getWeightAdjuster()
+    public function getWeightAdjuster(): ?array
     {
         return $this->weightAdjuster;
     }
@@ -181,34 +181,34 @@ class ProductComplexRule extends Entity
      * @param array|null $weightAdjuster
      * @return \Bigcommerce\ORM\Entities\ProductComplexRule
      */
-    public function setWeightAdjuster(array $weightAdjuster = null): ProductComplexRule
+    public function setWeightAdjuster(?array $weightAdjuster): ProductComplexRule
     {
         $this->weightAdjuster = $weightAdjuster;
         return $this;
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isPurchasingDisabled()
+    public function isPurchasingDisabled(): ?bool
     {
         return $this->purchasingDisabled;
     }
 
     /**
-     * @param bool $purchasingDisabled
+     * @param bool|null $purchasingDisabled
      * @return \Bigcommerce\ORM\Entities\ProductComplexRule
      */
-    public function setPurchasingDisabled(bool $purchasingDisabled = false): ProductComplexRule
+    public function setPurchasingDisabled(?bool $purchasingDisabled): ProductComplexRule
     {
         $this->purchasingDisabled = $purchasingDisabled;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPurchasingDisabledMessage()
+    public function getPurchasingDisabledMessage(): ?string
     {
         return $this->purchasingDisabledMessage;
     }
@@ -217,34 +217,34 @@ class ProductComplexRule extends Entity
      * @param string|null $purchasingDisabledMessage
      * @return \Bigcommerce\ORM\Entities\ProductComplexRule
      */
-    public function setPurchasingDisabledMessage(string $purchasingDisabledMessage = null): ProductComplexRule
+    public function setPurchasingDisabledMessage(?string $purchasingDisabledMessage): ProductComplexRule
     {
         $this->purchasingDisabledMessage = $purchasingDisabledMessage;
         return $this;
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isPurchasingHidden()
+    public function isPurchasingHidden(): ?bool
     {
         return $this->purchasingHidden;
     }
 
     /**
-     * @param bool $purchasingHidden
+     * @param bool|null $purchasingHidden
      * @return \Bigcommerce\ORM\Entities\ProductComplexRule
      */
-    public function setPurchasingHidden(bool $purchasingHidden = false): ProductComplexRule
+    public function setPurchasingHidden(?bool $purchasingHidden): ProductComplexRule
     {
         $this->purchasingHidden = $purchasingHidden;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getImageUrl()
+    public function getImageUrl(): ?string
     {
         return $this->imageUrl;
     }
@@ -253,16 +253,16 @@ class ProductComplexRule extends Entity
      * @param string|null $imageUrl
      * @return \Bigcommerce\ORM\Entities\ProductComplexRule
      */
-    public function setImageUrl(string $imageUrl = null): ProductComplexRule
+    public function setImageUrl(?string $imageUrl): ProductComplexRule
     {
         $this->imageUrl = $imageUrl;
         return $this;
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function getConditions()
+    public function getConditions(): ?array
     {
         return $this->conditions;
     }
@@ -271,7 +271,7 @@ class ProductComplexRule extends Entity
      * @param array|null $conditions
      * @return \Bigcommerce\ORM\Entities\ProductComplexRule
      */
-    public function setConditions(array $conditions = null): ProductComplexRule
+    public function setConditions(?array $conditions): ProductComplexRule
     {
         $this->conditions = $conditions;
         return $this;

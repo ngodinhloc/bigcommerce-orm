@@ -14,329 +14,347 @@ use Bigcommerce\ORM\Entity;
 class Product extends Entity
 {
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="name", required=true)
      */
     protected $name;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="type")
      */
     protected $type;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="sku")
      */
     protected $sku;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="description")
      */
     protected $description;
 
     /**
-     * @var float
+     * @var float|null
      * @BC\Field(name="weight")
      */
     protected $weight;
 
     /**
-     * @var float
+     * @var float|null
      * @BC\Field(name="width")
      */
     protected $width;
 
     /**
-     * @var float
+     * @var float|null
      * @BC\Field(name="depth")
      */
     protected $depth;
 
     /**
-     * @var float
+     * @var float|null
      * @BC\Field(name="height")
      */
     protected $height;
 
     /**
-     * @var float
+     * @var float|null
      * @BC\Field(name="price")
      */
     protected $price;
 
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="brand_id")
      */
     protected $brandId;
 
     /**
-     * @var array
+     * @var array|null
      * @BC\Field(name="categories")
      */
     protected $categoryIds;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_created", readonly=true)
      * @BC\Date()
      */
     protected $dateCreated;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_modified", readonly=true)
      * @BC\Date()
      */
     protected $dateModified;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\ProductImage
+     * @var \Bigcommerce\ORM\Entities\ProductImage|null
      * @BC\HasOne(name="primary_image", targetClass="\Bigcommerce\ORM\Entities\ProductImage", field="id", targetField="product_id", from="include", auto=true)
      */
     protected $primaryImage;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\ProductImage[]
+     * @var \Bigcommerce\ORM\Entities\ProductImage[]|null
      * @BC\HasMany(name="images", targetClass="\Bigcommerce\ORM\Entities\ProductImage", field="id", targetField="product_id", from="include", auto=true)
      */
     protected $images;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\Category[]
+     * @var \Bigcommerce\ORM\Entities\Category[]|null
      * @BC\BelongToMany(name="categories", targetClass="\Bigcommerce\ORM\Entities\Category", field="categories", targetField="id", from="api", auto=true)
      */
     protected $categories;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\ProductReview[]
+     * @var \Bigcommerce\ORM\Entities\ProductReview[]|null
      * @BC\HasMany(name="reviews", targetClass="\Bigcommerce\ORM\Entities\ProductReview", field="id", targetField="product_id", from="api", auto=true)
      */
     protected $reviews;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
-     * @return Product
+     * @param string|null $name
+     * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setName(string $name): Product
+    public function setName(?string $name): Product
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
     /**
-     * @param string $type
+     * @param string|null $type
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setType(string $type): Product
+    public function setType(?string $type): Product
     {
         $this->type = $type;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSku()
+    public function getSku(): ?string
     {
         return $this->sku;
     }
 
     /**
-     * @param string $sku
+     * @param string|null $sku
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setSku(string $sku): Product
+    public function setSku(?string $sku): Product
     {
         $this->sku = $sku;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * @param string $description
+     * @param string|null $description
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setDescription(string $description): Product
+    public function setDescription(?string $description): Product
     {
         $this->description = $description;
         return $this;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getWeight()
+    public function getWeight(): ?float
     {
         return $this->weight;
     }
 
     /**
-     * @param float $weight
+     * @param float|null $weight
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setWeight(float $weight): Product
+    public function setWeight(?float $weight): Product
     {
         $this->weight = $weight;
         return $this;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getWidth()
+    public function getWidth(): ?float
     {
         return $this->width;
     }
 
     /**
-     * @param float $width
+     * @param float|null $width
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setWidth(float $width): Product
+    public function setWidth(?float $width): Product
     {
         $this->width = $width;
         return $this;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getDepth()
+    public function getDepth(): ?float
     {
         return $this->depth;
     }
 
     /**
-     * @param float $depth
+     * @param float|null $depth
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setDepth(float $depth): Product
+    public function setDepth(?float $depth): Product
     {
         $this->depth = $depth;
         return $this;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getHeight()
+    public function getHeight(): ?float
     {
         return $this->height;
     }
 
     /**
-     * @param float $height
+     * @param float|null $height
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setHeight(float $height): Product
+    public function setHeight(?float $height): Product
     {
         $this->height = $height;
         return $this;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getPrice()
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
     /**
-     * @param float $price
+     * @param float|null $price
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setPrice(float $price): Product
+    public function setPrice(?float $price): Product
     {
         $this->price = $price;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getBrandId()
+    public function getBrandId(): ?int
     {
         return $this->brandId;
     }
 
     /**
-     * @param int $brandId
+     * @param int|null $brandId
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setBrandId(int $brandId): Product
+    public function setBrandId(?int $brandId): Product
     {
         $this->brandId = $brandId;
         return $this;
     }
 
     /**
-     * @return string
+     * @return array|null
      */
-    public function getDateCreated()
+    public function getCategoryIds(): ?array
+    {
+        return $this->categoryIds;
+    }
+
+    /**
+     * @param array|null $categoryIds
+     * @return \Bigcommerce\ORM\Entities\Product
+     */
+    public function setCategoryIds(?array $categoryIds): Product
+    {
+        $this->categoryIds = $categoryIds;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDateCreated(): ?string
     {
         return $this->dateCreated;
     }
 
     /**
-     * @param string $dateCreated
+     * @param string|null $dateCreated
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setDateCreated(string $dateCreated): Product
+    public function setDateCreated(?string $dateCreated): Product
     {
         $this->dateCreated = $dateCreated;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateModified()
+    public function getDateModified(): ?string
     {
         return $this->dateModified;
     }
 
     /**
-     * @param string $dateModified
+     * @param string|null $dateModified
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setDateModified(string $dateModified): Product
+    public function setDateModified(?string $dateModified): Product
     {
         $this->dateModified = $dateModified;
         return $this;
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\ProductImage
+     * @return \Bigcommerce\ORM\Entities\ProductImage|null
      */
-    public function getPrimaryImage()
+    public function getPrimaryImage(): ?\Bigcommerce\ORM\Entities\ProductImage
     {
         return $this->primaryImage;
     }
@@ -345,79 +363,61 @@ class Product extends Entity
      * @param \Bigcommerce\ORM\Entities\ProductImage|null $primaryImage
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setPrimaryImage(ProductImage $primaryImage = null): Product
+    public function setPrimaryImage(?\Bigcommerce\ORM\Entities\ProductImage $primaryImage): Product
     {
         $this->primaryImage = $primaryImage;
         return $this;
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\ProductImage[]
+     * @return \Bigcommerce\ORM\Entities\ProductImage[]|null
      */
-    public function getImages()
+    public function getImages(): ?array
     {
         return $this->images;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\ProductImage[] $images
+     * @param \Bigcommerce\ORM\Entities\ProductImage[]|null $images
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setImages(array $images = null): Product
+    public function setImages(?array $images): Product
     {
         $this->images = $images;
         return $this;
     }
 
     /**
-     * @return array
+     * @return \Bigcommerce\ORM\Entities\Category[]|null
      */
-    public function getCategoryIds()
-    {
-        return $this->categoryIds;
-    }
-
-    /**
-     * @param array $categoryIds
-     * @return \Bigcommerce\ORM\Entities\Product
-     */
-    public function setCategoryIds(array $categoryIds): Product
-    {
-        $this->categoryIds = $categoryIds;
-        return $this;
-    }
-
-    /**
-     * @return \Bigcommerce\ORM\Entities\Category[]
-     */
-    public function getCategories()
+    public function getCategories(): ?array
     {
         return $this->categories;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\Category[] $categories
+     * @param \Bigcommerce\ORM\Entities\Category[]|null $categories
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setCategories(array $categories): Product
+    public function setCategories(?array $categories): Product
     {
         $this->categories = $categories;
         return $this;
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\ProductReview[]
+     * @return \Bigcommerce\ORM\Entities\ProductReview[]|null
      */
-    public function getReviews()
+    public function getReviews(): ?array
     {
         return $this->reviews;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\ProductReview[] $reviews
+     * @param \Bigcommerce\ORM\Entities\ProductReview[]|null $reviews
      * @return \Bigcommerce\ORM\Entities\Product
      */
-    public function setReviews(array $reviews): Product
+    public function setReviews(?array $reviews): Product
     {
         $this->reviews = $reviews;
         return $this;

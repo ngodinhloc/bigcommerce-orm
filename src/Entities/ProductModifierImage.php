@@ -14,35 +14,35 @@ use Bigcommerce\ORM\Entity;
 class ProductModifierImage extends Entity
 {
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="product_id", readonly=true, pathParam=true)
      */
     protected $productId;
 
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="option_id", readonly=true, pathParam=true)
      */
     protected $modifierId;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="image_file", upload=true)
      * @BC\File
      */
     protected $imageFile;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="image_url", readonly=true)
      * @BC\File
      */
     protected $imageUrl;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getProductId(): int
+    public function getProductId(): ?int
     {
         return $this->productId;
     }
@@ -51,16 +51,16 @@ class ProductModifierImage extends Entity
      * @param int|null $productId
      * @return \Bigcommerce\ORM\Entities\ProductModifierImage
      */
-    public function setProductId(int $productId = null): ProductModifierImage
+    public function setProductId(?int $productId): ProductModifierImage
     {
         $this->productId = $productId;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getModifierId()
+    public function getModifierId(): ?int
     {
         return $this->modifierId;
     }
@@ -69,16 +69,16 @@ class ProductModifierImage extends Entity
      * @param int|null $modifierId
      * @return \Bigcommerce\ORM\Entities\ProductModifierImage
      */
-    public function setModifierId(int $modifierId = null): ProductModifierImage
+    public function setModifierId(?int $modifierId): ProductModifierImage
     {
         $this->modifierId = $modifierId;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getImageFile()
+    public function getImageFile(): ?string
     {
         return $this->imageFile;
     }
@@ -87,16 +87,16 @@ class ProductModifierImage extends Entity
      * @param string|null $imageFile
      * @return \Bigcommerce\ORM\Entities\ProductModifierImage
      */
-    public function setImageFile(string $imageFile = null): ProductModifierImage
+    public function setImageFile(?string $imageFile): ProductModifierImage
     {
         $this->imageFile = $imageFile;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getImageUrl()
+    public function getImageUrl(): ?string
     {
         return $this->imageUrl;
     }
@@ -105,7 +105,7 @@ class ProductModifierImage extends Entity
      * @param string|null $imageUrl
      * @return \Bigcommerce\ORM\Entities\ProductModifierImage
      */
-    public function setImageUrl(string $imageUrl = null): ProductModifierImage
+    public function setImageUrl(?string $imageUrl): ProductModifierImage
     {
         $this->imageUrl = $imageUrl;
         return $this;

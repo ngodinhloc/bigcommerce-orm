@@ -14,51 +14,51 @@ use Bigcommerce\ORM\Entity;
 class Channel extends Entity
 {
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="type")
      */
     protected $type;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="platform")
      */
     protected $platform;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="name")
      */
     protected $name;
 
     /**
-     * @var bool
+     * @var bool|null
      * @BC\Field(name="is_enabled")
      */
     protected $isEnabled = false;
 
     /**
-     * @var mixed
+     * @var mixed|null
      * @BC\Field(name="external_id")
      */
     protected $externalId;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_created")
      */
     protected $dateCreated;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_modified")
      */
     protected $dateModified;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -67,16 +67,16 @@ class Channel extends Entity
      * @param string|null $type
      * @return \Bigcommerce\ORM\Entities\Channel
      */
-    public function setType(string $type = null): Channel
+    public function setType(?string $type): Channel
     {
         $this->type = $type;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPlatform()
+    public function getPlatform(): ?string
     {
         return $this->platform;
     }
@@ -85,16 +85,16 @@ class Channel extends Entity
      * @param string|null $platform
      * @return \Bigcommerce\ORM\Entities\Channel
      */
-    public function setPlatform(string $platform = null): Channel
+    public function setPlatform(?string $platform): Channel
     {
         $this->platform = $platform;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -103,32 +103,32 @@ class Channel extends Entity
      * @param string|null $name
      * @return \Bigcommerce\ORM\Entities\Channel
      */
-    public function setName(string $name = null): Channel
+    public function setName(?string $name): Channel
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isEnabled()
+    public function isEnabled(): ?bool
     {
         return $this->isEnabled;
     }
 
     /**
-     * @param bool $isEnabled
+     * @param bool|null $isEnabled
      * @return \Bigcommerce\ORM\Entities\Channel
      */
-    public function setIsEnabled(bool $isEnabled = false): Channel
+    public function setIsEnabled(?bool $isEnabled): Channel
     {
         $this->isEnabled = $isEnabled;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return mixed|null
      */
     public function getExternalId()
     {
@@ -139,16 +139,16 @@ class Channel extends Entity
      * @param mixed|null $externalId
      * @return \Bigcommerce\ORM\Entities\Channel
      */
-    public function setExternalId($externalId = null)
+    public function setExternalId($externalId): Channel
     {
         $this->externalId = $externalId;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateCreated()
+    public function getDateCreated(): ?string
     {
         return $this->dateCreated;
     }
@@ -157,16 +157,16 @@ class Channel extends Entity
      * @param string|null $dateCreated
      * @return \Bigcommerce\ORM\Entities\Channel
      */
-    public function setDateCreated(string $dateCreated = null): Channel
+    public function setDateCreated(?string $dateCreated): Channel
     {
         $this->dateCreated = $dateCreated;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateModified()
+    public function getDateModified(): ?string
     {
         return $this->dateModified;
     }
@@ -175,7 +175,7 @@ class Channel extends Entity
      * @param string|null $dateModified
      * @return \Bigcommerce\ORM\Entities\Channel
      */
-    public function setDateModified(string $dateModified = null): Channel
+    public function setDateModified(?string $dateModified): Channel
     {
         $this->dateModified = $dateModified;
         return $this;

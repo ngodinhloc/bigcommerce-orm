@@ -14,60 +14,60 @@ use Bigcommerce\ORM\Entity;
 class Customer extends Entity
 {
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="company")
      */
     protected $company;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="first_name")
      */
     protected $firstName;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="last_name")
      */
     protected $lastName;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="email")
      * @BC\Email(validate=true)
      */
     protected $email;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="phone")
      */
     protected $phone;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_created", readonly=true)
      * @BC\Date()
      */
     protected $dateCreated;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_modified", readonly=true)
      * @BC\Date()
      */
     protected $dateModified;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\CustomerAddress[]
+     * @var \Bigcommerce\ORM\Entities\CustomerAddress[]|null
      * @BC\HasMany(name="addresses", targetClass="\Bigcommerce\ORM\Entities\CustomerAddress", field="id", targetField="customer_id", from="include", auto=true)
      */
-    protected $addresses = [];
+    protected $addresses;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCompany()
+    public function getCompany(): ?string
     {
         return $this->company;
     }
@@ -76,17 +76,16 @@ class Customer extends Entity
      * @param string|null $company
      * @return \Bigcommerce\ORM\Entities\Customer
      */
-    public function setCompany(string $company = null): Customer
+    public function setCompany(?string $company): Customer
     {
         $this->company = $company;
-
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getFirstName()
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
@@ -95,17 +94,16 @@ class Customer extends Entity
      * @param string|null $firstName
      * @return \Bigcommerce\ORM\Entities\Customer
      */
-    public function setFirstName(string $firstName = null): Customer
+    public function setFirstName(?string $firstName): Customer
     {
         $this->firstName = $firstName;
-
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getLastName()
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
@@ -114,17 +112,16 @@ class Customer extends Entity
      * @param string|null $lastName
      * @return \Bigcommerce\ORM\Entities\Customer
      */
-    public function setLastName(string $lastName = null): Customer
+    public function setLastName(?string $lastName): Customer
     {
         $this->lastName = $lastName;
-
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -133,17 +130,16 @@ class Customer extends Entity
      * @param string|null $email
      * @return \Bigcommerce\ORM\Entities\Customer
      */
-    public function setEmail(string $email = null): Customer
+    public function setEmail(?string $email): Customer
     {
         $this->email = $email;
-
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhone()
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
@@ -152,17 +148,16 @@ class Customer extends Entity
      * @param string|null $phone
      * @return \Bigcommerce\ORM\Entities\Customer
      */
-    public function setPhone(string $phone = null): Customer
+    public function setPhone(?string $phone): Customer
     {
         $this->phone = $phone;
-
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateCreated()
+    public function getDateCreated(): ?string
     {
         return $this->dateCreated;
     }
@@ -171,16 +166,16 @@ class Customer extends Entity
      * @param string|null $dateCreated
      * @return \Bigcommerce\ORM\Entities\Customer
      */
-    public function setDateCreated(string $dateCreated = null): Customer
+    public function setDateCreated(?string $dateCreated): Customer
     {
         $this->dateCreated = $dateCreated;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateModified()
+    public function getDateModified(): ?string
     {
         return $this->dateModified;
     }
@@ -189,29 +184,27 @@ class Customer extends Entity
      * @param string|null $dateModified
      * @return \Bigcommerce\ORM\Entities\Customer
      */
-    public function setDateModified(string $dateModified = null): Customer
+    public function setDateModified(?string $dateModified): Customer
     {
         $this->dateModified = $dateModified;
         return $this;
     }
 
-
     /**
-     * @return \Bigcommerce\ORM\Entities\CustomerAddress[]
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress[]|null
      */
-    public function getAddresses()
+    public function getAddresses(): ?array
     {
         return $this->addresses;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CustomerAddress[] $addresses
+     * @param \Bigcommerce\ORM\Entities\CustomerAddress[]|null $addresses
      * @return \Bigcommerce\ORM\Entities\Customer
      */
-    public function setAddresses(array $addresses): Customer
+    public function setAddresses(?array $addresses): Customer
     {
         $this->addresses = $addresses;
         return $this;
     }
-
 }

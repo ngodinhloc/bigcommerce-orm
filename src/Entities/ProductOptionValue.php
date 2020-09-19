@@ -7,11 +7,11 @@ use Bigcommerce\ORM\Annotations as BC;
 use Bigcommerce\ORM\Entity;
 
 /**
- * Class ProductModifierValue
+ * Class ProductOptionValue
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="ProductModifierValue", path="/catalog/products/{product_id}/modifiers/{option_id}/values")
+ * @BC\Resource(name="ProductOptionValue", path="/catalog/products/{product_id}/options/{option_id}/values")
  */
-class ProductModifierValue extends Entity
+class ProductOptionValue extends Entity
 {
     /**
      * @var int|null
@@ -23,7 +23,7 @@ class ProductModifierValue extends Entity
      * @var int|null
      * @BC\Field(name="option_id", readonly=true, pathParam=true)
      */
-    protected $modifierId;
+    protected $optionId;
 
     /**
      * @var string|null
@@ -39,7 +39,7 @@ class ProductModifierValue extends Entity
 
     /**
      * @var mixed|null
-     * @BC\Field(name="value_data")
+     * @BC\Field(name="value_date")
      */
     protected $valueData;
 
@@ -47,13 +47,7 @@ class ProductModifierValue extends Entity
      * @var bool|null
      * @BC\Field(name="is_default")
      */
-    protected $isDefault;
-
-    /**
-     * @var array|null
-     * @BC\Field(name="adjusters")
-     */
-    protected $adjusters;
+    protected $isDefault = false;
 
     /**
      * @return int|null
@@ -65,9 +59,9 @@ class ProductModifierValue extends Entity
 
     /**
      * @param int|null $productId
-     * @return \Bigcommerce\ORM\Entities\ProductModifierValue
+     * @return \Bigcommerce\ORM\Entities\ProductOptionValue
      */
-    public function setProductId(?int $productId): ProductModifierValue
+    public function setProductId(?int $productId): ProductOptionValue
     {
         $this->productId = $productId;
         return $this;
@@ -76,18 +70,18 @@ class ProductModifierValue extends Entity
     /**
      * @return int|null
      */
-    public function getModifierId(): ?int
+    public function getOptionId(): ?int
     {
-        return $this->modifierId;
+        return $this->optionId;
     }
 
     /**
-     * @param int|null $modifierId
-     * @return \Bigcommerce\ORM\Entities\ProductModifierValue
+     * @param int|null $optionId
+     * @return \Bigcommerce\ORM\Entities\ProductOptionValue
      */
-    public function setModifierId(?int $modifierId): ProductModifierValue
+    public function setOptionId(?int $optionId): ProductOptionValue
     {
-        $this->modifierId = $modifierId;
+        $this->optionId = $optionId;
         return $this;
     }
 
@@ -101,9 +95,9 @@ class ProductModifierValue extends Entity
 
     /**
      * @param string|null $label
-     * @return \Bigcommerce\ORM\Entities\ProductModifierValue
+     * @return \Bigcommerce\ORM\Entities\ProductOptionValue
      */
-    public function setLabel(?string $label): ProductModifierValue
+    public function setLabel(?string $label): ProductOptionValue
     {
         $this->label = $label;
         return $this;
@@ -119,9 +113,9 @@ class ProductModifierValue extends Entity
 
     /**
      * @param int|null $sortOrder
-     * @return \Bigcommerce\ORM\Entities\ProductModifierValue
+     * @return \Bigcommerce\ORM\Entities\ProductOptionValue
      */
-    public function setSortOrder(?int $sortOrder): ProductModifierValue
+    public function setSortOrder(?int $sortOrder): ProductOptionValue
     {
         $this->sortOrder = $sortOrder;
         return $this;
@@ -137,9 +131,9 @@ class ProductModifierValue extends Entity
 
     /**
      * @param mixed|null $valueData
-     * @return \Bigcommerce\ORM\Entities\ProductModifierValue
+     * @return \Bigcommerce\ORM\Entities\ProductOptionValue
      */
-    public function setValueData($valueData): ProductModifierValue
+    public function setValueData($valueData): ProductOptionValue
     {
         $this->valueData = $valueData;
         return $this;
@@ -155,29 +149,11 @@ class ProductModifierValue extends Entity
 
     /**
      * @param bool|null $isDefault
-     * @return \Bigcommerce\ORM\Entities\ProductModifierValue
+     * @return \Bigcommerce\ORM\Entities\ProductOptionValue
      */
-    public function setIsDefault(?bool $isDefault): ProductModifierValue
+    public function setIsDefault(?bool $isDefault): ProductOptionValue
     {
         $this->isDefault = $isDefault;
-        return $this;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getAdjusters(): ?array
-    {
-        return $this->adjusters;
-    }
-
-    /**
-     * @param array|null $adjusters
-     * @return \Bigcommerce\ORM\Entities\ProductModifierValue
-     */
-    public function setAdjusters(?array $adjusters): ProductModifierValue
-    {
-        $this->adjusters = $adjusters;
         return $this;
     }
 }

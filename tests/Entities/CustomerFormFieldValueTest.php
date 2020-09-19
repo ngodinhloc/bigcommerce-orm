@@ -16,6 +16,7 @@ class CustomerFormFieldValueTest extends BaseTestCase
         $this->value = new CustomerFormFieldValue();
         $this->value
             ->setCustomerId(1)
+            ->setAddressId(3)
             ->setId(2)
             ->setName('age')
             ->setValue(30);
@@ -24,5 +25,6 @@ class CustomerFormFieldValueTest extends BaseTestCase
         $this->assertEquals(2, $this->value->getId());
         $this->assertEquals('age', $this->value->getName());
         $this->assertEquals(30, $this->value->getValue());
+        $this->assertEquals(3, $this->value->getAddressId());
     }
 }

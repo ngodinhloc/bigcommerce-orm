@@ -14,33 +14,33 @@ use Bigcommerce\ORM\Entity;
 class CustomerAttribute extends Entity
 {
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="name")
      */
     protected $name;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="type")
      */
     protected $type;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_created", readonly=true)
      */
     protected $dateCreated;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_modified", readonly=true)
      */
     protected $dateModified;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -49,16 +49,16 @@ class CustomerAttribute extends Entity
      * @param string|null $name
      * @return \Bigcommerce\ORM\Entities\CustomerAttribute
      */
-    public function setName(string $name = null): CustomerAttribute
+    public function setName(?string $name): CustomerAttribute
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -67,16 +67,16 @@ class CustomerAttribute extends Entity
      * @param string|null $type
      * @return \Bigcommerce\ORM\Entities\CustomerAttribute
      */
-    public function setType(string $type = null): CustomerAttribute
+    public function setType(?string $type): CustomerAttribute
     {
         $this->type = $type;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateCreated()
+    public function getDateCreated(): ?string
     {
         return $this->dateCreated;
     }
@@ -85,16 +85,16 @@ class CustomerAttribute extends Entity
      * @param string|null $dateCreated
      * @return \Bigcommerce\ORM\Entities\CustomerAttribute
      */
-    public function setDateCreated(string $dateCreated = null): CustomerAttribute
+    public function setDateCreated(?string $dateCreated): CustomerAttribute
     {
         $this->dateCreated = $dateCreated;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateModified()
+    public function getDateModified(): ?string
     {
         return $this->dateModified;
     }
@@ -103,7 +103,7 @@ class CustomerAttribute extends Entity
      * @param string|null $dateModified
      * @return \Bigcommerce\ORM\Entities\CustomerAttribute
      */
-    public function setDateModified(string $dateModified = null): CustomerAttribute
+    public function setDateModified(?string $dateModified): CustomerAttribute
     {
         $this->dateModified = $dateModified;
         return $this;

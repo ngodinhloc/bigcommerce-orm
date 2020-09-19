@@ -11,7 +11,8 @@ class ProductModifierValueTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ProductModifierValue */
     protected $value;
 
-    public function testSettersAndGetters(){
+    public function testSettersAndGetters()
+    {
         $this->value = new ProductModifierValue();
         $this->value
             ->setId(1)

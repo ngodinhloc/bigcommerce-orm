@@ -14,74 +14,74 @@ use Bigcommerce\ORM\Entity;
 class CategoryImage extends Entity
 {
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="category_id", readonly=true, pathParam=true)
      */
     protected $categoryId;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="image_file", upload=true)
      * @BC\File()
      */
     protected $imageFile;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="image_url", readonly=true)
      * @BC\Url()
      */
     protected $imageUrl;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCategoryId()
+    public function getCategoryId(): ?int
     {
         return $this->categoryId;
     }
 
     /**
      * @param int|null $categoryId
-     * @return CategoryImage
+     * @return \Bigcommerce\ORM\Entities\CategoryImage
      */
-    public function setCategoryId(int $categoryId = null): CategoryImage
+    public function setCategoryId(?int $categoryId): CategoryImage
     {
         $this->categoryId = $categoryId;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getImageFile()
+    public function getImageFile(): ?string
     {
         return $this->imageFile;
     }
 
     /**
      * @param string|null $imageFile
-     * @return CategoryImage
+     * @return \Bigcommerce\ORM\Entities\CategoryImage
      */
-    public function setImageFile(string $imageFile = null): CategoryImage
+    public function setImageFile(?string $imageFile): CategoryImage
     {
         $this->imageFile = $imageFile;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getImageUrl()
+    public function getImageUrl(): ?string
     {
         return $this->imageUrl;
     }
 
     /**
      * @param string|null $imageUrl
-     * @return CategoryImage
+     * @return \Bigcommerce\ORM\Entities\CategoryImage
      */
-    public function setImageUrl(string $imageUrl = null): CategoryImage
+    public function setImageUrl(?string $imageUrl): CategoryImage
     {
         $this->imageUrl = $imageUrl;
         return $this;

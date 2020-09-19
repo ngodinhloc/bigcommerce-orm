@@ -14,148 +14,148 @@ use Bigcommerce\ORM\Entity;
 class ProductImage extends Entity
 {
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="product_id", readonly=true, pathParam=true)
      */
     protected $productId;
 
     /**
-     * @var bool
+     * @var bool|null
      * @BC\Field(name="is_thumbnail")
      */
-    protected $isThumbnail = false;
+    protected $isThumbnail;
 
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="sort_order")
      */
-
     protected $sortOrder;
+
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="description")
      */
     protected $description;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="image_file", upload=true)
      */
     protected $imageFile;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="image_url")
      */
     protected $imageUrl;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="url_zoom")
      */
     protected $urlZoom;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="url_standard")
      */
     protected $urlStandard;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="url_thumbnail")
      */
     protected $urlThumbnail;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="url_tiny")
      */
     protected $urlTiny;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="date_modified")
      * @BC\Date
      */
     protected $dateModified;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getProductId()
+    public function getProductId(): ?int
     {
         return $this->productId;
     }
 
     /**
-     * @param int $productId
+     * @param int|null $productId
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setProductId(int $productId): ProductImage
+    public function setProductId(?int $productId): ProductImage
     {
         $this->productId = $productId;
         return $this;
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isThumbnail()
+    public function isThumbnail(): ?bool
     {
         return $this->isThumbnail;
     }
 
     /**
-     * @param bool $isThumbnail
+     * @param bool|null $isThumbnail
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setIsThumbnail(bool $isThumbnail): ProductImage
+    public function setIsThumbnail(?bool $isThumbnail): ProductImage
     {
         $this->isThumbnail = $isThumbnail;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getSortOrder()
+    public function getSortOrder(): ?int
     {
         return $this->sortOrder;
     }
 
     /**
-     * @param int $sortOrder
+     * @param int|null $sortOrder
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setSortOrder(int $sortOrder): ProductImage
+    public function setSortOrder(?int $sortOrder): ProductImage
     {
         $this->sortOrder = $sortOrder;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * @param string $description
+     * @param string|null $description
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setDescription(string $description): ProductImage
+    public function setDescription(?string $description): ProductImage
     {
         $this->description = $description;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getImageFile()
+    public function getImageFile(): ?string
     {
         return $this->imageFile;
     }
@@ -164,115 +164,115 @@ class ProductImage extends Entity
      * @param string|null $imageFile
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setImageFile(string $imageFile = null): ProductImage
+    public function setImageFile(?string $imageFile): ProductImage
     {
         $this->imageFile = $imageFile;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getImageUrl()
+    public function getImageUrl(): ?string
     {
         return $this->imageUrl;
     }
 
     /**
-     * @param string $imageUrl
+     * @param string|null $imageUrl
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setImageUrl(string $imageUrl): ProductImage
+    public function setImageUrl(?string $imageUrl): ProductImage
     {
         $this->imageUrl = $imageUrl;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUrlZoom()
+    public function getUrlZoom(): ?string
     {
         return $this->urlZoom;
     }
 
     /**
-     * @param string $urlZoom
+     * @param string|null $urlZoom
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setUrlZoom(string $urlZoom): ProductImage
+    public function setUrlZoom(?string $urlZoom): ProductImage
     {
         $this->urlZoom = $urlZoom;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUrlStandard()
+    public function getUrlStandard(): ?string
     {
         return $this->urlStandard;
     }
 
     /**
-     * @param string $urlStandard
+     * @param string|null $urlStandard
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setUrlStandard(string $urlStandard): ProductImage
+    public function setUrlStandard(?string $urlStandard): ProductImage
     {
         $this->urlStandard = $urlStandard;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUrlThumbnail()
+    public function getUrlThumbnail(): ?string
     {
         return $this->urlThumbnail;
     }
 
     /**
-     * @param string $urlThumbnail
+     * @param string|null $urlThumbnail
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setUrlThumbnail(string $urlThumbnail): ProductImage
+    public function setUrlThumbnail(?string $urlThumbnail): ProductImage
     {
         $this->urlThumbnail = $urlThumbnail;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUrlTiny()
+    public function getUrlTiny(): ?string
     {
         return $this->urlTiny;
     }
 
     /**
-     * @param string $urlTiny
+     * @param string|null $urlTiny
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setUrlTiny(string $urlTiny): ProductImage
+    public function setUrlTiny(?string $urlTiny): ProductImage
     {
         $this->urlTiny = $urlTiny;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateModified()
+    public function getDateModified(): ?string
     {
         return $this->dateModified;
     }
 
     /**
-     * @param string $dateModified
+     * @param string|null $dateModified
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setDateModified(string $dateModified): ProductImage
+    public function setDateModified(?string $dateModified): ProductImage
     {
         $this->dateModified = $dateModified;
         return $this;

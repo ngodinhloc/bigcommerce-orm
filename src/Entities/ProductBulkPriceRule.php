@@ -14,39 +14,39 @@ use Bigcommerce\ORM\Entity;
 class ProductBulkPriceRule extends Entity
 {
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="product_id", readonly=true, pathParam=true)
      */
     protected $productId;
 
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="quantity_min")
      */
     protected $quantityMin;
 
     /**
-     * @var int
+     * @var int|null
      * @BC\Field(name="quantity_max")
      */
     protected $quantityMax;
 
     /**
-     * @var string
+     * @var string|null
      * @BC\Field(name="type")
      */
     protected $type;
 
     /**
-     * @var float
+     * @var float|null
      * @BC\Field(name="amount")
      */
     protected $amount;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getProductId()
+    public function getProductId(): ?int
     {
         return $this->productId;
     }
@@ -55,16 +55,16 @@ class ProductBulkPriceRule extends Entity
      * @param int|null $productId
      * @return \Bigcommerce\ORM\Entities\ProductBulkPriceRule
      */
-    public function setProductId(int $productId = null): ProductBulkPriceRule
+    public function setProductId(?int $productId): ProductBulkPriceRule
     {
         $this->productId = $productId;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getQuantityMin()
+    public function getQuantityMin(): ?int
     {
         return $this->quantityMin;
     }
@@ -73,16 +73,16 @@ class ProductBulkPriceRule extends Entity
      * @param int|null $quantityMin
      * @return \Bigcommerce\ORM\Entities\ProductBulkPriceRule
      */
-    public function setQuantityMin(int $quantityMin = null): ProductBulkPriceRule
+    public function setQuantityMin(?int $quantityMin): ProductBulkPriceRule
     {
         $this->quantityMin = $quantityMin;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getQuantityMax()
+    public function getQuantityMax(): ?int
     {
         return $this->quantityMax;
     }
@@ -91,16 +91,16 @@ class ProductBulkPriceRule extends Entity
      * @param int|null $quantityMax
      * @return \Bigcommerce\ORM\Entities\ProductBulkPriceRule
      */
-    public function setQuantityMax(int $quantityMax = null): ProductBulkPriceRule
+    public function setQuantityMax(?int $quantityMax): ProductBulkPriceRule
     {
         $this->quantityMax = $quantityMax;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -109,16 +109,16 @@ class ProductBulkPriceRule extends Entity
      * @param string|null $type
      * @return \Bigcommerce\ORM\Entities\ProductBulkPriceRule
      */
-    public function setType(string $type = null): ProductBulkPriceRule
+    public function setType(?string $type): ProductBulkPriceRule
     {
         $this->type = $type;
         return $this;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getAmount()
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
@@ -127,10 +127,9 @@ class ProductBulkPriceRule extends Entity
      * @param float|null $amount
      * @return \Bigcommerce\ORM\Entities\ProductBulkPriceRule
      */
-    public function setAmount(float $amount = null): ProductBulkPriceRule
+    public function setAmount(?float $amount): ProductBulkPriceRule
     {
         $this->amount = $amount;
         return $this;
     }
-
 }
