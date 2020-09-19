@@ -59,8 +59,8 @@ class Customer extends Entity
     protected $dateModified;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\Address[]
-     * @BC\HasMany(name="addresses", targetClass="\Bigcommerce\ORM\Entities\Address", field="id", targetField="customer_id", from="include", auto=true)
+     * @var \Bigcommerce\ORM\Entities\CustomerAddress[]
+     * @BC\HasMany(name="addresses", targetClass="\Bigcommerce\ORM\Entities\CustomerAddress", field="id", targetField="customer_id", from="include", auto=true)
      */
     protected $addresses = [];
 
@@ -197,7 +197,7 @@ class Customer extends Entity
 
 
     /**
-     * @return \Bigcommerce\ORM\Entities\Address[]
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress[]
      */
     public function getAddresses()
     {
@@ -205,7 +205,7 @@ class Customer extends Entity
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\Address[] $addresses
+     * @param \Bigcommerce\ORM\Entities\CustomerAddress[] $addresses
      * @return \Bigcommerce\ORM\Entities\Customer
      */
     public function setAddresses(array $addresses): Customer

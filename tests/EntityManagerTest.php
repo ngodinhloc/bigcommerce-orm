@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use Bigcommerce\ORM\Client\Client;
+use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Entities\Channel;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Entities\Product;
@@ -240,6 +241,9 @@ class EntityManagerTest extends BaseTestCase
         $data = $this->getBatchCreateData();
         $customers = $this->entityManager->batchCreate(Customer::class, null, $data);
         $this->assertEquals(2, count($customers));
+
+        $result = $this->entityManager->batchCreate(CustomerAddress::class, null, []);
+        $this->assertFalse($result);
     }
 
     public function testBatchUpdateEmpty()
@@ -411,6 +415,7 @@ class EntityManagerTest extends BaseTestCase
         $client->find('/channels/2?')->willReturn(['id' => 2]);
         $client->create($savePath, $data, [])->willReturn($returnProduct);
         $client->create($productPath, Argument::any(), [])->willReturn($returnProduct);
+        $client->create('/customers/addresses', [], null, true)->willReturn([]);
         $client->update($updatePath, $data, [])->willReturn($createResult);
         $client->update($updateImage, $imageData, $files)->willReturn(['id' => 1]);
         $client->delete($deletePath)->willReturn(true);

@@ -7,11 +7,11 @@ use Bigcommerce\ORM\Annotations as BC;
 use Bigcommerce\ORM\Entity;
 
 /**
- * Class Address
+ * Class CustomerAddress
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="Address", path="/customers/addresses")
+ * @BC\Resource(name="CustomerAddress", path="/customers/addresses")
  */
-class Address extends Entity
+class CustomerAddress extends Entity
 {
     /**
      * @var string
@@ -101,9 +101,9 @@ class Address extends Entity
 
     /**
      * @param int $customerId
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setCustomerId(int $customerId): Address
+    public function setCustomerId(int $customerId): CustomerAddress
     {
         $this->customerId = $customerId;
         return $this;
@@ -119,9 +119,9 @@ class Address extends Entity
 
     /**
      * @param string $address1
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setAddress1(string $address1): Address
+    public function setAddress1(string $address1): CustomerAddress
     {
         $this->address1 = $address1;
         return $this;
@@ -137,9 +137,9 @@ class Address extends Entity
 
     /**
      * @param string $address2
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setAddress2(string $address2): Address
+    public function setAddress2(string $address2): CustomerAddress
     {
         $this->address2 = $address2;
         return $this;
@@ -155,9 +155,9 @@ class Address extends Entity
 
     /**
      * @param string $addressType
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setAddressType(string $addressType): Address
+    public function setAddressType(string $addressType): CustomerAddress
     {
         $this->addressType = $addressType;
         return $this;
@@ -173,9 +173,9 @@ class Address extends Entity
 
     /**
      * @param string $city
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setCity(string $city): Address
+    public function setCity(string $city): CustomerAddress
     {
         $this->city = $city;
         return $this;
@@ -191,9 +191,9 @@ class Address extends Entity
 
     /**
      * @param string $company
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setCompany(string $company): Address
+    public function setCompany(string $company): CustomerAddress
     {
         $this->company = $company;
         return $this;
@@ -209,9 +209,9 @@ class Address extends Entity
 
     /**
      * @param string $country
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setCountry(string $country): Address
+    public function setCountry(string $country): CustomerAddress
     {
         $this->country = $country;
         return $this;
@@ -227,9 +227,9 @@ class Address extends Entity
 
     /**
      * @param string $countryCode
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setCountryCode(string $countryCode): Address
+    public function setCountryCode(string $countryCode): CustomerAddress
     {
         $this->countryCode = $countryCode;
         return $this;
@@ -245,9 +245,9 @@ class Address extends Entity
 
     /**
      * @param string $firstName
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setFirstName(string $firstName): Address
+    public function setFirstName(string $firstName): CustomerAddress
     {
         $this->firstName = $firstName;
         return $this;
@@ -263,9 +263,9 @@ class Address extends Entity
 
     /**
      * @param string $lastName
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setLastName(string $lastName): Address
+    public function setLastName(string $lastName): CustomerAddress
     {
         $this->lastName = $lastName;
         return $this;
@@ -281,9 +281,9 @@ class Address extends Entity
 
     /**
      * @param string $phone
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setPhone(string $phone): Address
+    public function setPhone(string $phone): CustomerAddress
     {
         $this->phone = $phone;
         return $this;
@@ -299,9 +299,9 @@ class Address extends Entity
 
     /**
      * @param string $postalCode
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setPostalCode(string $postalCode): Address
+    public function setPostalCode(string $postalCode): CustomerAddress
     {
         $this->postalCode = $postalCode;
         return $this;
@@ -317,9 +317,9 @@ class Address extends Entity
 
     /**
      * @param string $state
-     * @return \Bigcommerce\ORM\Entities\Address
+     * @return \Bigcommerce\ORM\Entities\CustomerAddress
      */
-    public function setState(string $state): Address
+    public function setState(string $state): CustomerAddress
     {
         $this->state = $state;
         return $this;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Events;
 
-use Bigcommerce\ORM\Entities\Address;
+use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Events\EntityManagerEvent;
 use Tests\BaseTestCase;
@@ -30,7 +30,7 @@ class EntityManagerEventTest extends BaseTestCase
         $this->assertEquals($entity, $this->event->getEntity());
 
         $newName = 'Entity.Updated';
-        $newEntity = new Address();
+        $newEntity = new CustomerAddress();
         $this->event
             ->setName($newName)
             ->setEntity($newEntity);

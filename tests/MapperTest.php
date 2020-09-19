@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use Bigcommerce\ORM\Annotations\Resource;
-use Bigcommerce\ORM\Entities\Address;
+use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductModifier;
@@ -136,7 +136,7 @@ class MapperTest extends BaseTestCase
         $check = $this->mapper->checkRequiredFields($product);
         $this->assertEquals(['name' => 'name'], $check);
 
-        $address = new Address();
+        $address = new CustomerAddress();
         $check = $this->mapper->checkRequiredFields($address);
         $this->assertEquals(true, $check);
     }

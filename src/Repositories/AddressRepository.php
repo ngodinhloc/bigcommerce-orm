@@ -11,5 +11,5 @@ use Bigcommerce\ORM\Repository;
  */
 class AddressRepository extends Repository
 {
-    protected $className = \Bigcommerce\ORM\Entities\Address::class;
+    protected $className = \Bigcommerce\ORM\Entities\CustomerAddress::class;
 }
