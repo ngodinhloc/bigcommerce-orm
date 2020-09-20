@@ -40,33 +40,14 @@ class Mapper
     }
 
     /**
-     * Get object type of entity
-     *
-     * @param \Bigcommerce\ORM\Entity|null $entity
-     * @return string
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function getObjectType(Entity $entity = null)
-    {
-        $reflectionClass = $this->reflect($entity);
-        /* @var \Bigcommerce\ORM\Annotations\Resource $resource */
-        $resource = $this->reader->getClassAnnotation($reflectionClass, Resource::class);
-        if (!$resource->name) {
-            throw new MapperException(MapperException::ERROR_OBJECT_TYPE_NOT_FOUND . get_class($entity));
-        }
-
-        return $resource->name;
-    }
-
-    /**
      * @param \Bigcommerce\ORM\Entity|null $entity
      * @return \Bigcommerce\ORM\Annotations\Resource|object
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function getClassAnnotation(Entity $entity = null)
+    public function getResource(Entity $entity = null)
     {
         $reflectionClass = $this->reflect($entity);
-
+        
         return $this->reader->getClassAnnotation($reflectionClass, Resource::class);
     }
 
@@ -107,16 +88,16 @@ class Mapper
      * Patch object properties with data array
      *
      * @param \Bigcommerce\ORM\Entity|null $entity
-     * @param array|null $array
+     * @param array|null $data
      * @param array|null $pathParams
      * @param bool $propertyOnly
      * @return \Bigcommerce\ORM\Entity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function patch(Entity $entity = null, array $array = null, array $pathParams = null, bool $propertyOnly = false)
+    public function patch(Entity $entity = null, array $data = null, array $pathParams = null, bool $propertyOnly = false)
     {
         if (is_array($pathParams)) {
-            $array = array_merge($array, $pathParams);
+            $data = array_merge($data, $pathParams);
         }
 
         $reflectionClass = $this->reflect($entity);
@@ -125,15 +106,15 @@ class Mapper
             $annotations = $this->reader->getPropertyAnnotations($property);
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof Field) {
-                    if (isset($array[$annotation->name])) {
-                        $this->setPropertyValue($entity, $property, $array[$annotation->name]);
+                    if (isset($data[$annotation->name])) {
+                        $this->setPropertyValue($entity, $property, $data[$annotation->name]);
                     }
                 }
             }
         }
 
         $this->setPropertyValueByName($entity, 'isPatched', true);
-        $resource = $this->getClassAnnotation($entity);
+        $resource = $this->getResource($entity);
         $metadata = $this->getMetadata($resource, $properties);
         $this->setPropertyValueByName($entity, 'metadata', $metadata);
 
@@ -142,11 +123,11 @@ class Mapper
         }
 
         if (!empty($autoIncludes = $metadata->getIncludeFields())) {
-            $this->patchAutoIncludes($entity, $autoIncludes, $array, $pathParams);
+            $this->patchAutoIncludes($entity, $autoIncludes, $data, $pathParams);
         }
 
         if (!empty($inResultFields = $metadata->getInResultFields())) {
-            $this->patchAutoIncludes($entity, $inResultFields, $array, $pathParams);
+            $this->patchAutoIncludes($entity, $inResultFields, $data, $pathParams);
         }
 
         return $entity;
@@ -348,7 +329,7 @@ class Mapper
      * @return void
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function setPropertyValueByName(Entity &$entity, string $propertyName, $value)
+    public function setPropertyValueByName(Entity $entity, string $propertyName, $value)
     {
         $property = $this->getProperty($entity, $propertyName);
         $this->setPropertyValue($entity, $property, $value);
@@ -484,23 +465,23 @@ class Mapper
     /**
      * @param \Bigcommerce\ORM\Entity|null $entity
      * @param array|null $autoIncludes
-     * @param array|null $array
+     * @param array|null $items
      * @param array|null $pathParams
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function patchAutoIncludes(Entity $entity = null, array $autoIncludes = null, array $array = null, array $pathParams = null)
+    private function patchAutoIncludes(Entity $entity = null, array $autoIncludes = null, array $items = null, array $pathParams = null)
     {
         foreach ($autoIncludes as $fieldName => $include) {
             $property = $include['property'];
             $annotation = $include['annotation'];
-            if (isset($array[$annotation->name])) {
+            if (isset($items[$annotation->name])) {
                 if ($annotation instanceof ManyRelationInterface) {
-                    $propertyValue = $this->includesToCollection($annotation->targetClass, $array[$annotation->name], $pathParams);
+                    $propertyValue = $this->includesToCollection($annotation->targetClass, $items[$annotation->name], $pathParams);
                     $this->setPropertyValue($entity, $property, $propertyValue);
                 }
                 if ($annotation instanceof OneRelationInterface) {
                     $object = $this->object($annotation->targetClass);
-                    $propertyValue = $this->patch($object, $array[$annotation->name], $pathParams, true);
+                    $propertyValue = $this->patch($object, $items[$annotation->name], $pathParams, true);
                     $this->setPropertyValue($entity, $property, $propertyValue);
                 }
             }
@@ -509,16 +490,16 @@ class Mapper
 
     /**
      * @param string|null $className
-     * @param array $array
+     * @param array $items
      * @param array|null $pathParams
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function includesToCollection(string $className = null, array $array = [], array $pathParams = null)
+    private function includesToCollection(string $className = null, array $items = [], array $pathParams = null)
     {
         $collections = [];
-        if (!empty($array)) {
-            foreach ($array as $item) {
+        if (!empty($items)) {
+            foreach ($items as $item) {
                 $object = $this->object($className);
                 $relationEntity = $this->patch($object, $item, $pathParams, true);
                 $collections[] = $relationEntity;

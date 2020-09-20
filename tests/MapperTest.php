@@ -33,32 +33,12 @@ class MapperTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\Mapper::__construct
-     * @covers \Bigcommerce\ORM\Mapper::getObjectType
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function testGetObjectType()
-    {
-        $this->mapper = new Mapper();
-        $objectType = $this->mapper->getObjectType($this->customer);
-        $this->assertEquals('Customer', $objectType);
-    }
-
-    public function testGetObjectTypeThrowException()
-    {
-        $this->mapper = new Mapper();
-        $myProduct = new MyProduct();
-        $this->expectException(MapperException::class);
-        $this->mapper->getObjectType($myProduct);
-    }
-
-    /**
-     * @covers \Bigcommerce\ORM\Mapper::getClassAnnotation
+     * @covers \Bigcommerce\ORM\Mapper::getResource
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function testGetClassAnnotation()
     {
-        $classAnnotation = $this->mapper->getClassAnnotation($this->customer);
+        $classAnnotation = $this->mapper->getResource($this->customer);
         $this->assertInstanceOf(Resource::class, $classAnnotation);
         $this->assertEquals('Customer', $classAnnotation->name);
         $this->assertEquals('/customers', $classAnnotation->path);

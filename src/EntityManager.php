@@ -28,7 +28,7 @@ class EntityManager
      * EntityManager constructor.
      *
      * @param \Bigcommerce\ORM\Client\ClientInterface|null $client
-     * @param \Bigcommerce\ORM\Mapper|null $mapper mapper
+     * @param \Bigcommerce\ORM\Mapper|null $mapper
      * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface|null $eventDispatcher
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
@@ -45,10 +45,10 @@ class EntityManager
     /**
      * Find all object of a class name
      *
-     * @param string|null $className class
+     * @param string|null $className
      * @param array|null $pathParams
-     * @param array|null $order order
-     * @param bool $auto lazy loading
+     * @param array|null $order
+     * @param bool $auto auto loading
      * @return array|bool
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
@@ -134,7 +134,7 @@ class EntityManager
             return false;
         }
 
-        $entity = $this->mapper->patch($entity, $result);
+        $entity = $this->mapper->patch($entity, $result, $pathParams);
         if ($auto == false) {
             return $entity;
         }
@@ -192,7 +192,7 @@ class EntityManager
     /**
      * Update entity : allow to update entity with array of data
      *
-     * @param \Bigcommerce\ORM\Entity|null $entity entity
+     * @param \Bigcommerce\ORM\Entity|null $entity
      * @param array $data [fieldName => value]
      * @return bool
      * @throws \Bigcommerce\ORM\Exceptions\MapperException

@@ -36,11 +36,10 @@ class BelongToManyHandler extends AbstractHandler implements RelationHandlerInte
         }
 
         $value = $this->getManyRelationValue($data[$annotation->field]);
-        /** BelongRelationInterface: force auto = false to prevent the loop (child -> parent -> child) */
-        $auto = false;
         $queryBuilder = new QueryBuilder();
         $queryBuilder->whereIn($annotation->targetField, $value);
-        $collections = $this->entityManager->findBy($annotation->targetClass, $pathParams, $queryBuilder, $auto);
+        /** BelongRelationInterface: force auto = false to prevent the loop (child -> parent -> child) */
+        $collections = $this->entityManager->findBy($annotation->targetClass, $pathParams, $queryBuilder, false);
         $mapper = $this->entityManager->getMapper();
         $mapper->setPropertyValue($entity, $property, $collections);
     }

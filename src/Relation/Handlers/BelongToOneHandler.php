@@ -35,8 +35,7 @@ class BelongToOneHandler extends AbstractHandler implements RelationHandlerInter
 
         $value = $this->getOneRelationValue($data[$annotation->field]);
         /** BelongRelationInterface: force auto = false to prevent the loop (child -> parent -> child) */
-        $auto = false;
-        $find = $this->entityManager->find($annotation->targetClass, $value, $pathParams, $auto);
+        $find = $this->entityManager->find($annotation->targetClass, $value, $pathParams, false);
         $mapper = $this->entityManager->getMapper();
         $mapper->setPropertyValue($entity, $property, $find);
     }
