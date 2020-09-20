@@ -289,7 +289,7 @@ $entityManager->batchUpdate([$product1, $product2]);
 ```
 @see: [samples/products.php](./samples/products.php) 
 
-### Query objects: count, findAll, findBy, find
+### Query objects: findAll, findBy, find
 ```php
 /** get all customers */
 $allCustomers = $entityManager->findAll(\Bigcommerce\ORM\Entities\Customer::class);
