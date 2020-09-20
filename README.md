@@ -3,7 +3,6 @@
 [![Build status][ico-travis]][link-travis]
 [![Coverage][ico-codecov]][link-codecov]
 [![Version][ico-version-stable]][link-packagist]
-[![Download][ico-downloads-monthly]][link-downloads]
 
 [ico-license]: https://img.shields.io/github/license/nrk/predis.svg?style=flat-square
 [ico-travis]: https://travis-ci.com/ngodinhloc/big-orm.svg?branch=master
