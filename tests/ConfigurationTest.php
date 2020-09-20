@@ -188,7 +188,7 @@ class ConfigurationTest extends BaseTestCase
         return $options = [
             'verify' => false,
             'timeout' => 60,
-            'contentType' => 'application/json',
+            'accept' => 'application/json',
             'debug' => true,
             'proxy' => 'tcp:localhost:8080'
         ];

@@ -324,11 +324,11 @@ class Mapper
     /**
      * Get property value
      *
-     * @param \Bigcommerce\ORM\Entity $entity entity
-     * @param \ReflectionProperty $property property
+     * @param \Bigcommerce\ORM\Entity|null $entity entity
+     * @param \ReflectionProperty|null $property property
      * @return mixed
      */
-    public function getPropertyValue(Entity $entity, \ReflectionProperty $property)
+    public function getPropertyValue(Entity $entity = null, \ReflectionProperty $property = null)
     {
         if ($property instanceof \ReflectionProperty) {
             $property->setAccessible(true);
@@ -424,7 +424,7 @@ class Mapper
     {
         try {
             $object = new $class();
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             throw new MapperException(MapperException::ERROR_INVALID_CLASS_NAME . $class);
         }
 
@@ -432,16 +432,16 @@ class Mapper
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @param \Bigcommerce\ORM\Entity|null $entity entity
      * @return \ReflectionClass
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function reflect(Entity $entity)
+    public function reflect(Entity $entity = null)
     {
         try {
             $reflectionClass = new ReflectionClass(get_class($entity));
             $this->register();
-        } catch (\ReflectionException $exception) {
+        } catch (\Throwable $exception) {
             throw new MapperException(MapperException::ERROR_FAILED_TO_CREATE_REFLECT_CLASS . $exception->getMessage());
         }
 

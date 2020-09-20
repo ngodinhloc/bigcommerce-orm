@@ -14,6 +14,8 @@ use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\Metadata;
+use Cassandra\Map;
+use Tests\Entities\MyProduct;
 
 class MapperTest extends BaseTestCase
 {
@@ -40,6 +42,14 @@ class MapperTest extends BaseTestCase
         $this->mapper = new Mapper();
         $objectType = $this->mapper->getObjectType($this->customer);
         $this->assertEquals('Customer', $objectType);
+    }
+
+    public function testGetObjectTypeThrowException()
+    {
+        $this->mapper = new Mapper();
+        $myProduct = new MyProduct();
+        $this->expectException(MapperException::class);
+        $this->mapper->getObjectType($myProduct);
     }
 
     /**
@@ -237,6 +247,39 @@ class MapperTest extends BaseTestCase
         $this->assertEquals('Name', $value);
     }
 
+    public function testGetPropertyValueByNameThrowException()
+    {
+        $modifier = new ProductModifier();
+        $modifier
+            ->setName('Name')
+            ->setType('file')
+            ->setDisplayName('Display Name');
+        $this->expectException(\TypeError::class);
+        $this->mapper->getPropertyValueByName($modifier, 'invalid');
+    }
+
+    public function testGetProperty()
+    {
+        $modifier = new ProductModifier();
+        $modifier
+            ->setName('Name')
+            ->setType('file')
+            ->setDisplayName('Display Name');
+        $get = $this->mapper->getProperty($modifier, 'invalid');
+        $this->assertFalse($get);
+    }
+
+    public function testGetPropertyValue()
+    {
+        $modifier = new ProductModifier();
+        $modifier
+            ->setName('Name')
+            ->setType('file')
+            ->setDisplayName('Display Name');
+        $get = $this->mapper->getPropertyValue($modifier, null);
+        $this->assertNull($get);
+    }
+
     public function testGetPropertyValueByFieldName()
     {
         $modifier = new ProductModifier();
@@ -248,10 +291,33 @@ class MapperTest extends BaseTestCase
         $this->assertEquals('Display Name', $value);
     }
 
+    public function testGetPropertyValueByFieldNameThrowException()
+    {
+        $modifier = new ProductModifier();
+        $modifier
+            ->setName('Name')
+            ->setType('file')
+            ->setDisplayName('Display Name');
+        $this->expectException(MapperException::class);
+        $this->mapper->getPropertyValueByFieldName($modifier, 'invalid');
+    }
+
     public function testObject()
     {
         $object = $this->mapper->object(Customer::class);
         $this->assertInstanceOf(Customer::class, $object);
+    }
+
+    public function testObjectThrowException()
+    {
+        $this->expectException(MapperException::class);
+        $this->mapper->object('invalid_class_name');
+    }
+
+    public function testReflectThrowException()
+    {
+        $this->expectException(\Throwable::class);
+        $this->mapper->reflect(null);
     }
 
     public function testCheckEntity()
@@ -270,5 +336,11 @@ class MapperTest extends BaseTestCase
     {
         $this->expectException(EntityException::class);
         $this->mapper->checkId(0);
+    }
+
+    public function testCheckPropertyValues()
+    {
+        $result = $this->mapper->checkPropertyValues(null);
+        $this->assertFalse($result);
     }
 }

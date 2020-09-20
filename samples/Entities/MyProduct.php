@@ -7,7 +7,7 @@ use Bigcommerce\ORM\Annotations as BC;
 use Bigcommerce\ORM\Entity;
 
 /**
- * Class CustomisedOrderProduct
+ * Class MyProduct
  * @package Samples\Entities
  * @BC\Resource(name="Product", path="/catalog/products")
  */
