@@ -116,8 +116,8 @@ class MapperTest extends BaseTestCase
 
         $this->assertInstanceOf(Metadata::class, $metadata);
         $this->assertInstanceOf(Resource::class, $resource);
-        $this->assertEquals(4, count($relationFields));
-        $this->assertEquals(2, count($includeFields));
+        $this->assertEquals(9, count($relationFields));
+        $this->assertEquals(7, count($includeFields));
         $this->assertEquals(2, count($autoLoadFields));
         $this->assertEquals(1, count($requiredFields));
         $this->assertEquals(3, count($readonlyFields));

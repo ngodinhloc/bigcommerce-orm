@@ -106,6 +106,42 @@ class Product extends Entity
     protected $images;
 
     /**
+     * @var \Bigcommerce\ORM\Entities\ProductVariant[]|null
+     * @BC\HasMany(name="variants", targetClass="\Bigcommerce\ORM\Entities\ProductVariant", field="id", targetField="product_id", from="include", auto=true)
+     */
+    protected $variants;
+
+    /**
+     * @var \Bigcommerce\ORM\Entities\ProductCustomField[]|null
+     * @BC\HasMany(name="custom_fields", targetClass="\Bigcommerce\ORM\Entities\ProductCustomField", field="id", targetField="product_id", from="include", auto=true)
+     */
+    protected $customFields;
+
+    /**
+     * @var \Bigcommerce\ORM\Entities\ProductBulkPriceRule[]|null
+     * @BC\HasMany(name="custom_fields", targetClass="\Bigcommerce\ORM\Entities\ProductBulkPriceRule", field="id", targetField="product_id", from="include", auto=true)
+     */
+    protected $bulkPricingRules;
+
+    /**
+     * @var \Bigcommerce\ORM\Entities\ProductModifier[]|null
+     * @BC\HasMany(name="modifiers", targetClass="\Bigcommerce\ORM\Entities\ProductModifier", field="id", targetField="product_id", from="include", auto=true)
+     */
+    protected $modifiers;
+
+    /**
+     * @var \Bigcommerce\ORM\Entities\ProductOption[]|null
+     * @BC\HasMany(name="options", targetClass="\Bigcommerce\ORM\Entities\ProductOption", field="id", targetField="product_id", from="include", auto=true)
+     */
+    protected $options;
+
+    /**
+     * @var \Bigcommerce\ORM\Entities\ProductVideo[]|null
+     * @BC\HasMany(name="videos", targetClass="\Bigcommerce\ORM\Entities\ProductVideo", field="id", targetField="product_id", from="include", auto=true)
+     */
+    protected $videos;
+
+    /**
      * @var \Bigcommerce\ORM\Entities\Category[]|null
      * @BC\BelongToMany(name="categories", targetClass="\Bigcommerce\ORM\Entities\Category", field="categories", targetField="id", from="api", auto=true)
      */
@@ -420,6 +456,114 @@ class Product extends Entity
     public function setReviews(?array $reviews): Product
     {
         $this->reviews = $reviews;
+        return $this;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\ProductVariant[]|null
+     */
+    public function getVariants(): ?array
+    {
+        return $this->variants;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\ProductVariant[]|null $variants
+     * @return \Bigcommerce\ORM\Entities\Product
+     */
+    public function setVariants(?array $variants): Product
+    {
+        $this->variants = $variants;
+        return $this;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\ProductCustomField[]|null
+     */
+    public function getCustomFields(): ?array
+    {
+        return $this->customFields;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\ProductCustomField[]|null $customFields
+     * @return \Bigcommerce\ORM\Entities\Product
+     */
+    public function setCustomFields(?array $customFields): Product
+    {
+        $this->customFields = $customFields;
+        return $this;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\ProductBulkPriceRule[]|null
+     */
+    public function getBulkPricingRules(): ?array
+    {
+        return $this->bulkPricingRules;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\ProductBulkPriceRule[]|null $bulkPricingRules
+     * @return \Bigcommerce\ORM\Entities\Product
+     */
+    public function setBulkPricingRules(?array $bulkPricingRules): Product
+    {
+        $this->bulkPricingRules = $bulkPricingRules;
+        return $this;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\ProductModifier[]|null
+     */
+    public function getModifiers(): ?array
+    {
+        return $this->modifiers;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\ProductModifier[]|null $modifiers
+     * @return \Bigcommerce\ORM\Entities\Product
+     */
+    public function setModifiers(?array $modifiers): Product
+    {
+        $this->modifiers = $modifiers;
+        return $this;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\ProductOption[]|null
+     */
+    public function getOptions(): ?array
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\ProductOption[]|null $options
+     * @return \Bigcommerce\ORM\Entities\Product
+     */
+    public function setOptions(?array $options): Product
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\ProductVideo[]|null
+     */
+    public function getVideos(): ?array
+    {
+        return $this->videos;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\ProductVideo[]|null $videos
+     * @return \Bigcommerce\ORM\Entities\Product
+     */
+    public function setVideos(?array $videos): Product
+    {
+        $this->videos = $videos;
         return $this;
     }
 }

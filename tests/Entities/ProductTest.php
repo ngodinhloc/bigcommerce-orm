@@ -32,7 +32,13 @@ class ProductTest extends BaseTestCase
             ->setReviews([])
             ->setSku('sku')
             ->setWeight(10)
-            ->setWidth(20);
+            ->setWidth(20)
+            ->setVariants([])
+            ->setCustomFields([])
+            ->setBulkPricingRules([])
+            ->setModifiers([])
+            ->setOptions([])
+            ->setVideos([]);
 
         $this->assertEquals('2020-09-16', $this->entity->getDateModified());
         $this->assertEquals('2020-09-15', $this->entity->getDateCreated());
@@ -52,5 +58,11 @@ class ProductTest extends BaseTestCase
         $this->assertEquals('sku', $this->entity->getSku());
         $this->assertEquals(10, $this->entity->getWeight());
         $this->assertEquals(20, $this->entity->getWidth());
+        $this->assertEquals([], $this->entity->getVariants());
+        $this->assertEquals([], $this->entity->getCustomFields());
+        $this->assertEquals([], $this->entity->getBulkPricingRules());
+        $this->assertEquals([], $this->entity->getModifiers());
+        $this->assertEquals([], $this->entity->getOptions());
+        $this->assertEquals([], $this->entity->getVideos());
     }
 }
