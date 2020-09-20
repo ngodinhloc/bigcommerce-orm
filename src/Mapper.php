@@ -78,7 +78,7 @@ class Mapper
     public function getResourcePath(Entity $entity = null)
     {
         if ($entity->isPatched() !== true) {
-            $entity = $this->patch($entity, [], true);
+            $entity = $this->patch($entity, [], null, true);
         }
 
         $resource = $entity->getMetadata()->getResource();
@@ -107,13 +107,18 @@ class Mapper
      * Patch object properties with data array
      *
      * @param \Bigcommerce\ORM\Entity|null $entity
-     * @param array|null $array array
+     * @param array|null $array
+     * @param array|null $pathParams
      * @param bool $propertyOnly
      * @return \Bigcommerce\ORM\Entity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function patch(Entity $entity = null, array $array = null, bool $propertyOnly = false)
+    public function patch(Entity $entity = null, array $array = null, array $pathParams = null, bool $propertyOnly = false)
     {
+        if (is_array($pathParams)) {
+            $array = array_merge($array, $pathParams);
+        }
+
         $reflectionClass = $this->reflect($entity);
         $properties = $reflectionClass->getProperties();
         foreach ($properties as $property) {
@@ -137,11 +142,11 @@ class Mapper
         }
 
         if (!empty($autoIncludes = $metadata->getIncludeFields())) {
-            $this->patchAutoIncludes($entity, $autoIncludes, $array);
+            $this->patchAutoIncludes($entity, $autoIncludes, $array, $pathParams);
         }
 
         if (!empty($inResultFields = $metadata->getInResultFields())) {
-            $this->patchAutoIncludes($entity, $inResultFields, $array);
+            $this->patchAutoIncludes($entity, $inResultFields, $array, $pathParams);
         }
 
         return $entity;
@@ -157,7 +162,7 @@ class Mapper
     public function checkRequiredFields(Entity $entity = null)
     {
         if ($entity->isPatched() !== true) {
-            $entity = $this->patch($entity, [], true);
+            $entity = $this->patch($entity, [], null, true);
         }
 
         if (empty($requiredFields = $entity->getMetadata()->getRequiredFields())) {
@@ -190,7 +195,7 @@ class Mapper
     public function getWritableFieldValues(Entity $entity = null, array $data = null)
     {
         if ($entity->isPatched() !== true) {
-            $entity = $this->patch($entity, [], true);
+            $entity = $this->patch($entity, [], null, true);
         }
 
         if (empty($data)) {
@@ -233,7 +238,7 @@ class Mapper
     public function checkRequiredValidations(Entity $entity = null)
     {
         if ($entity->isPatched() !== true) {
-            $entity = $this->patch($entity, [], true);
+            $entity = $this->patch($entity, [], null, true);
         }
 
         if (empty($validationProperties = $entity->getMetadata()->getValidationProperties())) {
@@ -480,21 +485,22 @@ class Mapper
      * @param \Bigcommerce\ORM\Entity|null $entity
      * @param array|null $autoIncludes
      * @param array|null $array
+     * @param array|null $pathParams
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function patchAutoIncludes(Entity $entity = null, array $autoIncludes = null, array $array = null)
+    private function patchAutoIncludes(Entity $entity = null, array $autoIncludes = null, array $array = null, array $pathParams = null)
     {
         foreach ($autoIncludes as $fieldName => $include) {
             $property = $include['property'];
             $annotation = $include['annotation'];
             if (isset($array[$annotation->name])) {
                 if ($annotation instanceof ManyRelationInterface) {
-                    $propertyValue = $this->includesToCollection($array[$annotation->name], $annotation->targetClass);
+                    $propertyValue = $this->includesToCollection($annotation->targetClass, $array[$annotation->name], $pathParams);
                     $this->setPropertyValue($entity, $property, $propertyValue);
                 }
                 if ($annotation instanceof OneRelationInterface) {
                     $object = $this->object($annotation->targetClass);
-                    $propertyValue = $this->patch($object, $array[$annotation->name], true);
+                    $propertyValue = $this->patch($object, $array[$annotation->name], $pathParams, true);
                     $this->setPropertyValue($entity, $property, $propertyValue);
                 }
             }
@@ -502,18 +508,19 @@ class Mapper
     }
 
     /**
-     * @param array $array
      * @param string|null $className
+     * @param array $array
+     * @param array|null $pathParams
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function includesToCollection(array $array = [], string $className = null)
+    private function includesToCollection(string $className = null, array $array = [], array $pathParams = null)
     {
         $collections = [];
         if (!empty($array)) {
             foreach ($array as $item) {
                 $object = $this->object($className);
-                $relationEntity = $this->patch($object, $item, true);
+                $relationEntity = $this->patch($object, $item, $pathParams, true);
                 $collections[] = $relationEntity;
             }
         }

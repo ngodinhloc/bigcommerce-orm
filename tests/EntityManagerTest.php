@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace Tests;
 
 use Bigcommerce\ORM\Client\Client;
-use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Entities\Channel;
 use Bigcommerce\ORM\Entities\Customer;
+use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductImage;
 use Bigcommerce\ORM\EntityManager;
@@ -251,8 +251,8 @@ class EntityManagerTest extends BaseTestCase
         $data = $this->getBatchCreateData();
         $customer1 = new Customer();
         $customer2 = new Customer();
-        $customer1 = $this->mapper->patch($customer1, $data[0], true);
-        $customer2 = $this->mapper->patch($customer2, $data[1], true);
+        $customer1 = $this->mapper->patch($customer1, $data[0], null, true);
+        $customer2 = $this->mapper->patch($customer2, $data[1], null, true);
 
         $result = $this->entityManager->batchUpdate([$customer1, $customer2]);
         $this->assertEquals(false, $result);
@@ -262,7 +262,7 @@ class EntityManagerTest extends BaseTestCase
     {
         $data = $this->getBatchCreateData();
         $customer1 = new Customer();
-        $customer1 = $this->mapper->patch($customer1, $data[0], true);
+        $customer1 = $this->mapper->patch($customer1, $data[0], null, true);
         $product = new Product();
 
         $this->expectException(EntityException::class);
@@ -276,8 +276,8 @@ class EntityManagerTest extends BaseTestCase
         $data = $this->getBatchReturnedData();
         $customer1 = new Customer();
         $customer2 = new Customer();
-        $customer1 = $this->mapper->patch($customer1, $data[0], true);
-        $customer2 = $this->mapper->patch($customer2, $data[1], true);
+        $customer1 = $this->mapper->patch($customer1, $data[0], null, true);
+        $customer2 = $this->mapper->patch($customer2, $data[1], null, true);
 
         $customers = $this->entityManager->batchUpdate([$customer1, $customer2]);
         $this->assertEquals(2, count($customers));
@@ -347,7 +347,7 @@ class EntityManagerTest extends BaseTestCase
         $findByPath = '/customers?id:in=1,2,3&include=addresses';
         $findByResult = [];
 
-        $findPath = '/products/1?include=primary_image,images,variants,custom_fields,modifiers,options,videos';
+        $findPath = '/products/1?include=primary_image,images,variants,custom_fields,modifiers,options';
         $findResult = ['id' => 1];
 
         $savePath = '/customers';
@@ -374,7 +374,7 @@ class EntityManagerTest extends BaseTestCase
         ];
         $updatePath = '/customers/1';
 
-        $findProduct = '/catalog/products/1?include=primary_image,images,variants,custom_fields,modifiers,options,videos';
+        $findProduct = '/catalog/products/1?include=primary_image,images,variants,custom_fields,modifiers,options';
         $findReview = '/catalog/products/1/reviews?product_id:in=1';
 
         $updateImage = '/catalog/products/111/images/1';
@@ -501,13 +501,16 @@ class EntityManagerTest extends BaseTestCase
     {
         $customer = new Customer();
         $mapper = $this->getMapper();
-        $customer = $mapper->patch($customer, $data = [
-            'company' => 'BC',
-            'first_name' => 'Ken',
-            'last_name' => 'Ngo',
-            'email' => 'ken.ngo@bigcommmerce.com',
-            'phone' => '0123456789'
-        ]);
+        $customer = $mapper->patch(
+            $customer,
+            [
+                'company' => 'BC',
+                'first_name' => 'Ken',
+                'last_name' => 'Ngo',
+                'email' => 'ken.ngo@bigcommmerce.com',
+                'phone' => '0123456789'
+            ]
+        );
         return $customer;
     }
 

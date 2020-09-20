@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Tests;
 
 use Bigcommerce\ORM\Annotations\Resource;
-use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Entities\Customer;
+use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductModifier;
 use Bigcommerce\ORM\Entities\ProductModifierValue;
@@ -117,7 +117,7 @@ class MapperTest extends BaseTestCase
         $this->assertInstanceOf(Metadata::class, $metadata);
         $this->assertInstanceOf(Resource::class, $resource);
         $this->assertEquals(9, count($relationFields));
-        $this->assertEquals(7, count($includeFields));
+        $this->assertEquals(6, count($includeFields));
         $this->assertEquals(2, count($autoLoadFields));
         $this->assertEquals(1, count($requiredFields));
         $this->assertEquals(3, count($readonlyFields));
@@ -126,7 +126,7 @@ class MapperTest extends BaseTestCase
         $this->assertEquals('lamp.jpg', $primaryImage->getImageFile());
 
         $modifier = new ProductModifier();
-        $modifier = $this->mapper->patch($modifier, ['name' => 'Modifier Name']);
+        $modifier = $this->mapper->patch($modifier, ['name' => 'Modifier Name'], ['product_id' => 111]);
         $this->assertTrue($modifier->isPatched());
     }
 

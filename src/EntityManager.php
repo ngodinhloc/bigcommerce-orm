@@ -60,7 +60,7 @@ class EntityManager
         $this->mapper->checkClass($className);
 
         $object = $this->mapper->object($className);
-        $entity = $this->mapper->patch($object, $pathParams, true);
+        $entity = $this->mapper->patch($object, [], $pathParams, true);
         $path = $this->mapper->getResourcePath($entity);
         $autoIncludes = $entity->getMetadata()->getIncludeFields();
 
@@ -92,7 +92,7 @@ class EntityManager
         $this->mapper->checkClass($className);
 
         $object = $this->mapper->object($className);
-        $entity = $this->mapper->patch($object, $pathParams, true);
+        $entity = $this->mapper->patch($object, [], $pathParams, true);
         $path = $this->mapper->getResourcePath($entity);
         $autoIncludes = $entity->getMetadata()->getIncludeFields();
         $queryString = $queryBuilder->include(array_keys($autoIncludes))->getQueryString();
@@ -118,7 +118,7 @@ class EntityManager
         $this->mapper->checkId($id);
 
         $object = $this->mapper->object($className);
-        $entity = $this->mapper->patch($object, $pathParams, true);
+        $entity = $this->mapper->patch($object, [], $pathParams, true);
         $resource = $entity->getMetadata()->getResource();
         if ($resource->findable !== true) {
             throw new EntityException(EntityException::ERROR_NOT_FINDABLE_RESOURCE . $resource->name);
@@ -164,7 +164,7 @@ class EntityManager
         $this->mapper->checkEntity($entity);
 
         if ($entity->isPatched() !== true) {
-            $entity = $this->mapper->patch($entity, [], true);
+            $entity = $this->mapper->patch($entity, [], null, true);
         }
 
         $checkRequiredProperties = $this->mapper->checkRequiredFields($entity);
@@ -210,7 +210,7 @@ class EntityManager
         }
 
         if ($entity->isPatched() !== true) {
-            $entity = $this->mapper->patch($entity, [], true);
+            $entity = $this->mapper->patch($entity, [], null, true);
         }
 
         $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
@@ -242,7 +242,7 @@ class EntityManager
         $this->mapper->checkClass($className);
 
         $object = $this->mapper->object($className);
-        $entity = $this->mapper->patch($object, $pathParams, true);
+        $entity = $this->mapper->patch($object, [], $pathParams, true);
         $resource = $entity->getMetadata()->getResource();
         if ($resource->deletable !== true) {
             throw new EntityException(EntityException::ERROR_NOT_DELETABLE_RESOURCE . $resource->name);
@@ -270,7 +270,7 @@ class EntityManager
         $this->mapper->checkClass($className);
 
         $object = $this->mapper->object($className);
-        $entity = $this->mapper->patch($object, $pathParams, true);
+        $entity = $this->mapper->patch($object, [], $pathParams, true);
         $path = $this->mapper->getResourcePath($entity);
 
         $result = $this->client->create($path, $items, null, true);
@@ -299,7 +299,7 @@ class EntityManager
     {
         $first = current($entities);
         $className = get_class($first);
-        $first = $this->mapper->patch($first, $pathParams, true);
+        $first = $this->mapper->patch($first, [], $pathParams, true);
         $path = $this->mapper->getResourcePath($first);
         $data = $this->getBatchUpdateData($className, $entities);
 
@@ -324,7 +324,7 @@ class EntityManager
         $this->mapper->checkClass($class);
         $object = $this->mapper->object($class);
 
-        return $this->mapper->patch($object, $data, true);
+        return $this->mapper->patch($object, $data, null, true);
     }
 
     /**
@@ -337,7 +337,7 @@ class EntityManager
      */
     public function patch(Entity $entity = null, array $array = [])
     {
-        return $this->mapper->patch($entity, $array, true);
+        return $this->mapper->patch($entity, $array, null, true);
     }
 
     /**
@@ -397,7 +397,7 @@ class EntityManager
         foreach ($result as $data) {
             if (isset($entities[$data['id']])) {
                 $entity = $entities[$data['id']];
-                $output[] = $this->mapper->patch($entity, $data, true);
+                $output[] = $this->mapper->patch($entity, $data, null, true);
             }
         }
 
@@ -418,10 +418,7 @@ class EntityManager
         if (!empty($array)) {
             foreach ($array as $item) {
                 $object = $this->mapper->object($className);
-                if (!empty($pathParams)) {
-                    $item = array_merge($item, $pathParams);
-                }
-                $relationEntity = $this->mapper->patch($object, $item);
+                $relationEntity = $this->mapper->patch($object, $item, $pathParams);
                 if ($auto == false) {
                     $collections[] = $relationEntity;
                 } else {
@@ -486,7 +483,7 @@ class EntityManager
         $files = $this->getUploadFiles($entity);
         $result = $this->client->create($path, $data, $files);
         if (!empty($result)) {
-            $this->mapper->patch($entity, $result, true);
+            $this->mapper->patch($entity, $result, null, true);
             $this->mapper->setPropertyValueByName($entity, 'isNew', true);
             if ($this->hasEventDispatcher()) {
                 $this->eventDispatcher->dispatch(
@@ -521,7 +518,7 @@ class EntityManager
         $files = $this->getUploadFiles($entity);
         $result = $this->client->update($path, $data, $files);
         if (!empty($result)) {
-            $this->mapper->patch($entity, $result, true);
+            $this->mapper->patch($entity, $result, null, true);
             $this->mapper->setPropertyValueByName($entity, 'isNew', false);
             if ($this->hasEventDispatcher()) {
                 $this->eventDispatcher->dispatch(

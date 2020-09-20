@@ -137,7 +137,7 @@ class Product extends Entity
 
     /**
      * @var \Bigcommerce\ORM\Entities\ProductVideo[]|null
-     * @BC\HasMany(name="videos", targetClass="\Bigcommerce\ORM\Entities\ProductVideo", field="id", targetField="product_id", from="include", auto=true)
+     * @BC\HasMany(name="videos", targetClass="\Bigcommerce\ORM\Entities\ProductVideo", field="id", targetField="product_id", from="include", auto=false)
      */
     protected $videos;
 
