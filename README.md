@@ -18,6 +18,7 @@
 Bigcommerce ORM (big-orm) allows users to work with Bigcommerce v3-rest-api just like working with an orm. Bigcommerce ORM supports:
 - working with multiple store manager
 - customised entities and repositories
+- batch create and batch update
 - caching
 - event dispatching
 - logging
