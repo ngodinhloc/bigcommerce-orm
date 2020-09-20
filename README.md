@@ -186,7 +186,7 @@ use Bigcommerce\ORM\Annotations as BC;
 use Bigcommerce\ORM\Entities\Product;
 
 /**
- * Class CustomisedOrderProduct
+ * Class MyProduct
  * @package Samples\Entities
  * @BC\BigObject(name="Product", path="/catalog/products")
  */
