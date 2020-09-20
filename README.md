@@ -275,6 +275,7 @@ $newCustomers = $entityManager->batchCreate(\Bigcommerce\ORM\Entities\Customer::
 ```
 *** Note: some resources (for example Customer) do not allow to create ONE object using save(), 
 so we have to use batchCreate
+
 @see: [samples/customers.php](./samples/customers.php) 
 
 ### Batch Update
