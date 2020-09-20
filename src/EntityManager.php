@@ -305,7 +305,7 @@ class EntityManager
 
         $result = $this->client->update($path, $data, null, true);
         if (!empty($result)) {
-            return $this->getUpdatedEntities($entities, $result);
+            return $this->getUpdatedEntities($entities, $result, $pathParams);
         }
 
         return false;
@@ -330,14 +330,15 @@ class EntityManager
     /**
      * Patch entity with data array
      *
-     * @param \Bigcommerce\ORM\Entity|null $entity entity
-     * @param array|null $array data
+     * @param \Bigcommerce\ORM\Entity|null $entity
+     * @param array|null $data
+     * @param array|null $pathParams
      * @return \Bigcommerce\ORM\Entity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function patch(Entity $entity = null, array $array = [])
+    public function patch(Entity $entity = null, array $data = null, array $pathParams = null)
     {
-        return $this->mapper->patch($entity, $array, null, true);
+        return $this->mapper->patch($entity, $data, $pathParams, true);
     }
 
     /**
@@ -388,16 +389,17 @@ class EntityManager
     /**
      * @param \Bigcommerce\ORM\Entity[]|null $entities
      * @param array|null $result
+     * @param array|null $pathParams
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function getUpdatedEntities(array $entities = null, array $result = null)
+    private function getUpdatedEntities(array $entities = null, array $result = null, array $pathParams = null)
     {
         $output = [];
         foreach ($result as $data) {
             if (isset($entities[$data['id']])) {
                 $entity = $entities[$data['id']];
-                $output[] = $this->mapper->patch($entity, $data, null, true);
+                $output[] = $this->mapper->patch($entity, $data, $pathParams, true);
             }
         }
 
