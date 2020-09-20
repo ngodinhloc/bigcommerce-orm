@@ -22,13 +22,13 @@ try {
     $someProducts = $entityManager->findBy(\Bigcommerce\ORM\Entities\Product::class, null, $queryBuilder, false);
     echo count($someProducts) . PHP_EOL;
 
-//    /** Batch update products */
-//    /** @var \Bigcommerce\ORM\Entities\Product $product1 */
-//    $product1 = $someProducts[0];
-//    $product2 = $someProducts[1];
-//    $product1->setDescription('New Description');
-//    $product2->setDescription('New Description');
-//    $entityManager->batchUpdate([$product1, $product2]);
+    /** Batch update products */
+    /** @var \Bigcommerce\ORM\Entities\Product $product1 */
+    $product1 = $someProducts[0];
+    $product2 = $someProducts[1];
+    $product1->setDescription('New Description');
+    $product2->setDescription('New Description');
+    $entityManager->batchUpdate([$product1, $product2]);
 
     /** find one product by id */
     $product111 = $entityManager->find(\Bigcommerce\ORM\Entities\Product::class, 111, null, true);

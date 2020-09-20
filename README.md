@@ -253,6 +253,42 @@ echo $newProduct->getDateModified();
 @see: [samples/products.php](./samples/products.php) 
 for more examples of how to query, create and update entities
 
+### Batch Create
+```php
+$data = [
+    [
+        'email' => 'ken7.ngo@bc.com',
+        'first_name' => 'Ken',
+        'last_name' => 'Ngo',
+        'company' => 'BC',
+        'phone' => '123456789'
+    ],
+    [
+        'email' => 'ken8.ngo@bc.com',
+        'first_name' => 'Ken',
+        'last_name' => 'Ngo',
+        'company' => 'BC',
+        'phone' => '123456789'
+    ]
+];
+$newCustomers = $entityManager->batchCreate(\Bigcommerce\ORM\Entities\Customer::class, null, $data);
+```
+*** Note: some resources (for example Customer) do not allow to create ONE object using save(), 
+so we have to use batchCreate
+@see: [samples/customers.php](./samples/customers.php) 
+
+### Batch Update
+```php
+/** Batch update products */
+/** @var \Bigcommerce\ORM\Entities\Product $product1 */
+$product1 = $someProducts[0];
+$product2 = $someProducts[1];
+$product1->setDescription('New Description');
+$product2->setDescription('New Description');
+$entityManager->batchUpdate([$product1, $product2]);
+```
+@see: [samples/products.php](./samples/products.php) 
+
 ### Query objects: count, findAll, findBy, find
 ```php
 /** get all customers */
