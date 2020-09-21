@@ -13,7 +13,7 @@ class Entity
 {
 
     /**
-     * @var string
+     * @var int|string|null
      * @BC\Field(name="id", readonly=true)
      */
     protected $id;
@@ -32,7 +32,7 @@ class Entity
     protected $metadata;
 
     /**
-     * @return int
+     * @return int|string|null
      */
     public function getId()
     {
@@ -40,10 +40,10 @@ class Entity
     }
 
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @return \Bigcommerce\ORM\Entity
      */
-    public function setId(int $id = null)
+    public function setId($id = null)
     {
         $this->id = $id;
 

@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Entity;
 /**
  * Class ProductCustomField
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="ProductCustomField", path="/catalog/products/{product_id}/custom-fields")
+ * @BC\Resource(name="ProductCustomField", path="/catalog/products/{product_id}/custom-fields", type="api")
  */
 class ProductCustomField extends Entity
 {

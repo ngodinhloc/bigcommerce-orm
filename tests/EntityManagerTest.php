@@ -269,7 +269,6 @@ class EntityManagerTest extends BaseTestCase
         $this->entityManager->batchUpdate([$customer1, $product]);
     }
 
-
     public function testBatchUpdate()
     {
 
@@ -282,7 +281,6 @@ class EntityManagerTest extends BaseTestCase
         $customers = $this->entityManager->batchUpdate([$customer1, $customer2]);
         $this->assertEquals(2, count($customers));
     }
-
 
     public function testNew()
     {
@@ -405,24 +403,23 @@ class EntityManagerTest extends BaseTestCase
         $channelPath = '/channels/1?';
 
         $client = $this->prophet->prophesize(Client::class);
-        $client->count($countPath)->willReturn($countReturn);
-        $client->findAll($findAllPath)->willReturn($findAllResult);
-        $client->findBy($findByPath)->willReturn($findByResult);
-        $client->findBy($findReview)->willReturn($reviews);
-        $client->find($findPath)->willReturn($findResult);
-        $client->find($findProduct)->willReturn($this->getProductData());
-        $client->find($channelPath)->willReturn([]);
-        $client->find('/channels/2?')->willReturn(['id' => 2]);
-        $client->create($savePath, $data, [])->willReturn($returnProduct);
-        $client->create($productPath, Argument::any(), [])->willReturn($returnProduct);
-        $client->create('/customers/addresses', [], null, true)->willReturn([]);
-        $client->update($updatePath, $data, [])->willReturn($createResult);
-        $client->update($updateImage, $imageData, $files)->willReturn(['id' => 1]);
-        $client->delete($deletePath)->willReturn(true);
-        $client->create($savePath, $this->getBatchCreateData(), null, true)->willReturn($this->getBatchReturnedData());
-        $client->update($savePath, [], null, true)->willReturn([]);
-        $client->update($savePath, $this->getBatchReturnedData(), null, true)->willReturn($this->getBatchReturnedData());
-        $client->update('/catalog/products/2/images/1', Argument::any(), [])->willReturn(['id' => 1]);
+        $client->findAll($findAllPath, 'api')->willReturn($findAllResult);
+        $client->findBy($findByPath, 'api')->willReturn($findByResult);
+        $client->findBy($findReview, 'api')->willReturn($reviews);
+        $client->find($findPath, 'api')->willReturn($findResult);
+        $client->find($findProduct, 'api')->willReturn($this->getProductData());
+        $client->find($channelPath, 'api')->willReturn([]);
+        $client->find('/channels/2?', 'api')->willReturn(['id' => 2]);
+        $client->create($savePath, 'api', $data, [])->willReturn($returnProduct);
+        $client->create($productPath, 'api', Argument::any(), [])->willReturn($returnProduct);
+        $client->create('/customers/addresses', 'api', [], null, true)->willReturn([]);
+        $client->update($updatePath, 'api', $data, [])->willReturn($createResult);
+        $client->update($updateImage, 'api', $imageData, $files)->willReturn(['id' => 1]);
+        $client->delete($deletePath, 'api')->willReturn(true);
+        $client->create($savePath, 'api', $this->getBatchCreateData(), null, true)->willReturn($this->getBatchReturnedData());
+        $client->update($savePath, 'api', [], null, true)->willReturn([]);
+        $client->update($savePath, 'api', $this->getBatchReturnedData(), null, true)->willReturn($this->getBatchReturnedData());
+        $client->update('/catalog/products/2/images/1', 'api', Argument::any(), [])->willReturn(['id' => 1]);
 
         return $client->reveal();
     }
@@ -469,7 +466,6 @@ class EntityManagerTest extends BaseTestCase
         ];
     }
 
-
     private function getProductData()
     {
         return [
@@ -511,6 +507,7 @@ class EntityManagerTest extends BaseTestCase
                 'phone' => '0123456789'
             ]
         );
+
         return $customer;
     }
 

@@ -7,23 +7,17 @@ use Bigcommerce\ORM\Annotations as BC;
 use Bigcommerce\ORM\Entity;
 
 /**
- * Class ProductVariantMetafield
+ * Class BrandMetafield
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="ProductVariantMetafield", path="/catalog/products/{product_id}/variants/{variant_id}/metafields", type="api")
+ * @BC\Resource(name="BrandMetafield", path="/catalog/brands/{brand_id}/metafields", type="api")
  */
-class ProductVariantMetafield extends Entity
+class BrandMetafield extends Entity
 {
     /**
      * @var int|null
-     * @BC\Field(name="product_id", readonly=true, pathParam=true)
+     * @BC\Field(name="brand_id", readonly=true, pathParam=true)
      */
-    protected $productId;
-
-    /**
-     * @var int|null
-     * @BC\Field(name="variant_id", readonly=true, pathParam=true)
-     */
-    protected $variantId;
+    protected $brandId;
 
     /**
      * @var string|null
@@ -82,36 +76,18 @@ class ProductVariantMetafield extends Entity
     /**
      * @return int|null
      */
-    public function getProductId(): ?int
+    public function getBrandId(): ?int
     {
-        return $this->productId;
+        return $this->brandId;
     }
 
     /**
-     * @param int|null $productId
-     * @return \Bigcommerce\ORM\Entities\ProductVariantMetafield
+     * @param int|null $brandId
+     * @return \Bigcommerce\ORM\Entities\BrandMetafield
      */
-    public function setProductId(?int $productId): ProductVariantMetafield
+    public function setBrandId(?int $brandId): BrandMetafield
     {
-        $this->productId = $productId;
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getVariantId(): ?int
-    {
-        return $this->variantId;
-    }
-
-    /**
-     * @param int|null $variantId
-     * @return \Bigcommerce\ORM\Entities\ProductVariantMetafield
-     */
-    public function setVariantId(?int $variantId): ProductVariantMetafield
-    {
-        $this->variantId = $variantId;
+        $this->brandId = $brandId;
         return $this;
     }
 
@@ -125,9 +101,9 @@ class ProductVariantMetafield extends Entity
 
     /**
      * @param string|null $key
-     * @return \Bigcommerce\ORM\Entities\ProductVariantMetafield
+     * @return \Bigcommerce\ORM\Entities\BrandMetafield
      */
-    public function setKey(?string $key): ProductVariantMetafield
+    public function setKey(?string $key): BrandMetafield
     {
         $this->key = $key;
         return $this;
@@ -143,9 +119,9 @@ class ProductVariantMetafield extends Entity
 
     /**
      * @param string|null $value
-     * @return \Bigcommerce\ORM\Entities\ProductVariantMetafield
+     * @return \Bigcommerce\ORM\Entities\BrandMetafield
      */
-    public function setValue(?string $value): ProductVariantMetafield
+    public function setValue(?string $value): BrandMetafield
     {
         $this->value = $value;
         return $this;
@@ -161,9 +137,9 @@ class ProductVariantMetafield extends Entity
 
     /**
      * @param string|null $namespace
-     * @return \Bigcommerce\ORM\Entities\ProductVariantMetafield
+     * @return \Bigcommerce\ORM\Entities\BrandMetafield
      */
-    public function setNamespace(?string $namespace): ProductVariantMetafield
+    public function setNamespace(?string $namespace): BrandMetafield
     {
         $this->namespace = $namespace;
         return $this;
@@ -179,9 +155,9 @@ class ProductVariantMetafield extends Entity
 
     /**
      * @param string|null $permissionSet
-     * @return \Bigcommerce\ORM\Entities\ProductVariantMetafield
+     * @return \Bigcommerce\ORM\Entities\BrandMetafield
      */
-    public function setPermissionSet(?string $permissionSet): ProductVariantMetafield
+    public function setPermissionSet(?string $permissionSet): BrandMetafield
     {
         $this->permissionSet = $permissionSet;
         return $this;
@@ -197,9 +173,9 @@ class ProductVariantMetafield extends Entity
 
     /**
      * @param string|null $resourceType
-     * @return \Bigcommerce\ORM\Entities\ProductVariantMetafield
+     * @return \Bigcommerce\ORM\Entities\BrandMetafield
      */
-    public function setResourceType(?string $resourceType): ProductVariantMetafield
+    public function setResourceType(?string $resourceType): BrandMetafield
     {
         $this->resourceType = $resourceType;
         return $this;
@@ -215,9 +191,9 @@ class ProductVariantMetafield extends Entity
 
     /**
      * @param int|null $resourceId
-     * @return \Bigcommerce\ORM\Entities\ProductVariantMetafield
+     * @return \Bigcommerce\ORM\Entities\BrandMetafield
      */
-    public function setResourceId(?int $resourceId): ProductVariantMetafield
+    public function setResourceId(?int $resourceId): BrandMetafield
     {
         $this->resourceId = $resourceId;
         return $this;
@@ -233,9 +209,9 @@ class ProductVariantMetafield extends Entity
 
     /**
      * @param string|null $description
-     * @return \Bigcommerce\ORM\Entities\ProductVariantMetafield
+     * @return \Bigcommerce\ORM\Entities\BrandMetafield
      */
-    public function setDescription(?string $description): ProductVariantMetafield
+    public function setDescription(?string $description): BrandMetafield
     {
         $this->description = $description;
         return $this;
@@ -251,9 +227,9 @@ class ProductVariantMetafield extends Entity
 
     /**
      * @param string|null $dateCreated
-     * @return \Bigcommerce\ORM\Entities\ProductVariantMetafield
+     * @return \Bigcommerce\ORM\Entities\BrandMetafield
      */
-    public function setDateCreated(?string $dateCreated): ProductVariantMetafield
+    public function setDateCreated(?string $dateCreated): BrandMetafield
     {
         $this->dateCreated = $dateCreated;
         return $this;
@@ -269,9 +245,9 @@ class ProductVariantMetafield extends Entity
 
     /**
      * @param string|null $dateModified
-     * @return \Bigcommerce\ORM\Entities\ProductVariantMetafield
+     * @return \Bigcommerce\ORM\Entities\BrandMetafield
      */
-    public function setDateModified(?string $dateModified): ProductVariantMetafield
+    public function setDateModified(?string $dateModified): BrandMetafield
     {
         $this->dateModified = $dateModified;
         return $this;

@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Entity;
 /**
  * Class ProductComplexRule
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="ProductComplexRule", path="/catalog/products/{product_id}/complex-rules")
+ * @BC\Resource(name="ProductComplexRule", path="/catalog/products/{product_id}/complex-rules", type="api")
  */
 class ProductComplexRule extends Entity
 {

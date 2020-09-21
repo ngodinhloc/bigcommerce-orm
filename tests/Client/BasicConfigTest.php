@@ -42,10 +42,11 @@ class BasicConfigTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getAccept
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getApiVersion
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getProxy
-     * @covers \Bigcommerce\ORM\Client\BasicConfig::getApiUrl
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getPathPrefix
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getStorePrefix
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getTimeout
+     * @covers \Bigcommerce\ORM\Client\BasicConfig::getApiUrl
+     * @covers \Bigcommerce\ORM\Client\BasicConfig::getPaymentUrl
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      */
     public function testSettersAndGetters()
@@ -62,6 +63,7 @@ class BasicConfigTest extends BaseTestCase
 
         /** default values */
         $this->assertEquals('storeUrl/api/v3', $this->basicConfig->getApiUrl());
+        $this->assertEquals('storeUrl/api/v3/payments', $this->basicConfig->getPaymentUrl());
         $this->assertEquals('/api/v3', $this->basicConfig->getPathPrefix());
         $this->assertEquals('/stores/%s/v3', $this->basicConfig->getStorePrefix());
         $this->assertEquals(null, $this->basicConfig->getProxy());

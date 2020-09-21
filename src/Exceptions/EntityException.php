@@ -20,5 +20,6 @@ class EntityException extends BaseException
     const ERROR_NOT_COUNTABLE_RESOURCE = 'This resource does not support count. Please try findAll: ';
     const ERROR_NOT_FINDABLE_RESOURCE = 'This resource does not support find. Please try findBy: ';
     const ERROR_NOT_CREATABLE_RESOURCE = 'This resource does not support create. Please try batchCreate: ';
+    const ERROR_NOT_UPDATABLE_RESOURCE = 'This resource does not support update. Please try batchUpdate: ';
     const ERROR_NOT_DELETABLE_RESOURCE = 'This resource does not support delete: ';
 }

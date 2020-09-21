@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Entity;
 /**
  * Class ProductOptionValue
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="ProductOptionValue", path="/catalog/products/{product_id}/options/{option_id}/values")
+ * @BC\Resource(name="ProductOptionValue", path="/catalog/products/{product_id}/options/{option_id}/values", type="api")
  */
 class ProductOptionValue extends Entity
 {

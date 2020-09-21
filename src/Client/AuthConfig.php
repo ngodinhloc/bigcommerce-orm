@@ -8,7 +8,10 @@ use Bigcommerce\ORM\Client\Exceptions\ConfigException;
 class AuthConfig extends AbstractConfig
 {
     /** @var string */
-    protected $baseUrl = self::API_BASE_URL;
+    protected $apiBaseUrl = self::API_BASE_URL;
+
+    /** @var string */
+    protected $paymentBaseUrl = self::PAYMENT_BASE_URL;
 
     /** @var string */
     protected $clientId;
@@ -29,7 +32,8 @@ class AuthConfig extends AbstractConfig
      *  'clientId' =>
      *  'authToken' =>
      *  'storeHash' =>
-     *  'baseUrl' =>
+     *  'apiUrl' =>
+     *  'paymentUrl' =>
      * ]
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      */
@@ -41,8 +45,11 @@ class AuthConfig extends AbstractConfig
         $this->clientId = $config['clientId'];
         $this->authToken = $config['authToken'];
         $this->storeHash = $config['storeHash'];
-        if (isset($config['baseUrl'])) {
-            $this->baseUrl = $config['baseUrl'];
+        if (isset($config['apiUrl'])) {
+            $this->apiBaseUrl = $config['apiUrl'];
+        }
+        if (isset($config['paymentUrl'])) {
+            $this->paymentBaseUrl = $config['paymentUrl'];
         }
     }
 
@@ -103,18 +110,52 @@ class AuthConfig extends AbstractConfig
     /**
      * @return string
      */
-    public function getBaseUrl(): string
+    public function getApiBaseUrl(): string
     {
-        return $this->baseUrl;
+        return $this->apiBaseUrl;
     }
 
     /**
-     * @param string $baseUrl
+     * @param string $apiBaseUrl
      * @return \Bigcommerce\ORM\Client\AuthConfig
      */
-    public function setBaseUrl(string $baseUrl): AuthConfig
+    public function setApiBaseUrl(string $apiBaseUrl): AuthConfig
     {
-        $this->baseUrl = $baseUrl;
+        $this->apiBaseUrl = $apiBaseUrl;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentBaseUrl(): string
+    {
+        return $this->paymentBaseUrl;
+    }
+
+    /**
+     * @param string $paymentBaseUrl
+     * @return \Bigcommerce\ORM\Client\AuthConfig
+     */
+    public function setPaymentBaseUrl(string $paymentBaseUrl): AuthConfig
+    {
+        $this->paymentBaseUrl = $paymentBaseUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiUrl()
+    {
+        return $this->getApiBaseUrl() . sprintf($this->getStorePrefix(), $this->getStoreHash());
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentUrl()
+    {
+        return $this->getPaymentBaseUrl() . sprintf($this->getStorePrefix(), $this->getStoreHash());
     }
 }

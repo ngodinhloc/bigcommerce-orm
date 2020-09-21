@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Entity;
 /**
  * Class CustomerAddress
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CustomerAddress", path="/customers/addresses")
+ * @BC\Resource(name="CustomerAddress", path="/customers/addresses", type="api")
  */
 class CustomerAddress extends Entity
 {

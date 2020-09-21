@@ -80,21 +80,21 @@ class ConnectionTest extends BaseTestCase
 
     public function testQuery()
     {
-        $response = $this->connection->query('/customers');
+        $response = $this->connection->query('/customers', 'api');
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 
     public function testUpdate()
     {
         $files = ['photo' => $file = dirname(__DIR__) . '/assets/images/lamp.jpg'];
-        $response = $this->connection->update('/customers', ['id' => 1, 'name' => 'My Name'], $files);
+        $response = $this->connection->update('/customers', 'api', ['id' => 1, 'name' => 'My Name'], $files);
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 
     public function testCreate()
     {
         $files = ['photo' => $file = dirname(__DIR__) . '/assets/images/lamp.jpg'];
-        $response = $this->connection->create('/customers', ['name' => 'My Name'], $files);
+        $response = $this->connection->create('/customers', 'api', ['name' => 'My Name'], $files);
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 

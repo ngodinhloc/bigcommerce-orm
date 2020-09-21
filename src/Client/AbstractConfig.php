@@ -10,6 +10,9 @@ namespace Bigcommerce\ORM\Client;
 abstract class AbstractConfig
 {
     const API_BASE_URL = 'https://api.bigcommerce.com';
+    const PAYMENT_BASE_URL = 'https://payments.bigcommerce.com';
+    const RESOURCE_TYPE_API = 'api';
+    const RESOURCE_TYPE_PAYMENT = 'payment';
     const API_VERSION_V3 = "v3";
     const PATH_PREFIX_V3 = '/api/v3';
     const STORE_PREFIX_V3 = '/stores/%s/v3';
@@ -37,40 +40,12 @@ abstract class AbstractConfig
     /**
      * @return string
      */
-    public function getApiUrl()
-    {
-        if ($this instanceof BasicConfig) {
-            return rtrim($this->getStoreUrl(), '/') . $this->getPathPrefix();
-        }
-
-        if ($this instanceof AuthConfig) {
-            return $this->getBaseUrl() . sprintf($this->getStorePrefix(), $this->getStoreHash());
-        }
-    }
+    abstract public function getApiUrl();
 
     /**
      * @return string
      */
-    public function getPathPrefix()
-    {
-        switch ($this->apiVersion) {
-            case self::API_VERSION_V3:
-            default:
-                return self::PATH_PREFIX_V3;
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getStorePrefix()
-    {
-        switch ($this->apiVersion) {
-            case self::API_VERSION_V3:
-            default:
-                return self::STORE_PREFIX_V3;
-        }
-    }
+    abstract public function getPaymentUrl();
 
     /**
      * @return string
@@ -190,5 +165,27 @@ abstract class AbstractConfig
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getPathPrefix()
+    {
+        switch ($this->apiVersion) {
+            case self::API_VERSION_V3:
+            default:
+                return self::PATH_PREFIX_V3;
+        }
+    }
 
+    /**
+     * @return string
+     */
+    public function getStorePrefix()
+    {
+        switch ($this->apiVersion) {
+            case self::API_VERSION_V3:
+            default:
+                return self::STORE_PREFIX_V3;
+        }
+    }
 }

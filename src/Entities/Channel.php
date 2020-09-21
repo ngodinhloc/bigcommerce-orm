@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Entity;
 /**
  * Class Channel
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="Channel", path="/channels", deletable=false)
+ * @BC\Resource(name="Channel", path="/channels", deletable=false, type="api")
  */
 class Channel extends Entity
 {

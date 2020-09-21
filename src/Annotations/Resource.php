@@ -12,7 +12,9 @@ class Resource extends Annotation
 {
     public $name;
     public $path;
+    public $type;   // api, payment
     public $findable = true;
     public $creatable = true;
+    public $updatable = true;
     public $deletable = true;
 }

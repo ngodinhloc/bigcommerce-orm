@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Entity;
 /**
  * Class ProductVariant
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="ProductVariant", path="/catalog/products/{product_id}/variants")
+ * @BC\Resource(name="ProductVariant", path="/catalog/products/{product_id}/variants", type="api")
  */
 class ProductVariant extends Entity
 {

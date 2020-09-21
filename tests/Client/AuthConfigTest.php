@@ -22,7 +22,8 @@ class AuthConfigTest extends BaseTestCase
         $authCredentials = [
             'authToken' => 'authToken',
             'storeHash' => 'storeHash',
-            'baseUrl' => 'baseUrl'
+            'apiUrl' => 'apiUrl',
+            'paymentUrl' => 'paymentUrl'
         ];
         $this->expectException(ConfigException::class);
         $this->authConfig = new AuthConfig($authCredentials);
@@ -36,22 +37,25 @@ class AuthConfigTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setApiVersion
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setVerify
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setAccept
-     * @covers \Bigcommerce\ORM\Client\AuthConfig::setBaseUrl
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setApiBaseUrl
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::setPaymentBaseUrl
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setStoreHash
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setAuthToken
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setClientId
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getTimeout
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getStorePrefix
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getPathPrefix
-     * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiUrl
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiBaseUrl
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getProxy
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiVersion
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getAccept
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getStoreHash
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getAuthToken
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getClientId
-     * @covers \Bigcommerce\ORM\Client\AuthConfig::getBaseUrl
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiBaseUrl
      * @covers \Bigcommerce\ORM\Client\AuthConfig::isDebug
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiUrl
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getPaymentUrl
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      */
     public function testSettersAndGetters()
@@ -60,17 +64,20 @@ class AuthConfigTest extends BaseTestCase
             'clientId' => '*clientId',
             'authToken' => 'authToken',
             'storeHash' => 'storeHash',
-            'baseUrl' => 'baseUrl'
+            'apiUrl' => 'apiUrl',
+            'paymentUrl' => 'paymentUrl'
         ];
 
         $this->authConfig = new AuthConfig($authCredentials);
         $this->assertEquals($authCredentials['clientId'], $this->authConfig->getClientId());
         $this->assertEquals($authCredentials['authToken'], $this->authConfig->getAuthToken());
         $this->assertEquals($authCredentials['storeHash'], $this->authConfig->getStoreHash());
-        $this->assertEquals($authCredentials['baseUrl'], $this->authConfig->getBaseUrl());
+        $this->assertEquals($authCredentials['apiUrl'], $this->authConfig->getApiBaseUrl());
+        $this->assertEquals($authCredentials['paymentUrl'], $this->authConfig->getPaymentBaseUrl());
 
         /** default values */
-        $this->assertEquals('baseUrl/stores/storeHash/v3', $this->authConfig->getApiUrl());
+        $this->assertEquals('apiUrl/stores/storeHash/v3', $this->authConfig->getApiUrl());
+        $this->assertEquals('paymentUrl/stores/storeHash/v3', $this->authConfig->getPaymentUrl());
         $this->assertEquals('/api/v3', $this->authConfig->getPathPrefix());
         $this->assertEquals('/stores/%s/v3', $this->authConfig->getStorePrefix());
         $this->assertEquals(null, $this->authConfig->getProxy());
@@ -89,7 +96,8 @@ class AuthConfigTest extends BaseTestCase
             ->setClientId('clientId')
             ->setAuthToken('authToken')
             ->setStoreHash('hash')
-            ->setBaseUrl('url');
+            ->setApiBaseUrl('url')
+            ->setPaymentBaseUrl('payment');
 
         $this->assertEquals(60, $this->authConfig->getTimeout());
         $this->assertEquals(true, $this->authConfig->isDebug());
@@ -100,7 +108,8 @@ class AuthConfigTest extends BaseTestCase
         $this->assertEquals('clientId', $this->authConfig->getClientId());
         $this->assertEquals('authToken', $this->authConfig->getAuthToken());
         $this->assertEquals('hash', $this->authConfig->getStoreHash());
-        $this->assertEquals('url', $this->authConfig->getBaseUrl());
+        $this->assertEquals('url', $this->authConfig->getApiBaseUrl());
+        $this->assertEquals('payment', $this->authConfig->getPaymentBaseUrl());
 
         $this->authConfig->setAccept('invalidContentType');
         $this->assertEquals('application/json', $this->authConfig->getAccept());

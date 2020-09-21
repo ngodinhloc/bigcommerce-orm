@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Entity;
 /**
  * Class CustomerAttributeValue
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CustomerAttributeValue", path="/customers/attribute-values")
+ * @BC\Resource(name="CustomerAttributeValue", path="/customers/attribute-values", type="api")
  */
 class CustomerAttributeValue extends Entity
 {

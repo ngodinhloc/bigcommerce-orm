@@ -60,59 +60,47 @@ class ClientTest extends BaseTestCase
         $this->assertEquals($this->connection, $this->client->getConnection());
     }
 
-    public function testCount()
-    {
-        $count = $this->client->count('/customers');
-        $this->assertEquals(1, $count);
-    }
-
-    public function testQueryThrowException()
-    {
-        $this->expectException(ClientException::class);
-        $this->client->count(null);
-    }
-
     public function testFindAll()
     {
-        $findAll = $this->client->findAll('/customers');
+        $findAll = $this->client->findAll('/customers', 'api');
         $this->assertEquals(1, count($findAll));
     }
 
     public function testFindBy()
     {
-        $findBy = $this->client->findBy('/customers?id:in=1,2,3');
+        $findBy = $this->client->findBy('/customers?id:in=1,2,3', 'api');
         $this->assertEquals(1, count($findBy));
     }
 
     public function testFind()
     {
-        $find = $this->client->find('/customers/1');
+        $find = $this->client->find('/customers/1', 'api');
         $this->assertIsArray($find);
     }
 
     public function testFindThrowGuzzleException()
     {
         $this->expectException(ClientException::class);
-        $this->client->find('/customers/2');
+        $this->client->find('/customers/2', 'api');
     }
 
     public function testFindThrowException()
     {
         $this->expectException(ClientException::class);
-        $this->client->find('/customers/3');
+        $this->client->find('/customers/3', 'api');
     }
 
     public function testCreate()
     {
         $data = ['id' => 1];
-        $create = $this->client->create('/customers', $data, []);
+        $create = $this->client->create('/customers', 'api', $data, []);
         $this->assertIsArray($create);
     }
 
     public function testBatchCreate()
     {
         $data = ['id' => 1];
-        $create = $this->client->create('/customers', $data, [], true);
+        $create = $this->client->create('/customers', 'api', $data, [], true);
         $this->assertIsArray($create);
     }
 
@@ -120,27 +108,27 @@ class ClientTest extends BaseTestCase
     {
         $data = ['id' => 1];
         $this->expectException(ClientException::class);
-        $this->client->create('/customers/2', $data, []);
+        $this->client->create('/customers/2', 'api', $data, []);
     }
 
     public function testCreateThrowException()
     {
         $data = ['id' => 1];
         $this->expectException(ClientException::class);
-        $this->client->create('/customers/3', $data, []);
+        $this->client->create('/customers/3', 'api', $data, []);
     }
 
     public function testUpdate()
     {
         $data = ['id' => 1];
-        $update = $this->client->update('/customers/1', $data, []);
+        $update = $this->client->update('/customers/1', 'api', $data, []);
         $this->assertIsArray($update);
     }
 
     public function testBatchUpdate()
     {
         $data = ['id' => 1];
-        $update = $this->client->update('/customers/1', $data, [], true);
+        $update = $this->client->update('/customers/1', 'api', $data, [], true);
         $this->assertIsArray($update);
     }
 
@@ -148,32 +136,32 @@ class ClientTest extends BaseTestCase
     {
         $data = ['id' => 1];
         $this->expectException(ClientException::class);
-        $this->client->update('/customers/2', $data, []);
+        $this->client->update('/customers/2', 'api', $data, []);
     }
 
     public function testUpdateThrowException()
     {
         $data = ['id' => 1];
         $this->expectException(ClientException::class);
-        $this->client->update('/customers/3', $data, []);
+        $this->client->update('/customers/3', 'api', $data, []);
     }
 
     public function testDelete()
     {
-        $result = $this->client->delete('/customers?id:in=1,2');
+        $result = $this->client->delete('/customers?id:in=1,2', 'api');
         $this->assertTrue($result);
     }
 
     public function testDeleteThrowGuzzleException()
     {
         $this->expectException(ClientException::class);
-        $this->client->delete('/customers?id:in=0,1');
+        $this->client->delete('/customers?id:in=0,1', 'api');
     }
 
     public function testDeleteThrowException()
     {
         $this->expectException(ClientException::class);
-        $this->client->delete('/customers?id:in=0,2');
+        $this->client->delete('/customers?id:in=0,2', 'api');
     }
 
     private function getConnection()
@@ -189,24 +177,24 @@ class ClientTest extends BaseTestCase
         $request = new Request('GET', 'http://www.someurl.com');
 
         $connection = $this->prophet->prophesize(Connection::class);
-        $connection->query('/customers')->willReturn($response);
-        $connection->query('/customers?id:in=1,2,3')->willReturn($response);
-        $connection->query('/customers')->willReturn($response);
-        $connection->query('/customers/1')->willReturn($response);
-        $connection->create('/customers', ['id' => 1], [])->willReturn($response);
-        $connection->update('/customers/1', ['id' => 1], [])->willReturn($response);
+        $connection->query('/customers', 'api')->willReturn($response);
+        $connection->query('/customers?id:in=1,2,3', 'api')->willReturn($response);
+        $connection->query('/customers', 'api')->willReturn($response);
+        $connection->query('/customers/1', 'api')->willReturn($response);
+        $connection->create('/customers', 'api', ['id' => 1], [])->willReturn($response);
+        $connection->update('/customers/1', 'api', ['id' => 1], [])->willReturn($response);
         $guzzleException = new \GuzzleHttp\Exception\ClientException('Guzzle Client Exception', $request, $response);
         $exception = new \Exception('Exception error');
 
-        $connection->query('/customers/2')->willThrow($guzzleException);
-        $connection->query('/customers/3')->willThrow($exception);
-        $connection->create('/customers/2', ['id' => 1], [])->willThrow($guzzleException);
-        $connection->create('/customers/3', ['id' => 1], [])->willThrow($exception);
-        $connection->update('/customers/2', ['id' => 1], [])->willThrow($guzzleException);
-        $connection->update('/customers/3', ['id' => 1], [])->willThrow($exception);
-        $connection->delete('/customers?id:in=1,2')->willReturn($response);
-        $connection->delete('/customers?id:in=0,1')->willThrow($guzzleException);
-        $connection->delete('/customers?id:in=0,2')->willThrow($exception);
+        $connection->query('/customers/2', 'api')->willThrow($guzzleException);
+        $connection->query('/customers/3', 'api')->willThrow($exception);
+        $connection->create('/customers/2', 'api', ['id' => 1], [])->willThrow($guzzleException);
+        $connection->create('/customers/3', 'api', ['id' => 1], [])->willThrow($exception);
+        $connection->update('/customers/2', 'api', ['id' => 1], [])->willThrow($guzzleException);
+        $connection->update('/customers/3', 'api', ['id' => 1], [])->willThrow($exception);
+        $connection->delete('/customers?id:in=1,2', 'api')->willReturn($response);
+        $connection->delete('/customers?id:in=0,1', 'api')->willThrow($guzzleException);
+        $connection->delete('/customers?id:in=0,2', 'api')->willThrow($exception);
 
         return $connection->reveal();
     }
@@ -218,6 +206,7 @@ class ClientTest extends BaseTestCase
         $cacheItem->setIsHit(false);
         $cache->getItem(Argument::any())->willReturn($cacheItem);
         $cache->save(Argument::any())->willReturn(true);
+
         return $cache->reveal();
     }
 

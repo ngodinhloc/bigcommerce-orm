@@ -152,7 +152,7 @@ class ConfigurationTest extends BaseTestCase
         $this->assertEquals($this->credentials['clientId'], $config->getClientId());
         $this->assertEquals($this->credentials['authToken'], $config->getAuthToken());
         $this->assertEquals($this->credentials['storeHash'], $config->getStoreHash());
-        $this->assertEquals($this->credentials['baseUrl'], $config->getBaseUrl());
+        $this->assertEquals($this->credentials['apiUrl'], $config->getApiBaseUrl());
     }
 
     /**
@@ -176,7 +176,8 @@ class ConfigurationTest extends BaseTestCase
             'clientId' => 'acxu0p8rfh15m8n0fn4obuxmb52tgwk',
             'authToken' => 'cyfbhepc71mns8xnykv86wruxzh45wi',
             'storeHash' => 'e87g0h02r5',
-            'baseUrl' => 'https://api.service.bcdev'
+            'apiUrl' => 'https://api.service.bcdev',
+            'paymentUrl' => 'https://api.service.bcdev'
         ];
     }
 

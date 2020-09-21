@@ -24,6 +24,9 @@ class Connection
     /** @var string */
     protected $apiUrl;
 
+    /** @var string */
+    protected $paymentUrl;
+
     /** @var array */
     protected $auth = [];
 
@@ -56,65 +59,92 @@ class Connection
 
     /**
      * @param string|null $path
+     * @param string|null $resourceType
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function query(string $path = null): ResponseInterface
+    public function query(string $path = null, string $resourceType = null): ResponseInterface
     {
-        return $this->get($path);
+        return $this->get($path, $resourceType);
     }
 
     /**
      * @param string|null $path
+     * @param string|null $resourceType
      * @param array|null $body
      * @param array|null $files
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function update(string $path = null, array $body = null, array $files = null): ResponseInterface
+    public function update(string $path = null, string $resourceType = null, array $body = null, array $files = null): ResponseInterface
     {
-        return $this->put($path, $body, $files);
+        return $this->put($path, $resourceType, $body, $files);
     }
 
     /**
      * @param string|null $path
+     * @param string|null $resourceType
      * @param array|null $body
      * @param array|null $file
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function create(string $path = null, array $body = null, array $file = null): ResponseInterface
+    public function create(string $path = null, string $resourceType = null, array $body = null, array $file = null): ResponseInterface
     {
-        return $this->post($path, $body, $file);
+        return $this->post($path, $resourceType, $body, $file);
     }
 
     /**
      * @param string|null $path
+     * @param string|null $resourceType
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function delete(string $path = null){
-        return $this->client->delete($this->apiUrl . $path, $this->requestOptions);
+    public function delete(string $path = null, string $resourceType = null)
+    {
+        $apiUrl = $this->getApiFullUrl($path, $resourceType);
+
+        return $this->client->delete($apiUrl, $this->requestOptions);
     }
 
     /**
      * @param string|null $path
+     * @param string|null $resourceType
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    private function get(string $path = null)
+    private function get(string $path = null, string $resourceType = null)
     {
-        return $this->client->get($this->apiUrl . $path, $this->requestOptions);
+        $apiUrl = $this->getApiFullUrl($path, $resourceType);
+
+        return $this->client->get($apiUrl, $this->requestOptions);
     }
 
     /**
      * @param string|null $path
+     * @param string|null $resourceType
+     * @return string
+     */
+    private function getApiFullUrl(string $path = null, string $resourceType = null)
+    {
+        switch ($resourceType) {
+            case AbstractConfig::RESOURCE_TYPE_PAYMENT:
+                return $this->paymentUrl . $path;
+            case AbstractConfig::RESOURCE_TYPE_API:
+            default:
+                return $this->apiUrl . $path;
+        }
+    }
+
+    /**
+     * @param string|null $path
+     * @param string|null $resourceType
      * @param array|null $body
      * @param array|null $files
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    private function post(string $path = null, array $body = null, array $files = null)
+    private function post(string $path = null, string $resourceType = null, array $body = null, array $files = null)
     {
         if (!empty($body)) {
             $this->addRequestBody($body);
@@ -124,17 +154,20 @@ class Connection
             $this->addRequestFile($files);
         }
 
-        return $this->client->post($this->apiUrl . $path, $this->requestOptions);
+        $apiUrl = $this->getApiFullUrl($path, $resourceType);
+
+        return $this->client->post($apiUrl, $this->requestOptions);
     }
 
     /**
      * @param string|null $path
+     * @param string|null $resourceType
      * @param array|null $body
      * @param array|null $files
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    private function put(string $path = null, array $body = null, array $files = null)
+    private function put(string $path = null, string $resourceType = null, array $body = null, array $files = null)
     {
         if (!empty($body)) {
             $this->addRequestBody($body);
@@ -144,7 +177,9 @@ class Connection
             $this->addRequestFile($files);
         }
 
-        return $this->client->put($this->apiUrl . $path, $this->requestOptions);
+        $apiUrl = $this->getApiFullUrl($path, $resourceType);
+
+        return $this->client->put($apiUrl, $this->requestOptions);
     }
 
     /**
@@ -153,6 +188,8 @@ class Connection
     private function setup()
     {
         $this->apiUrl = $this->config->getApiUrl();
+        $this->paymentUrl = $this->config->getPaymentUrl();
+
         $this->addRequestHeader('Content-Type', AbstractConfig::CONTENT_TYPE_JSON);
 
         if ($this->config instanceof BasicConfig) {
@@ -179,6 +216,7 @@ class Connection
         if (!empty($this->config->getProxy())) {
             $this->proxy = $this->config->getProxy();
         }
+
         if ($this->config->isDebug() == true) {
             $this->debug = true;
         }
@@ -243,6 +281,7 @@ class Connection
     private function addRequestFile(array $files)
     {
         $multi = [];
+
         foreach ($files as $field => $location) {
             $multi[] = [
                 'name' => $field,
@@ -250,6 +289,7 @@ class Connection
                 'contents' => file_get_contents($location)
             ];
         }
+
         $this->requestOptions['multipart'] = $multi;
     }
 
@@ -288,6 +328,7 @@ class Connection
     public function setClient(Client $client): Connection
     {
         $this->client = $client;
+
         return $this;
     }
 

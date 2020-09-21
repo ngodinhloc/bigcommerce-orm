@@ -93,4 +93,22 @@ class BasicConfig extends AbstractConfig
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getApiUrl()
+    {
+        return rtrim($this->getStoreUrl(), '/') . $this->getPathPrefix();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentUrl()
+    {
+        return rtrim($this->getStoreUrl(), '/') . $this->getPathPrefix() . '/payments';
+    }
+
+
+
 }

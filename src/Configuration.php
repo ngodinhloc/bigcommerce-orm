@@ -48,7 +48,7 @@ class Configuration
      *  'proxy' => 'tcp://localhost:8125'
      *  'verify' => true|false
      *  'timeout' => 60
-     *  'contentType' => 'application/json'
+     *  'accept' => 'application/json'
      *  'debug' => true
      * ]
      * @param \Psr\Cache\CacheItemPoolInterface|null $cachePool
