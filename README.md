@@ -504,7 +504,7 @@ Sample log messages
 $options = [
     'verify' => true,
     'timeout' => 60,
-    'contentType' => 'application/json',
+    'accept' => 'application/json',
     'debug' => true,
     'proxy' => null
 ];
