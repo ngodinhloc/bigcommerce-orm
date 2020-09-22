@@ -12,10 +12,10 @@ try {
     /** find one cart by id = e9e687cd-6711-4a93-99a1-b7d5aa5ad122 */
     $cart = $entityManager->find(\Bigcommerce\ORM\Entities\Cart::class, 'e9e687cd-6711-4a93-99a1-b7d5aa5ad122', null, true);
     /** @var \Bigcommerce\ORM\Entities\Cart $cart */
-    $digitalItems = $cart->getDigitalLineItems();
-    $physicalItems = $cart->getPhysicalLineItems();
+    $digitalItems = $cart->getDigitalItems();
+    $physicalItems = $cart->getPhysicalItems();
     $customItems = $cart->getCustomItems();
-    $gifs = $cart->getGiftCertificates();
+    $gifsCertificates = $cart->getGiftCertificates();
     $coupons = $cart->getCoupons();
 
     /** update cart will only change customer_id */
@@ -23,19 +23,20 @@ try {
     $result = $entityManager->save($cart);
     echo $result;
 
+    /** create cart with line items, custom items and gift certificates */
     $newCart = new \Bigcommerce\ORM\Entities\Cart();
     $newCart->setCustomerId(3);
-    $item1 = new \Bigcommerce\ORM\Entities\CartLineItem();
-    $item1
+    $lineItem1 = new \Bigcommerce\ORM\Entities\CartLineItem();
+    $lineItem1
         ->setProductId(111)
         ->setQuantity(2);
-    $item2 = new \Bigcommerce\ORM\Entities\CartLineItem();
-    $item2
+    $lineItem2 = new \Bigcommerce\ORM\Entities\CartLineItem();
+    $lineItem2
         ->setProductId(107)
         ->setQuantity(5);
 
-    $gift = new \Bigcommerce\ORM\Entities\CartGiftCertificate();
-    $gift
+    $giftCertificate = new \Bigcommerce\ORM\Entities\CartGiftCertificate();
+    $giftCertificate
         ->setQuantity(1)
         ->setAmount(50)
         ->setName('Holiday Card')
@@ -44,25 +45,42 @@ try {
         ->setSender(['name' => 'Ken Ngo', 'email' => 'ken.ngo@bc.com'])
         ->setRecipient(['name' => 'Ken Ngo', 'email' => 'ken2.ngo@bc.com']);
 
-    $custom = new \Bigcommerce\ORM\Entities\CartCustomItem();
-    $custom
+    $customItem = new \Bigcommerce\ORM\Entities\CartCustomItem();
+    $customItem
         ->setName('This is my item')
         ->setQuantity(1)
         ->setSku('sku')
         ->setListPrice(100);
 
     $newCart
-        ->addLineItem($item1)
-        ->addLineItem($item2)
-        ->addGiftCertificate($gift)
-        ->addCustomItem($custom);
+        ->addLineItem($lineItem1)
+        ->addGiftCertificate($giftCertificate)
+        ->addCustomItem($customItem);
 
     $result = $entityManager->save($newCart);
-    $newPhysicalItems = $newCart->getPhysicalLineItems();
-    $newDigitalItems = $newCart->getDigitalLineItems();
-    $newCustomItems = $newCart->getCustomItems();
-    $newGifts = $newCart->getGiftCertificates();
+    $physicalItems1 = $newCart->getPhysicalItems();
+    $digitalItems1 = $newCart->getDigitalItems();
+    $customItems1 = $newCart->getCustomItems();
+    $giftCertificates1 = $newCart->getGiftCertificates();
     echo $result;
+
+    /** add more items to cart after creating by using CartItem */
+    $cartItem = new \Bigcommerce\ORM\Entities\CartItem();
+    $cartItem
+        ->setCartId($newCart->getId())
+        ->addLineItem($lineItem2)
+        ->addGiftCertificate($giftCertificate)
+        ->addCustomItem($customItem);
+    $entityManager->save($cartItem);
+
+    $updatedCart = $entityManager->find(\Bigcommerce\ORM\Entities\Cart::class, $newCart->getId(), null, true);
+    /** @var \Bigcommerce\ORM\Entities\Cart $updatedCart */
+    $digitalItems2 = $updatedCart->getDigitalItems();
+    $physicalItems2 = $updatedCart->getPhysicalItems();
+    $customItems2 = $updatedCart->getCustomItems();
+    $gifsCertificates2 = $updatedCart->getGiftCertificates();
+    echo $updatedCart->getId();
+
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
