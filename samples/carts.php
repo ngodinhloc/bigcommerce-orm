@@ -17,6 +17,8 @@ try {
     $customItems = $cart->getCustomItems();
     $gifsCertificates = $cart->getGiftCertificates();
     $coupons = $cart->getCoupons();
+    $redirectUrl = $cart->getRedirectUrl();
+    echo $redirectUrl->getCartUrl();
 
     /** update cart will only change customer_id */
     $cart->setCustomerId(3);
@@ -63,6 +65,12 @@ try {
     $customItems1 = $newCart->getCustomItems();
     $giftCertificates1 = $newCart->getGiftCertificates();
     echo $result;
+
+    /** create redirect url */
+    $newUrl = new \Bigcommerce\ORM\Entities\CartRedirectUrl();
+    $newUrl->setCartId($newCart->getId());
+    $entityManager->save($newUrl);
+    echo $newUrl->getCartUrl();
 
     /** add more items to cart after creating by using CartItem */
     $cartItem = new \Bigcommerce\ORM\Entities\CartItem();

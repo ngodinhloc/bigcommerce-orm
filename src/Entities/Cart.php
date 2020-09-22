@@ -87,12 +87,6 @@ class Cart extends Entity
     protected $channelId = 1;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\CartCoupon|null
-     * @BC\HasMany(name="coupons", targetClass="\Bigcommerce\ORM\Entities\CartCoupon", field="id", targetField="cart_id", from="result", auto=true)
-     */
-    protected $coupons;
-
-    /**
      * @var array|null
      * @BC\Field(name="discounts")
      */
@@ -117,10 +111,16 @@ class Cart extends Entity
     protected $giftCertificates = [];
 
     /**
-     * @var array|null
-     * @BC\Field(name="redirect_urls")
+     * @var \Bigcommerce\ORM\Entities\CartRedirectUrl|null
+     * @BC\HasOne(name="redirect_urls", targetClass="\Bigcommerce\ORM\Entities\CartRedirectUrl", field="id", targetField="cart_id", from="include", auto=true)
      */
-    protected $redirectUrls;
+    protected $redirectUrl;
+
+    /**
+     * @var \Bigcommerce\ORM\Entities\CartCoupon[]|null
+     * @BC\HasMany(name="coupons", targetClass="\Bigcommerce\ORM\Entities\CartCoupon", field="id", targetField="cart_id", from="result", auto=true)
+     */
+    protected $coupons;
 
     /** @var \Bigcommerce\ORM\Mapper */
     protected $mapper;
@@ -341,7 +341,7 @@ class Cart extends Entity
      * @return \Bigcommerce\ORM\Entities\CartLineItem[]|null
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function getDigitalLineItems()
+    public function getDigitalItems()
     {
         if (empty($this->lineItems['digital_items'])) {
             return null;
@@ -354,7 +354,7 @@ class Cart extends Entity
      * @return \Bigcommerce\ORM\Entities\CartLineItem[]|null
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function getPhysicalLineItems()
+    public function getPhysicalItems()
     {
         if (empty($this->lineItems['physical_items'])) {
             return null;
@@ -422,10 +422,10 @@ class Cart extends Entity
     }
 
     /**
-     * @return array|null
+     * @return \Bigcommerce\ORM\Entities\CartRedirectUrl|null
      */
-    public function getRedirectUrls(): ?array
+    public function getRedirectUrl(): ?\Bigcommerce\ORM\Entities\CartRedirectUrl
     {
-        return $this->redirectUrls;
+        return $this->redirectUrl;
     }
 }

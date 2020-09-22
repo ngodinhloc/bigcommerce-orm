@@ -44,9 +44,9 @@ class CartTest extends BaseTestCase
         $this->assertEquals(null, $this->entity->getDiscounts());
         $this->assertEquals(null, $this->entity->getCustomItems());
         $this->assertEquals(null, $this->entity->getGiftCertificates());
-        $this->assertEquals(null, $this->entity->getDigitalLineItems());
-        $this->assertEquals(null, $this->entity->getPhysicalLineItems());
-        $this->assertEquals(null, $this->entity->getRedirectUrls());
+        $this->assertEquals(null, $this->entity->getDigitalItems());
+        $this->assertEquals(null, $this->entity->getPhysicalItems());
+        $this->assertEquals(null, $this->entity->getRedirectUrl());
 
 
         $item1 = new \Bigcommerce\ORM\Entities\CartLineItem();
@@ -97,8 +97,8 @@ class CartTest extends BaseTestCase
         ];
 
         $this->entity->setLineItems($lines);
-        $physicalItems = $this->entity->getPhysicalLineItems();
-        $digitalItems = $this->entity->getDigitalLineItems();
+        $physicalItems = $this->entity->getPhysicalItems();
+        $digitalItems = $this->entity->getDigitalItems();
         $customItems = $this->entity->getCustomItems();
         $gifs = $this->entity->getGiftCertificates();
 
