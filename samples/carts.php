@@ -66,7 +66,7 @@ try {
     $giftCertificates1 = $newCart->getGiftCertificates();
     echo $result;
 
-    /** create redirect url */
+    /** create redirect url for cart */
     $newUrl = new \Bigcommerce\ORM\Entities\CartRedirectUrl();
     $newUrl->setCartId($newCart->getId());
     $entityManager->save($newUrl);

@@ -5,7 +5,7 @@ namespace Tests;
 
 use Bigcommerce\ORM\Client\Client;
 use Bigcommerce\ORM\Entities\Brand;
-use Bigcommerce\ORM\Entities\CartCoupon;
+use Bigcommerce\ORM\Entities\CheckoutCoupon;
 use Bigcommerce\ORM\Entities\Channel;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Entities\CustomerAddress;
@@ -231,7 +231,7 @@ class EntityManagerTest extends BaseTestCase
 
     public function testUpdateWithUpdatable()
     {
-        $coupon = new CartCoupon();
+        $coupon = new CheckoutCoupon();
         $coupon->setId(1)->setName('name');
         $this->expectException(EntityException::class);
         $this->entityManager->save($coupon);

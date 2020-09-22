@@ -117,7 +117,7 @@ class Cart extends Entity
     protected $redirectUrl;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\CartCoupon[]|null
+     * @var \Bigcommerce\ORM\Entities\CheckoutCoupon[]|null
      * @BC\HasMany(name="coupons", targetClass="\Bigcommerce\ORM\Entities\CartCoupon", field="id", targetField="cart_id", from="result", auto=true)
      */
     protected $coupons;
@@ -296,7 +296,7 @@ class Cart extends Entity
     }
 
     /**
-     * @return array|\Bigcommerce\ORM\Entities\CartCoupon|null
+     * @return array|\Bigcommerce\ORM\Entities\CheckoutCoupon|null
      */
     public function getCoupons(): ?array
     {

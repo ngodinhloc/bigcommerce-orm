@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace Tests\Entities;
 
-use Bigcommerce\ORM\Entities\CartCoupon;
+use Bigcommerce\ORM\Entities\CheckoutCoupon;
 use Tests\BaseTestCase;
 
-class CartCouponTest extends BaseTestCase
+class CheckoutCouponTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CartCoupon */
+    /** @var \Bigcommerce\ORM\Entities\CheckoutCoupon */
     protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->entity = new CartCoupon();
+        $this->entity = new CheckoutCoupon();
         $this->entity
             ->setId(1)
             ->setName('name')

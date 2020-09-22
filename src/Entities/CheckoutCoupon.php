@@ -11,7 +11,7 @@ use Bigcommerce\ORM\Entity;
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="CartCoupon", creatable=false, findable=false, deletable=false, updatable=false)
  */
-class CartCoupon extends Entity
+class CheckoutCoupon extends Entity
 {
     /**
      * @var string|null
@@ -47,9 +47,9 @@ class CartCoupon extends Entity
 
     /**
      * @param string|null $code
-     * @return \Bigcommerce\ORM\Entities\CartCoupon
+     * @return \Bigcommerce\ORM\Entities\CheckoutCoupon
      */
-    public function setCode(?string $code): CartCoupon
+    public function setCode(?string $code): CheckoutCoupon
     {
         $this->code = $code;
 
@@ -66,9 +66,9 @@ class CartCoupon extends Entity
 
     /**
      * @param string|null $name
-     * @return \Bigcommerce\ORM\Entities\CartCoupon
+     * @return \Bigcommerce\ORM\Entities\CheckoutCoupon
      */
-    public function setName(?string $name): CartCoupon
+    public function setName(?string $name): CheckoutCoupon
     {
         $this->name = $name;
 
@@ -85,9 +85,9 @@ class CartCoupon extends Entity
 
     /**
      * @param string|null $type
-     * @return \Bigcommerce\ORM\Entities\CartCoupon
+     * @return \Bigcommerce\ORM\Entities\CheckoutCoupon
      */
-    public function setType(?string $type): CartCoupon
+    public function setType(?string $type): CheckoutCoupon
     {
         $this->type = $type;
 
@@ -104,9 +104,9 @@ class CartCoupon extends Entity
 
     /**
      * @param float|null $discountAmount
-     * @return \Bigcommerce\ORM\Entities\CartCoupon
+     * @return \Bigcommerce\ORM\Entities\CheckoutCoupon
      */
-    public function setDiscountAmount(?float $discountAmount): CartCoupon
+    public function setDiscountAmount(?float $discountAmount): CheckoutCoupon
     {
         $this->discountAmount = $discountAmount;
 
