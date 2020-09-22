@@ -47,7 +47,7 @@ class Mapper
     public function getResource(Entity $entity = null)
     {
         $reflectionClass = $this->reflect($entity);
-        
+
         return $this->reader->getClassAnnotation($reflectionClass, Resource::class);
     }
 
@@ -245,6 +245,28 @@ class Mapper
         }
 
         return $validationRules;
+    }
+
+    /**
+     * @param array|null $array
+     * @param string|null $className
+     * @param array|null $pathParams
+     * @return array
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function arrayToCollection(array $array = null, string $className = null, array $pathParams = null)
+    {
+        $collections = [];
+
+        if (!empty($array)) {
+            foreach ($array as $item) {
+                $object = $this->object($className);
+                $relationEntity = $this->patch($object, $item, $pathParams, true);
+                $collections[] = $relationEntity;
+            }
+        }
+
+        return $collections;
     }
 
     /**
@@ -452,10 +474,10 @@ class Mapper
     }
 
     /**
-     * @param int|null $id
+     * @param int|string|null $id
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function checkId(int $id = null)
+    public function checkId($id = null)
     {
         if (empty($id)) {
             throw new EntityException(EntityException::ERROR_ID_IS_NOT_PROVIDED);

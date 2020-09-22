@@ -39,6 +39,7 @@ class Result
 
         $result = false;
         switch ($this->response->getStatusCode()) {
+            case ResponseCodes::HTTP_CREATED:
             case ResponseCodes::HTTP_OK:
                 if ($content = $this->response->getBody()->getContents()) {
                     $array = json_decode($content, true);

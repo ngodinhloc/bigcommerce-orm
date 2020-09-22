@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Tests;
 
 use Bigcommerce\ORM\Client\Client;
+use Bigcommerce\ORM\Entities\Brand;
+use Bigcommerce\ORM\Entities\CartCoupon;
 use Bigcommerce\ORM\Entities\Channel;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Entities\CustomerAddress;
@@ -171,6 +173,21 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(1, $product->getId());
     }
 
+    public function testCreateEmptyFalse()
+    {
+        $brand = new Brand();
+        $brand->setName('name');
+        $result = $this->entityManager->save($brand);
+        $this->assertFalse($result);
+    }
+
+    public function testCreateEmpty()
+    {
+        $product = new Product();
+        $this->expectException(EntityException::class);
+        $this->entityManager->save($product);
+    }
+
     public function testSaveThrowException()
     {
         $customer = new Customer();
@@ -203,6 +220,23 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(1, $image->getId());
     }
 
+    public function testUpdateWithInvalidFiles()
+    {
+        $file = __DIR__ . '/assets/images/lamp1.jpg';
+        $image = new ProductImage();
+        $image->setProductId(111)->setId(1)->setImageFile($file);
+        $this->expectException(EntityException::class);
+        $this->entityManager->save($image);
+    }
+
+    public function testUpdateWithUpdatable()
+    {
+        $coupon = new CartCoupon();
+        $coupon->setId(1)->setName('name');
+        $this->expectException(EntityException::class);
+        $this->entityManager->save($coupon);
+    }
+
     public function testUpdateEarlyReturn()
     {
         $image = new ProductImage();
@@ -229,6 +263,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertTrue($result);
     }
 
+    public function testDeleteEmpty()
+    {
+        $result = $this->entityManager->delete(Customer::class, null, []);
+        $this->assertFalse($result);
+    }
+
     public function testDeleteThrowException()
     {
         $this->expectException(EntityException::class);
@@ -237,10 +277,12 @@ class EntityManagerTest extends BaseTestCase
 
     public function testBatchCreate()
     {
-
         $data = $this->getBatchCreateData();
         $customers = $this->entityManager->batchCreate(Customer::class, null, $data);
         $this->assertEquals(2, count($customers));
+
+        $result = $this->entityManager->batchCreate(Channel::class, null, $data);
+        $this->assertFalse($result);
 
         $result = $this->entityManager->batchCreate(CustomerAddress::class, null, []);
         $this->assertFalse($result);
@@ -413,6 +455,8 @@ class EntityManagerTest extends BaseTestCase
         $client->create($savePath, 'api', $data, [])->willReturn($returnProduct);
         $client->create($productPath, 'api', Argument::any(), [])->willReturn($returnProduct);
         $client->create('/customers/addresses', 'api', [], null, true)->willReturn([]);
+        $client->create('/channels', 'api', Argument::any(), null, true)->willReturn(false);
+        $client->create('/catalog/brands', 'api', Argument::any(), [])->willReturn(false);
         $client->update($updatePath, 'api', $data, [])->willReturn($createResult);
         $client->update($updateImage, 'api', $imageData, $files)->willReturn(['id' => 1]);
         $client->delete($deletePath, 'api')->willReturn(true);

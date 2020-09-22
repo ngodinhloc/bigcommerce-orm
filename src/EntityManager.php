@@ -106,7 +106,7 @@ class EntityManager
 
     /**
      * @param string|null $className
-     * @param int|null $id
+     * @param int|string|null $id
      * @param array|null $pathParams
      * @param bool $auto
      * @return \Bigcommerce\ORM\Entity|false
@@ -115,15 +115,15 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws Exceptions\MapperException
      */
-    public function find(string $className = null, int $id = null, array $pathParams = null, bool $auto = false)
+    public function find(string $className = null, $id = null, array $pathParams = null, bool $auto = false)
     {
         $this->mapper->checkClass($className);
         $this->mapper->checkId($id);
 
         $object = $this->mapper->object($className);
         $entity = $this->mapper->patch($object, [], $pathParams, true);
-        $resource = $entity->getMetadata()->getResource();
 
+        $resource = $entity->getMetadata()->getResource();
         if ($resource->findable !== true) {
             throw new EntityException(EntityException::ERROR_NOT_FINDABLE_RESOURCE . $resource->name);
         }
@@ -131,11 +131,10 @@ class EntityManager
         $resourcePath = $this->mapper->getResourcePath($entity);
         $resourceType = $resource->type;
         $autoIncludes = $entity->getMetadata()->getIncludeFields();
-
         $queryBuilder = new QueryBuilder();
         $query = $queryBuilder->include(array_keys($autoIncludes))->getQueryString();
-        $result = $this->client->find($resourcePath . "/{$id}?" . $query, $resourceType);
 
+        $result = $this->client->find($resourcePath . "/{$id}?" . $query, $resourceType);
         if (empty($result)) {
             return false;
         }
@@ -149,7 +148,6 @@ class EntityManager
         if (empty($entity->getMetadata()->getAutoLoadFields())) {
             return $entity;
         }
-
         // auto loading
         return $this->autoLoad($entity, $result, $pathParams);
     }
@@ -175,19 +173,16 @@ class EntityManager
         }
 
         $checkRequiredProperties = $this->mapper->checkRequiredFields($entity);
-
         if ($checkRequiredProperties !== true) {
             throw new EntityException(EntityException::ERROR_REQUIRED_PROPERTIES . implode(", ", $checkRequiredProperties));
         }
 
         $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
-
         if ($checkRequiredValidations !== true) {
             throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
         }
 
         $data = $this->mapper->getWritableFieldValues($entity);
-
         // update entity
         if (!empty($id = $entity->getId())) {
             return $this->updateEntity($entity, $data);
@@ -222,7 +217,6 @@ class EntityManager
         }
 
         $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
-
         if ($checkRequiredValidations !== true) {
             throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
         }
@@ -258,8 +252,8 @@ class EntityManager
 
         $object = $this->mapper->object($className);
         $entity = $this->mapper->patch($object, [], $pathParams, true);
-        $resource = $entity->getMetadata()->getResource();
 
+        $resource = $entity->getMetadata()->getResource();
         if ($resource->deletable !== true) {
             throw new EntityException(EntityException::ERROR_NOT_DELETABLE_RESOURCE . $resource->name);
         }
@@ -296,11 +290,10 @@ class EntityManager
         $entity = $this->mapper->patch($object, [], $pathParams, true);
         $resourcePath = $this->mapper->getResourcePath($entity);
         $resourceType = $entity->getMetadata()->getResource()->type;
-        $result = $this->client->create($resourcePath, $resourceType, $items, null, true);
 
+        $result = $this->client->create($resourcePath, $resourceType, $items, null, true);
         if (!empty($result)) {
             $entities = [];
-
             foreach ($result as $item) {
                 $entities[] = $this->new($className, $item);
             }
@@ -330,8 +323,8 @@ class EntityManager
         $resourcePath = $this->mapper->getResourcePath($entity);
         $resourceType = $entity->getMetadata()->getResource()->type;
         $data = $this->getBatchUpdateData($className, $entities);
-        $result = $this->client->update($resourcePath, $resourceType, $data, null, true);
 
+        $result = $this->client->update($resourcePath, $resourceType, $data, null, true);
         if (!empty($result)) {
             return $this->getUpdatedEntities($entities, $result, $pathParams);
         }
@@ -394,7 +387,6 @@ class EntityManager
     private function getBatchUpdateData(string $className = null, array &$entities = null)
     {
         $data = [];
-
         foreach ($entities as $entity) {
             if ($className != get_class($entity)) {
                 throw new EntityException(EntityException::ERROR_DIFFERENT_CLASS_NAME);
@@ -405,7 +397,6 @@ class EntityManager
             }
 
             $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
-
             if ($checkRequiredValidations !== true) {
                 throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
             }
@@ -428,7 +419,6 @@ class EntityManager
     private function getUpdatedEntities(array $entities = null, array $result = null, array $pathParams = null)
     {
         $output = [];
-
         foreach ($result as $data) {
             if (isset($entities[$data['id']])) {
                 $entity = $entities[$data['id']];
@@ -452,7 +442,6 @@ class EntityManager
         $collections = [];
 
         if (!empty($array)) {
-
             foreach ($array as $item) {
                 $object = $this->mapper->object($className);
                 $relationEntity = $this->mapper->patch($object, $item, $pathParams);
@@ -482,7 +471,7 @@ class EntityManager
      */
     private function autoLoad(Entity $entity = null, array $data = null, array $pathParams = null)
     {
-        if (empty($entity) || empty($entity->getMetadata()->getAutoLoadFields())) {
+        if (empty($entity->getMetadata()->getAutoLoadFields())) {
             return $entity;
         }
 
@@ -523,8 +512,8 @@ class EntityManager
         $resourcePath = $this->mapper->getResourcePath($entity);
         $resourceType = $resource->type;
         $files = $this->getUploadFiles($entity);
-        $result = $this->client->create($resourcePath, $resourceType, $data, $files);
 
+        $result = $this->client->create($resourcePath, $resourceType, $data, $files);
         if (!empty($result)) {
             $this->mapper->patch($entity, $result, null, true);
             $this->mapper->setPropertyValueByName($entity, 'isNew', true);
@@ -554,7 +543,6 @@ class EntityManager
     private function updateEntity(Entity $entity, array $data)
     {
         $resource = $entity->getMetadata()->getResource();
-
         if ($resource->updatable !== true) {
             throw new EntityException(EntityException::ERROR_NOT_UPDATABLE_RESOURCE . $resource->name);
         }
@@ -566,8 +554,8 @@ class EntityManager
         $resourcePath = $this->mapper->getResourcePath($entity);
         $resourceType = $resource->type;
         $files = $this->getUploadFiles($entity);
-        $result = $this->client->update($resourcePath . "/{$entity->getId()}", $resourceType, $data, $files);
 
+        $result = $this->client->update($resourcePath . "/{$entity->getId()}", $resourceType, $data, $files);
         if (!empty($result)) {
             $this->mapper->patch($entity, $result, null, true);
             $this->mapper->setPropertyValueByName($entity, 'isNew', false);
@@ -593,12 +581,9 @@ class EntityManager
     private function getUploadFiles(Entity $entity)
     {
         $files = [];
-
         if (!empty($uploadFields = $entity->getMetadata()->getUploadFields())) {
-
             foreach ($uploadFields as $fieldName => $property) {
                 $location = $this->mapper->getPropertyValue($entity, $property);
-
                 if (!empty($location)) {
                     if (!file_exists($location)) {
                         throw new EntityException(EntityException::ERROR_INVALID_UPLOAD_FILE . $location);

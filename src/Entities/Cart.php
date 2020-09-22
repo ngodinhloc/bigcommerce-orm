@@ -5,6 +5,7 @@ namespace Bigcommerce\ORM\Entities;
 
 use Bigcommerce\ORM\Annotations as BC;
 use Bigcommerce\ORM\Entity;
+use Bigcommerce\ORM\Mapper;
 
 /**
  * Class Cart
@@ -83,11 +84,11 @@ class Cart extends Entity
      * @var int|null
      * @BC\Field(name="channel_id")
      */
-    protected $channelId;
+    protected $channelId = 1;
 
     /**
-     * @var array|null
-     * @BC\Field(name="coupons")
+     * @var \Bigcommerce\ORM\Entities\CartCoupon|null
+     * @BC\HasMany(name="coupons", targetClass="\Bigcommerce\ORM\Entities\CartCoupon", field="id", targetField="cart_id", from="result", auto=true)
      */
     protected $coupons;
 
@@ -104,21 +105,29 @@ class Cart extends Entity
     protected $lineItems;
 
     /**
-     * @return string|null
+     * @var array|null
+     * @BC\Field(name="custom_items")
      */
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
+    protected $customItems = [];
 
     /**
-     * @param int|string|null $id
-     * @return \Bigcommerce\ORM\Entities\Cart
+     * @var array|null
+     * @BC\Field(name="gift_certificates")
      */
-    public function setId($id = null): Cart
+    protected $giftCertificates = [];
+
+    /**
+     * @var array|null
+     * @BC\Field(name="redirect_urls")
+     */
+    protected $redirectUrls;
+
+    /** @var \Bigcommerce\ORM\Mapper */
+    protected $mapper;
+
+    public function __construct()
     {
-        $this->id = $id;
-        return $this;
+        $this->mapper = new Mapper();
     }
 
     /**
@@ -136,6 +145,7 @@ class Cart extends Entity
     public function setParentId(?string $parentId): Cart
     {
         $this->parentId = $parentId;
+
         return $this;
     }
 
@@ -154,6 +164,7 @@ class Cart extends Entity
     public function setCustomerId(?int $customerId): Cart
     {
         $this->customerId = $customerId;
+
         return $this;
     }
 
@@ -172,6 +183,7 @@ class Cart extends Entity
     public function setEmail(?string $email): Cart
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -190,25 +202,16 @@ class Cart extends Entity
     public function setCurrency(?array $currency): Cart
     {
         $this->currency = $currency;
+
         return $this;
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isTaxIncluded(): bool
+    public function isTaxIncluded(): ?bool
     {
         return $this->taxIncluded;
-    }
-
-    /**
-     * @param bool $taxIncluded
-     * @return \Bigcommerce\ORM\Entities\Cart
-     */
-    public function setTaxIncluded(bool $taxIncluded): Cart
-    {
-        $this->taxIncluded = $taxIncluded;
-        return $this;
     }
 
     /**
@@ -220,16 +223,6 @@ class Cart extends Entity
     }
 
     /**
-     * @param float|null $baseAmount
-     * @return \Bigcommerce\ORM\Entities\Cart
-     */
-    public function setBaseAmount(?float $baseAmount): Cart
-    {
-        $this->baseAmount = $baseAmount;
-        return $this;
-    }
-
-    /**
      * @return float|null
      */
     public function getDiscountAmount(): ?float
@@ -238,31 +231,11 @@ class Cart extends Entity
     }
 
     /**
-     * @param float|null $discountAmount
-     * @return \Bigcommerce\ORM\Entities\Cart
-     */
-    public function setDiscountAmount(?float $discountAmount): Cart
-    {
-        $this->discountAmount = $discountAmount;
-        return $this;
-    }
-
-    /**
      * @return float|null
      */
     public function getCartAmount(): ?float
     {
         return $this->cartAmount;
-    }
-
-    /**
-     * @param float|null $cartAmount
-     * @return \Bigcommerce\ORM\Entities\Cart
-     */
-    public function setCartAmount(?float $cartAmount): Cart
-    {
-        $this->cartAmount = $cartAmount;
-        return $this;
     }
 
     /**
@@ -280,6 +253,7 @@ class Cart extends Entity
     public function setCreatedTime(?string $createdTime): Cart
     {
         $this->createdTime = $createdTime;
+
         return $this;
     }
 
@@ -298,6 +272,7 @@ class Cart extends Entity
     public function setUpdatedTime(?string $updatedTime): Cart
     {
         $this->updatedTime = $updatedTime;
+
         return $this;
     }
 
@@ -316,25 +291,16 @@ class Cart extends Entity
     public function setChannelId(?int $channelId): Cart
     {
         $this->channelId = $channelId;
+
         return $this;
     }
 
     /**
-     * @return array|null
+     * @return array|\Bigcommerce\ORM\Entities\CartCoupon|null
      */
     public function getCoupons(): ?array
     {
         return $this->coupons;
-    }
-
-    /**
-     * @param array|null $coupons
-     * @return \Bigcommerce\ORM\Entities\Cart
-     */
-    public function setCoupons(?array $coupons): Cart
-    {
-        $this->coupons = $coupons;
-        return $this;
     }
 
     /**
@@ -346,12 +312,93 @@ class Cart extends Entity
     }
 
     /**
-     * @param array|null $discounts
-     * @return \Bigcommerce\ORM\Entities\Cart
+     * @return \Bigcommerce\ORM\Entities\CartCustomItem[]|null
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function setDiscounts(?array $discounts): Cart
+    public function getCustomItems()
     {
-        $this->discounts = $discounts;
+        if (empty($this->lineItems['custom_items'])) {
+            return null;
+        }
+
+        return $this->mapper->arrayToCollection($this->lineItems['custom_items'], CartCustomItem::class, ['cart_id' => $this->id]);
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\CartGiftCertificate[]|null
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getGiftCertificates()
+    {
+        if (empty($this->lineItems['gift_certificates'])) {
+            return null;
+        }
+
+        return $this->mapper->arrayToCollection($this->lineItems['gift_certificates'], CartGiftCertificate::class, ['cart_id' => $this->id]);
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\CartLineItem[]|null
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getDigitalLineItems()
+    {
+        if (empty($this->lineItems['digital_items'])) {
+            return null;
+        }
+
+        return $this->mapper->arrayToCollection($this->lineItems['digital_items'], CartLineItem::class, ['cart_id' => $this->id]);
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\CartLineItem[]|null
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getPhysicalLineItems()
+    {
+        if (empty($this->lineItems['physical_items'])) {
+            return null;
+        }
+
+        return $this->mapper->arrayToCollection($this->lineItems['physical_items'], CartLineItem::class, ['cart_id' => $this->id]);
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\CartLineItem|null $item
+     * @return \Bigcommerce\ORM\Entities\Cart
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function addLineItem(?CartLineItem $item)
+    {
+        $data = $this->mapper->getWritableFieldValues($item);
+        $this->lineItems[] = $data;
+
+        return $this;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\CartCustomItem|null $item
+     * @return \Bigcommerce\ORM\Entities\Cart
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function addCustomItem(?CartCustomItem $item)
+    {
+        $data = $this->mapper->getWritableFieldValues($item);
+        $this->customItems[] = $data;
+
+        return $this;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\CartGiftCertificate|null $item
+     * @return \Bigcommerce\ORM\Entities\Cart
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function addGiftCertificate(?CartGiftCertificate $item)
+    {
+        $data = $this->mapper->getWritableFieldValues($item);
+        $this->giftCertificates[] = $data;
+
         return $this;
     }
 
@@ -370,6 +417,15 @@ class Cart extends Entity
     public function setLineItems(?array $lineItems): Cart
     {
         $this->lineItems = $lineItems;
+
         return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getRedirectUrls(): ?array
+    {
+        return $this->redirectUrls;
     }
 }
