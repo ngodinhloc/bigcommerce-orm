@@ -123,6 +123,15 @@ class ClientTest extends BaseTestCase
         $data = ['id' => 1];
         $update = $this->client->update('/customers/1', 'api', $data, []);
         $this->assertIsArray($update);
+
+        $result = $update = $this->client->update('/customers/1', 'api', [], []);
+        $this->assertTrue($result);
+    }
+
+    public function testUpdateNull()
+    {
+        $this->expectException(ClientException::class);
+        $result = $update = $this->client->update(null, 'api', [], []);
     }
 
     public function testBatchUpdate()

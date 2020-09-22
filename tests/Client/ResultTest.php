@@ -70,6 +70,21 @@ class ResultTest extends BaseTestCase
         $this->assertTrue($bool);
     }
 
+    public function testGetDelete()
+    {
+        $many = [
+            'data' => [
+                '0' => ['id' => 1]
+            ]
+        ];
+        $headers = ['api_version' => 'v3'];
+        $body = Stream::factory(json_encode($many));
+        $response = new Response(204, $headers, $body);
+        $this->result = new Result($response);
+        $bool = $this->result->get(Result::RETURN_TYPE_BOOL);
+        $this->assertTrue($bool);
+    }
+
     public function testGetFirst()
     {
         $many = [

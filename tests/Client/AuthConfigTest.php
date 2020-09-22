@@ -43,7 +43,7 @@ class AuthConfigTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setAuthToken
      * @covers \Bigcommerce\ORM\Client\AuthConfig::setClientId
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getTimeout
-     * @covers \Bigcommerce\ORM\Client\AuthConfig::getStorePrefix
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiStorePrefix
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getPathPrefix
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiBaseUrl
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getProxy
@@ -56,6 +56,7 @@ class AuthConfigTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\AuthConfig::isDebug
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiUrl
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getPaymentUrl
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getPaymentStorePrefix
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      */
     public function testSettersAndGetters()
@@ -77,9 +78,9 @@ class AuthConfigTest extends BaseTestCase
 
         /** default values */
         $this->assertEquals('apiUrl/stores/storeHash/v3', $this->authConfig->getApiUrl());
-        $this->assertEquals('paymentUrl/stores/storeHash/v3', $this->authConfig->getPaymentUrl());
+        $this->assertEquals('paymentUrl/stores/storeHash', $this->authConfig->getPaymentUrl());
         $this->assertEquals('/api/v3', $this->authConfig->getPathPrefix());
-        $this->assertEquals('/stores/%s/v3', $this->authConfig->getStorePrefix());
+        $this->assertEquals('/stores/%s/v3', $this->authConfig->getApiStorePrefix());
         $this->assertEquals(null, $this->authConfig->getProxy());
         $this->assertEquals(false, $this->authConfig->isVerify());
         $this->assertEquals(60, $this->authConfig->getTimeout());

@@ -15,7 +15,8 @@ abstract class AbstractConfig
     const RESOURCE_TYPE_PAYMENT = 'payment';
     const API_VERSION_V3 = "v3";
     const PATH_PREFIX_V3 = '/api/v3';
-    const STORE_PREFIX_V3 = '/stores/%s/v3';
+    const API_STORE_PREFIX_V3 = '/stores/%s/v3';
+    const PAYMENT_STORE_PREFIX = '/stores/%s';
     const CONTENT_TYPE_JSON = 'application/json';
     const CONTENT_TYPE_WWW = 'application/x-www-form-urlencoded';
 
@@ -180,12 +181,24 @@ abstract class AbstractConfig
     /**
      * @return string
      */
-    public function getStorePrefix()
+    public function getApiStorePrefix()
     {
         switch ($this->apiVersion) {
             case self::API_VERSION_V3:
             default:
-                return self::STORE_PREFIX_V3;
+                return self::API_STORE_PREFIX_V3;
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentStorePrefix()
+    {
+        switch ($this->apiVersion) {
+            case self::API_VERSION_V3:
+            default:
+                return self::PAYMENT_STORE_PREFIX;
         }
     }
 }

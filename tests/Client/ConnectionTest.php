@@ -98,6 +98,12 @@ class ConnectionTest extends BaseTestCase
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 
+    public function testDelete()
+    {
+        $response = $this->connection->delete('/customers?id:in=1,2,3', 'api');
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+    }
+
     private function getBasicConfig()
     {
         $basicCredentials = [
@@ -128,7 +134,6 @@ class ConnectionTest extends BaseTestCase
         return $authConfig;
     }
 
-
     private function getResponse()
     {
         $many = [
@@ -138,6 +143,7 @@ class ConnectionTest extends BaseTestCase
         ];
         $headers = ['api_version' => 'v3'];
         $body = Stream::factory(json_encode($many));
+
         return new Response(200, $headers, $body);
     }
 
@@ -147,6 +153,7 @@ class ConnectionTest extends BaseTestCase
         $client->get(Argument::any(), Argument::any())->willReturn($this->getResponse());
         $client->put(Argument::any(), Argument::any())->willReturn($this->getResponse());
         $client->post(Argument::any(), Argument::any())->willReturn($this->getResponse());
+        $client->delete(Argument::any(), Argument::any())->willReturn($this->getResponse());
 
         return $client->reveal();
     }

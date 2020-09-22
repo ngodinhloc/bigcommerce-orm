@@ -68,6 +68,7 @@ class AuthConfig extends AbstractConfig
     public function setClientId(string $clientId = null): AuthConfig
     {
         $this->clientId = $clientId;
+
         return $this;
     }
 
@@ -86,6 +87,7 @@ class AuthConfig extends AbstractConfig
     public function setAuthToken(string $authToken = null): AuthConfig
     {
         $this->authToken = $authToken;
+
         return $this;
     }
 
@@ -104,6 +106,7 @@ class AuthConfig extends AbstractConfig
     public function setStoreHash(string $storeHash = null): AuthConfig
     {
         $this->storeHash = $storeHash;
+
         return $this;
     }
 
@@ -122,6 +125,7 @@ class AuthConfig extends AbstractConfig
     public function setApiBaseUrl(string $apiBaseUrl): AuthConfig
     {
         $this->apiBaseUrl = $apiBaseUrl;
+
         return $this;
     }
 
@@ -140,6 +144,7 @@ class AuthConfig extends AbstractConfig
     public function setPaymentBaseUrl(string $paymentBaseUrl): AuthConfig
     {
         $this->paymentBaseUrl = $paymentBaseUrl;
+
         return $this;
     }
 
@@ -148,7 +153,7 @@ class AuthConfig extends AbstractConfig
      */
     public function getApiUrl()
     {
-        return $this->getApiBaseUrl() . sprintf($this->getStorePrefix(), $this->getStoreHash());
+        return $this->getApiBaseUrl() . sprintf($this->getApiStorePrefix(), $this->getStoreHash());
     }
 
     /**
@@ -156,6 +161,6 @@ class AuthConfig extends AbstractConfig
      */
     public function getPaymentUrl()
     {
-        return $this->getPaymentBaseUrl() . sprintf($this->getStorePrefix(), $this->getStoreHash());
+        return $this->getPaymentBaseUrl() . sprintf($this->getPaymentStorePrefix(), $this->getStoreHash());
     }
 }
