@@ -37,7 +37,7 @@ abstract class AbstractValidator
      * @param \Bigcommerce\ORM\Mapper|null $mapper
      * @return \Bigcommerce\ORM\Validation\AbstractValidator
      */
-    public function setMapper(?Mapper $mapper): AbstractValidator
+    public function setMapper(?Mapper $mapper = null): AbstractValidator
     {
         $this->mapper = $mapper;
 

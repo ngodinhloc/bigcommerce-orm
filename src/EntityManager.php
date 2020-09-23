@@ -632,7 +632,7 @@ class EntityManager
      * @param \Bigcommerce\ORM\Mapper|null $mapper mapper
      * @return \Bigcommerce\ORM\EntityManager
      */
-    public function setMapper(?Mapper $mapper)
+    public function setMapper(?Mapper $mapper = null)
     {
         $this->mapper = $mapper;
 
