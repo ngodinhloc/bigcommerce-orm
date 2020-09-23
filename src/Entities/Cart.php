@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 use Bigcommerce\ORM\Mapper;
 
 /**
@@ -12,7 +12,7 @@ use Bigcommerce\ORM\Mapper;
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="Cart", path="/carts", type="api")
  */
-class Cart extends Entity
+class Cart extends AbstractEntity
 {
     /**
      * @var string|null

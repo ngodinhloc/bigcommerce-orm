@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
- * Class CartCoupon
+ * Class CheckoutCoupon
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CartCoupon", creatable=false, findable=false, deletable=false, updatable=false)
+ * @BC\Resource(name="CheckoutCoupon", creatable=false, findable=false, deletable=false, updatable=false)
  */
-class CheckoutCoupon extends Entity
+class CheckoutCoupon extends AbstractEntity
 {
     /**
      * @var string|null

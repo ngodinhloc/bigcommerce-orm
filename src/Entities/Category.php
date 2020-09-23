@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class Category
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="Category", path="/catalog/categories", type="api")
  */
-class Category extends Entity
+class Category extends AbstractEntity
 {
     /**
      * @var string|null
@@ -64,6 +64,7 @@ class Category extends Entity
     public function setName(?string $name): Category
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -82,6 +83,7 @@ class Category extends Entity
     public function setDescription(?string $description): Category
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -100,6 +102,7 @@ class Category extends Entity
     public function setSortOrder(?int $sortOrder): Category
     {
         $this->sortOrder = $sortOrder;
+
         return $this;
     }
 
@@ -118,6 +121,7 @@ class Category extends Entity
     public function setPageTitle(?string $pageTitle): Category
     {
         $this->pageTitle = $pageTitle;
+
         return $this;
     }
 
@@ -136,6 +140,7 @@ class Category extends Entity
     public function setParentId(?int $parentId): Category
     {
         $this->parentId = $parentId;
+
         return $this;
     }
 
@@ -154,6 +159,7 @@ class Category extends Entity
     public function setParent(?\Bigcommerce\ORM\Entities\Category $parent): Category
     {
         $this->parent = $parent;
+
         return $this;
     }
 }

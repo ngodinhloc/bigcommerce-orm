@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class Product
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="Product", path="/catalog/products", type="api")
  */
-class Product extends Entity
+class Product extends AbstractEntity
 {
     /**
      * @var string|null
@@ -168,6 +168,7 @@ class Product extends Entity
     public function setName(?string $name): Product
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -186,6 +187,7 @@ class Product extends Entity
     public function setType(?string $type): Product
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -204,6 +206,7 @@ class Product extends Entity
     public function setSku(?string $sku): Product
     {
         $this->sku = $sku;
+
         return $this;
     }
 
@@ -222,6 +225,7 @@ class Product extends Entity
     public function setDescription(?string $description): Product
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -240,6 +244,7 @@ class Product extends Entity
     public function setWeight(?float $weight): Product
     {
         $this->weight = $weight;
+
         return $this;
     }
 
@@ -258,6 +263,7 @@ class Product extends Entity
     public function setWidth(?float $width): Product
     {
         $this->width = $width;
+
         return $this;
     }
 
@@ -276,6 +282,7 @@ class Product extends Entity
     public function setDepth(?float $depth): Product
     {
         $this->depth = $depth;
+
         return $this;
     }
 
@@ -294,6 +301,7 @@ class Product extends Entity
     public function setHeight(?float $height): Product
     {
         $this->height = $height;
+
         return $this;
     }
 
@@ -312,6 +320,7 @@ class Product extends Entity
     public function setPrice(?float $price): Product
     {
         $this->price = $price;
+
         return $this;
     }
 
@@ -330,6 +339,7 @@ class Product extends Entity
     public function setBrandId(?int $brandId): Product
     {
         $this->brandId = $brandId;
+
         return $this;
     }
 
@@ -348,6 +358,7 @@ class Product extends Entity
     public function setCategoryIds(?array $categoryIds): Product
     {
         $this->categoryIds = $categoryIds;
+
         return $this;
     }
 
@@ -366,6 +377,7 @@ class Product extends Entity
     public function setDateCreated(?string $dateCreated): Product
     {
         $this->dateCreated = $dateCreated;
+
         return $this;
     }
 
@@ -384,6 +396,7 @@ class Product extends Entity
     public function setDateModified(?string $dateModified): Product
     {
         $this->dateModified = $dateModified;
+
         return $this;
     }
 
@@ -402,6 +415,7 @@ class Product extends Entity
     public function setPrimaryImage(?\Bigcommerce\ORM\Entities\ProductImage $primaryImage): Product
     {
         $this->primaryImage = $primaryImage;
+
         return $this;
     }
 
@@ -420,6 +434,7 @@ class Product extends Entity
     public function setImages(?array $images): Product
     {
         $this->images = $images;
+
         return $this;
     }
 
@@ -438,6 +453,7 @@ class Product extends Entity
     public function setCategories(?array $categories): Product
     {
         $this->categories = $categories;
+
         return $this;
     }
 
@@ -456,6 +472,7 @@ class Product extends Entity
     public function setReviews(?array $reviews): Product
     {
         $this->reviews = $reviews;
+
         return $this;
     }
 
@@ -474,6 +491,7 @@ class Product extends Entity
     public function setVariants(?array $variants): Product
     {
         $this->variants = $variants;
+
         return $this;
     }
 
@@ -492,6 +510,7 @@ class Product extends Entity
     public function setCustomFields(?array $customFields): Product
     {
         $this->customFields = $customFields;
+
         return $this;
     }
 
@@ -510,6 +529,7 @@ class Product extends Entity
     public function setBulkPricingRules(?array $bulkPricingRules): Product
     {
         $this->bulkPricingRules = $bulkPricingRules;
+
         return $this;
     }
 
@@ -528,6 +548,7 @@ class Product extends Entity
     public function setModifiers(?array $modifiers): Product
     {
         $this->modifiers = $modifiers;
+
         return $this;
     }
 
@@ -546,6 +567,7 @@ class Product extends Entity
     public function setOptions(?array $options): Product
     {
         $this->options = $options;
+
         return $this;
     }
 
@@ -564,6 +586,7 @@ class Product extends Entity
     public function setVideos(?array $videos): Product
     {
         $this->videos = $videos;
+
         return $this;
     }
 }

@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class ProductCustomField
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="ProductCustomField", path="/catalog/products/{product_id}/custom-fields", type="api")
  */
-class ProductCustomField extends Entity
+class ProductCustomField extends AbstractEntity
 {
     /**
      * @var int|null
@@ -46,6 +46,7 @@ class ProductCustomField extends Entity
     public function setProductId(?int $productId): ProductCustomField
     {
         $this->productId = $productId;
+
         return $this;
     }
 
@@ -64,6 +65,7 @@ class ProductCustomField extends Entity
     public function setName(?string $name): ProductCustomField
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -82,6 +84,7 @@ class ProductCustomField extends Entity
     public function setValue($value): ProductCustomField
     {
         $this->value = $value;
+
         return $this;
     }
 }

@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class ProductOptionValue
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="ProductOptionValue", path="/catalog/products/{product_id}/options/{option_id}/values", type="api")
  */
-class ProductOptionValue extends Entity
+class ProductOptionValue extends AbstractEntity
 {
     /**
      * @var int|null
@@ -64,6 +64,7 @@ class ProductOptionValue extends Entity
     public function setProductId(?int $productId): ProductOptionValue
     {
         $this->productId = $productId;
+
         return $this;
     }
 
@@ -82,6 +83,7 @@ class ProductOptionValue extends Entity
     public function setOptionId(?int $optionId): ProductOptionValue
     {
         $this->optionId = $optionId;
+
         return $this;
     }
 
@@ -100,6 +102,7 @@ class ProductOptionValue extends Entity
     public function setLabel(?string $label): ProductOptionValue
     {
         $this->label = $label;
+
         return $this;
     }
 
@@ -118,6 +121,7 @@ class ProductOptionValue extends Entity
     public function setSortOrder(?int $sortOrder): ProductOptionValue
     {
         $this->sortOrder = $sortOrder;
+
         return $this;
     }
 
@@ -136,6 +140,7 @@ class ProductOptionValue extends Entity
     public function setValueData($valueData): ProductOptionValue
     {
         $this->valueData = $valueData;
+
         return $this;
     }
 
@@ -154,6 +159,7 @@ class ProductOptionValue extends Entity
     public function setIsDefault(?bool $isDefault): ProductOptionValue
     {
         $this->isDefault = $isDefault;
+
         return $this;
     }
 }

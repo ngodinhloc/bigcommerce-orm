@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class ProductModifier
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="ProductModifier", path="/catalog/products/{product_id}/modifiers", type="api")
  */
-class ProductModifier extends Entity
+class ProductModifier extends AbstractEntity
 {
     /**
      * @var int|null
@@ -76,6 +76,7 @@ class ProductModifier extends Entity
     public function setProductId(?int $productId): ProductModifier
     {
         $this->productId = $productId;
+
         return $this;
     }
 
@@ -94,6 +95,7 @@ class ProductModifier extends Entity
     public function setName(?string $name): ProductModifier
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -112,6 +114,7 @@ class ProductModifier extends Entity
     public function setDisplayName(?string $displayName): ProductModifier
     {
         $this->displayName = $displayName;
+
         return $this;
     }
 
@@ -130,6 +133,7 @@ class ProductModifier extends Entity
     public function setType(?string $type): ProductModifier
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -148,6 +152,7 @@ class ProductModifier extends Entity
     public function setRequired(?bool $required): ProductModifier
     {
         $this->required = $required;
+
         return $this;
     }
 
@@ -166,6 +171,7 @@ class ProductModifier extends Entity
     public function setSortOrder(?int $sortOrder): ProductModifier
     {
         $this->sortOrder = $sortOrder;
+
         return $this;
     }
 
@@ -184,6 +190,7 @@ class ProductModifier extends Entity
     public function setConfig(?array $config): ProductModifier
     {
         $this->config = $config;
+
         return $this;
     }
 
@@ -202,6 +209,7 @@ class ProductModifier extends Entity
     public function setOptionValues(?array $optionValues): ProductModifier
     {
         $this->optionValues = $optionValues;
+
         return $this;
     }
 }

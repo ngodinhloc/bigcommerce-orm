@@ -77,6 +77,7 @@ class Metadata
     public function setResource(Resource $resource): Metadata
     {
         $this->resource = $resource;
+
         return $this;
     }
 
@@ -95,6 +96,7 @@ class Metadata
     public function setRelationFields(array $relationFields): Metadata
     {
         $this->relationFields = $relationFields;
+
         return $this;
     }
 
@@ -113,6 +115,7 @@ class Metadata
     public function setIncludeFields(array $includeFields): Metadata
     {
         $this->includeFields = $includeFields;
+
         return $this;
     }
 
@@ -131,6 +134,7 @@ class Metadata
     public function setAutoLoadFields(array $autoLoadFields): Metadata
     {
         $this->autoLoadFields = $autoLoadFields;
+
         return $this;
     }
 
@@ -149,6 +153,7 @@ class Metadata
     public function setRequiredFields(array $requiredFields): Metadata
     {
         $this->requiredFields = $requiredFields;
+
         return $this;
     }
 
@@ -167,6 +172,7 @@ class Metadata
     public function setReadonlyFields(array $readonlyFields): Metadata
     {
         $this->readonlyFields = $readonlyFields;
+
         return $this;
     }
 
@@ -185,6 +191,7 @@ class Metadata
     public function setCustomisedFields(array $customisedFields): Metadata
     {
         $this->customisedFields = $customisedFields;
+
         return $this;
     }
 
@@ -203,6 +210,7 @@ class Metadata
     public function setValidationProperties(array $validationProperties): Metadata
     {
         $this->validationProperties = $validationProperties;
+
         return $this;
     }
 
@@ -221,6 +229,7 @@ class Metadata
     public function setUploadFields(array $uploadFields): Metadata
     {
         $this->uploadFields = $uploadFields;
+
         return $this;
     }
 
@@ -239,6 +248,7 @@ class Metadata
     public function setParamFields(array $paramFields): Metadata
     {
         $this->paramFields = $paramFields;
+
         return $this;
     }
 
@@ -257,6 +267,7 @@ class Metadata
     public function setInResultFields(array $inResultFields): Metadata
     {
         $this->inResultFields = $inResultFields;
+
         return $this;
     }
 }

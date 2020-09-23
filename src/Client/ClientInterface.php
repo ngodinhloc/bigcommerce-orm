@@ -12,7 +12,7 @@ interface ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function findAll(string $query = null, string $resourceType = null);
+    public function findAll(?string $query, ?string $resourceType);
 
     /**
      * @param string|null $query
@@ -21,7 +21,7 @@ interface ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function findBy(string $query = null, string $resourceType = null);
+    public function findBy(?string $query, ?string $resourceType);
 
     /**
      * @param string|null $query
@@ -30,7 +30,7 @@ interface ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function find(string $query = null, string $resourceType = null);
+    public function find(?string $query, ?string $resourceType);
 
     /**
      * @param string|null $resourcePath
@@ -42,7 +42,7 @@ interface ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function create(string $resourcePath = null, string $resourceType = null, array $data = null, array $files = null, bool $batch = false);
+    public function create(?string $resourcePath, ?string $resourceType, ?array $data, ?array $files, bool $batch = false);
 
     /**
      * @param string|null $resourcePath
@@ -54,7 +54,7 @@ interface ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function update(string $resourcePath = null, string $resourceType = null, array $data = null, array $files = null, bool $batch = false);
+    public function update(?string $resourcePath, ?string $resourceType, ?array $data, ?array $files, bool $batch = false);
 
     /**
      * @param string|null $resourcePath
@@ -63,5 +63,5 @@ interface ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function delete(string $resourcePath = null, string $resourceType = null);
+    public function delete(?string $resourcePath, ?string $resourceType);
 }

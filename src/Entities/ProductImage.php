@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class ProductImage
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="ProductImage", path="/catalog/products/{product_id}/images", type="api")
  */
-class ProductImage extends Entity
+class ProductImage extends AbstractEntity
 {
     /**
      * @var int|null
@@ -95,6 +95,7 @@ class ProductImage extends Entity
     public function setProductId(?int $productId): ProductImage
     {
         $this->productId = $productId;
+
         return $this;
     }
 
@@ -113,6 +114,7 @@ class ProductImage extends Entity
     public function setIsThumbnail(?bool $isThumbnail): ProductImage
     {
         $this->isThumbnail = $isThumbnail;
+
         return $this;
     }
 
@@ -131,6 +133,7 @@ class ProductImage extends Entity
     public function setSortOrder(?int $sortOrder): ProductImage
     {
         $this->sortOrder = $sortOrder;
+
         return $this;
     }
 
@@ -149,6 +152,7 @@ class ProductImage extends Entity
     public function setDescription(?string $description): ProductImage
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -167,6 +171,7 @@ class ProductImage extends Entity
     public function setImageFile(?string $imageFile): ProductImage
     {
         $this->imageFile = $imageFile;
+
         return $this;
     }
 
@@ -185,6 +190,7 @@ class ProductImage extends Entity
     public function setImageUrl(?string $imageUrl): ProductImage
     {
         $this->imageUrl = $imageUrl;
+
         return $this;
     }
 
@@ -203,6 +209,7 @@ class ProductImage extends Entity
     public function setUrlZoom(?string $urlZoom): ProductImage
     {
         $this->urlZoom = $urlZoom;
+
         return $this;
     }
 
@@ -221,6 +228,7 @@ class ProductImage extends Entity
     public function setUrlStandard(?string $urlStandard): ProductImage
     {
         $this->urlStandard = $urlStandard;
+
         return $this;
     }
 
@@ -239,6 +247,7 @@ class ProductImage extends Entity
     public function setUrlThumbnail(?string $urlThumbnail): ProductImage
     {
         $this->urlThumbnail = $urlThumbnail;
+
         return $this;
     }
 
@@ -257,6 +266,7 @@ class ProductImage extends Entity
     public function setUrlTiny(?string $urlTiny): ProductImage
     {
         $this->urlTiny = $urlTiny;
+
         return $this;
     }
 
@@ -275,6 +285,7 @@ class ProductImage extends Entity
     public function setDateModified(?string $dateModified): ProductImage
     {
         $this->dateModified = $dateModified;
+
         return $this;
     }
 }

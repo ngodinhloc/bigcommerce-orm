@@ -27,7 +27,7 @@ class AuthConfig extends AbstractConfig
     /**
      * AuthConfig constructor.
      *
-     * @param array $config config
+     * @param array|null $config config
      * [
      *  'clientId' =>
      *  'authToken' =>
@@ -37,7 +37,7 @@ class AuthConfig extends AbstractConfig
      * ]
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      */
-    public function __construct(array $config = null)
+    public function __construct(?array $config = null)
     {
         if (!isset($config['clientId']) || !isset($config['authToken']) || !isset($config['storeHash'])) {
             throw new ConfigException(ConfigException::ERROR_MISSING_CONFIG . implode(",", self::REQUIRED_CONFIGURATION_DATA));
@@ -65,7 +65,7 @@ class AuthConfig extends AbstractConfig
      * @param string|null $clientId
      * @return \Bigcommerce\ORM\Client\AuthConfig
      */
-    public function setClientId(string $clientId = null): AuthConfig
+    public function setClientId(?string $clientId): AuthConfig
     {
         $this->clientId = $clientId;
 
@@ -73,9 +73,9 @@ class AuthConfig extends AbstractConfig
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAuthToken(): string
+    public function getAuthToken(): ?string
     {
         return $this->authToken;
     }
@@ -84,7 +84,7 @@ class AuthConfig extends AbstractConfig
      * @param string|null $authToken
      * @return \Bigcommerce\ORM\Client\AuthConfig
      */
-    public function setAuthToken(string $authToken = null): AuthConfig
+    public function setAuthToken(?string $authToken): AuthConfig
     {
         $this->authToken = $authToken;
 
@@ -92,9 +92,9 @@ class AuthConfig extends AbstractConfig
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getStoreHash(): string
+    public function getStoreHash(): ?string
     {
         return $this->storeHash;
     }
@@ -103,7 +103,7 @@ class AuthConfig extends AbstractConfig
      * @param string|null $storeHash
      * @return \Bigcommerce\ORM\Client\AuthConfig
      */
-    public function setStoreHash(string $storeHash = null): AuthConfig
+    public function setStoreHash(?string $storeHash): AuthConfig
     {
         $this->storeHash = $storeHash;
 
@@ -111,18 +111,18 @@ class AuthConfig extends AbstractConfig
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getApiBaseUrl(): string
+    public function getApiBaseUrl(): ?string
     {
         return $this->apiBaseUrl;
     }
 
     /**
-     * @param string $apiBaseUrl
+     * @param string|null $apiBaseUrl
      * @return \Bigcommerce\ORM\Client\AuthConfig
      */
-    public function setApiBaseUrl(string $apiBaseUrl): AuthConfig
+    public function setApiBaseUrl(?string $apiBaseUrl): AuthConfig
     {
         $this->apiBaseUrl = $apiBaseUrl;
 
@@ -130,18 +130,18 @@ class AuthConfig extends AbstractConfig
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPaymentBaseUrl(): string
+    public function getPaymentBaseUrl(): ?string
     {
         return $this->paymentBaseUrl;
     }
 
     /**
-     * @param string $paymentBaseUrl
+     * @param string|null $paymentBaseUrl
      * @return \Bigcommerce\ORM\Client\AuthConfig
      */
-    public function setPaymentBaseUrl(string $paymentBaseUrl): AuthConfig
+    public function setPaymentBaseUrl(?string $paymentBaseUrl): AuthConfig
     {
         $this->paymentBaseUrl = $paymentBaseUrl;
 

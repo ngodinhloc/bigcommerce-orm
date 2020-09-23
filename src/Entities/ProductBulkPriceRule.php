@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class ProductBulkPriceRule
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="ProductBulkPriceRule", path="/catalog/products/{product_id}/bulk-pricing-rules", type="api")
  */
-class ProductBulkPriceRule extends Entity
+class ProductBulkPriceRule extends AbstractEntity
 {
     /**
      * @var int|null
@@ -58,6 +58,7 @@ class ProductBulkPriceRule extends Entity
     public function setProductId(?int $productId): ProductBulkPriceRule
     {
         $this->productId = $productId;
+
         return $this;
     }
 
@@ -76,6 +77,7 @@ class ProductBulkPriceRule extends Entity
     public function setQuantityMin(?int $quantityMin): ProductBulkPriceRule
     {
         $this->quantityMin = $quantityMin;
+
         return $this;
     }
 
@@ -94,6 +96,7 @@ class ProductBulkPriceRule extends Entity
     public function setQuantityMax(?int $quantityMax): ProductBulkPriceRule
     {
         $this->quantityMax = $quantityMax;
+
         return $this;
     }
 
@@ -112,6 +115,7 @@ class ProductBulkPriceRule extends Entity
     public function setType(?string $type): ProductBulkPriceRule
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -130,6 +134,7 @@ class ProductBulkPriceRule extends Entity
     public function setAmount(?float $amount): ProductBulkPriceRule
     {
         $this->amount = $amount;
+
         return $this;
     }
 }

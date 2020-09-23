@@ -34,12 +34,13 @@ abstract class AbstractValidator
     }
 
     /**
-     * @param \Bigcommerce\ORM\Mapper $mapper
+     * @param \Bigcommerce\ORM\Mapper|null $mapper
      * @return \Bigcommerce\ORM\Validation\AbstractValidator
      */
-    public function setMapper(\Bigcommerce\ORM\Mapper $mapper): AbstractValidator
+    public function setMapper(?Mapper $mapper): AbstractValidator
     {
         $this->mapper = $mapper;
+
         return $this;
     }
 

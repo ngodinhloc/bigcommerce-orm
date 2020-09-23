@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class CartGiftCertificate
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="CartGiftCertificate", creatable=false, findable=false, deletable=false, updatable=false)
  */
-class CartGiftCertificate extends Entity
+class CartGiftCertificate extends AbstractEntity
 {
     /**
      * @var string|null

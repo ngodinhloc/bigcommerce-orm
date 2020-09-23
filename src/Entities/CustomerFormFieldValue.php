@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class CustomerFormFieldValue
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="CustomerFormFieldValue", path="/customers/form-field-values", type="api")
  */
-class CustomerFormFieldValue extends Entity
+class CustomerFormFieldValue extends AbstractEntity
 {
     /**
      * @var int|null
@@ -52,6 +52,7 @@ class CustomerFormFieldValue extends Entity
     public function setCustomerId(?int $customerId): CustomerFormFieldValue
     {
         $this->customerId = $customerId;
+
         return $this;
     }
 
@@ -70,6 +71,7 @@ class CustomerFormFieldValue extends Entity
     public function setAddressId(?int $addressId): CustomerFormFieldValue
     {
         $this->addressId = $addressId;
+
         return $this;
     }
 
@@ -88,6 +90,7 @@ class CustomerFormFieldValue extends Entity
     public function setName(?string $name): CustomerFormFieldValue
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -106,6 +109,7 @@ class CustomerFormFieldValue extends Entity
     public function setValue($value): CustomerFormFieldValue
     {
         $this->value = $value;
+
         return $this;
     }
 }

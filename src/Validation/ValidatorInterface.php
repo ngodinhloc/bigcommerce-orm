@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Validation;
 
-use Bigcommerce\ORM\Entity;
+use Bigcommerce\ORM\AbstractEntity;
 
 /**
  * Interface ValidatorInterface
@@ -12,10 +12,10 @@ use Bigcommerce\ORM\Entity;
 interface ValidatorInterface
 {
     /**
-     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity entity
      * @param \ReflectionProperty $property property
      * @param \Bigcommerce\ORM\Validation\ValidationInterface $annotation relation
      * @return bool
      */
-    public function validate(Entity &$entity, \ReflectionProperty $property, ValidationInterface $annotation);
+    public function validate(AbstractEntity $entity, \ReflectionProperty $property, ValidationInterface $annotation);
 }

@@ -58,11 +58,11 @@ class Configuration
      * @see \Bigcommerce\ORM\Client\AuthConfig::__construct
      */
     public function __construct(
-        array $credentials = null,
-        array $options = null,
-        CacheItemPoolInterface $cachePool = null,
-        EventDispatcherInterface $eventDispatcher = null,
-        LoggerInterface $logger = null
+        ?array $credentials = null,
+        ?array $options = null,
+        ?CacheItemPoolInterface $cachePool = null,
+        ?EventDispatcherInterface $eventDispatcher = null,
+        ?LoggerInterface $logger = null
     )
     {
         $this->credentials = $credentials;
@@ -121,12 +121,13 @@ class Configuration
     }
 
     /**
-     * @param array $credentials
+     * @param array|null $credentials
      * @return \Bigcommerce\ORM\Configuration
      */
-    public function setCredentials(array $credentials): Configuration
+    public function setCredentials(?array $credentials): Configuration
     {
         $this->credentials = $credentials;
+
         return $this;
     }
 
@@ -139,12 +140,13 @@ class Configuration
     }
 
     /**
-     * @param array $options
+     * @param array|null $options
      * @return \Bigcommerce\ORM\Configuration
      */
-    public function setOptions(array $options): Configuration
+    public function setOptions(?array $options): Configuration
     {
         $this->options = $options;
+
         return $this;
     }
 
@@ -157,12 +159,13 @@ class Configuration
     }
 
     /**
-     * @param \Psr\Cache\CacheItemPoolInterface $cachePool
+     * @param \Psr\Cache\CacheItemPoolInterface|null $cachePool
      * @return \Bigcommerce\ORM\Configuration
      */
-    public function setCachePool(\Psr\Cache\CacheItemPoolInterface $cachePool): Configuration
+    public function setCachePool(?CacheItemPoolInterface $cachePool): Configuration
     {
         $this->cachePool = $cachePool;
+
         return $this;
     }
 
@@ -175,12 +178,13 @@ class Configuration
     }
 
     /**
-     * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface|null $eventDispatcher
      * @return \Bigcommerce\ORM\Configuration
      */
-    public function setEventDispatcher(\Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcher): Configuration
+    public function setEventDispatcher(?EventDispatcherInterface $eventDispatcher): Configuration
     {
         $this->eventDispatcher = $eventDispatcher;
+
         return $this;
     }
 
@@ -193,12 +197,13 @@ class Configuration
     }
 
     /**
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Psr\Log\LoggerInterface|null $logger
      * @return \Bigcommerce\ORM\Configuration
      */
-    public function setLogger(\Psr\Log\LoggerInterface $logger): Configuration
+    public function setLogger(?LoggerInterface $logger): Configuration
     {
         $this->logger = $logger;
+
         return $this;
     }
 }

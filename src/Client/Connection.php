@@ -50,7 +50,7 @@ class Connection
      * @param \Bigcommerce\ORM\Client\AbstractConfig|null $config
      * @param \GuzzleHttp\Client|null $client
      */
-    public function __construct(AbstractConfig $config = null, Client $client = null)
+    public function __construct(?AbstractConfig $config = null, ?Client $client = null)
     {
         $this->config = $config;
         $this->client = $client ?: new Client();
@@ -63,7 +63,7 @@ class Connection
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function query(string $path = null, string $resourceType = null): ResponseInterface
+    public function query(?string $path, ?string $resourceType): ResponseInterface
     {
         return $this->get($path, $resourceType);
     }
@@ -76,7 +76,7 @@ class Connection
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function update(string $path = null, string $resourceType = null, array $body = null, array $files = null): ResponseInterface
+    public function update(?string $path, ?string $resourceType, ?array $body, ?array $files): ResponseInterface
     {
         return $this->put($path, $resourceType, $body, $files);
     }
@@ -89,7 +89,7 @@ class Connection
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function create(string $path = null, string $resourceType = null, array $body = null, array $file = null): ResponseInterface
+    public function create(?string $path, ?string $resourceType, ?array $body, ?array $file): ResponseInterface
     {
         return $this->post($path, $resourceType, $body, $file);
     }
@@ -100,7 +100,7 @@ class Connection
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function delete(string $path = null, string $resourceType = null)
+    public function delete(?string $path, ?string $resourceType)
     {
         $apiUrl = $this->getApiFullUrl($path, $resourceType);
 
@@ -113,7 +113,7 @@ class Connection
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    private function get(string $path = null, string $resourceType = null)
+    private function get(?string $path, ?string $resourceType)
     {
         $apiUrl = $this->getApiFullUrl($path, $resourceType);
 
@@ -125,7 +125,7 @@ class Connection
      * @param string|null $resourceType
      * @return string
      */
-    private function getApiFullUrl(string $path = null, string $resourceType = null)
+    private function getApiFullUrl(?string $path, ?string $resourceType)
     {
         switch ($resourceType) {
             case AbstractConfig::RESOURCE_TYPE_PAYMENT:
@@ -144,7 +144,7 @@ class Connection
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    private function post(string $path = null, string $resourceType = null, array $body = null, array $files = null)
+    private function post(?string $path, ?string $resourceType, ?array $body, ?array $files)
     {
         if (!empty($body)) {
             $this->addRequestBody($body);
@@ -167,7 +167,7 @@ class Connection
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    private function put(string $path = null, string $resourceType = null, array $body = null, array $files = null)
+    private function put(?string $path, ?string $resourceType, ?array $body, ?array $files)
     {
         if (!empty($body)) {
             $this->addRequestBody($body);
@@ -302,10 +302,10 @@ class Connection
     }
 
     /**
-     * @param \Bigcommerce\ORM\Client\AbstractConfig $config
+     * @param \Bigcommerce\ORM\Client\AbstractConfig|null $config
      * @return \Bigcommerce\ORM\Client\Connection
      */
-    public function setConfig(AbstractConfig $config): Connection
+    public function setConfig(?AbstractConfig $config): Connection
     {
         $this->config = $config;
         $this->setup();
@@ -322,10 +322,10 @@ class Connection
     }
 
     /**
-     * @param \GuzzleHttp\Client $client
+     * @param \GuzzleHttp\Client|null $client
      * @return \Bigcommerce\ORM\Client\Connection
      */
-    public function setClient(Client $client): Connection
+    public function setClient(?Client $client): Connection
     {
         $this->client = $client;
 

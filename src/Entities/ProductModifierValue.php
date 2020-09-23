@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class ProductModifierValue
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="ProductModifierValue", path="/catalog/products/{product_id}/modifiers/{option_id}/values", type="api")
  */
-class ProductModifierValue extends Entity
+class ProductModifierValue extends AbstractEntity
 {
     /**
      * @var int|null
@@ -70,6 +70,7 @@ class ProductModifierValue extends Entity
     public function setProductId(?int $productId): ProductModifierValue
     {
         $this->productId = $productId;
+
         return $this;
     }
 
@@ -88,6 +89,7 @@ class ProductModifierValue extends Entity
     public function setModifierId(?int $modifierId): ProductModifierValue
     {
         $this->modifierId = $modifierId;
+
         return $this;
     }
 
@@ -106,6 +108,7 @@ class ProductModifierValue extends Entity
     public function setLabel(?string $label): ProductModifierValue
     {
         $this->label = $label;
+
         return $this;
     }
 
@@ -124,6 +127,7 @@ class ProductModifierValue extends Entity
     public function setSortOrder(?int $sortOrder): ProductModifierValue
     {
         $this->sortOrder = $sortOrder;
+
         return $this;
     }
 
@@ -142,6 +146,7 @@ class ProductModifierValue extends Entity
     public function setValueData($valueData): ProductModifierValue
     {
         $this->valueData = $valueData;
+
         return $this;
     }
 
@@ -160,6 +165,7 @@ class ProductModifierValue extends Entity
     public function setIsDefault(?bool $isDefault): ProductModifierValue
     {
         $this->isDefault = $isDefault;
+
         return $this;
     }
 
@@ -178,6 +184,7 @@ class ProductModifierValue extends Entity
     public function setAdjusters(?array $adjusters): ProductModifierValue
     {
         $this->adjusters = $adjusters;
+
         return $this;
     }
 }

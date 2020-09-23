@@ -57,12 +57,13 @@ abstract class AbstractConfig
     }
 
     /**
-     * @param string $proxy
+     * @param string|null $proxy
      * @return \Bigcommerce\ORM\Client\AbstractConfig
      */
-    public function setProxy(string $proxy): AbstractConfig
+    public function setProxy(?string $proxy): AbstractConfig
     {
         $this->proxy = $proxy;
+
         return $this;
     }
 
@@ -78,9 +79,10 @@ abstract class AbstractConfig
      * @param bool $verify
      * @return \Bigcommerce\ORM\Client\AbstractConfig
      */
-    public function setVerify(bool $verify): AbstractConfig
+    public function setVerify(?bool $verify): AbstractConfig
     {
         $this->verify = $verify;
+
         return $this;
     }
 
@@ -93,12 +95,13 @@ abstract class AbstractConfig
     }
 
     /**
-     * @param float $timeout
+     * @param float|null $timeout
      * @return \Bigcommerce\ORM\Client\AbstractConfig
      */
-    public function setTimeout(float $timeout): AbstractConfig
+    public function setTimeout(?float $timeout): AbstractConfig
     {
         $this->timeout = $timeout;
+
         return $this;
     }
 
@@ -111,10 +114,10 @@ abstract class AbstractConfig
     }
 
     /**
-     * @param string $accept
+     * @param string|null $accept
      * @return \Bigcommerce\ORM\Client\AbstractConfig
      */
-    public function setAccept(string $accept): AbstractConfig
+    public function setAccept(?string $accept): AbstractConfig
     {
         /** Only accept json response */
         if ($accept != self::CONTENT_TYPE_JSON) {
@@ -122,6 +125,7 @@ abstract class AbstractConfig
         }
 
         $this->accept = $accept;
+
         return $this;
     }
 
@@ -134,10 +138,10 @@ abstract class AbstractConfig
     }
 
     /**
-     * @param string $apiVersion
+     * @param string|null $apiVersion
      * @return \Bigcommerce\ORM\Client\AbstractConfig
      */
-    public function setApiVersion(string $apiVersion): AbstractConfig
+    public function setApiVersion(?string $apiVersion): AbstractConfig
     {
         /** Only support API V3 */
         if (!in_array($apiVersion, [AbstractConfig::API_VERSION_V3])) {
@@ -145,6 +149,7 @@ abstract class AbstractConfig
         }
 
         $this->apiVersion = $apiVersion;
+
         return $this;
     }
 
@@ -163,6 +168,7 @@ abstract class AbstractConfig
     public function setDebug(bool $debug): AbstractConfig
     {
         $this->debug = $debug;
+
         return $this;
     }
 

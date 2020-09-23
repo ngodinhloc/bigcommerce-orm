@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class CartRedirectUrl
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="CartRedirectUrl", path="/carts/{cart_id}/redirect_urls", type="api", findable=false, deletable=false, updatable=false)
  */
-class CartRedirectUrl extends Entity
+class CartRedirectUrl extends AbstractEntity
 {
     /**
      * @var string|null

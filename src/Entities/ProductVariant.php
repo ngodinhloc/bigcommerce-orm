@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class ProductVariant
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="ProductVariant", path="/catalog/products/{product_id}/variants", type="api")
  */
-class ProductVariant extends Entity
+class ProductVariant extends AbstractEntity
 {
     /**
      * @var int|null
@@ -184,6 +184,7 @@ class ProductVariant extends Entity
     public function setProductId(?int $productId): ProductVariant
     {
         $this->productId = $productId;
+
         return $this;
     }
 
@@ -202,9 +203,9 @@ class ProductVariant extends Entity
     public function setSkuId(?int $skuId): ProductVariant
     {
         $this->skuId = $skuId;
+
         return $this;
     }
-
 
     /**
      * @return string|null
@@ -221,6 +222,7 @@ class ProductVariant extends Entity
     public function setSku(?string $sku): ProductVariant
     {
         $this->sku = $sku;
+
         return $this;
     }
 
@@ -239,6 +241,7 @@ class ProductVariant extends Entity
     public function setWeight(?float $weight): ProductVariant
     {
         $this->weight = $weight;
+
         return $this;
     }
 
@@ -257,6 +260,7 @@ class ProductVariant extends Entity
     public function setCalculatedWeight(?float $calculatedWeight): ProductVariant
     {
         $this->calculatedWeight = $calculatedWeight;
+
         return $this;
     }
 
@@ -275,6 +279,7 @@ class ProductVariant extends Entity
     public function setWidth(?float $width): ProductVariant
     {
         $this->width = $width;
+
         return $this;
     }
 
@@ -293,6 +298,7 @@ class ProductVariant extends Entity
     public function setDepth(?float $depth): ProductVariant
     {
         $this->depth = $depth;
+
         return $this;
     }
 
@@ -311,6 +317,7 @@ class ProductVariant extends Entity
     public function setHeight(?float $height): ProductVariant
     {
         $this->height = $height;
+
         return $this;
     }
 
@@ -329,6 +336,7 @@ class ProductVariant extends Entity
     public function setPrice(?float $price): ProductVariant
     {
         $this->price = $price;
+
         return $this;
     }
 
@@ -347,6 +355,7 @@ class ProductVariant extends Entity
     public function setCalculatedPrice(?float $calculatedPrice): ProductVariant
     {
         $this->calculatedPrice = $calculatedPrice;
+
         return $this;
     }
 
@@ -365,6 +374,7 @@ class ProductVariant extends Entity
     public function setCostPrice(?float $costPrice): ProductVariant
     {
         $this->costPrice = $costPrice;
+
         return $this;
     }
 
@@ -383,6 +393,7 @@ class ProductVariant extends Entity
     public function setSalePrice(?float $salePrice): ProductVariant
     {
         $this->salePrice = $salePrice;
+
         return $this;
     }
 
@@ -401,6 +412,7 @@ class ProductVariant extends Entity
     public function setRetailPrice(?float $retailPrice): ProductVariant
     {
         $this->retailPrice = $retailPrice;
+
         return $this;
     }
 
@@ -419,6 +431,7 @@ class ProductVariant extends Entity
     public function setMapPrice(?float $mapPrice): ProductVariant
     {
         $this->mapPrice = $mapPrice;
+
         return $this;
     }
 
@@ -437,6 +450,7 @@ class ProductVariant extends Entity
     public function setIsFreeShipping(bool $isFreeShipping): ProductVariant
     {
         $this->isFreeShipping = $isFreeShipping;
+
         return $this;
     }
 
@@ -455,6 +469,7 @@ class ProductVariant extends Entity
     public function setFixedCostShippingPrice(?float $fixedCostShippingPrice): ProductVariant
     {
         $this->fixedCostShippingPrice = $fixedCostShippingPrice;
+
         return $this;
     }
 
@@ -473,6 +488,7 @@ class ProductVariant extends Entity
     public function setPurchasingDisabled(bool $purchasingDisabled): ProductVariant
     {
         $this->purchasingDisabled = $purchasingDisabled;
+
         return $this;
     }
 
@@ -491,6 +507,7 @@ class ProductVariant extends Entity
     public function setPurchasingDisabledMessage(?string $purchasingDisabledMessage): ProductVariant
     {
         $this->purchasingDisabledMessage = $purchasingDisabledMessage;
+
         return $this;
     }
 
@@ -509,6 +526,7 @@ class ProductVariant extends Entity
     public function setImageUrl(?string $imageUrl): ProductVariant
     {
         $this->imageUrl = $imageUrl;
+
         return $this;
     }
 
@@ -527,6 +545,7 @@ class ProductVariant extends Entity
     public function setUpc(?string $upc): ProductVariant
     {
         $this->upc = $upc;
+
         return $this;
     }
 
@@ -545,6 +564,7 @@ class ProductVariant extends Entity
     public function setMpn(?string $mpn): ProductVariant
     {
         $this->mpn = $mpn;
+
         return $this;
     }
 
@@ -563,6 +583,7 @@ class ProductVariant extends Entity
     public function setGtin(?string $gtin): ProductVariant
     {
         $this->gtin = $gtin;
+
         return $this;
     }
 
@@ -581,6 +602,7 @@ class ProductVariant extends Entity
     public function setInventoryLevel(?int $inventoryLevel): ProductVariant
     {
         $this->inventoryLevel = $inventoryLevel;
+
         return $this;
     }
 
@@ -599,6 +621,7 @@ class ProductVariant extends Entity
     public function setInventoryWarningLevel(?int $inventoryWarningLevel): ProductVariant
     {
         $this->inventoryWarningLevel = $inventoryWarningLevel;
+
         return $this;
     }
 
@@ -617,6 +640,7 @@ class ProductVariant extends Entity
     public function setBinPickingNumber(?string $binPickingNumber): ProductVariant
     {
         $this->binPickingNumber = $binPickingNumber;
+
         return $this;
     }
 
@@ -635,6 +659,7 @@ class ProductVariant extends Entity
     public function setOptionValues(?array $optionValues): ProductVariant
     {
         $this->optionValues = $optionValues;
+
         return $this;
     }
 }

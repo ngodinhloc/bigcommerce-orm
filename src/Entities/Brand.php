@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class Brand
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="Brand", path="/catalog/brands", type="api")
  */
-class Brand extends Entity
+class Brand extends AbstractEntity
 {
     /**
      * @var string|null
@@ -70,6 +70,7 @@ class Brand extends Entity
     public function setName(?string $name): Brand
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -88,6 +89,7 @@ class Brand extends Entity
     public function setPageTitle(?string $pageTitle): Brand
     {
         $this->pageTitle = $pageTitle;
+
         return $this;
     }
 
@@ -106,6 +108,7 @@ class Brand extends Entity
     public function setMetaKeywords(?array $metaKeywords): Brand
     {
         $this->metaKeywords = $metaKeywords;
+
         return $this;
     }
 
@@ -124,6 +127,7 @@ class Brand extends Entity
     public function setMetaDescription(?string $metaDescription): Brand
     {
         $this->metaDescription = $metaDescription;
+
         return $this;
     }
 
@@ -142,6 +146,7 @@ class Brand extends Entity
     public function setImageUrl(?string $imageUrl): Brand
     {
         $this->imageUrl = $imageUrl;
+
         return $this;
     }
 
@@ -160,6 +165,7 @@ class Brand extends Entity
     public function setSearchKeywords(?string $searchKeywords): Brand
     {
         $this->searchKeywords = $searchKeywords;
+
         return $this;
     }
 
@@ -178,6 +184,7 @@ class Brand extends Entity
     public function setCustomUrl(?array $customUrl): Brand
     {
         $this->customUrl = $customUrl;
+
         return $this;
     }
 }

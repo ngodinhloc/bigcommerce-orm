@@ -75,7 +75,7 @@ class BelongToManyHandlerTest extends BaseTestCase
 
         $pathParams = null;
         $data = [
-            'categories' => [1, 2, 'invalidId']
+            'categories' => [1, 2, ['invalidId']]
         ];
 
         $this->handler = new BelongToManyHandler();
@@ -95,7 +95,7 @@ class BelongToManyHandlerTest extends BaseTestCase
 
         $pathParams = null;
         $data = [
-            'categories' => 'invalidIds'
+            'categories' => [['invalidIds']]
         ];
 
         $this->handler = new BelongToManyHandler();

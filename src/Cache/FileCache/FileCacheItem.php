@@ -28,7 +28,11 @@ class FileCacheItem implements CacheItemInterface
     /** @var int */
     protected $expiresAt;
 
-    public function __construct(array $data = null)
+    /**
+     * FileCacheItem constructor.
+     * @param array|null $data
+     */
+    public function __construct(?array $data = null)
     {
         $this->setData($data);
     }
@@ -51,7 +55,7 @@ class FileCacheItem implements CacheItemInterface
     /**
      * @param array|null $data
      */
-    private function setData(array $data = null)
+    private function setData(?array $data)
     {
         if (isset($data['key'])) {
             $this->setKey($data['key']);

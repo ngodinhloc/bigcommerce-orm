@@ -40,7 +40,7 @@ class Client implements ClientInterface
      * @param \Psr\Cache\CacheItemPoolInterface|null $cachePool
      * @param \Psr\Log\LoggerInterface|null $logger
      */
-    public function __construct(Connection $connection = null, CacheItemPoolInterface $cachePool = null, LoggerInterface $logger = null)
+    public function __construct(?Connection $connection = null, ?CacheItemPoolInterface $cachePool = null, ?LoggerInterface $logger = null)
     {
         $this->connection = $connection;
         $this->cachePool = $cachePool;
@@ -55,7 +55,7 @@ class Client implements ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function findAll(string $query = null, string $resourceType = null)
+    public function findAll(?string $query, ?string $resourceType)
     {
         return $this->query($query, $resourceType, Result::RETURN_TYPE_ALL);
     }
@@ -68,7 +68,7 @@ class Client implements ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function findBy(string $query = null, string $resourceType = null)
+    public function findBy(?string $query, ?string $resourceType)
     {
         return $this->query($query, $resourceType, Result::RETURN_TYPE_ALL);
     }
@@ -81,7 +81,7 @@ class Client implements ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function find(string $query = null, string $resourceType = null)
+    public function find(?string $query, ?string $resourceType)
     {
         return $this->query($query, $resourceType, Result::RETURN_TYPE_ONE);
     }
@@ -96,7 +96,7 @@ class Client implements ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function create(string $resourcePath = null, string $resourceType = null, array $data = null, array $files = null, bool $batch = false)
+    public function create(?string $resourcePath, ?string $resourceType, ?array $data, ?array $files, bool $batch = false)
     {
         $this->checkPath($resourcePath);
 
@@ -134,7 +134,7 @@ class Client implements ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function update(string $resourcePath = null, string $resourceType = null, array $data = null, array $files = null, bool $batch = false)
+    public function update(?string $resourcePath, ?string $resourceType, ?array $data, ?array $files, bool $batch = false)
     {
         $this->checkPath($resourcePath);
 
@@ -173,7 +173,7 @@ class Client implements ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function delete(string $resourcePath = null, string $resourceType = null)
+    public function delete(?string $resourcePath, ?string $resourceType)
     {
         $this->checkPath($resourcePath);
 
@@ -206,7 +206,7 @@ class Client implements ClientInterface
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    private function query(string $query = null, string $resourceType = null, string $returnType = null)
+    private function query(?string $query, ?string $resourceType, ?string $returnType)
     {
         $this->checkPath($query);
 
@@ -268,7 +268,7 @@ class Client implements ClientInterface
      * @param string|null $path
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      */
-    private function checkPath(string $path = null)
+    private function checkPath(?string $path)
     {
         if (empty($path)) {
             throw new ClientException(ClientException::ERROR_QUERY_MISSING);
@@ -284,10 +284,10 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param \Bigcommerce\ORM\Client\Connection $connection
+     * @param \Bigcommerce\ORM\Client\Connection|null $connection
      * @return \Bigcommerce\ORM\Client\Client
      */
-    public function setConnection(Connection $connection): Client
+    public function setConnection(?Connection $connection): Client
     {
         $this->connection = $connection;
 
@@ -303,10 +303,10 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param \Psr\Cache\CacheItemPoolInterface $cachePool
+     * @param \Psr\Cache\CacheItemPoolInterface|null $cachePool
      * @return \Bigcommerce\ORM\Client\Client
      */
-    public function setCachePool(CacheItemPoolInterface $cachePool): Client
+    public function setCachePool(?CacheItemPoolInterface $cachePool): Client
     {
         $this->cachePool = $cachePool;
 
@@ -322,10 +322,10 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Psr\Log\LoggerInterface|null $logger
      * @return \Bigcommerce\ORM\Client\Client
      */
-    public function setLogger(LoggerInterface $logger): Client
+    public function setLogger(?LoggerInterface $logger): Client
     {
         $this->logger = $logger;
 

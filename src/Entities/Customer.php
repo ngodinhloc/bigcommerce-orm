@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class Customer
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="Customer", path="/customers", type="api", findable=false, creatable=false)
  */
-class Customer extends Entity
+class Customer extends AbstractEntity
 {
     /**
      * @var string|null
@@ -79,6 +79,7 @@ class Customer extends Entity
     public function setCompany(?string $company): Customer
     {
         $this->company = $company;
+
         return $this;
     }
 
@@ -97,6 +98,7 @@ class Customer extends Entity
     public function setFirstName(?string $firstName): Customer
     {
         $this->firstName = $firstName;
+
         return $this;
     }
 
@@ -115,6 +117,7 @@ class Customer extends Entity
     public function setLastName(?string $lastName): Customer
     {
         $this->lastName = $lastName;
+
         return $this;
     }
 
@@ -133,6 +136,7 @@ class Customer extends Entity
     public function setEmail(?string $email): Customer
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -151,6 +155,7 @@ class Customer extends Entity
     public function setPhone(?string $phone): Customer
     {
         $this->phone = $phone;
+
         return $this;
     }
 
@@ -169,6 +174,7 @@ class Customer extends Entity
     public function setDateCreated(?string $dateCreated): Customer
     {
         $this->dateCreated = $dateCreated;
+
         return $this;
     }
 
@@ -187,6 +193,7 @@ class Customer extends Entity
     public function setDateModified(?string $dateModified): Customer
     {
         $this->dateModified = $dateModified;
+
         return $this;
     }
 
@@ -205,6 +212,7 @@ class Customer extends Entity
     public function setAddresses(?array $addresses): Customer
     {
         $this->addresses = $addresses;
+
         return $this;
     }
 }

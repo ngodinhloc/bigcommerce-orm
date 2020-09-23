@@ -21,7 +21,7 @@ class Result
      *
      * @param \Psr\Http\Message\ResponseInterface|null $response response
      */
-    public function __construct(ResponseInterface $response = null)
+    public function __construct(?ResponseInterface $response = null)
     {
         $this->response = $response;
     }
@@ -31,7 +31,7 @@ class Result
      * @return array|int|bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
-    public function get(string $returnType = null)
+    public function get(?string $returnType)
     {
         if (!$this->response) {
             throw new ResultException(ResultException::ERROR_NO_RESPONSE_PROVIDED);
@@ -77,7 +77,7 @@ class Result
      * @param \Psr\Http\Message\ResponseInterface|null $response response
      * @return \Bigcommerce\ORM\Client\Result
      */
-    public function setResponse(ResponseInterface $response = null)
+    public function setResponse(?ResponseInterface $response)
     {
         $this->response = $response;
 

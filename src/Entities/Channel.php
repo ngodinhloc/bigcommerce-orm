@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class Channel
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="Channel", path="/channels", deletable=false, type="api")
  */
-class Channel extends Entity
+class Channel extends AbstractEntity
 {
     /**
      * @var string|null
@@ -70,6 +70,7 @@ class Channel extends Entity
     public function setType(?string $type): Channel
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -88,6 +89,7 @@ class Channel extends Entity
     public function setPlatform(?string $platform): Channel
     {
         $this->platform = $platform;
+
         return $this;
     }
 
@@ -106,6 +108,7 @@ class Channel extends Entity
     public function setName(?string $name): Channel
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -124,6 +127,7 @@ class Channel extends Entity
     public function setIsEnabled(?bool $isEnabled): Channel
     {
         $this->isEnabled = $isEnabled;
+
         return $this;
     }
 
@@ -142,6 +146,7 @@ class Channel extends Entity
     public function setExternalId($externalId): Channel
     {
         $this->externalId = $externalId;
+
         return $this;
     }
 
@@ -160,6 +165,7 @@ class Channel extends Entity
     public function setDateCreated(?string $dateCreated): Channel
     {
         $this->dateCreated = $dateCreated;
+
         return $this;
     }
 
@@ -178,6 +184,7 @@ class Channel extends Entity
     public function setDateModified(?string $dateModified): Channel
     {
         $this->dateModified = $dateModified;
+
         return $this;
     }
 }

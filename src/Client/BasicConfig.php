@@ -29,7 +29,7 @@ class BasicConfig extends AbstractConfig
      * ]
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      */
-    public function __construct(array $config = null)
+    public function __construct(?array $config = null)
     {
         if (!isset($config['storeUrl']) || !isset($config['username']) || !isset($config['apiKey'])) {
             throw new ConfigException(ConfigException::ERROR_MISSING_CONFIG . implode(",", self::REQUIRED_CONFIGURATION_DATA));
@@ -51,9 +51,10 @@ class BasicConfig extends AbstractConfig
      * @param string|null $storeUrl
      * @return \Bigcommerce\ORM\Client\BasicConfig
      */
-    public function setStoreUrl(string $storeUrl = null)
+    public function setStoreUrl(?string $storeUrl)
     {
         $this->storeUrl = $storeUrl;
+
         return $this;
     }
 
@@ -69,9 +70,10 @@ class BasicConfig extends AbstractConfig
      * @param string|null $username
      * @return \Bigcommerce\ORM\Client\BasicConfig
      */
-    public function setUsername(string $username = null)
+    public function setUsername(?string $username)
     {
         $this->username = $username;
+
         return $this;
     }
 
@@ -87,9 +89,10 @@ class BasicConfig extends AbstractConfig
      * @param string|null $apiKey
      * @return \Bigcommerce\ORM\Client\BasicConfig
      */
-    public function setApiKey(string $apiKey = null)
+    public function setApiKey(?string $apiKey)
     {
         $this->apiKey = $apiKey;
+
         return $this;
     }
 
@@ -108,7 +111,5 @@ class BasicConfig extends AbstractConfig
     {
         return rtrim($this->getStoreUrl(), '/') . $this->getPathPrefix() . '/payments';
     }
-
-
 
 }

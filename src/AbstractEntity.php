@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Annotations as BC;
  * Class Entity
  * @package Bigcommerce\ORM
  */
-class Entity
+abstract class AbstractEntity
 {
 
     /**
@@ -41,7 +41,7 @@ class Entity
 
     /**
      * @param int|string|null $id
-     * @return \Bigcommerce\ORM\Entity
+     * @return \Bigcommerce\ORM\AbstractEntity
      */
     public function setId($id = null)
     {

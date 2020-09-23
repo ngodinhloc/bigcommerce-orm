@@ -17,7 +17,7 @@ class ManagerFactory
      * ManagerFactory constructor.
      * @param array|null $configs
      */
-    public function __construct(array $configs = null)
+    public function __construct(?array $configs = null)
     {
         $this->configs = $configs;
     }

@@ -33,9 +33,10 @@ class EntityManager
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     public function __construct(
-        ClientInterface $client = null,
-        Mapper $mapper = null,
-        EventDispatcherInterface $eventDispatcher = null)
+        ?ClientInterface $client = null,
+        ?Mapper $mapper = null,
+        ?EventDispatcherInterface $eventDispatcher = null
+    )
     {
         $this->client = $client;
         $this->mapper = $mapper ?: new Mapper();
@@ -55,7 +56,7 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function findAll(string $className = null, array $pathParams = null, array $order = null, bool $auto = false)
+    public function findAll(?string $className = null, ?array $pathParams = null, ?array $order = null, bool $auto = false)
     {
         $this->mapper->checkClass($className);
 
@@ -89,7 +90,7 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function findBy(string $className = null, array $pathParams = null, QueryBuilder $queryBuilder = null, $auto = false)
+    public function findBy(?string $className = null, ?array $pathParams = null, ?QueryBuilder $queryBuilder = null, $auto = false)
     {
         $this->mapper->checkClass($className);
 
@@ -109,13 +110,13 @@ class EntityManager
      * @param int|string|null $id
      * @param array|null $pathParams
      * @param bool $auto
-     * @return \Bigcommerce\ORM\Entity|false
+     * @return \Bigcommerce\ORM\AbstractEntity|false
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws Exceptions\MapperException
      */
-    public function find(string $className = null, $id = null, array $pathParams = null, bool $auto = false)
+    public function find(?string $className = null, $id = null, ?array $pathParams = null, bool $auto = false)
     {
         $this->mapper->checkClass($className);
         $this->mapper->checkId($id);
@@ -139,7 +140,7 @@ class EntityManager
             return false;
         }
 
-        $entity = $this->mapper->patch($entity, $result, $pathParams);
+        $entity = $this->mapper->patch($entity, $result, $pathParams, false);
 
         if ($auto == false) {
             return $entity;
@@ -148,6 +149,7 @@ class EntityManager
         if (empty($entity->getMetadata()->getAutoLoadFields())) {
             return $entity;
         }
+
         // auto loading
         return $this->autoLoad($entity, $result, $pathParams);
     }
@@ -157,14 +159,14 @@ class EntityManager
      * If id is provided: update entity
      * No id provided: create entity
      *
-     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity entity
      * @return bool
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      */
-    public function save(Entity $entity)
+    public function save(AbstractEntity $entity)
     {
         $this->mapper->checkEntity($entity);
 
@@ -195,15 +197,15 @@ class EntityManager
     /**
      * Update entity : allow to update entity with array of data
      *
-     * @param \Bigcommerce\ORM\Entity|null $entity
-     * @param array $data [fieldName => value]
+     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param array|null $data [fieldName => value]
      * @return bool
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function update(Entity $entity = null, array $data = [])
+    public function update(?AbstractEntity $entity, ?array $data = [])
     {
         $this->mapper->checkEntity($entity);
         $this->mapper->checkId($entity->getId());
@@ -242,7 +244,7 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function delete(string $className = null, array $pathParams = null, array $ids = null)
+    public function delete(?string $className = null, ?array $pathParams = null, ?array $ids = null)
     {
         $this->mapper->checkClass($className);
 
@@ -278,7 +280,7 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function batchCreate(string $className = null, array $pathParams = null, array $items = null)
+    public function batchCreate(?string $className = null, ?array $pathParams = null, ?array $items = null)
     {
         $this->mapper->checkClass($className);
 
@@ -315,7 +317,7 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function batchUpdate(array $entities = null, array $pathParams = null)
+    public function batchUpdate(?array $entities = null, ?array $pathParams = null)
     {
         $entity = current($entities);
         $className = get_class($entity);
@@ -338,53 +340,53 @@ class EntityManager
      * @param string|null $class
      * @param array|null $data
      * @param array|null $pathParams
-     * @return \Bigcommerce\ORM\Entity
+     * @return \Bigcommerce\ORM\AbstractEntity
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function new(string $class = null, array $data = null, array $pathParams = null)
+    public function new(?string $class = null, ?array $data = null, ?array $pathParams = null)
     {
         $this->mapper->checkClass($class);
         $object = $this->mapper->object($class);
 
-        return $this->mapper->patch($object, $data, $pathParams, true);
+        return $this->mapper->patch($object, $data, $pathParams, false);
     }
 
     /**
      * Patch entity with data array
      *
-     * @param \Bigcommerce\ORM\Entity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
      * @param array|null $data
      * @param array|null $pathParams
-     * @return \Bigcommerce\ORM\Entity
+     * @return \Bigcommerce\ORM\AbstractEntity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function patch(Entity $entity = null, array $data = null, array $pathParams = null)
+    public function patch(?AbstractEntity $entity = null, ?array $data = null, array $pathParams = null)
     {
-        return $this->mapper->patch($entity, $data, $pathParams, true);
+        return $this->mapper->patch($entity, $data, $pathParams, false);
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entity $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param int $key
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @see \Bigcommerce\ORM\Mapper::KEY_BY_FIELD_NAME
      * @see \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME
      */
-    public function toArray(Entity $entity, int $key = Mapper::KEY_BY_FIELD_NAME)
+    public function toArray(AbstractEntity $entity, int $key = Mapper::KEY_BY_FIELD_NAME)
     {
         return $this->mapper->toArray($entity, $key);
     }
 
     /**
      * @param string|null $className
-     * @param \Bigcommerce\ORM\Entity[]|null $entities
+     * @param \Bigcommerce\ORM\AbstractEntity[]|null $entities
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function getBatchUpdateData(string $className = null, array &$entities = null)
+    private function getBatchUpdateData(?string $className = null, ?array &$entities = null)
     {
         $data = [];
         foreach ($entities as $entity) {
@@ -410,19 +412,19 @@ class EntityManager
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entity[]|null $entities
+     * @param \Bigcommerce\ORM\AbstractEntity[]|null $entities
      * @param array|null $result
      * @param array|null $pathParams
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function getUpdatedEntities(array $entities = null, array $result = null, array $pathParams = null)
+    private function getUpdatedEntities(?array $entities = null, ?array $result = null, ?array $pathParams = null)
     {
         $output = [];
         foreach ($result as $data) {
             if (isset($entities[$data['id']])) {
                 $entity = $entities[$data['id']];
-                $output[] = $this->mapper->patch($entity, $data, $pathParams, true);
+                $output[] = $this->mapper->patch($entity, $data, $pathParams, false);
             }
         }
 
@@ -437,14 +439,14 @@ class EntityManager
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function arrayToCollection(array $array = null, string $className = null, array $pathParams = null, bool $auto = false)
+    private function arrayToCollection(?array $array = null, ?string $className = null, ?array $pathParams = null, bool $auto = false)
     {
         $collections = [];
 
         if (!empty($array)) {
             foreach ($array as $item) {
                 $object = $this->mapper->object($className);
-                $relationEntity = $this->mapper->patch($object, $item, $pathParams);
+                $relationEntity = $this->mapper->patch($object, $item, $pathParams, false);
 
                 if ($auto == false) {
                     $collections[] = $relationEntity;
@@ -464,12 +466,12 @@ class EntityManager
     /**
      * Load object in relations
      *
-     * @param \Bigcommerce\ORM\Entity|null $entity entity
+     * @param \Bigcommerce\ORM\AbstractEntity|null $entity entity
      * @param array|null $data
      * @param array|null $pathParams
-     * @return \Bigcommerce\ORM\Entity
+     * @return \Bigcommerce\ORM\AbstractEntity
      */
-    private function autoLoad(Entity $entity = null, array $data = null, array $pathParams = null)
+    private function autoLoad(?AbstractEntity $entity = null, ?array $data = null, ?array $pathParams = null)
     {
         if (empty($entity->getMetadata()->getAutoLoadFields())) {
             return $entity;
@@ -489,7 +491,7 @@ class EntityManager
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entity $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param array $data
      * @return bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
@@ -497,7 +499,7 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function createEntity(Entity $entity, array $data)
+    private function createEntity(AbstractEntity $entity, array $data = null)
     {
         $resource = $entity->getMetadata()->getResource();
 
@@ -515,7 +517,7 @@ class EntityManager
 
         $result = $this->client->create($resourcePath, $resourceType, $data, $files);
         if (!empty($result)) {
-            $this->mapper->patch($entity, $result, null, true);
+            $this->mapper->patch($entity, $result, null, false);
             $this->mapper->setPropertyValueByName($entity, 'isNew', true);
 
             if ($this->hasEventDispatcher()) {
@@ -532,15 +534,15 @@ class EntityManager
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entity $entity
-     * @param array $data
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
+     * @param array|null $data
      * @return bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    private function updateEntity(Entity $entity, array $data)
+    private function updateEntity(AbstractEntity $entity, array $data = null)
     {
         $resource = $entity->getMetadata()->getResource();
         if ($resource->updatable !== true) {
@@ -557,7 +559,7 @@ class EntityManager
 
         $result = $this->client->update($resourcePath . "/{$entity->getId()}", $resourceType, $data, $files);
         if (!empty($result)) {
-            $this->mapper->patch($entity, $result, null, true);
+            $this->mapper->patch($entity, $result, null, false);
             $this->mapper->setPropertyValueByName($entity, 'isNew', false);
 
             if ($this->hasEventDispatcher()) {
@@ -574,11 +576,11 @@ class EntityManager
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entity $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    private function getUploadFiles(Entity $entity)
+    private function getUploadFiles(AbstractEntity $entity)
     {
         $files = [];
         if (!empty($uploadFields = $entity->getMetadata()->getUploadFields())) {
@@ -610,7 +612,7 @@ class EntityManager
      * @return \Bigcommerce\ORM\Repository
      * @throws \Exception
      */
-    public function getRepository(string $class = null)
+    public function getRepository(?string $class)
     {
         $repository = new Repository($this);
         $repository->setClassName($class);
@@ -630,7 +632,7 @@ class EntityManager
      * @param \Bigcommerce\ORM\Mapper|null $mapper mapper
      * @return \Bigcommerce\ORM\EntityManager
      */
-    public function setMapper(Mapper $mapper = null)
+    public function setMapper(?Mapper $mapper)
     {
         $this->mapper = $mapper;
 
@@ -646,10 +648,10 @@ class EntityManager
     }
 
     /**
-     * @param \Bigcommerce\ORM\Client\ClientInterface $client
+     * @param \Bigcommerce\ORM\Client\ClientInterface|null $client
      * @return \Bigcommerce\ORM\EntityManager
      */
-    public function setClient(ClientInterface $client): EntityManager
+    public function setClient(?ClientInterface $client = null): EntityManager
     {
         $this->client = $client;
 
@@ -665,10 +667,10 @@ class EntityManager
     }
 
     /**
-     * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface|null $eventDispatcher
      * @return \Bigcommerce\ORM\EntityManager
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): EntityManager
+    public function setEventDispatcher(?EventDispatcherInterface $eventDispatcher = null): EntityManager
     {
         $this->eventDispatcher = $eventDispatcher;
 

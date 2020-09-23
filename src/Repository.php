@@ -22,7 +22,7 @@ class Repository
      * @param \Bigcommerce\ORM\EntityManager|null $entityManager
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
-    public function __construct(EntityManager $entityManager = null)
+    public function __construct(?EntityManager $entityManager = null)
     {
         $this->entityManager = $entityManager;
     }
@@ -37,7 +37,7 @@ class Repository
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function findAll(array $pathParams = null, array $orders = null, bool $auto = false)
+    public function findAll(?array $pathParams = null, ?array $orders = null, bool $auto = false)
     {
         $this->entityManager->getMapper()->checkClass($this->className);
 
@@ -54,7 +54,7 @@ class Repository
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function findBy(array $pathParams = null, QueryBuilder $queryBuilder = null, bool $auto = false)
+    public function findBy(?array $pathParams = null, ?QueryBuilder $queryBuilder = null, bool $auto = false)
     {
         $this->entityManager->getMapper()->checkClass($this->className);
 
@@ -64,16 +64,16 @@ class Repository
     /**
      * Find object by id
      *
-     * @param int $id id
+     * @param int|string|null $id id
      * @param array|null $pathParams
      * @param bool $auto
-     * @return \Bigcommerce\ORM\Entity
+     * @return \Bigcommerce\ORM\AbstractEntity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function find(int $id, array $pathParams = null, $auto = false)
+    public function find($id = null, ?array $pathParams = null, $auto = false)
     {
         $this->entityManager->getMapper()->checkClass($this->className);
 
@@ -111,7 +111,7 @@ class Repository
      * @param \Bigcommerce\ORM\EntityManager|null $entityManager entity manager
      * @return \Bigcommerce\ORM\Repository
      */
-    public function setEntityManager(EntityManager $entityManager = null)
+    public function setEntityManager(?EntityManager $entityManager = null)
     {
         $this->entityManager = $entityManager;
 

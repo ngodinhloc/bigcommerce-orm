@@ -88,7 +88,7 @@ class BelongToOneHandlerTest extends BaseTestCase
 
         $pathParams = null;
         $data = [
-            'parent' => 'invalidId'
+            'parent' => ['invalidId']
         ];
 
         $this->handler = new BelongToOneHandler($this->entityManager);

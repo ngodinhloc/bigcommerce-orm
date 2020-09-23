@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class CartLineItem
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="CartLineItem", creatable=false, findable=false, deletable=false, updatable=false)
  */
-class CartLineItem extends Entity
+class CartLineItem extends AbstractEntity
 {
     /**
      * @var string|null

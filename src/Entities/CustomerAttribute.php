@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class CustomerAttribute
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="CustomerAttribute", path="/customers/attributes", type="api")
  */
-class CustomerAttribute extends Entity
+class CustomerAttribute extends AbstractEntity
 {
     /**
      * @var string|null
@@ -52,6 +52,7 @@ class CustomerAttribute extends Entity
     public function setName(?string $name): CustomerAttribute
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -70,6 +71,7 @@ class CustomerAttribute extends Entity
     public function setType(?string $type): CustomerAttribute
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -88,6 +90,7 @@ class CustomerAttribute extends Entity
     public function setDateCreated(?string $dateCreated): CustomerAttribute
     {
         $this->dateCreated = $dateCreated;
+
         return $this;
     }
 
@@ -106,6 +109,7 @@ class CustomerAttribute extends Entity
     public function setDateModified(?string $dateModified): CustomerAttribute
     {
         $this->dateModified = $dateModified;
+
         return $this;
     }
 }

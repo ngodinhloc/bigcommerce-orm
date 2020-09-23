@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class ProductComplexRule
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="ProductComplexRule", path="/catalog/products/{product_id}/complex-rules", type="api")
  */
-class ProductComplexRule extends Entity
+class ProductComplexRule extends AbstractEntity
 {
     /**
      * @var int|null
@@ -94,6 +94,7 @@ class ProductComplexRule extends Entity
     public function setProductId(?int $productId): ProductComplexRule
     {
         $this->productId = $productId;
+
         return $this;
     }
 
@@ -112,6 +113,7 @@ class ProductComplexRule extends Entity
     public function setSortOrder(?int $sortOrder): ProductComplexRule
     {
         $this->sortOrder = $sortOrder;
+
         return $this;
     }
 
@@ -130,6 +132,7 @@ class ProductComplexRule extends Entity
     public function setEnabled(?bool $enabled): ProductComplexRule
     {
         $this->enabled = $enabled;
+
         return $this;
     }
 
@@ -148,6 +151,7 @@ class ProductComplexRule extends Entity
     public function setStop(?bool $stop): ProductComplexRule
     {
         $this->stop = $stop;
+
         return $this;
     }
 
@@ -166,6 +170,7 @@ class ProductComplexRule extends Entity
     public function setPriceAdjuster(?array $priceAdjuster): ProductComplexRule
     {
         $this->priceAdjuster = $priceAdjuster;
+
         return $this;
     }
 
@@ -184,6 +189,7 @@ class ProductComplexRule extends Entity
     public function setWeightAdjuster(?array $weightAdjuster): ProductComplexRule
     {
         $this->weightAdjuster = $weightAdjuster;
+
         return $this;
     }
 
@@ -202,6 +208,7 @@ class ProductComplexRule extends Entity
     public function setPurchasingDisabled(?bool $purchasingDisabled): ProductComplexRule
     {
         $this->purchasingDisabled = $purchasingDisabled;
+
         return $this;
     }
 
@@ -220,6 +227,7 @@ class ProductComplexRule extends Entity
     public function setPurchasingDisabledMessage(?string $purchasingDisabledMessage): ProductComplexRule
     {
         $this->purchasingDisabledMessage = $purchasingDisabledMessage;
+
         return $this;
     }
 
@@ -238,6 +246,7 @@ class ProductComplexRule extends Entity
     public function setPurchasingHidden(?bool $purchasingHidden): ProductComplexRule
     {
         $this->purchasingHidden = $purchasingHidden;
+
         return $this;
     }
 
@@ -256,6 +265,7 @@ class ProductComplexRule extends Entity
     public function setImageUrl(?string $imageUrl): ProductComplexRule
     {
         $this->imageUrl = $imageUrl;
+
         return $this;
     }
 
@@ -274,6 +284,7 @@ class ProductComplexRule extends Entity
     public function setConditions(?array $conditions): ProductComplexRule
     {
         $this->conditions = $conditions;
+
         return $this;
     }
 }

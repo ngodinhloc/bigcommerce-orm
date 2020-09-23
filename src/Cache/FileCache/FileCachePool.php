@@ -20,7 +20,7 @@ class FileCachePool implements CacheItemPoolInterface
      * @param string|null $cacheDir
      * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
      */
-    public function __construct(string $cacheDir = null)
+    public function __construct(?string $cacheDir = null)
     {
         if (!is_dir($cacheDir)) {
             throw new FileCachePoolException(FileCachePoolException::ERROR_INVALID_CACHE_DIR . $cacheDir);

@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Entity;
 
 /**
  * Class ProductReview
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="ProductImage", path="/catalog/products/{product_id}/reviews", type="api")
  */
-class ProductReview extends Entity
+class ProductReview extends AbstractEntity
 {
     /**
      * @var int|null
@@ -92,6 +92,7 @@ class ProductReview extends Entity
     public function setProductId(?int $productId): ProductReview
     {
         $this->productId = $productId;
+
         return $this;
     }
 
@@ -110,6 +111,7 @@ class ProductReview extends Entity
     public function setTitle(?string $title): ProductReview
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -128,6 +130,7 @@ class ProductReview extends Entity
     public function setText(?string $text): ProductReview
     {
         $this->text = $text;
+
         return $this;
     }
 
@@ -146,6 +149,7 @@ class ProductReview extends Entity
     public function setStatus(?string $status): ProductReview
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -164,6 +168,7 @@ class ProductReview extends Entity
     public function setRating(?int $rating): ProductReview
     {
         $this->rating = $rating;
+
         return $this;
     }
 
@@ -182,6 +187,7 @@ class ProductReview extends Entity
     public function setEmail(?string $email): ProductReview
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -200,6 +206,7 @@ class ProductReview extends Entity
     public function setName(?string $name): ProductReview
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -218,6 +225,7 @@ class ProductReview extends Entity
     public function setDateReviewed(?string $dateReviewed): ProductReview
     {
         $this->dateReviewed = $dateReviewed;
+
         return $this;
     }
 
@@ -236,6 +244,7 @@ class ProductReview extends Entity
     public function setDateCreated(?string $dateCreated): ProductReview
     {
         $this->dateCreated = $dateCreated;
+
         return $this;
     }
 
@@ -254,6 +263,7 @@ class ProductReview extends Entity
     public function setDateModified(?string $dateModified): ProductReview
     {
         $this->dateModified = $dateModified;
+
         return $this;
     }
 }

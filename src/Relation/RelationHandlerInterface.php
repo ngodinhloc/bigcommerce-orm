@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Relation;
 
-use Bigcommerce\ORM\Entity;
+use Bigcommerce\ORM\AbstractEntity;
 
 /**
  * Interface RelationHandlerInterface
@@ -12,12 +12,12 @@ use Bigcommerce\ORM\Entity;
 interface RelationHandlerInterface
 {
     /**
-     * @param \Bigcommerce\ORM\Entity $entity entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity entity
      * @param \ReflectionProperty $property property
      * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation relation
      * @param array $data
      * @param array|null $pathParams
-     * @return \Bigcommerce\ORM\Entity
+     * @return \Bigcommerce\ORM\AbstractEntity
      */
-    public function handle(Entity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, array $pathParams = null);
+    public function handle(AbstractEntity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, array $pathParams = null);
 }

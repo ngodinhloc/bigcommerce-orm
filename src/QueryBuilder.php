@@ -21,6 +21,7 @@ class QueryBuilder
     {
         if (is_string($fields) && !in_array($fields, $this->fields)) {
             array_push($this->fields, $fields);
+
             return $this;
         }
 
@@ -30,6 +31,7 @@ class QueryBuilder
                     array_push($this->fields, $field);
                 }
             }
+
             return $this;
         }
 
@@ -104,6 +106,7 @@ class QueryBuilder
     {
         if (is_string($resources) && !in_array($resources, $this->includes)) {
             array_push($this->includes, $resources);
+
             return $this;
         }
 
@@ -113,6 +116,7 @@ class QueryBuilder
                     array_push($this->includes, $resource);
                 }
             }
+
             return $this;
         }
 
