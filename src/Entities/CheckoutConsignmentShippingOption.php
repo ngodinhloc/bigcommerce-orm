@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Annotations as BC;
 /**
  * Class CheckoutConsignmentShippingOption
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CheckoutConsignmentShippingOption", findable=false, creatable=false, updatable=false, deletable=false)
+ * @BC\Resource(name="CheckoutConsignmentShippingOption")
  */
 class CheckoutConsignmentShippingOption extends AbstractEntity
 {

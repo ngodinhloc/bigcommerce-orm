@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
-use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
 
 /**
@@ -11,7 +10,7 @@ use Bigcommerce\ORM\Annotations as BC;
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="ProductImage", path="/catalog/products/{product_id}/images", type="api")
  */
-class ProductImage extends AbstractEntity
+class ProductImage extends AbstractImage
 {
     /**
      * @var int|null
@@ -36,18 +35,6 @@ class ProductImage extends AbstractEntity
      * @BC\Field(name="description")
      */
     protected $description;
-
-    /**
-     * @var string|null
-     * @BC\Field(name="image_file", upload=true)
-     */
-    protected $imageFile;
-
-    /**
-     * @var string|null
-     * @BC\Field(name="image_url")
-     */
-    protected $imageUrl;
 
     /**
      * @var string|null
@@ -152,44 +139,6 @@ class ProductImage extends AbstractEntity
     public function setDescription(?string $description): ProductImage
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getImageFile(): ?string
-    {
-        return $this->imageFile;
-    }
-
-    /**
-     * @param string|null $imageFile
-     * @return \Bigcommerce\ORM\Entities\ProductImage
-     */
-    public function setImageFile(?string $imageFile): ProductImage
-    {
-        $this->imageFile = $imageFile;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getImageUrl(): ?string
-    {
-        return $this->imageUrl;
-    }
-
-    /**
-     * @param string|null $imageUrl
-     * @return \Bigcommerce\ORM\Entities\ProductImage
-     */
-    public function setImageUrl(?string $imageUrl): ProductImage
-    {
-        $this->imageUrl = $imageUrl;
 
         return $this;
     }

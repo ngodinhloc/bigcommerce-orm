@@ -5,6 +5,7 @@ namespace Bigcommerce\ORM\Relation\Handlers;
 
 use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Relation\AbstractHandler;
+use Bigcommerce\ORM\Relation\BelongToRelationInterface;
 use Bigcommerce\ORM\Relation\RelationHandlerInterface;
 use Bigcommerce\ORM\Relation\RelationInterface;
 
@@ -15,9 +16,9 @@ use Bigcommerce\ORM\Relation\RelationInterface;
 class BelongToOneHandler extends AbstractHandler implements RelationHandlerInterface
 {
     /**
-     * @param \Bigcommerce\ORM\AbstractEntity $entity entity
-     * @param \ReflectionProperty $property property
-     * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation relation
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
+     * @param \ReflectionProperty $property
+     * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation
      * @param array $data
      * @param array|null $pathParams
      * @return void
@@ -32,9 +33,13 @@ class BelongToOneHandler extends AbstractHandler implements RelationHandlerInter
             return;
         }
 
-        $value = $this->getOneRelationValue($data[$annotation->field]);
         /** BelongRelationInterface: force auto = false to prevent the loop (child -> parent -> child) */
-        $find = $this->entityManager->find($annotation->targetClass, $value, $pathParams, false);
+        if ($annotation instanceof BelongToRelationInterface) {
+            $annotation->auto = false;
+        }
+
+        $value = $this->getOneRelationValue($data[$annotation->field]);
+        $find = $this->entityManager->find($annotation->targetClass, $value, $pathParams, $annotation->auto);
         $mapper = $this->entityManager->getMapper();
         $mapper->setPropertyValue($entity, $property, $find);
     }

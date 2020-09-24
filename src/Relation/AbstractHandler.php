@@ -18,7 +18,7 @@ abstract class AbstractHandler
     /**
      * AbstractHandler constructor.
      *
-     * @param \Bigcommerce\ORM\EntityManager|null $entityManager entity manager
+     * @param \Bigcommerce\ORM\EntityManager|null $entityManager
      */
     public function __construct(?EntityManager $entityManager = null)
     {

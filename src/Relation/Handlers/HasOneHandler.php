@@ -15,9 +15,9 @@ use Bigcommerce\ORM\Relation\RelationInterface;
 class HasOneHandler extends AbstractHandler implements RelationHandlerInterface
 {
     /**
-     * @param \Bigcommerce\ORM\AbstractEntity $entity entity
-     * @param \ReflectionProperty $property property
-     * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation relation
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
+     * @param \ReflectionProperty $property
+     * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation
      * @param array $data
      * @param array|null $pathParams
      * @return void

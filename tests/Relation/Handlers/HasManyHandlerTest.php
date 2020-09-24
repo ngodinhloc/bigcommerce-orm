@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Entities\ProductReview;
 use Bigcommerce\ORM\EntityManager;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\QueryBuilder;
-use Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler;
+use Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException;
 use Bigcommerce\ORM\Relation\Handlers\HasManyHandler;
 use Tests\BaseTestCase;
 
@@ -87,6 +87,26 @@ class HasManyHandlerTest extends BaseTestCase
         $this->assertNull($reviews);
     }
 
+    public function testHandleThrowException()
+    {
+        $entity = new Product();
+        $entity->setId(1);
+        $property = $this->mapper->getProperty($entity, 'reviews');
+        $annotation = new HasMany([]);
+        $annotation->targetClass = ProductReview::class;
+        $annotation->field = 'reviews';
+        $annotation->targetField = 'id';
+
+        $pathParams = ['category_id' => 2];
+        $data = [
+            'reviews' => new \stdClass()
+        ];
+
+        $this->handler = new HasManyHandler($this->entityManager);
+        $this->expectException(HandlerException::class);
+        $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
+    }
+
     /**
      * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
      */
@@ -103,7 +123,6 @@ class HasManyHandlerTest extends BaseTestCase
         $auto = false;
         $manager->findBy($targetClass, $pathParams, $queryBuilder, $auto)->willReturn([]);
         $manager->findBy($targetClass, $pathParams2, $queryBuilder, $auto)->willReturn([]);
-
 
         return $manager->reveal();
     }

@@ -16,9 +16,9 @@ class FileValidator extends AbstractValidator implements ValidatorInterface
 {
 
     /**
-     * @param \Bigcommerce\ORM\AbstractEntity $entity entity
-     * @param \ReflectionProperty $property property
-     * @param \Bigcommerce\ORM\Validation\ValidationInterface $annotation relation
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
+     * @param \ReflectionProperty $property
+     * @param \Bigcommerce\ORM\Validation\ValidationInterface $annotation
      * @return bool
      */
     public function validate(AbstractEntity $entity, \ReflectionProperty $property, ValidationInterface $annotation)

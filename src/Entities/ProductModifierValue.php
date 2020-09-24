@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
-use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
 
 /**
@@ -11,7 +10,7 @@ use Bigcommerce\ORM\Annotations as BC;
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="ProductModifierValue", path="/catalog/products/{product_id}/modifiers/{option_id}/values", type="api")
  */
-class ProductModifierValue extends AbstractEntity
+class ProductModifierValue extends AbstractOptionValue
 {
     /**
      * @var int|null
@@ -24,30 +23,6 @@ class ProductModifierValue extends AbstractEntity
      * @BC\Field(name="option_id", readonly=true, pathParam=true)
      */
     protected $modifierId;
-
-    /**
-     * @var string|null
-     * @BC\Field(name="label")
-     */
-    protected $label;
-
-    /**
-     * @var int|null
-     * @BC\Field(name="sort_order")
-     */
-    protected $sortOrder;
-
-    /**
-     * @var mixed|null
-     * @BC\Field(name="value_data")
-     */
-    protected $valueData;
-
-    /**
-     * @var bool|null
-     * @BC\Field(name="is_default")
-     */
-    protected $isDefault;
 
     /**
      * @var array|null
@@ -89,82 +64,6 @@ class ProductModifierValue extends AbstractEntity
     public function setModifierId(?int $modifierId): ProductModifierValue
     {
         $this->modifierId = $modifierId;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLabel(): ?string
-    {
-        return $this->label;
-    }
-
-    /**
-     * @param string|null $label
-     * @return \Bigcommerce\ORM\Entities\ProductModifierValue
-     */
-    public function setLabel(?string $label): ProductModifierValue
-    {
-        $this->label = $label;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getSortOrder(): ?int
-    {
-        return $this->sortOrder;
-    }
-
-    /**
-     * @param int|null $sortOrder
-     * @return \Bigcommerce\ORM\Entities\ProductModifierValue
-     */
-    public function setSortOrder(?int $sortOrder): ProductModifierValue
-    {
-        $this->sortOrder = $sortOrder;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed|null
-     */
-    public function getValueData()
-    {
-        return $this->valueData;
-    }
-
-    /**
-     * @param mixed|null $valueData
-     * @return \Bigcommerce\ORM\Entities\ProductModifierValue
-     */
-    public function setValueData($valueData): ProductModifierValue
-    {
-        $this->valueData = $valueData;
-
-        return $this;
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function isDefault(): ?bool
-    {
-        return $this->isDefault;
-    }
-
-    /**
-     * @param bool|null $isDefault
-     * @return \Bigcommerce\ORM\Entities\ProductModifierValue
-     */
-    public function setIsDefault(?bool $isDefault): ProductModifierValue
-    {
-        $this->isDefault = $isDefault;
 
         return $this;
     }

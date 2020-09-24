@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Tests;
 
 use Bigcommerce\ORM\Annotations\Resource;
+use Bigcommerce\ORM\Entities\CartRedirectUrl;
+use Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Entities\Product;
@@ -14,8 +16,6 @@ use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\Metadata;
-use Cassandra\Map;
-use Tests\Entities\MyProduct;
 
 class MapperTest extends BaseTestCase
 {
@@ -48,9 +48,14 @@ class MapperTest extends BaseTestCase
     {
         $path = $this->mapper->getResourcePath($this->customer);
         $this->assertEquals('/customers', $path);
+
+        $review = new ProductReview();
+        $review->setProductId(111);
+        $path = $this->mapper->getResourcePath($review);
+        $this->assertEquals('/catalog/products/111/reviews', $path);
     }
 
-    public function testResourcePath2()
+    public function testResourcePathThrowException()
     {
         $value = new ProductModifierValue();
         $value->setProductId(111);
@@ -58,12 +63,39 @@ class MapperTest extends BaseTestCase
         $path = $this->mapper->getResourcePath($value);
     }
 
-    public function testResourcePath3()
+    public function testResourcePathNotFindable()
     {
-        $review = new ProductReview();
-        $review->setProductId(111);
-        $path = $this->mapper->getResourcePath($review);
-        $this->assertEquals('/catalog/products/111/reviews', $path);
+        $entity = new CartRedirectUrl();
+        $this->expectException(EntityException::class);
+        $path = $this->mapper->getResourcePath($entity, 'find');
+    }
+
+    public function testResourcePathNotUpdatable()
+    {
+        $entity = new CartRedirectUrl();
+        $this->expectException(EntityException::class);
+        $path = $this->mapper->getResourcePath($entity, 'update');
+    }
+
+    public function testResourcePathNotDeletable()
+    {
+        $entity = new CartRedirectUrl();
+        $this->expectException(EntityException::class);
+        $path = $this->mapper->getResourcePath($entity, 'delete');
+    }
+
+    public function testResourcePathNotCreatable()
+    {
+        $entity = new Customer();
+        $this->expectException(EntityException::class);
+        $path = $this->mapper->getResourcePath($entity, 'create');
+    }
+
+    public function testResourcePathEmpty()
+    {
+        $entity = new CheckoutConsignmentShippingAddress();
+        $this->expectException(EntityException::class);
+        $path = $this->mapper->getResourcePath($entity, 'create');
     }
 
     public function testPatch()

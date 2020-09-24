@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Annotations as BC;
 /**
  * Class CartLineItem
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CartLineItem", creatable=false, findable=false, deletable=false, updatable=false)
+ * @BC\Resource(name="CartLineItem")
  */
 class CartLineItem extends AbstractEntity
 {

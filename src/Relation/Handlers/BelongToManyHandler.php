@@ -6,6 +6,7 @@ namespace Bigcommerce\ORM\Relation\Handlers;
 use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Relation\AbstractHandler;
+use Bigcommerce\ORM\Relation\BelongToRelationInterface;
 use Bigcommerce\ORM\Relation\RelationHandlerInterface;
 use Bigcommerce\ORM\Relation\RelationInterface;
 
@@ -17,8 +18,8 @@ class BelongToManyHandler extends AbstractHandler implements RelationHandlerInte
 {
     /**
      * @param \Bigcommerce\ORM\AbstractEntity $entity
-     * @param \ReflectionProperty $property property
-     * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation relation
+     * @param \ReflectionProperty $property
+     * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation
      * @param array $data
      * @param array|null $pathParams
      * @return void
@@ -34,11 +35,15 @@ class BelongToManyHandler extends AbstractHandler implements RelationHandlerInte
             return;
         }
 
+        /** BelongRelationInterface: force auto = false to prevent the loop (child -> parent -> child) */
+        if ($annotation instanceof BelongToRelationInterface) {
+            $annotation->auto = false;
+        }
+
         $value = $this->getManyRelationValue($data[$annotation->field]);
         $queryBuilder = new QueryBuilder();
         $queryBuilder->whereIn($annotation->targetField, $value);
-        /** BelongRelationInterface: force auto = false to prevent the loop (child -> parent -> child) */
-        $collections = $this->entityManager->findBy($annotation->targetClass, $pathParams, $queryBuilder, false);
+        $collections = $this->entityManager->findBy($annotation->targetClass, $pathParams, $queryBuilder, $annotation->auto);
         $mapper = $this->entityManager->getMapper();
         $mapper->setPropertyValue($entity, $property, $collections);
     }

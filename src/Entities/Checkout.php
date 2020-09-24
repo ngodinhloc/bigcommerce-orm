@@ -380,4 +380,61 @@ class Checkout extends AbstractEntity
 
         return $this;
     }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\Cart|null
+     */
+    public function getCart(): ?\Bigcommerce\ORM\Entities\Cart
+    {
+        return $this->cart;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\Cart|null $cart
+     * @return \Bigcommerce\ORM\Entities\Checkout
+     */
+    public function setCart(?\Bigcommerce\ORM\Entities\Cart $cart): Checkout
+    {
+        $this->cart = $cart;
+
+        return $this;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\CheckoutBillingAddress|null
+     */
+    public function getBillingAddress(): ?CheckoutBillingAddress
+    {
+        return $this->billingAddress;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\CheckoutBillingAddress|null $billingAddress
+     * @return \Bigcommerce\ORM\Entities\Checkout
+     */
+    public function setBillingAddress(?CheckoutBillingAddress $billingAddress): Checkout
+    {
+        $this->billingAddress = $billingAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment[]|null
+     */
+    public function getConsignments(): ?array
+    {
+        return $this->consignments;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\CheckoutConsignment[]|null $consignments
+     * @return \Bigcommerce\ORM\Entities\Checkout
+     */
+    public function setConsignments(?array $consignments): Checkout
+    {
+        $this->consignments = $consignments;
+
+        return $this;
+    }
 }

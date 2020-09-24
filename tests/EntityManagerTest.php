@@ -300,6 +300,17 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(false, $result);
     }
 
+    public function testBatchUpdateMissingRequiredValidations()
+    {
+        $customer1 = new Customer();
+        $customer2 = new Customer();
+        $customer1->setId(1)->setFirstName('Ken')->setEmail('invalidemail');
+        $customer2->setId(2)->setFirstName('Ngo')->setEmail('invalidemail');
+
+        $this->expectException(EntityException::class);
+        $result = $this->entityManager->batchUpdate([$customer1, $customer2]);
+    }
+
     public function testBatchUpdateDifferentClass()
     {
         $data = $this->getBatchCreateData();
@@ -533,6 +544,12 @@ class EntityManagerTest extends BaseTestCase
                     "description" => "",
                     "image_file" => "lamp.jpg",
                 ],
+            ],
+            'videos' => [
+                [
+                    'type' => 'Youtube',
+                    'title' => 'Welcome',
+                ]
             ]
         ];
     }

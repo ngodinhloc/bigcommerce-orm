@@ -53,16 +53,26 @@ class Mapper
 
     /**
      * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param string|null $action
      * @return string
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function getResourcePath(?AbstractEntity $entity = null)
+    public function getResourcePath(?AbstractEntity $entity = null, ?string $action = null)
     {
         if ($entity->isPatched() !== true) {
             $entity = $this->patch($entity, [], null, true);
         }
 
         $resource = $entity->getMetadata()->getResource();
+        if (empty($resource->path)) {
+            throw new EntityException(EntityException::ERROR_EMPTY_RESOURCE_PATH . $resource->name);
+        }
+
+        if (!empty($action)) {
+            $this->checkResourceAction($resource, $action);
+        }
+
         $path = $resource->path;
         $paramFields = $entity->getMetadata()->getParamFields();
         if (empty($paramFields)) {
@@ -482,6 +492,40 @@ class Mapper
         if (empty($id)) {
             throw new EntityException(EntityException::ERROR_ID_IS_NOT_PROVIDED);
         }
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Annotations\Resource|null $resource
+     * @param string|null $action
+     * @return bool
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     */
+    private function checkResourceAction(?Resource $resource = null, ?string $action = null)
+    {
+        switch ($action) {
+            case 'find':
+                if ($resource->findable !== true) {
+                    throw new EntityException(EntityException::ERROR_NOT_FINDABLE_RESOURCE . $resource->name);
+                }
+                break;
+            case 'create':
+                if ($resource->creatable !== true) {
+                    throw new EntityException(EntityException::ERROR_NOT_CREATABLE_RESOURCE . $resource->name);
+                }
+                break;
+            case 'update':
+                if ($resource->updatable !== true) {
+                    throw new EntityException(EntityException::ERROR_NOT_UPDATABLE_RESOURCE . $resource->name);
+                }
+                break;
+            case 'delete':
+                if ($resource->deletable !== true) {
+                    throw new EntityException(EntityException::ERROR_NOT_DELETABLE_RESOURCE . $resource->name);
+                }
+                break;
+        }
+
+        return true;
     }
 
     /**

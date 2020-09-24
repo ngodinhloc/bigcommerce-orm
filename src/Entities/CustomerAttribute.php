@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Entities;
 
-use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
 
 /**
@@ -11,104 +10,29 @@ use Bigcommerce\ORM\Annotations as BC;
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="CustomerAttribute", path="/customers/attributes", type="api")
  */
-class CustomerAttribute extends AbstractEntity
+class CustomerAttribute extends AbstractAttribute
 {
     /**
-     * @var string|null
-     * @BC\Field(name="name")
+     * @var int|null
+     * @BC\Field(name="customer_id")
      */
-    protected $name;
+    protected $customerId;
 
     /**
-     * @var string|null
-     * @BC\Field(name="type")
+     * @return int|null
      */
-    protected $type;
-
-    /**
-     * @var string|null
-     * @BC\Field(name="date_created", readonly=true)
-     */
-    protected $dateCreated;
-
-    /**
-     * @var string|null
-     * @BC\Field(name="date_modified", readonly=true)
-     */
-    protected $dateModified;
-
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
+    public function getCustomerId(): ?int
     {
-        return $this->name;
+        return $this->customerId;
     }
 
     /**
-     * @param string|null $name
+     * @param int|null $customerId
      * @return \Bigcommerce\ORM\Entities\CustomerAttribute
      */
-    public function setName(?string $name): CustomerAttribute
+    public function setCustomerId(?int $customerId): CustomerAttribute
     {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string|null $type
-     * @return \Bigcommerce\ORM\Entities\CustomerAttribute
-     */
-    public function setType(?string $type): CustomerAttribute
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDateCreated(): ?string
-    {
-        return $this->dateCreated;
-    }
-
-    /**
-     * @param string|null $dateCreated
-     * @return \Bigcommerce\ORM\Entities\CustomerAttribute
-     */
-    public function setDateCreated(?string $dateCreated): CustomerAttribute
-    {
-        $this->dateCreated = $dateCreated;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDateModified(): ?string
-    {
-        return $this->dateModified;
-    }
-
-    /**
-     * @param string|null $dateModified
-     * @return \Bigcommerce\ORM\Entities\CustomerAttribute
-     */
-    public function setDateModified(?string $dateModified): CustomerAttribute
-    {
-        $this->dateModified = $dateModified;
+        $this->customerId = $customerId;
 
         return $this;
     }

@@ -17,8 +17,8 @@ class HasManyHandler extends AbstractHandler implements RelationHandlerInterface
 {
     /**
      * @param \Bigcommerce\ORM\AbstractEntity $entity
-     * @param \ReflectionProperty $property property
-     * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation relation
+     * @param \ReflectionProperty $property
+     * @param \Bigcommerce\ORM\Relation\RelationInterface $annotation
      * @param array $data
      * @param array|null $pathParams
      * @return void

@@ -8,7 +8,7 @@ use Bigcommerce\ORM\Annotations as BC;
 /**
  * Class CheckoutConsignmentShippingAddress
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CheckoutConsignmentShippingAddress", findable=false, creatable=false, updatable=false, deletable=false)
+ * @BC\Resource(name="CheckoutConsignmentShippingAddress")
  */
 class CheckoutConsignmentShippingAddress extends AbstractAddress
 {

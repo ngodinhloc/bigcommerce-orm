@@ -9,7 +9,7 @@ use Bigcommerce\ORM\Annotations as BC;
 /**
  * Class CartGiftCertificate
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CartGiftCertificate", creatable=false, findable=false, deletable=false, updatable=false)
+ * @BC\Resource(name="CartGiftCertificate")
  */
 class CartGiftCertificate extends AbstractEntity
 {

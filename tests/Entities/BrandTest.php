@@ -32,5 +32,6 @@ class BrandTest extends BaseTestCase
         $this->assertEquals('meta', $this->entity->getMetaDescription());
         $this->assertEquals(['keywords'], $this->entity->getMetaKeywords());
         $this->assertEquals('search', $this->entity->getSearchKeywords());
+        $this->assertFalse($this->entity->isNew());
     }
 }

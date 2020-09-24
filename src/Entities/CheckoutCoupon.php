@@ -9,10 +9,17 @@ use Bigcommerce\ORM\Annotations as BC;
 /**
  * Class CheckoutCoupon
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CheckoutCoupon", creatable=false, findable=false, deletable=false, updatable=false)
+ * @BC\Resource(name="CheckoutCoupon", path="/checkouts/{checkout_id}/coupons", findable=false, updatable=false)
  */
 class CheckoutCoupon extends AbstractEntity
 {
+    /**
+     * Coupons use code to remove /checkouts/{checkout_id}/coupons/{coupon_code|coupon_id}
+     * @var int|string|null
+     * @BC\Field(name="code", readonly=true)
+     */
+    protected $id;
+
     /**
      * @var string|null
      * @BC\Field(name="code")

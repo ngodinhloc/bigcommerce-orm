@@ -123,14 +123,8 @@ class EntityManager
 
         $object = $this->mapper->object($className);
         $entity = $this->mapper->patch($object, [], $pathParams, true);
-
-        $resource = $entity->getMetadata()->getResource();
-        if ($resource->findable !== true) {
-            throw new EntityException(EntityException::ERROR_NOT_FINDABLE_RESOURCE . $resource->name);
-        }
-
-        $resourcePath = $this->mapper->getResourcePath($entity);
-        $resourceType = $resource->type;
+        $resourcePath = $this->mapper->getResourcePath($entity, 'find');
+        $resourceType = $entity->getMetadata()->getResource()->type;
         $autoIncludes = $entity->getMetadata()->getIncludeFields();
         $queryBuilder = new QueryBuilder();
         $query = $queryBuilder->include(array_keys($autoIncludes))->getQueryString();
@@ -254,14 +248,8 @@ class EntityManager
 
         $object = $this->mapper->object($className);
         $entity = $this->mapper->patch($object, [], $pathParams, true);
-
-        $resource = $entity->getMetadata()->getResource();
-        if ($resource->deletable !== true) {
-            throw new EntityException(EntityException::ERROR_NOT_DELETABLE_RESOURCE . $resource->name);
-        }
-
-        $resourcePath = $this->mapper->getResourcePath($entity);
-        $resourceType = $resource->type;
+        $resourcePath = $this->mapper->getResourcePath($entity, 'delete');
+        $resourceType = $entity->getMetadata()->getResource()->type;
         $queryBuilder = new QueryBuilder();
         $query = $queryBuilder->whereIn('id', array_values($ids))->getQueryString();
 
@@ -511,7 +499,7 @@ class EntityManager
             throw new EntityException(EntityException::ERROR_EMPTY_PROPERTY_VALUES);
         }
 
-        $resourcePath = $this->mapper->getResourcePath($entity);
+        $resourcePath = $this->mapper->getResourcePath($entity,'create');
         $resourceType = $resource->type;
         $files = $this->getUploadFiles($entity);
 
@@ -553,7 +541,7 @@ class EntityManager
             return true;
         }
 
-        $resourcePath = $this->mapper->getResourcePath($entity);
+        $resourcePath = $this->mapper->getResourcePath($entity, 'update');
         $resourceType = $resource->type;
         $files = $this->getUploadFiles($entity);
 

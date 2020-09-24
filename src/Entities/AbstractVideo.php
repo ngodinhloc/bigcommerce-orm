@@ -11,7 +11,7 @@ use Bigcommerce\ORM\Annotations as BC;
  * @package Bigcommerce\ORM\Entities
  * @BC\Resource(name="AbstractVideo")
  */
-class AbstractVideo extends AbstractEntity
+abstract class AbstractVideo extends AbstractEntity
 {
     /**
      * @var string|null
