@@ -186,7 +186,8 @@ class OrderRefundQuote extends AbstractEntity
      * @return $this
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function addRefundItem(?OrderRefundItem $item){
+    public function addRefundItem(?OrderRefundItem $item)
+    {
         $data = $this->mapper->getWritableFieldValues($item);
         $this->items[] = $data;
 

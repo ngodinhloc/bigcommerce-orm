@@ -102,7 +102,7 @@ class FileCachePool implements CacheItemPoolInterface
 
         foreach ($this->itemPool as $hash => $item) {
             /** @var \Bigcommerce\ORM\Cache\FileCache\FileCacheItem $item */
-            $file = $this->cacheDir .DIRECTORY_SEPARATOR. $hash;
+            $file = $this->cacheDir . DIRECTORY_SEPARATOR . $hash;
             if ($item->isNotExpired()) {
                 $data = $item->toArray();
                 $json = json_encode($data);
@@ -112,7 +112,7 @@ class FileCachePool implements CacheItemPoolInterface
 
                 try {
                     file_put_contents($file, $json);
-                } catch (\Exception $exception) {
+                } catch (\Throwable $exception) {
                     throw new FileCachePoolException(FileCachePoolException::ERROR_FAILED_TO_PUT_CONTENT . $exception->getMessage());
                 }
             } else {
@@ -146,15 +146,16 @@ class FileCachePool implements CacheItemPoolInterface
     private function retrieve(string $hash)
     {
         $data = null;
-        $file = $this->cacheDir .DIRECTORY_SEPARATOR. $hash;
+        $file = $this->cacheDir . DIRECTORY_SEPARATOR . $hash;
         if (file_exists($file)) {
             try {
                 $content = file_get_contents($file);
                 if ($content) {
                     $data = json_decode($content, true);
+
                     return new FileCacheItem($data);
                 }
-            } catch (\Exception $exception) {
+            } catch (\Throwable $exception) {
                 throw new FileCachePoolException(FileCachePoolException::ERROR_FAILED_TO_GET_CONTENT . $exception->getMessage());
             }
         }
@@ -177,6 +178,7 @@ class FileCachePool implements CacheItemPoolInterface
     public function setCacheDir(string $cacheDir): FileCachePool
     {
         $this->cacheDir = $cacheDir;
+
         return $this;
     }
 
@@ -187,6 +189,7 @@ class FileCachePool implements CacheItemPoolInterface
     public function hasItem($key)
     {
         $hash = $this->hashKey($key);
+
         return isset($this->itemPool[$hash]);
     }
 
@@ -245,6 +248,7 @@ class FileCachePool implements CacheItemPoolInterface
     public function setItemPool(array $itemPool): FileCachePool
     {
         $this->itemPool = $itemPool;
+
         return $this;
     }
 

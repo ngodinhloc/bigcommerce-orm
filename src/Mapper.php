@@ -541,10 +541,17 @@ class Mapper
             $property = $include['property'];
             $annotation = $include['annotation'];
             if (isset($items[$annotation->name])) {
+                if (!is_array($pathParams)) {
+                    $pathParams = [$annotation->targetField => $entity->getId()];
+                } else {
+                    $pathParams = array_merge($pathParams, [$annotation->targetField => $entity->getId()]);
+                }
+
                 if ($annotation instanceof ManyRelationInterface) {
                     $propertyValue = $this->includesToCollection($annotation->targetClass, $items[$annotation->name], $pathParams);
                     $this->setPropertyValue($entity, $property, $propertyValue);
                 }
+
                 if ($annotation instanceof OneRelationInterface) {
                     $object = $this->object($annotation->targetClass);
                     $propertyValue = $this->patch($object, $items[$annotation->name], $pathParams, false);

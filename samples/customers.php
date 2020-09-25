@@ -26,12 +26,12 @@ try {
 
     /** batch update customers */
     /** @var \Bigcommerce\ORM\Entities\Customer $customer1 */
-    $customer1 = $someCustomers[0];
+    $customer1 = $allCustomers[0];
     /** @var \Bigcommerce\ORM\Entities\Customer $customer2 */
-    $customer2 = $someCustomers[1];
+    $customer2 = $allCustomers[1];
     $customer1->setFirstName('Ken1')->setCompany('BC1');
     $customer2->setFirstName('Ken2')->setCompany('BC2');
-    $updatedCustomers = $entityManager->batchUpdate([$customer1,$customer2]);
+    $updatedCustomers = $entityManager->batchUpdate([$customer1, $customer2]);
     echo count($updatedCustomers);
 
     /**
@@ -39,27 +39,28 @@ try {
      * you can't create one customer. Please use batchCreate
      */
 
-    $data = [
-        [
-            'email' => 'ken7.ngo@bc.com',
-            'first_name' => 'Ken',
-            'last_name' => 'Ngo',
-            'company' => 'BC',
-            'phone' => '123456789'
-        ],
+    $data1 = [
+        'email' => 'ken7.ngo@bc.com',
+        'first_name' => 'Ken',
+        'last_name' => 'Ngo',
+        'company' => 'BC',
+        'phone' => '123456789'
+    ];
+    $data2 =
         [
             'email' => 'ken8.ngo@bc.com',
             'first_name' => 'Ken',
             'last_name' => 'Ngo',
             'company' => 'BC',
             'phone' => '123456789'
-        ]
-    ];
-    $newCustomers = $entityManager->batchCreate(\Bigcommerce\ORM\Entities\Customer::class, null, $data);
+        ];
+    $newCustomer1 = $entityManager->new(\Bigcommerce\ORM\Entities\Customer::class, $data1);
+    $newCustomer2 = $entityManager->new(\Bigcommerce\ORM\Entities\Customer::class, $data2);
+    $newCustomers = $entityManager->batchCreate([$newCustomer1, $newCustomer2]);
     echo count($newCustomers);
 
     /** delete customers */
-    $deleted = $entityManager->delete(\Bigcommerce\ORM\Entities\Customer::class, null, [10,11]);
+    $deleted = $entityManager->batchDelete(\Bigcommerce\ORM\Entities\Customer::class, null, [10, 11]);
     echo $deleted;
 
 } catch (\Exception $e) {

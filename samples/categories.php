@@ -47,7 +47,7 @@ try {
     echo $newCategory->getId();
 
     /** remove newly created category */
-    $deleted = $entityManager->delete(\Bigcommerce\ORM\Entities\Category::class, null, [$newCategory->getId()]);
+    $deleted = $entityManager->batchDelete(\Bigcommerce\ORM\Entities\Category::class, null, [$newCategory->getId()]);
     echo $deleted;
 
 } catch (\Exception $e) {

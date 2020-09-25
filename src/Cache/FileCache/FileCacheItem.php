@@ -90,6 +90,7 @@ class FileCacheItem implements CacheItemInterface
     public function setKey(string $key)
     {
         $this->key = $key;
+
         return $this;
     }
 
@@ -108,6 +109,7 @@ class FileCacheItem implements CacheItemInterface
     public function set($value)
     {
         $this->value = $value;
+
         return $this;
     }
 
@@ -131,6 +133,7 @@ class FileCacheItem implements CacheItemInterface
         if (is_int($cacheAt)) {
             $this->cachesAt = $cacheAt;
         }
+
         return $this;
     }
 
@@ -154,6 +157,7 @@ class FileCacheItem implements CacheItemInterface
         if (is_int($expiration) || is_null($expiration)) {
             $this->expiresAt = $expiration;
         }
+
         return $this;
     }
 
@@ -177,6 +181,7 @@ class FileCacheItem implements CacheItemInterface
         if (is_int($time)) {
             $this->expiresAfter = $time;
         }
+
         return $this;
     }
 
@@ -221,6 +226,7 @@ class FileCacheItem implements CacheItemInterface
         if ($isHit == true) {
             $this->hitCount++;
         }
+
         return $this;
     }
 
@@ -239,6 +245,7 @@ class FileCacheItem implements CacheItemInterface
     public function setHitCount(int $hitCount)
     {
         $this->hitCount = $hitCount;
+
         return $this;
     }
 

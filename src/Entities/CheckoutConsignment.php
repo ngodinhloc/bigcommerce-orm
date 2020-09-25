@@ -5,14 +5,21 @@ namespace Bigcommerce\ORM\Entities;
 
 use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
+use Bigcommerce\ORM\Mapper;
 
 /**
  * Class CheckoutConsignment
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CheckoutConsignment", path="/checkouts/{checkout_id}/consignments", type="api")
+ * @BC\Resource(name="CheckoutConsignment", path="/checkouts/{checkout_id}/consignments", type="api",creatable=false)
  */
 class CheckoutConsignment extends AbstractEntity
 {
+    /**
+     * @var int|string|null
+     * @BC\Field(name="checkout_id", pathParam=true, readonly=true)
+     */
+    protected $checkoutId;
+
     /**
      * @var float|null
      * @BC\Field(name="shipping_cost_total_inc_tax", readonly=true)
@@ -54,18 +61,37 @@ class CheckoutConsignment extends AbstractEntity
      * @BC\Field(name="line_item_ids", readonly=true)
      */
     protected $lineItemIds;
+    /**
+     * @var array|null
+     * @BC\Field(name="line_items")
+     */
+    protected $lineItems;
+
+    /**
+     * @var array|null
+     * @BC\Field(name="shipping_address")
+     */
+    protected $shippingAddress;
 
     /**
      * @var \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null
      * @BC\HasOne(name="selected_shipping_option", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption", field="id", targetField="consignment_id", from="result", auto=true)
      */
-    protected $selectedShippingOption;
+    protected $checkoutShippingOption;
 
     /**
      * @var \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress|null
      * @BC\HasOne(name="shipping_address", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress", field="id", targetField="consignment_id", from="result", auto=true)
      */
-    protected $shippingAddress;
+    protected $checkoutShippingAddress;
+
+    /** @var \Bigcommerce\ORM\Mapper */
+    protected $mapper;
+
+    public function __construct()
+    {
+        $this->mapper = new Mapper();
+    }
 
     /**
      * @return float|null
@@ -184,6 +210,22 @@ class CheckoutConsignment extends AbstractEntity
     /**
      * @return array|null
      */
+    public function getLineItems(): ?array
+    {
+        return $this->lineItems;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getShippingAddress(): ?array
+    {
+        return $this->shippingAddress;
+    }
+
+    /**
+     * @return array|null
+     */
     public function getLineItemIds(): ?array
     {
         return $this->lineItemIds;
@@ -203,18 +245,18 @@ class CheckoutConsignment extends AbstractEntity
     /**
      * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null
      */
-    public function getSelectedShippingOption(): ?\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption
+    public function getCheckoutShippingOption(): ?CheckoutConsignmentShippingOption
     {
-        return $this->selectedShippingOption;
+        return $this->checkoutShippingOption;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null $selectedShippingOption
+     * @param \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null $checkoutShippingOption
      * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
      */
-    public function setSelectedShippingOption(?\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption $selectedShippingOption): CheckoutConsignment
+    public function setCheckoutShippingOption(?CheckoutConsignmentShippingOption $checkoutShippingOption): CheckoutConsignment
     {
-        $this->selectedShippingOption = $selectedShippingOption;
+        $this->checkoutShippingOption = $checkoutShippingOption;
 
         return $this;
     }
@@ -222,18 +264,64 @@ class CheckoutConsignment extends AbstractEntity
     /**
      * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress|null
      */
-    public function getShippingAddress(): ?\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress
+    public function getCheckoutShippingAddress(): ?CheckoutConsignmentShippingAddress
     {
-        return $this->shippingAddress;
+        return $this->checkoutShippingAddress;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress|null $shippingAddress
+     * @param \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress|null $checkoutShippingAddress
      * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
      */
-    public function setShippingAddress(?\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress $shippingAddress): CheckoutConsignment
+    public function setCheckoutShippingAddress(?CheckoutConsignmentShippingAddress $checkoutShippingAddress): CheckoutConsignment
     {
-        $this->shippingAddress = $shippingAddress;
+        $this->checkoutShippingAddress = $checkoutShippingAddress;
+
+        return $this;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\CartLineItem|null $item
+     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     */
+    public function addLineItem(?CartLineItem $item = null)
+    {
+        $this->lineItems[] = [
+            'item_id' => $item->getId(),
+            'quantity' => $item->getQuantity()
+        ];
+
+        return $this;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress|null $address
+     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function setShippingAddress(?CheckoutConsignmentShippingAddress $address = null)
+    {
+        $data = $this->mapper->getWritableFieldValues($address);
+        $this->shippingAddress = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return int|string|null
+     */
+    public function getCheckoutId()
+    {
+        return $this->checkoutId;
+    }
+
+    /**
+     * @param int|string|null $checkoutId
+     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     */
+    public function setCheckoutId($checkoutId)
+    {
+        $this->checkoutId = $checkoutId;
 
         return $this;
     }

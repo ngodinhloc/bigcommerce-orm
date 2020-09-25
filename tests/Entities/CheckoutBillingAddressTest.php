@@ -14,7 +14,11 @@ class CheckoutBillingAddressTest extends BaseTestCase
     public function testSettersAndGetters()
     {
         $this->entity = new CheckoutBillingAddress();
-        $this->entity->setEmail('kn@bc.com');
+        $this->entity
+            ->setCheckoutId(1)
+            ->setEmail('kn@bc.com');
+
+        $this->assertEquals(1, $this->entity->getCheckoutId());
         $this->assertEquals('kn@bc.com', $this->entity->getEmail());
     }
 }

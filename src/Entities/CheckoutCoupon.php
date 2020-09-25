@@ -14,17 +14,22 @@ use Bigcommerce\ORM\Annotations as BC;
 class CheckoutCoupon extends AbstractEntity
 {
     /**
-     * Coupons use code to remove /checkouts/{checkout_id}/coupons/{coupon_code|coupon_id}
      * @var int|string|null
-     * @BC\Field(name="code", readonly=true)
+     * @BC\Field(name="checkout_id", readonly=true, pathParam=true)
      */
-    protected $id;
+    protected $checkoutId;
 
     /**
      * @var string|null
      * @BC\Field(name="code")
      */
     protected $code;
+
+    /**
+     * @var string|null
+     * @BC\Field(name="coupon_code")
+     */
+    protected $couponCode;
 
     /**
      * @var string|null
@@ -58,7 +63,27 @@ class CheckoutCoupon extends AbstractEntity
      */
     public function setCode(?string $code): CheckoutCoupon
     {
+        $this->couponCode = $code;
         $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * @return int|string|null
+     */
+    public function getCheckoutId()
+    {
+        return $this->checkoutId;
+    }
+
+    /**
+     * @param int|string|null $checkoutId
+     * @return \Bigcommerce\ORM\Entities\CheckoutCoupon
+     */
+    public function setCheckoutId($checkoutId = null): CheckoutCoupon
+    {
+        $this->checkoutId = $checkoutId;
 
         return $this;
     }

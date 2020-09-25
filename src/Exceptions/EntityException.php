@@ -9,6 +9,7 @@ namespace Bigcommerce\ORM\Exceptions;
  */
 class EntityException extends BaseException
 {
+    const ERROR_EMPTY_PARAM_FIELD = 'Required param field value: ';
     const ERROR_EMPTY_RESOURCE_PATH = 'Can not perform operations on empty resource path entity: ';
     const ERROR_EMPTY_CLASS_NAME = 'Empty class name provided: ';
     const ERROR_REQUIRED_PROPERTIES = 'These properties are required: ';

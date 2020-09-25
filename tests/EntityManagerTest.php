@@ -5,10 +5,11 @@ namespace Tests;
 
 use Bigcommerce\ORM\Client\Client;
 use Bigcommerce\ORM\Entities\Brand;
-use Bigcommerce\ORM\Entities\CheckoutCoupon;
+use Bigcommerce\ORM\Entities\Cart;
 use Bigcommerce\ORM\Entities\Channel;
+use Bigcommerce\ORM\Entities\Checkout;
+use Bigcommerce\ORM\Entities\CheckoutCoupon;
 use Bigcommerce\ORM\Entities\Customer;
-use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductImage;
 use Bigcommerce\ORM\EntityManager;
@@ -42,14 +43,6 @@ class EntityManagerTest extends BaseTestCase
         $this->entityManager = new EntityManager($this->client, $this->mapper, $this->dispatcher);
     }
 
-    /**
-     * @covers \Bigcommerce\ORM\EntityManager::setClient
-     * @covers \Bigcommerce\ORM\EntityManager::setMapper
-     * @covers \Bigcommerce\ORM\EntityManager::setEventDispatcher
-     * @covers \Bigcommerce\ORM\EntityManager::getClient
-     * @covers \Bigcommerce\ORM\EntityManager::getMapper
-     * @covers \Bigcommerce\ORM\EntityManager::getEventDispatcher
-     */
     public function testSettersAndGetters()
     {
         $this->entityManager = new EntityManager($this->client, $this->mapper, $this->dispatcher);
@@ -63,13 +56,6 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals($this->dispatcher, $this->entityManager->getEventDispatcher());
     }
 
-    /**
-     * @covers \Bigcommerce\ORM\EntityManager::findAll
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
     public function testFindAll()
     {
         $class = Customer::class;
@@ -81,13 +67,6 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals($expectedResult, $findAll);
     }
 
-    /**
-     * @covers \Bigcommerce\ORM\EntityManager::findBy
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
     public function testFindBy()
     {
         $class = Customer::class;
@@ -100,13 +79,6 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals($expectedResult, $findBy);
     }
 
-    /**
-     * @covers \Bigcommerce\ORM\EntityManager::find
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
     public function testFind()
     {
         $class = Product::class;
@@ -232,7 +204,7 @@ class EntityManagerTest extends BaseTestCase
     public function testUpdateWithUpdatable()
     {
         $coupon = new CheckoutCoupon();
-        $coupon->setId(1)->setName('name');
+        $coupon->setId(1)->setCode('code');
         $this->expectException(EntityException::class);
         $this->entityManager->save($coupon);
     }
@@ -259,33 +231,74 @@ class EntityManagerTest extends BaseTestCase
 
     public function testDelete()
     {
-        $result = $this->entityManager->delete(Customer::class, null, [1, 2]);
+        $customer = new Customer();
+        $customer->setId(100);
+        $result = $this->entityManager->delete($customer, null);
         $this->assertTrue($result);
     }
 
-    public function testDeleteEmpty()
+    public function testDeleteNoParamField()
     {
-        $result = $this->entityManager->delete(Customer::class, null, []);
+        $customer = new Customer();
+        $this->expectException(EntityException::class);
+        $this->entityManager->delete($customer);
+    }
+
+    public function testBatchDelete()
+    {
+        $result = $this->entityManager->batchDelete(Customer::class, null, [1, 2], null);
+        $this->assertTrue($result);
+    }
+
+    public function testBatchDeleteEmpty()
+    {
+        $result = $this->entityManager->batchDelete(Customer::class, null, []);
         $this->assertFalse($result);
     }
 
     public function testDeleteThrowException()
     {
         $this->expectException(EntityException::class);
-        $result = $this->entityManager->delete(Channel::class, null, [1, 2]);
+        $result = $this->entityManager->batchDelete(Channel::class, null, [1, 2]);
     }
 
     public function testBatchCreate()
     {
         $data = $this->getBatchCreateData();
-        $customers = $this->entityManager->batchCreate(Customer::class, null, $data);
+        $customer1 = $this->entityManager->new(Customer::class, $data[0]);
+        $customer2 = $this->entityManager->new(Customer::class, $data[1]);
+        $customers = $this->entityManager->batchCreate([$customer1, $customer2]);
         $this->assertEquals(2, count($customers));
 
-        $result = $this->entityManager->batchCreate(Channel::class, null, $data);
+        $result = $this->entityManager->batchCreate([]);
         $this->assertFalse($result);
+    }
 
-        $result = $this->entityManager->batchCreate(CustomerAddress::class, null, []);
+    public function testBatchCreateReturnFalse()
+    {
+        $data = $this->getBatchCreateData();
+        $checkout1 = $this->entityManager->new(Checkout::class, $data[0]);
+        $checkout2 = $this->entityManager->new(Checkout::class, $data[1]);
+        $result = $this->entityManager->batchCreate([$checkout1, $checkout2]);
         $this->assertFalse($result);
+    }
+
+    public function testBatchCreateReturnTrue()
+    {
+        $data = $this->getBatchCreateData();
+        $cart1 = $this->entityManager->new(Cart::class, $data[0]);
+        $cart2 = $this->entityManager->new(Cart::class, $data[1]);
+        $result = $this->entityManager->batchCreate([$cart1, $cart2]);
+        $this->assertTrue($result);
+    }
+
+    public function testBatchCreateThrowException()
+    {
+        $data = $this->getBatchCreateData();
+        $customer1 = $this->entityManager->new(Customer::class, $data[0]);
+        $checkout2 = $this->entityManager->new(Checkout::class, $data[1]);
+        $this->expectException(EntityException::class);
+        $result = $this->entityManager->batchCreate([$customer1, $checkout2]);
     }
 
     public function testBatchUpdateEmpty()
@@ -333,6 +346,14 @@ class EntityManagerTest extends BaseTestCase
 
         $customers = $this->entityManager->batchUpdate([$customer1, $customer2]);
         $this->assertEquals(2, count($customers));
+    }
+
+    public function testBatchUpdateReturnTrue()
+    {
+        $cart1 = new Cart();
+        $cart2 = new Cart();
+        $result = $this->entityManager->batchUpdate([$cart1, $cart2]);
+        $this->assertTrue($result);
     }
 
     public function testNew()
@@ -432,18 +453,6 @@ class EntityManagerTest extends BaseTestCase
 
         $file = __DIR__ . '/assets/images/lamp.jpg';
         $files = ["image_file" => $file];
-        $imageData = [
-            "is_thumbnail" => false,
-            "sort_order" => null,
-            "description" => null,
-            "image_file" => $file,
-            "image_url" => null,
-            "url_zoom" => null,
-            "url_standard" => null,
-            "url_thumbnail" => null,
-            "url_tiny" => null,
-            "date_modified" => null
-        ];
         $reviews = [
             [
                 'product_id' => 1,
@@ -469,14 +478,36 @@ class EntityManagerTest extends BaseTestCase
         $client->create('/channels', 'api', Argument::any(), null, true)->willReturn(false);
         $client->create('/catalog/brands', 'api', Argument::any(), [])->willReturn(false);
         $client->update($updatePath, 'api', $data, [])->willReturn($createResult);
-        $client->update($updateImage, 'api', $imageData, $files)->willReturn(['id' => 1]);
+        $client->update($updateImage, 'api', $this->getImageData(), $files)->willReturn(['id' => 1]);
         $client->delete($deletePath, 'api')->willReturn(true);
+        $client->delete('/customers/100', 'api')->willReturn(true);
         $client->create($savePath, 'api', $this->getBatchCreateData(), null, true)->willReturn($this->getBatchReturnedData());
+        $client->create('/carts', 'api', Argument::any(), null, true)->willReturn($this->getBatchReturnedEmptyId());
+        $client->create('/checkouts', 'api', Argument::any(), null, true)->willReturn(false);
         $client->update($savePath, 'api', [], null, true)->willReturn([]);
         $client->update($savePath, 'api', $this->getBatchReturnedData(), null, true)->willReturn($this->getBatchReturnedData());
+        $client->update('/carts', 'api', Argument::any(), null, true)->willReturn($this->getBatchReturnedEmptyId());
         $client->update('/catalog/products/2/images/1', 'api', Argument::any(), [])->willReturn(['id' => 1]);
 
         return $client->reveal();
+    }
+
+    private function getImageData()
+    {
+        $file = __DIR__ . '/assets/images/lamp.jpg';
+
+        return $imageData = [
+            "is_thumbnail" => false,
+            "sort_order" => null,
+            "description" => null,
+            "image_file" => $file,
+            "image_url" => null,
+            "url_zoom" => null,
+            "url_standard" => null,
+            "url_thumbnail" => null,
+            "url_tiny" => null,
+            "date_modified" => null
+        ];
     }
 
     private function getBatchReturnedData()
@@ -492,6 +523,26 @@ class EntityManagerTest extends BaseTestCase
             ],
             [
                 'id' => 2,
+                'email' => 'ken8.ngo@bc.com',
+                'first_name' => 'Ken',
+                'last_name' => 'Ngo',
+                'company' => 'BC',
+                'phone' => '123456789'
+            ]
+        ];
+    }
+
+    private function getBatchReturnedEmptyId()
+    {
+        return [
+            [
+                'email' => 'ken7.ngo@bc.com',
+                'first_name' => 'Ken',
+                'last_name' => 'Ngo',
+                'company' => 'BC',
+                'phone' => '123456789'
+            ],
+            [
                 'email' => 'ken8.ngo@bc.com',
                 'first_name' => 'Ken',
                 'last_name' => 'Ngo',

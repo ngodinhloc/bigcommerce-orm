@@ -20,12 +20,6 @@ class Checkout extends AbstractEntity
     protected $taxes;
 
     /**
-     * @var array|null
-     * @BC\Field(name="coupons", readonly=true)
-     */
-    protected $coupons;
-
-    /**
      * @var string|int|null
      * @BC\Field(name="order_id", readonly=true)
      */
@@ -116,6 +110,12 @@ class Checkout extends AbstractEntity
     protected $consignments;
 
     /**
+     * @var \Bigcommerce\ORM\Entities\CheckoutCoupon[]|null
+     * @BC\HasMany(name="coupons", targetClass="\Bigcommerce\ORM\Entities\CheckoutCoupon", field="id", targetField="checkout_id", from="result", auto=true)
+     */
+    protected $coupons;
+
+    /**
      * @return array|null
      */
     public function getTaxes(): ?array
@@ -135,7 +135,7 @@ class Checkout extends AbstractEntity
     }
 
     /**
-     * @return array|null
+     * @return \Bigcommerce\ORM\Entities\CheckoutCoupon[]|null
      */
     public function getCoupons(): ?array
     {
@@ -143,8 +143,8 @@ class Checkout extends AbstractEntity
     }
 
     /**
-     * @param array|null $coupons
-     * @return \Bigcommerce\ORM\Entities\Checkout
+     * @param \Bigcommerce\ORM\Entities\CheckoutCoupon[]|null $coupons
+     * @return Checkout
      */
     public function setCoupons(?array $coupons): Checkout
     {

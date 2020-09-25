@@ -168,24 +168,15 @@ class EntityManager
             $entity = $this->mapper->patch($entity, [], null, true);
         }
 
-        $checkRequiredProperties = $this->mapper->checkRequiredFields($entity);
-        if ($checkRequiredProperties !== true) {
-            throw new EntityException(EntityException::ERROR_REQUIRED_PROPERTIES . implode(", ", $checkRequiredProperties));
-        }
-
-        $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
-        if ($checkRequiredValidations !== true) {
-            throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
-        }
-
-        $data = $this->mapper->getWritableFieldValues($entity);
+        $this->checkEntityBeforeCreating($entity);
+        $writableData = $this->mapper->getWritableFieldValues($entity);
         // update entity
         if (!empty($id = $entity->getId())) {
-            return $this->updateEntity($entity, $data);
+            return $this->updateEntity($entity, $writableData);
         }
 
         // create entity
-        return $this->createEntity($entity, $data);
+        return $this->createEntity($entity, $writableData);
     }
 
     /**
@@ -212,83 +203,71 @@ class EntityManager
             $entity = $this->mapper->patch($entity, [], null, true);
         }
 
-        $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
-        if ($checkRequiredValidations !== true) {
-            throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
-        }
-
         if (!$this->mapper->checkPropertyValues($data)) {
             return true;
         }
 
-        $data = $this->mapper->getWritableFieldValues($entity, $data);
+        $this->checkEntityBeforeUpdating($entity);
+        $writableData = $this->mapper->getWritableFieldValues($entity, $data);
 
-        return $this->updateEntity($entity, $data);
+        return $this->updateEntity($entity, $writableData);
     }
 
     /**
      * Delete multiple entities
      *
-     * @param string|null $className
-     * @param array|null $pathParams
-     * @param array|null $ids
-     * @return array|bool
+     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param string|null $paramField
+     * @return bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function delete(?string $className = null, ?array $pathParams = null, ?array $ids = null)
+    public function delete(?AbstractEntity $entity = null, ?string $paramField = 'id')
     {
-        $this->mapper->checkClass($className);
-
-        if (empty($ids)) {
-            return false;
+        if (empty($paramField)) {
+            $paramField = 'id';
         }
 
-        $object = $this->mapper->object($className);
-        $entity = $this->mapper->patch($object, [], $pathParams, true);
         $resourcePath = $this->mapper->getResourcePath($entity, 'delete');
         $resourceType = $entity->getMetadata()->getResource()->type;
-        $queryBuilder = new QueryBuilder();
-        $query = $queryBuilder->whereIn('id', array_values($ids))->getQueryString();
+        $fieldValue = $this->mapper->getPropertyValueByFieldName($entity, $paramField);
 
-        return $this->client->delete($resourcePath . "?" . $query, $resourceType);
+        if (empty($fieldValue)) {
+            throw new EntityException(EntityException::ERROR_EMPTY_PARAM_FIELD . $paramField);
+        }
+
+        return $this->client->delete($resourcePath . '/' . $fieldValue, $resourceType);
     }
 
     /**
-     * Create multiple entities of the same class. Batch create does not upload files
+     * Create multiple entities of the same class. Batch update does not upload files
      *
-     * @param string|null $className
+     * @param array|\Bigcommerce\ORM\AbstractEntity[] $entities
      * @param array|null $pathParams
-     * @param array|null $items
-     * @return array|false
+     * @return array|bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function batchCreate(?string $className = null, ?array $pathParams = null, ?array $items = null)
+    public function batchCreate(?array $entities = null, ?array $pathParams = null)
     {
-        $this->mapper->checkClass($className);
-
-        if (empty($items)) {
+        if (empty($entities)) {
             return false;
         }
 
-        $object = $this->mapper->object($className);
-        $entity = $this->mapper->patch($object, [], $pathParams, true);
+        $entity = current($entities);
+        $className = get_class($entity);
+        $entity = $this->mapper->patch($entity, [], $pathParams, true);
         $resourcePath = $this->mapper->getResourcePath($entity);
         $resourceType = $entity->getMetadata()->getResource()->type;
+        $data = $this->getBatchCreateData($className, $entities);
 
-        $result = $this->client->create($resourcePath, $resourceType, $items, null, true);
+        $result = $this->client->create($resourcePath, $resourceType, $data, null, true);
         if (!empty($result)) {
-            $entities = [];
-            foreach ($result as $item) {
-                $entities[] = $this->new($className, $item);
-            }
-
-            return $entities;
+            return $this->getCreatedEntities($className, $result, $pathParams);
         }
 
         return false;
@@ -297,7 +276,7 @@ class EntityManager
     /**
      * Update multiple entities of the same class. Batch update does not upload files
      *
-     * @param array|\Bigcommerce\ORM\Entity[] $entities
+     * @param array|\Bigcommerce\ORM\AbstractEntity[] $entities
      * @param array|null $pathParams
      * @return array|false
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
@@ -320,6 +299,41 @@ class EntityManager
         }
 
         return false;
+    }
+
+    /**
+     * Delete multiple entities
+     *
+     * @param string|null $className
+     * @param array|null $pathParams
+     * @param array|null $values
+     * @param string|null $field
+     * @return array|bool
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function batchDelete(?string $className = null, ?array $pathParams = null, ?array $values = null, ?string $field = 'id')
+    {
+        $this->mapper->checkClass($className);
+
+        if (empty($values)) {
+            return false;
+        }
+
+        if (empty($field)) {
+            $field = 'id';
+        }
+
+        $object = $this->mapper->object($className);
+        $entity = $this->mapper->patch($object, [], $pathParams, true);
+        $resourcePath = $this->mapper->getResourcePath($entity, 'delete');
+        $resourceType = $entity->getMetadata()->getResource()->type;
+        $queryBuilder = new QueryBuilder();
+        $query = $queryBuilder->whereIn($field, array_values($values))->getQueryString();
+
+        return $this->client->delete($resourcePath . "?" . $query, $resourceType);
     }
 
     /**
@@ -368,6 +382,60 @@ class EntityManager
     }
 
     /**
+     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    private function checkEntityBeforeCreating(?AbstractEntity $entity = null)
+    {
+        $checkRequiredProperties = $this->mapper->checkRequiredFields($entity);
+        if ($checkRequiredProperties !== true) {
+            throw new EntityException(EntityException::ERROR_REQUIRED_PROPERTIES . implode(", ", $checkRequiredProperties));
+        }
+
+        $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
+        if ($checkRequiredValidations !== true) {
+            throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
+        }
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    private function checkEntityBeforeUpdating(?AbstractEntity $entity = null)
+    {
+        $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
+        if ($checkRequiredValidations !== true) {
+            throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
+        }
+    }
+
+    /**
+     * @param string|null $className
+     * @param \Bigcommerce\ORM\AbstractEntity[]|null $entities
+     * @return array
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    private function getBatchCreateData(?string $className = null, ?array $entities = null)
+    {
+        $data = [];
+        foreach ($entities as $entity) {
+            if ($className != get_class($entity)) {
+                throw new EntityException(EntityException::ERROR_DIFFERENT_CLASS_NAME);
+            }
+
+            $this->checkEntityBeforeCreating($entity);
+            $writableData = $this->mapper->getWritableFieldValues($entity);
+            $data[] = $writableData;
+        }
+
+        return $data;
+    }
+
+    /**
      * @param string|null $className
      * @param \Bigcommerce\ORM\AbstractEntity[]|null $entities
      * @return array
@@ -386,33 +454,53 @@ class EntityManager
                 continue;
             }
 
-            $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
-            if ($checkRequiredValidations !== true) {
-                throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
-            }
-
+            $this->checkEntityBeforeUpdating($entity);
+            $writableData = $this->mapper->getWritableFieldValues($entity);
             $entities[$entity->getId()] = $entity;
-            $noneReadonlyData = $this->mapper->getWritableFieldValues($entity);
-            $data[] = array_merge($noneReadonlyData, ['id' => $entity->getId()]);
+            $data[] = array_merge($writableData, ['id' => $entity->getId()]);
         }
 
         return $data;
     }
 
     /**
+     * @param string|null $className
+     * @param array|null $result
+     * @param array|null $pathParams
+     * @return array|bool
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    private function getCreatedEntities(?string $className = null, ?array $result = null, ?array $pathParams = null)
+    {
+        $entities = [];
+        foreach ($result as $item) {
+            if (isset($item['id'])) {
+                $entities[] = $this->new($className, $item, $pathParams);
+            } else {
+                return true;
+            }
+        }
+
+        return $entities;
+    }
+
+    /**
      * @param \Bigcommerce\ORM\AbstractEntity[]|null $entities
      * @param array|null $result
      * @param array|null $pathParams
-     * @return array
+     * @return array|bool
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     private function getUpdatedEntities(?array $entities = null, ?array $result = null, ?array $pathParams = null)
     {
         $output = [];
         foreach ($result as $data) {
-            if (isset($entities[$data['id']])) {
+            if (isset($data['id']) && isset($entities[$data['id']])) {
                 $entity = $entities[$data['id']];
                 $output[] = $this->mapper->patch($entity, $data, $pathParams, false);
+            } else {
+                return true;
             }
         }
 
@@ -480,7 +568,7 @@ class EntityManager
 
     /**
      * @param \Bigcommerce\ORM\AbstractEntity $entity
-     * @param array $data
+     * @param array|null $data
      * @return bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
@@ -489,18 +577,12 @@ class EntityManager
      */
     private function createEntity(AbstractEntity $entity, array $data = null)
     {
-        $resource = $entity->getMetadata()->getResource();
-
-        if ($resource->creatable !== true) {
-            throw new EntityException(EntityException::ERROR_NOT_CREATABLE_RESOURCE . $resource->name);
-        }
-
         if (!$this->mapper->checkPropertyValues($data)) {
             throw new EntityException(EntityException::ERROR_EMPTY_PROPERTY_VALUES);
         }
 
-        $resourcePath = $this->mapper->getResourcePath($entity,'create');
-        $resourceType = $resource->type;
+        $resourcePath = $this->mapper->getResourcePath($entity, 'create');
+        $resourceType = $entity->getMetadata()->getResource()->type;
         $files = $this->getUploadFiles($entity);
 
         $result = $this->client->create($resourcePath, $resourceType, $data, $files);
@@ -532,22 +614,19 @@ class EntityManager
      */
     private function updateEntity(AbstractEntity $entity, array $data = null)
     {
-        $resource = $entity->getMetadata()->getResource();
-        if ($resource->updatable !== true) {
-            throw new EntityException(EntityException::ERROR_NOT_UPDATABLE_RESOURCE . $resource->name);
-        }
-
         if (!$this->mapper->checkPropertyValues($data)) {
             return true;
         }
 
         $resourcePath = $this->mapper->getResourcePath($entity, 'update');
-        $resourceType = $resource->type;
+        $resourceType = $entity->getMetadata()->getResource()->type;
         $files = $this->getUploadFiles($entity);
 
         $result = $this->client->update($resourcePath . "/{$entity->getId()}", $resourceType, $data, $files);
         if (!empty($result)) {
-            $this->mapper->patch($entity, $result, null, false);
+            if (isset($result['id']) && $result['id'] == $entity->getId()) {
+                $this->mapper->patch($entity, $result, null, false);
+            }
             $this->mapper->setPropertyValueByName($entity, 'isNew', false);
 
             if ($this->hasEventDispatcher()) {
