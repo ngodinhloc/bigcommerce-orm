@@ -140,12 +140,11 @@ class EntityManager
         if ($auto == false) {
             return $entity;
         }
-        // No auto loading
+
         if (empty($entity->getMetadata()->getAutoLoadFields())) {
             return $entity;
         }
 
-        // auto loading
         return $this->autoLoad($entity, $result, $pathParams);
     }
 
@@ -169,14 +168,15 @@ class EntityManager
             $entity = $this->mapper->patch($entity, [], null, true);
         }
 
-        $this->checkEntityBeforeCreating($entity);
+        $this->checkBeforeCreating($entity);
         $writableData = $this->mapper->getWritableFieldValues($entity);
-        // update entity
+
+        /** if id provided then update entity */
         if (!empty($id = $entity->getId())) {
             return $this->updateEntity($entity, $writableData);
         }
 
-        // create entity
+        /** if no id provided then create entity */
         return $this->createEntity($entity, $writableData);
     }
 
@@ -196,10 +196,9 @@ class EntityManager
             $entity = $this->mapper->patch($entity, [], null, true);
         }
 
-        $this->checkEntityBeforeCreating($entity);
+        $this->checkBeforeCreating($entity);
         $writableData = $this->mapper->getWritableFieldValues($entity);
 
-        // create entity
         return $this->createEntity($entity, $writableData);
     }
 
@@ -207,7 +206,8 @@ class EntityManager
      * Update entity : allow to update entity with array of data
      *
      * @param \Bigcommerce\ORM\AbstractEntity|null $entity
-     * @param array|null $data [fieldName => value]
+     * @param array|null $data
+     * [fieldName => value]
      * @return bool
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
@@ -231,7 +231,7 @@ class EntityManager
             return true;
         }
 
-        $this->checkEntityBeforeUpdating($entity);
+        $this->checkBeforeUpdating($entity);
         $writableData = $this->mapper->getWritableFieldValues($entity, $data);
 
         return $this->updateEntity($entity, $writableData);
@@ -266,7 +266,7 @@ class EntityManager
     }
 
     /**
-     * Create multiple entities of the same class. Batch update does not upload files
+     * Create multiple entities of the same class. Batch create does not upload files
      *
      * @param array|\Bigcommerce\ORM\AbstractEntity[] $entities
      * @param array|null $pathParams
@@ -410,7 +410,7 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function checkEntityBeforeCreating(?AbstractEntity $entity = null)
+    private function checkBeforeCreating(?AbstractEntity $entity = null)
     {
         $checkRequiredProperties = $this->mapper->checkRequiredFields($entity);
         if ($checkRequiredProperties !== true) {
@@ -428,7 +428,7 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function checkEntityBeforeUpdating(?AbstractEntity $entity = null)
+    private function checkBeforeUpdating(?AbstractEntity $entity = null)
     {
         $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
         if ($checkRequiredValidations !== true) {
@@ -451,7 +451,7 @@ class EntityManager
                 throw new EntityException(EntityException::ERROR_DIFFERENT_CLASS_NAME);
             }
 
-            $this->checkEntityBeforeCreating($entity);
+            $this->checkBeforeCreating($entity);
             $writableData = $this->mapper->getWritableFieldValues($entity);
             $data[] = $writableData;
         }
@@ -478,7 +478,7 @@ class EntityManager
                 continue;
             }
 
-            $this->checkEntityBeforeUpdating($entity);
+            $this->checkBeforeUpdating($entity);
             $writableData = $this->mapper->getWritableFieldValues($entity);
             $entities[$entity->getId()] = $entity;
             $data[] = array_merge($writableData, ['id' => $entity->getId()]);

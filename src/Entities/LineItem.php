@@ -7,11 +7,11 @@ use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
 
 /**
- * Class CartLineItem
+ * Class LineItem
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CartLineItem")
+ * @BC\Resource(name="LineItem")
  */
-class CartLineItem extends AbstractEntity
+class LineItem extends AbstractEntity
 {
     /**
      * @var string|null
@@ -149,9 +149,9 @@ class CartLineItem extends AbstractEntity
 
     /**
      * @param int|null $productId
-     * @return \Bigcommerce\ORM\Entities\CartLineItem
+     * @return \Bigcommerce\ORM\Entities\LineItem
      */
-    public function setProductId(?int $productId): CartLineItem
+    public function setProductId(?int $productId): LineItem
     {
         $this->productId = $productId;
 
@@ -168,9 +168,9 @@ class CartLineItem extends AbstractEntity
 
     /**
      * @param int|null $quantity
-     * @return \Bigcommerce\ORM\Entities\CartLineItem
+     * @return \Bigcommerce\ORM\Entities\LineItem
      */
-    public function setQuantity(?int $quantity): CartLineItem
+    public function setQuantity(?int $quantity): LineItem
     {
         $this->quantity = $quantity;
 
@@ -187,9 +187,9 @@ class CartLineItem extends AbstractEntity
 
     /**
      * @param float|null $listPrice
-     * @return \Bigcommerce\ORM\Entities\CartLineItem
+     * @return \Bigcommerce\ORM\Entities\LineItem
      */
-    public function setListPrice(?float $listPrice): CartLineItem
+    public function setListPrice(?float $listPrice): LineItem
     {
         $this->listPrice = $listPrice;
 
@@ -206,9 +206,9 @@ class CartLineItem extends AbstractEntity
 
     /**
      * @param array|null $optionSelections
-     * @return \Bigcommerce\ORM\Entities\CartLineItem
+     * @return \Bigcommerce\ORM\Entities\LineItem
      */
-    public function setOptionSelections(?array $optionSelections): CartLineItem
+    public function setOptionSelections(?array $optionSelections): LineItem
     {
         $this->optionSelections = $optionSelections;
 

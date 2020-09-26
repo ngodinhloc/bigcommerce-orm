@@ -6,11 +6,11 @@ namespace Bigcommerce\ORM\Entities;
 use Bigcommerce\ORM\Annotations as BC;
 
 /**
- * Class CheckoutConsignmentShippingAddress
+ * Class ShippingAddress
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CheckoutConsignmentShippingAddress")
+ * @BC\Resource(name="ShippingAddress")
  */
-class CheckoutConsignmentShippingAddress extends AbstractAddress
+class ShippingAddress extends AbstractAddress
 {
     /**
      * @var string|null
@@ -28,9 +28,9 @@ class CheckoutConsignmentShippingAddress extends AbstractAddress
 
     /**
      * @param string|null $email
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress
+     * @return \Bigcommerce\ORM\Entities\ShippingAddress
      */
-    public function setEmail(?string $email): CheckoutConsignmentShippingAddress
+    public function setEmail(?string $email): ShippingAddress
     {
         $this->email = $email;
 

@@ -7,11 +7,11 @@ use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
 
 /**
- * Class CheckoutCoupon
+ * Class Coupon
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CheckoutCoupon", path="/checkouts/{checkout_id}/coupons", findable=false, updatable=false)
+ * @BC\Resource(name="Coupon", path="/checkouts/{checkout_id}/coupons", findable=false, updatable=false)
  */
-class CheckoutCoupon extends AbstractEntity
+class Coupon extends AbstractEntity
 {
     /**
      * @var int|string|null
@@ -59,9 +59,9 @@ class CheckoutCoupon extends AbstractEntity
 
     /**
      * @param string|null $code
-     * @return \Bigcommerce\ORM\Entities\CheckoutCoupon
+     * @return \Bigcommerce\ORM\Entities\Coupon
      */
-    public function setCode(?string $code): CheckoutCoupon
+    public function setCode(?string $code): Coupon
     {
         $this->couponCode = $code;
         $this->code = $code;
@@ -79,9 +79,9 @@ class CheckoutCoupon extends AbstractEntity
 
     /**
      * @param int|string|null $checkoutId
-     * @return \Bigcommerce\ORM\Entities\CheckoutCoupon
+     * @return \Bigcommerce\ORM\Entities\Coupon
      */
-    public function setCheckoutId($checkoutId = null): CheckoutCoupon
+    public function setCheckoutId($checkoutId = null): Coupon
     {
         $this->checkoutId = $checkoutId;
 
@@ -98,9 +98,9 @@ class CheckoutCoupon extends AbstractEntity
 
     /**
      * @param string|null $name
-     * @return \Bigcommerce\ORM\Entities\CheckoutCoupon
+     * @return \Bigcommerce\ORM\Entities\Coupon
      */
-    public function setName(?string $name): CheckoutCoupon
+    public function setName(?string $name): Coupon
     {
         $this->name = $name;
 
@@ -117,9 +117,9 @@ class CheckoutCoupon extends AbstractEntity
 
     /**
      * @param string|null $type
-     * @return \Bigcommerce\ORM\Entities\CheckoutCoupon
+     * @return \Bigcommerce\ORM\Entities\Coupon
      */
-    public function setType(?string $type): CheckoutCoupon
+    public function setType(?string $type): Coupon
     {
         $this->type = $type;
 
@@ -136,9 +136,9 @@ class CheckoutCoupon extends AbstractEntity
 
     /**
      * @param float|null $discountAmount
-     * @return \Bigcommerce\ORM\Entities\CheckoutCoupon
+     * @return \Bigcommerce\ORM\Entities\Coupon
      */
-    public function setDiscountAmount(?float $discountAmount): CheckoutCoupon
+    public function setDiscountAmount(?float $discountAmount): Coupon
     {
         $this->discountAmount = $discountAmount;
 

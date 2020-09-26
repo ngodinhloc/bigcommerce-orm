@@ -8,11 +8,11 @@ use Bigcommerce\ORM\Annotations as BC;
 use Bigcommerce\ORM\Mapper;
 
 /**
- * Class CheckoutConsignment
+ * Class Consignment
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CheckoutConsignment", path="/checkouts/{checkout_id}/consignments", type="api",creatable=false)
+ * @BC\Resource(name="Consignment", path="/checkouts/{checkout_id}/consignments", type="api",creatable=false)
  */
-class CheckoutConsignment extends AbstractEntity
+class Consignment extends AbstractEntity
 {
     /**
      * @var int|string|null
@@ -80,19 +80,19 @@ class CheckoutConsignment extends AbstractEntity
     protected $shippingOptionId;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null
+     * @var \Bigcommerce\ORM\Entities\ShippingOption|null
      * @BC\HasOne(name="selected_shipping_option", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption", field="id", targetField="consignment_id", from="include", auto=true)
      */
     protected $selectedShippingOption;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption[]|null
+     * @var \Bigcommerce\ORM\Entities\ShippingOption[]|null
      * @BC\HasMany(name="available_shipping_options", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption", field="id", targetField="consignment_id", from="include", auto=true)
      */
     protected $availableShippingOptions;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress|null
+     * @var \Bigcommerce\ORM\Entities\ShippingAddress|null
      * @BC\HasOne(name="shipping_address", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress", field="id", targetField="consignment_id", from="result", auto=true)
      */
     protected $checkoutShippingAddress;
@@ -115,9 +115,9 @@ class CheckoutConsignment extends AbstractEntity
 
     /**
      * @param float|null $shippingCostTotalIncTax
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @return \Bigcommerce\ORM\Entities\Consignment
      */
-    public function setShippingCostTotalIncTax(?float $shippingCostTotalIncTax): CheckoutConsignment
+    public function setShippingCostTotalIncTax(?float $shippingCostTotalIncTax): Consignment
     {
         $this->shippingCostTotalIncTax = $shippingCostTotalIncTax;
 
@@ -134,9 +134,9 @@ class CheckoutConsignment extends AbstractEntity
 
     /**
      * @param float|null $shippingCostTotalExTax
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @return \Bigcommerce\ORM\Entities\Consignment
      */
-    public function setShippingCostTotalExTax(?float $shippingCostTotalExTax): CheckoutConsignment
+    public function setShippingCostTotalExTax(?float $shippingCostTotalExTax): Consignment
     {
         $this->shippingCostTotalExTax = $shippingCostTotalExTax;
 
@@ -153,9 +153,9 @@ class CheckoutConsignment extends AbstractEntity
 
     /**
      * @param float|null $handlingCostTotalIncTax
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @return \Bigcommerce\ORM\Entities\Consignment
      */
-    public function setHandlingCostTotalIncTax(?float $handlingCostTotalIncTax): CheckoutConsignment
+    public function setHandlingCostTotalIncTax(?float $handlingCostTotalIncTax): Consignment
     {
         $this->handlingCostTotalIncTax = $handlingCostTotalIncTax;
 
@@ -172,9 +172,9 @@ class CheckoutConsignment extends AbstractEntity
 
     /**
      * @param float|null $handlingCostTotalExTax
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @return \Bigcommerce\ORM\Entities\Consignment
      */
-    public function setHandlingCostTotalExTax(?float $handlingCostTotalExTax): CheckoutConsignment
+    public function setHandlingCostTotalExTax(?float $handlingCostTotalExTax): Consignment
     {
         $this->handlingCostTotalExTax = $handlingCostTotalExTax;
 
@@ -191,9 +191,9 @@ class CheckoutConsignment extends AbstractEntity
 
     /**
      * @param array|null $couponDiscounts
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @return \Bigcommerce\ORM\Entities\Consignment
      */
-    public function setCouponDiscounts(?array $couponDiscounts): CheckoutConsignment
+    public function setCouponDiscounts(?array $couponDiscounts): Consignment
     {
         $this->couponDiscounts = $couponDiscounts;
 
@@ -210,9 +210,9 @@ class CheckoutConsignment extends AbstractEntity
 
     /**
      * @param array|null $discounts
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @return \Bigcommerce\ORM\Entities\Consignment
      */
-    public function setDiscounts(?array $discounts): CheckoutConsignment
+    public function setDiscounts(?array $discounts): Consignment
     {
         $this->discounts = $discounts;
 
@@ -245,9 +245,9 @@ class CheckoutConsignment extends AbstractEntity
 
     /**
      * @param array|null $lineItemIds
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @return \Bigcommerce\ORM\Entities\Consignment
      */
-    public function setLineItemIds(?array $lineItemIds): CheckoutConsignment
+    public function setLineItemIds(?array $lineItemIds): Consignment
     {
         $this->lineItemIds = $lineItemIds;
 
@@ -255,18 +255,18 @@ class CheckoutConsignment extends AbstractEntity
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null
+     * @return \Bigcommerce\ORM\Entities\ShippingOption|null
      */
-    public function getSelectedShippingOption(): ?CheckoutConsignmentShippingOption
+    public function getSelectedShippingOption(): ?ShippingOption
     {
         return $this->selectedShippingOption;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null $selectedShippingOption
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @param \Bigcommerce\ORM\Entities\ShippingOption|null $selectedShippingOption
+     * @return \Bigcommerce\ORM\Entities\Consignment
      */
-    public function setSelectedShippingOption(?CheckoutConsignmentShippingOption $selectedShippingOption): CheckoutConsignment
+    public function setSelectedShippingOption(?ShippingOption $selectedShippingOption): Consignment
     {
         $this->selectedShippingOption = $selectedShippingOption;
 
@@ -274,18 +274,18 @@ class CheckoutConsignment extends AbstractEntity
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress|null
+     * @return \Bigcommerce\ORM\Entities\ShippingAddress|null
      */
-    public function getCheckoutShippingAddress(): ?CheckoutConsignmentShippingAddress
+    public function getCheckoutShippingAddress(): ?ShippingAddress
     {
         return $this->checkoutShippingAddress;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress|null $checkoutShippingAddress
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @param \Bigcommerce\ORM\Entities\ShippingAddress|null $checkoutShippingAddress
+     * @return \Bigcommerce\ORM\Entities\Consignment
      */
-    public function setCheckoutShippingAddress(?CheckoutConsignmentShippingAddress $checkoutShippingAddress): CheckoutConsignment
+    public function setCheckoutShippingAddress(?ShippingAddress $checkoutShippingAddress): Consignment
     {
         $this->checkoutShippingAddress = $checkoutShippingAddress;
 
@@ -293,10 +293,10 @@ class CheckoutConsignment extends AbstractEntity
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CartLineItem|null $item
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @param \Bigcommerce\ORM\Entities\LineItem|null $item
+     * @return \Bigcommerce\ORM\Entities\Consignment
      */
-    public function addLineItem(?CartLineItem $item = null)
+    public function addLineItem(?LineItem $item = null)
     {
         $this->lineItems[] = [
             'item_id' => $item->getId(),
@@ -308,7 +308,7 @@ class CheckoutConsignment extends AbstractEntity
 
     /**
      * @param \Bigcommerce\ORM\Entities\AbstractAddress|null $address
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @return \Bigcommerce\ORM\Entities\Consignment
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function setShippingAddress(?AbstractAddress $address = null)
@@ -329,7 +329,7 @@ class CheckoutConsignment extends AbstractEntity
 
     /**
      * @param int|string|null $checkoutId
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @return \Bigcommerce\ORM\Entities\Consignment
      */
     public function setCheckoutId($checkoutId)
     {
@@ -339,7 +339,7 @@ class CheckoutConsignment extends AbstractEntity
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption[]|null
+     * @return \Bigcommerce\ORM\Entities\ShippingOption[]|null
      */
     public function getAvailableShippingOptions(): ?array
     {
@@ -347,10 +347,10 @@ class CheckoutConsignment extends AbstractEntity
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null $shippingOption
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     * @param \Bigcommerce\ORM\Entities\ShippingOption|null $shippingOption
+     * @return \Bigcommerce\ORM\Entities\Consignment
      */
-    public function setShippingOption(?CheckoutConsignmentShippingOption $shippingOption = null)
+    public function setShippingOption(?ShippingOption $shippingOption = null)
     {
         $this->shippingOptionId = $shippingOption->getId();
 

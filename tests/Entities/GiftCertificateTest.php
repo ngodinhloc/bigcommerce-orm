@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace Tests\Entities;
 
-use Bigcommerce\ORM\Entities\CartGiftCertificate;
+use Bigcommerce\ORM\Entities\GiftCertificate;
 use Tests\BaseTestCase;
 
-class CartGiftCertificateTest extends BaseTestCase
+class GiftCertificateTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CartGiftCertificate */
+    /** @var \Bigcommerce\ORM\Entities\GiftCertificate */
     protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->entity = new CartGiftCertificate();
+        $this->entity = new GiftCertificate();
         $this->entity
             ->setQuantity(2)
             ->setId(1)

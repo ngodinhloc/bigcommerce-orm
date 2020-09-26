@@ -9,7 +9,6 @@ namespace Bigcommerce\ORM;
  */
 class Repository
 {
-
     /* @var string */
     protected $className;
 

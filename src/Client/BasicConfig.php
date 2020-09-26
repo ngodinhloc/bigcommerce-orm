@@ -7,6 +7,8 @@ use Bigcommerce\ORM\Client\Exceptions\ConfigException;
 
 class BasicConfig extends AbstractConfig
 {
+    const REQUIRED_CONFIGURATION_DATA = ['storeUrl', 'username', 'apiKey'];
+
     /** @var string */
     protected $storeUrl;
 
@@ -15,9 +17,7 @@ class BasicConfig extends AbstractConfig
 
     /** @var string */
     protected $apiKey;
-
-    const REQUIRED_CONFIGURATION_DATA = ['storeUrl', 'username', 'apiKey'];
-
+    
     /**
      * BasicConfig constructor.
      *

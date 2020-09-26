@@ -7,11 +7,11 @@ use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
 
 /**
- * Class CartCustomItem
+ * Class CustomItem
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CartCustomItem")
+ * @BC\Resource(name="CustomItem")
  */
-class CartCustomItem extends AbstractEntity
+class CustomItem extends AbstractEntity
 {
     /**
      * @var string|null
@@ -53,9 +53,9 @@ class CartCustomItem extends AbstractEntity
 
     /**
      * @param string|null $name
-     * @return \Bigcommerce\ORM\Entities\CartCustomItem
+     * @return \Bigcommerce\ORM\Entities\CustomItem
      */
-    public function setName(?string $name): CartCustomItem
+    public function setName(?string $name): CustomItem
     {
         $this->name = $name;
 
@@ -72,9 +72,9 @@ class CartCustomItem extends AbstractEntity
 
     /**
      * @param string|null $sku
-     * @return \Bigcommerce\ORM\Entities\CartCustomItem
+     * @return \Bigcommerce\ORM\Entities\CustomItem
      */
-    public function setSku(?string $sku): CartCustomItem
+    public function setSku(?string $sku): CustomItem
     {
         $this->sku = $sku;
 
@@ -91,9 +91,9 @@ class CartCustomItem extends AbstractEntity
 
     /**
      * @param int|null $quantity
-     * @return \Bigcommerce\ORM\Entities\CartCustomItem
+     * @return \Bigcommerce\ORM\Entities\CustomItem
      */
-    public function setQuantity(?int $quantity): CartCustomItem
+    public function setQuantity(?int $quantity): CustomItem
     {
         $this->quantity = $quantity;
 
@@ -110,9 +110,9 @@ class CartCustomItem extends AbstractEntity
 
     /**
      * @param float|null $listPrice
-     * @return \Bigcommerce\ORM\Entities\CartCustomItem
+     * @return \Bigcommerce\ORM\Entities\CustomItem
      */
-    public function setListPrice(?float $listPrice): CartCustomItem
+    public function setListPrice(?float $listPrice): CustomItem
     {
         $this->listPrice = $listPrice;
 

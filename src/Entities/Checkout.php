@@ -98,25 +98,25 @@ class Checkout extends AbstractEntity
     protected $cart;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\CheckoutBillingAddress|null
+     * @var \Bigcommerce\ORM\Entities\BillingAddress|null
      * @BC\HasOne(name="billing_address", targetClass="\Bigcommerce\ORM\Entities\CheckoutBillingAddress", field="id", targetField="checkout_id", from="result", auto=true)
      */
     protected $billingAddress;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\CheckoutConsignment[]|null
+     * @var \Bigcommerce\ORM\Entities\Consignment[]|null
      * @BC\HasMany(name="consignments", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignment", field="id", targetField="checkout_id", from="result", auto=true)
      */
     protected $consignments;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\CheckoutCoupon[]|null
+     * @var \Bigcommerce\ORM\Entities\Coupon[]|null
      * @BC\HasMany(name="coupons", targetClass="\Bigcommerce\ORM\Entities\CheckoutCoupon", field="id", targetField="checkout_id", from="result", auto=true)
      */
     protected $coupons;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption[]|null
+     * @var \Bigcommerce\ORM\Entities\ShippingOption[]|null
      * @BC\HasMany(name="consignments.available_shipping_options", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption", field="id", targetField="checkout_id", from="include", auto=true)
      */
     protected $available_shipping_options;
@@ -141,7 +141,7 @@ class Checkout extends AbstractEntity
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\CheckoutCoupon[]|null
+     * @return \Bigcommerce\ORM\Entities\Coupon[]|null
      */
     public function getCoupons(): ?array
     {
@@ -149,7 +149,7 @@ class Checkout extends AbstractEntity
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CheckoutCoupon[]|null $coupons
+     * @param \Bigcommerce\ORM\Entities\Coupon[]|null $coupons
      * @return Checkout
      */
     public function setCoupons(?array $coupons): Checkout
@@ -407,18 +407,18 @@ class Checkout extends AbstractEntity
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\CheckoutBillingAddress|null
+     * @return \Bigcommerce\ORM\Entities\BillingAddress|null
      */
-    public function getBillingAddress(): ?CheckoutBillingAddress
+    public function getBillingAddress(): ?BillingAddress
     {
         return $this->billingAddress;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CheckoutBillingAddress|null $billingAddress
+     * @param \Bigcommerce\ORM\Entities\BillingAddress|null $billingAddress
      * @return \Bigcommerce\ORM\Entities\Checkout
      */
-    public function setBillingAddress(?CheckoutBillingAddress $billingAddress): Checkout
+    public function setBillingAddress(?BillingAddress $billingAddress): Checkout
     {
         $this->billingAddress = $billingAddress;
 
@@ -426,7 +426,7 @@ class Checkout extends AbstractEntity
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment[]|null
+     * @return \Bigcommerce\ORM\Entities\Consignment[]|null
      */
     public function getConsignments(): ?array
     {
@@ -434,7 +434,7 @@ class Checkout extends AbstractEntity
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CheckoutConsignment[]|null $consignments
+     * @param \Bigcommerce\ORM\Entities\Consignment[]|null $consignments
      * @return \Bigcommerce\ORM\Entities\Checkout
      */
     public function setConsignments(?array $consignments): Checkout

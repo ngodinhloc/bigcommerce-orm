@@ -7,11 +7,11 @@ use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
 
 /**
- * Class CheckoutConsignmentShippingOption
+ * Class ShippingOption
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CheckoutConsignmentShippingOption")
+ * @BC\Resource(name="ShippingOption")
  */
-class CheckoutConsignmentShippingOption extends AbstractEntity
+class ShippingOption extends AbstractEntity
 {
     /**
      * @var string|null
@@ -59,9 +59,9 @@ class CheckoutConsignmentShippingOption extends AbstractEntity
 
     /**
      * @param string|null $type
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption
+     * @return \Bigcommerce\ORM\Entities\ShippingOption
      */
-    public function setType(?string $type): CheckoutConsignmentShippingOption
+    public function setType(?string $type): ShippingOption
     {
         $this->type = $type;
 
@@ -78,9 +78,9 @@ class CheckoutConsignmentShippingOption extends AbstractEntity
 
     /**
      * @param string|null $description
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption
+     * @return \Bigcommerce\ORM\Entities\ShippingOption
      */
-    public function setDescription(?string $description): CheckoutConsignmentShippingOption
+    public function setDescription(?string $description): ShippingOption
     {
         $this->description = $description;
 
@@ -97,9 +97,9 @@ class CheckoutConsignmentShippingOption extends AbstractEntity
 
     /**
      * @param string|null $imageUrl
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption
+     * @return \Bigcommerce\ORM\Entities\ShippingOption
      */
-    public function setImageUrl(?string $imageUrl): CheckoutConsignmentShippingOption
+    public function setImageUrl(?string $imageUrl): ShippingOption
     {
         $this->imageUrl = $imageUrl;
 
@@ -116,9 +116,9 @@ class CheckoutConsignmentShippingOption extends AbstractEntity
 
     /**
      * @param float|null $cost
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption
+     * @return \Bigcommerce\ORM\Entities\ShippingOption
      */
-    public function setCost(?float $cost): CheckoutConsignmentShippingOption
+    public function setCost(?float $cost): ShippingOption
     {
         $this->cost = $cost;
 
@@ -135,9 +135,9 @@ class CheckoutConsignmentShippingOption extends AbstractEntity
 
     /**
      * @param string|null $transitTime
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption
+     * @return \Bigcommerce\ORM\Entities\ShippingOption
      */
-    public function setTransitTime(?string $transitTime): CheckoutConsignmentShippingOption
+    public function setTransitTime(?string $transitTime): ShippingOption
     {
         $this->transitTime = $transitTime;
 
@@ -154,9 +154,9 @@ class CheckoutConsignmentShippingOption extends AbstractEntity
 
     /**
      * @param string|null $additionalDescription
-     * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption
+     * @return \Bigcommerce\ORM\Entities\ShippingOption
      */
-    public function setAdditionalDescription(?string $additionalDescription): CheckoutConsignmentShippingOption
+    public function setAdditionalDescription(?string $additionalDescription): ShippingOption
     {
         $this->additionalDescription = $additionalDescription;
 

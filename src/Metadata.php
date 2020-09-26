@@ -7,59 +7,37 @@ use Bigcommerce\ORM\Annotations\Resource;
 
 class Metadata
 {
-    /**
-     * @var \Bigcommerce\ORM\Annotations\Resource
-     */
+    /** @var \Bigcommerce\ORM\Annotations\Resource */
     protected $resource;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $relationFields;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $includeFields;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $autoLoadFields;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $inResultFields;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $requiredFields;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $readonlyFields;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $customisedFields;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $paramFields;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $uploadFields;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $validationProperties;
 
     /**

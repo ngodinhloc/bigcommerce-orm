@@ -6,11 +6,11 @@ namespace Bigcommerce\ORM\Entities;
 use Bigcommerce\ORM\Annotations as BC;
 
 /**
- * Class CheckoutBillingAddress
+ * Class BillingAddress
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CheckoutBillingAddress", path="/checkouts/{checkout_id}/billing-address", type="api", findable=false, deletable=false)
+ * @BC\Resource(name="BillingAddress", path="/checkouts/{checkout_id}/billing-address", type="api", findable=false, deletable=false)
  */
-class CheckoutBillingAddress extends AbstractAddress
+class BillingAddress extends AbstractAddress
 {
     /**
      * @var int|string|null
@@ -34,7 +34,7 @@ class CheckoutBillingAddress extends AbstractAddress
 
     /**
      * @param int|string|null $checkoutId
-     * @return \Bigcommerce\ORM\Entities\CheckoutBillingAddress
+     * @return \Bigcommerce\ORM\Entities\BillingAddress
      */
     public function setCheckoutId($checkoutId)
     {
@@ -53,9 +53,9 @@ class CheckoutBillingAddress extends AbstractAddress
 
     /**
      * @param string|null $email
-     * @return \Bigcommerce\ORM\Entities\CheckoutBillingAddress
+     * @return \Bigcommerce\ORM\Entities\BillingAddress
      */
-    public function setEmail(?string $email): CheckoutBillingAddress
+    public function setEmail(?string $email): BillingAddress
     {
         $this->email = $email;
 

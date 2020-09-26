@@ -21,12 +21,11 @@ use ReflectionClass;
  */
 class Mapper
 {
+    const KEY_BY_FIELD_NAME = 1;
+    const KEY_BY_PROPERTY_NAME = 2;
 
     /** @var \Doctrine\Common\Annotations\AnnotationReader */
     protected $reader;
-
-    const KEY_BY_FIELD_NAME = 1;
-    const KEY_BY_PROPERTY_NAME = 2;
 
     /**
      * Mapper constructor.
@@ -176,7 +175,7 @@ class Mapper
     }
 
     /**
-     * Get none readonly data
+     * Get writable data
      *
      * @param \Bigcommerce\ORM\AbstractEntity|null $entity
      * @param array|null $data

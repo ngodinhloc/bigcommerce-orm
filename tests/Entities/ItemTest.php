@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace Tests\Entities;
 
-use Bigcommerce\ORM\Entities\CartLineItem;
+use Bigcommerce\ORM\Entities\LineItem;
 use Tests\BaseTestCase;
 
-class CartLineItemTest extends BaseTestCase
+class ItemTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CartLineItem */
+    /** @var \Bigcommerce\ORM\Entities\LineItem */
     protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->entity = new CartLineItem();
+        $this->entity = new LineItem();
         $this->entity
             ->setId(1)
             ->setQuantity(2)

@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace Tests\Entities;
 
-use Bigcommerce\ORM\Entities\CheckoutBillingAddress;
+use Bigcommerce\ORM\Entities\BillingAddress;
 use Tests\BaseTestCase;
 
-class CheckoutBillingAddressTest extends BaseTestCase
+class BillingAddressTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CheckoutBillingAddress */
+    /** @var \Bigcommerce\ORM\Entities\BillingAddress */
     protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->entity = new CheckoutBillingAddress();
+        $this->entity = new BillingAddress();
         $this->entity
             ->setCheckoutId(1)
             ->setEmail('kn@bc.com');

@@ -8,7 +8,7 @@ use Bigcommerce\ORM\Entities\Brand;
 use Bigcommerce\ORM\Entities\Cart;
 use Bigcommerce\ORM\Entities\Channel;
 use Bigcommerce\ORM\Entities\Checkout;
-use Bigcommerce\ORM\Entities\CheckoutCoupon;
+use Bigcommerce\ORM\Entities\Coupon;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Entities\PaymentAccessToken;
 use Bigcommerce\ORM\Entities\Product;
@@ -209,7 +209,7 @@ class EntityManagerTest extends BaseTestCase
 
     public function testUpdateWithUpdatable()
     {
-        $coupon = new CheckoutCoupon();
+        $coupon = new Coupon();
         $coupon->setId(1)->setCode('code');
         $this->expectException(EntityException::class);
         $this->entityManager->save($coupon);

@@ -7,6 +7,8 @@ use Bigcommerce\ORM\Client\Exceptions\ConfigException;
 
 class AuthConfig extends AbstractConfig
 {
+    const REQUIRED_CONFIGURATION_DATA = ['clientId', 'authToken', 'storeHash'];
+
     /** @var string */
     protected $apiBaseUrl = self::API_BASE_URL;
 
@@ -21,8 +23,6 @@ class AuthConfig extends AbstractConfig
 
     /** @var string */
     protected $storeHash;
-
-    const REQUIRED_CONFIGURATION_DATA = ['clientId', 'authToken', 'storeHash'];
 
     /**
      * AuthConfig constructor.

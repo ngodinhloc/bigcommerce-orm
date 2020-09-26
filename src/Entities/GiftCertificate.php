@@ -7,11 +7,11 @@ use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
 
 /**
- * Class CartGiftCertificate
+ * Class GiftCertificate
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CartGiftCertificate")
+ * @BC\Resource(name="GiftCertificate")
  */
-class CartGiftCertificate extends AbstractEntity
+class GiftCertificate extends AbstractEntity
 {
     /**
      * @var string|null
@@ -71,9 +71,9 @@ class CartGiftCertificate extends AbstractEntity
 
     /**
      * @param string|null $name
-     * @return \Bigcommerce\ORM\Entities\CartGiftCertificate
+     * @return \Bigcommerce\ORM\Entities\GiftCertificate
      */
-    public function setName(?string $name): CartGiftCertificate
+    public function setName(?string $name): GiftCertificate
     {
         $this->name = $name;
 
@@ -91,9 +91,9 @@ class CartGiftCertificate extends AbstractEntity
     /**
      * @param string|null $theme
      * Birthday, Boy, Celebration, Christmas, General, Girl
-     * @return \Bigcommerce\ORM\Entities\CartGiftCertificate
+     * @return \Bigcommerce\ORM\Entities\GiftCertificate
      */
-    public function setTheme(?string $theme): CartGiftCertificate
+    public function setTheme(?string $theme): GiftCertificate
     {
         $this->theme = $theme;
 
@@ -110,9 +110,9 @@ class CartGiftCertificate extends AbstractEntity
 
     /**
      * @param float|null $amount
-     * @return \Bigcommerce\ORM\Entities\CartGiftCertificate
+     * @return \Bigcommerce\ORM\Entities\GiftCertificate
      */
-    public function setAmount(?float $amount): CartGiftCertificate
+    public function setAmount(?float $amount): GiftCertificate
     {
         $this->amount = $amount;
 
@@ -129,9 +129,9 @@ class CartGiftCertificate extends AbstractEntity
 
     /**
      * @param int|null $quantity
-     * @return \Bigcommerce\ORM\Entities\CartGiftCertificate
+     * @return \Bigcommerce\ORM\Entities\GiftCertificate
      */
-    public function setQuantity(?int $quantity): CartGiftCertificate
+    public function setQuantity(?int $quantity): GiftCertificate
     {
         $this->quantity = $quantity;
 
@@ -148,9 +148,9 @@ class CartGiftCertificate extends AbstractEntity
 
     /**
      * @param array|null $sender
-     * @return \Bigcommerce\ORM\Entities\CartGiftCertificate
+     * @return \Bigcommerce\ORM\Entities\GiftCertificate
      */
-    public function setSender(?array $sender): CartGiftCertificate
+    public function setSender(?array $sender): GiftCertificate
     {
         $this->sender = $sender;
 
@@ -167,9 +167,9 @@ class CartGiftCertificate extends AbstractEntity
 
     /**
      * @param array|null $recipient
-     * @return \Bigcommerce\ORM\Entities\CartGiftCertificate
+     * @return \Bigcommerce\ORM\Entities\GiftCertificate
      */
-    public function setRecipient(?array $recipient): CartGiftCertificate
+    public function setRecipient(?array $recipient): GiftCertificate
     {
         $this->recipient = $recipient;
 
@@ -186,9 +186,9 @@ class CartGiftCertificate extends AbstractEntity
 
     /**
      * @param string|null $message
-     * @return \Bigcommerce\ORM\Entities\CartGiftCertificate
+     * @return \Bigcommerce\ORM\Entities\GiftCertificate
      */
-    public function setMessage(?string $message): CartGiftCertificate
+    public function setMessage(?string $message): GiftCertificate
     {
         $this->message = $message;
 

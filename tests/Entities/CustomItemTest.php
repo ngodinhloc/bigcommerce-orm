@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace Tests\Entities;
 
-use Bigcommerce\ORM\Entities\CartCustomItem;
+use Bigcommerce\ORM\Entities\CustomItem;
 use Tests\BaseTestCase;
 
-class CartCustomItemTest extends BaseTestCase
+class CustomItemTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CartCustomItem */
+    /** @var \Bigcommerce\ORM\Entities\CustomItem */
     protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->entity = new CartCustomItem();
+        $this->entity = new CustomItem();
         $this->entity
             ->setName('name')
             ->setId(1)

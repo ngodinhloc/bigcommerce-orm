@@ -25,15 +25,6 @@ class Client implements ClientInterface
     /** @var \Psr\Log\LoggerInterface */
     protected $logger;
 
-    const LOG_QUERY_START = 'Start querying objects. Resource type: %s. Query: %s';
-    const LOG_QUERY_FINISH = 'Finish querying objects. Resource type: %s. Query: %s';
-    const LOG_UPDATE_START = 'Start updating objects. Resource type: %s. Path: %s .Data: %s';
-    const LOG_UPDATE_FINISH = 'Finish updating objects. Resource type: %s. Path: %s .Data: %s';
-    const LOG_CREATE_START = 'Start creating objects. Resource type: %s. Path: %s. Data: %s';
-    const LOG_CREATE_FINISH = 'Finish creating objects. Resource type: %s. Path: %s. Data: %s';
-    const LOG_DELETE_START = 'Start deleting objects. Resource type: %s. Query: %s';
-    const LOG_DELETE_FINISH = 'Finish deleting objects. Resource type: %s. Query: %s';
-
     /**
      * Client constructor.
      * @param \Bigcommerce\ORM\Client\Connection|null $connection
@@ -101,7 +92,7 @@ class Client implements ClientInterface
         $this->checkPath($resourcePath);
 
         if ($this->logger) {
-            $this->logger->debug(sprintf(self::LOG_CREATE_START, $resourceType, $resourcePath, json_encode($data)));
+            $this->logger->debug(sprintf(LogMessage::LOG_CREATE_START, $resourceType, $resourcePath, json_encode($data)));
         }
 
         try {
@@ -114,7 +105,7 @@ class Client implements ClientInterface
         }
 
         if ($this->logger) {
-            $this->logger->debug(sprintf(self::LOG_CREATE_FINISH, $resourceType, $resourcePath, json_encode($data)));
+            $this->logger->debug(sprintf(LogMessage::LOG_CREATE_FINISH, $resourceType, $resourcePath, json_encode($data)));
         }
 
         if ($batch == true) {
@@ -143,7 +134,7 @@ class Client implements ClientInterface
         }
 
         if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(self::LOG_UPDATE_START, $resourceType, $resourcePath, json_encode($data)));
+            $this->logger->debug(sprintf(LogMessage::LOG_UPDATE_START, $resourceType, $resourcePath, json_encode($data)));
         }
 
         try {
@@ -156,7 +147,7 @@ class Client implements ClientInterface
         }
 
         if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(self::LOG_UPDATE_FINISH, $resourceType, $resourcePath, json_encode($data)));
+            $this->logger->debug(sprintf(LogMessage::LOG_UPDATE_FINISH, $resourceType, $resourcePath, json_encode($data)));
         }
 
         if ($batch == true) {
@@ -178,7 +169,7 @@ class Client implements ClientInterface
         $this->checkPath($resourcePath);
 
         if ($this->logger) {
-            $this->logger->debug(sprintf(self::LOG_DELETE_START, $resourceType, $resourcePath));
+            $this->logger->debug(sprintf(LogMessage::LOG_DELETE_START, $resourceType, $resourcePath));
         }
 
         try {
@@ -191,7 +182,7 @@ class Client implements ClientInterface
         }
 
         if ($this->logger) {
-            $this->logger->debug(sprintf(self::LOG_DELETE_FINISH, $resourceType, $resourcePath));
+            $this->logger->debug(sprintf(LogMessage::LOG_DELETE_FINISH, $resourceType, $resourcePath));
         }
 
         return (new Result($response))->get(Result::RETURN_TYPE_BOOL);
@@ -218,7 +209,7 @@ class Client implements ClientInterface
         }
 
         if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(self::LOG_QUERY_START, $resourceType, $query));
+            $this->logger->debug(sprintf(LogMessage::LOG_QUERY_START, $resourceType, $query));
         }
 
         try {
@@ -231,7 +222,7 @@ class Client implements ClientInterface
         }
 
         if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(self::LOG_QUERY_FINISH, $resourceType, $query));
+            $this->logger->debug(sprintf(LogMessage::LOG_QUERY_FINISH, $resourceType, $query));
         }
 
         $result = (new Result($response))->get($returnType);

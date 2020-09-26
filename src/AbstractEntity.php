@@ -6,26 +6,21 @@ namespace Bigcommerce\ORM;
 use Bigcommerce\ORM\Annotations as BC;
 
 /**
- * Class Entity
+ * Class AbstractEntity
  * @package Bigcommerce\ORM
  */
 abstract class AbstractEntity
 {
-
     /**
      * @var int|string|null
      * @BC\Field(name="id", readonly=true)
      */
     protected $id;
 
-    /**
-     * @var bool
-     */
+    /** @var bool  */
     protected $isNew = false;
 
-    /**
-     * @var bool
-     */
+    /** @var bool  */
     protected $isPatched = false;
 
     /** @var \Bigcommerce\ORM\Metadata */

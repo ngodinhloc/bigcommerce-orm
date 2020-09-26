@@ -5,7 +5,7 @@ namespace Tests;
 
 use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Entities\CartRedirectUrl;
-use Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress;
+use Bigcommerce\ORM\Entities\ShippingAddress;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Entities\Product;
@@ -93,7 +93,7 @@ class MapperTest extends BaseTestCase
 
     public function testResourcePathEmpty()
     {
-        $entity = new CheckoutConsignmentShippingAddress();
+        $entity = new ShippingAddress();
         $this->expectException(EntityException::class);
         $path = $this->mapper->getResourcePath($entity, 'create');
     }

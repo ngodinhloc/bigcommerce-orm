@@ -10,13 +10,13 @@ namespace Bigcommerce\ORM\Client;
 abstract class AbstractConfig
 {
     const API_BASE_URL = 'https://api.bigcommerce.com';
+    const API_VERSION_V3 = "v3";
+    const API_STORE_PREFIX_V3 = '/stores/%s/v3';
+    const API_PATH_PREFIX_V3 = '/api/v3';
     const PAYMENT_BASE_URL = 'https://payments.bigcommerce.com';
+    const PAYMENT_STORE_PREFIX = '/stores/%s';
     const RESOURCE_TYPE_API = 'api';
     const RESOURCE_TYPE_PAYMENT = 'payment';
-    const API_VERSION_V3 = "v3";
-    const PATH_PREFIX_V3 = '/api/v3';
-    const API_STORE_PREFIX_V3 = '/stores/%s/v3';
-    const PAYMENT_STORE_PREFIX = '/stores/%s';
     const CONTENT_TYPE_JSON = 'application/json';
     const CONTENT_TYPE_WWW = 'application/x-www-form-urlencoded';
 
@@ -180,7 +180,7 @@ abstract class AbstractConfig
         switch ($this->apiVersion) {
             case self::API_VERSION_V3:
             default:
-                return self::PATH_PREFIX_V3;
+                return self::API_PATH_PREFIX_V3;
         }
     }
 

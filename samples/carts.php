@@ -28,16 +28,16 @@ try {
     /** create cart with line items, custom items and gift certificates */
     $newCart = new \Bigcommerce\ORM\Entities\Cart();
     $newCart->setCustomerId(3);
-    $lineItem1 = new \Bigcommerce\ORM\Entities\CartLineItem();
+    $lineItem1 = new \Bigcommerce\ORM\Entities\LineItem();
     $lineItem1
         ->setProductId(111)
         ->setQuantity(2);
-    $lineItem2 = new \Bigcommerce\ORM\Entities\CartLineItem();
+    $lineItem2 = new \Bigcommerce\ORM\Entities\LineItem();
     $lineItem2
         ->setProductId(107)
         ->setQuantity(5);
 
-    $giftCertificate = new \Bigcommerce\ORM\Entities\CartGiftCertificate();
+    $giftCertificate = new \Bigcommerce\ORM\Entities\GiftCertificate();
     $giftCertificate
         ->setQuantity(1)
         ->setAmount(50)
@@ -47,7 +47,7 @@ try {
         ->setSender(['name' => 'Ken Ngo', 'email' => 'ken.ngo@bc.com'])
         ->setRecipient(['name' => 'Ken Ngo', 'email' => 'ken2.ngo@bc.com']);
 
-    $customItem = new \Bigcommerce\ORM\Entities\CartCustomItem();
+    $customItem = new \Bigcommerce\ORM\Entities\CustomItem();
     $customItem
         ->setName('This is my item')
         ->setQuantity(1)

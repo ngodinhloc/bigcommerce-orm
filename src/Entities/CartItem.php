@@ -69,7 +69,7 @@ class CartItem extends AbstractEntity
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\CartLineItem[]|null
+     * @return \Bigcommerce\ORM\Entities\LineItem[]|null
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function getLineItems()
@@ -78,15 +78,15 @@ class CartItem extends AbstractEntity
             return null;
         }
 
-        return $this->mapper->arrayToCollection($this->lineItems, CartLineItem::class, ['cart_id' => $this->cartId]);
+        return $this->mapper->arrayToCollection($this->lineItems, LineItem::class, ['cart_id' => $this->cartId]);
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CartLineItem|null $item
+     * @param \Bigcommerce\ORM\Entities\LineItem|null $item
      * @return \Bigcommerce\ORM\Entities\CartItem
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function addLineItem(?CartLineItem $item)
+    public function addLineItem(?LineItem $item)
     {
         $data = $this->mapper->getWritableFieldValues($item);
         $this->lineItems[] = $data;
@@ -95,7 +95,7 @@ class CartItem extends AbstractEntity
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\CartGiftCertificate[]|null
+     * @return \Bigcommerce\ORM\Entities\GiftCertificate[]|null
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function getGiftCertificates()
@@ -104,15 +104,15 @@ class CartItem extends AbstractEntity
             return null;
         }
 
-        return $this->mapper->arrayToCollection($this->giftCertificates, CartGiftCertificate::class, ['cart_id' => $this->cartId]);
+        return $this->mapper->arrayToCollection($this->giftCertificates, GiftCertificate::class, ['cart_id' => $this->cartId]);
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CartGiftCertificate|null $gift
+     * @param \Bigcommerce\ORM\Entities\GiftCertificate|null $gift
      * @return \Bigcommerce\ORM\Entities\CartItem
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function addGiftCertificate(?CartGiftCertificate $gift)
+    public function addGiftCertificate(?GiftCertificate $gift)
     {
         $data = $this->mapper->getWritableFieldValues($gift);
         $this->giftCertificates[] = $data;
@@ -121,7 +121,7 @@ class CartItem extends AbstractEntity
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\CartCustomItem[]|null
+     * @return \Bigcommerce\ORM\Entities\CustomItem[]|null
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function getCustomItems()
@@ -130,15 +130,15 @@ class CartItem extends AbstractEntity
             return null;
         }
 
-        return $this->mapper->arrayToCollection($this->customItems, CartCustomItem::class, ['cart_id' => $this->cartId]);
+        return $this->mapper->arrayToCollection($this->customItems, CustomItem::class, ['cart_id' => $this->cartId]);
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CartCustomItem|null $item
+     * @param \Bigcommerce\ORM\Entities\CustomItem|null $item
      * @return \Bigcommerce\ORM\Entities\CartItem
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function addCustomItem(?CartCustomItem $item)
+    public function addCustomItem(?CustomItem $item)
     {
         $data = $this->mapper->getWritableFieldValues($item);
         $this->customItems[] = $data;

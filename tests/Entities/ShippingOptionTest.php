@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace Tests\Entities;
 
-use Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption;
+use Bigcommerce\ORM\Entities\ShippingOption;
 use Tests\BaseTestCase;
 
-class CheckoutConsignmentShippingOptionTest extends BaseTestCase
+class ShippingOptionTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption */
+    /** @var \Bigcommerce\ORM\Entities\ShippingOption */
     protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->entity = new CheckoutConsignmentShippingOption();
+        $this->entity = new ShippingOption();
         $this->entity
             ->setId(1)
             ->setType('type')

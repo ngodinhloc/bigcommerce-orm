@@ -49,16 +49,16 @@ class CartTest extends BaseTestCase
         $this->assertEquals(null, $this->entity->getRedirectUrl());
 
 
-        $item1 = new \Bigcommerce\ORM\Entities\CartLineItem();
+        $item1 = new \Bigcommerce\ORM\Entities\LineItem();
         $item1
             ->setProductId(111)
             ->setQuantity(2);
-        $item2 = new \Bigcommerce\ORM\Entities\CartLineItem();
+        $item2 = new \Bigcommerce\ORM\Entities\LineItem();
         $item2
             ->setProductId(107)
             ->setQuantity(5);
 
-        $gift = new \Bigcommerce\ORM\Entities\CartGiftCertificate();
+        $gift = new \Bigcommerce\ORM\Entities\GiftCertificate();
         $gift
             ->setQuantity(1)
             ->setAmount(50)
@@ -68,7 +68,7 @@ class CartTest extends BaseTestCase
             ->setSender(['name' => 'Ken Ngo', 'email' => 'ken.ngo@bc.com'])
             ->setRecipient(['name' => 'Ken Ngo', 'email' => 'ken2.ngo@bc.com']);
 
-        $custom = new \Bigcommerce\ORM\Entities\CartCustomItem();
+        $custom = new \Bigcommerce\ORM\Entities\CustomItem();
         $custom
             ->setName('This is my item')
             ->setQuantity(1)

@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace Tests\Entities;
 
-use Bigcommerce\ORM\Entities\CartLineItem;
-use Bigcommerce\ORM\Entities\CheckoutConsignment;
-use Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress;
-use Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption;
+use Bigcommerce\ORM\Entities\LineItem;
+use Bigcommerce\ORM\Entities\Consignment;
+use Bigcommerce\ORM\Entities\ShippingAddress;
+use Bigcommerce\ORM\Entities\ShippingOption;
 use Tests\BaseTestCase;
 
-class CheckoutConsignmentTest extends BaseTestCase
+class ConsignmentTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CheckoutConsignment */
+    /** @var \Bigcommerce\ORM\Entities\Consignment */
     protected $entity;
 
     public function testSettersAndGetters()
     {
-        $this->entity = new CheckoutConsignment();
+        $this->entity = new Consignment();
         $this->entity
             ->setShippingCostTotalExTax(100)
             ->setShippingCostTotalIncTax(110)
@@ -43,20 +43,20 @@ class CheckoutConsignmentTest extends BaseTestCase
         $this->assertEquals(null, $this->entity->getCheckoutShippingAddress());
         $this->assertEquals(null, $this->entity->getAvailableShippingOptions());
 
-        $lineItem = new CartLineItem();
+        $lineItem = new LineItem();
         $lineItem
             ->setId(1)
             ->setQuantity(2);
         $this->entity->addLineItem($lineItem);
         $this->assertEquals([['item_id' => 1, 'quantity' => 2]], $this->entity->getLineItems());
 
-        $shippingAddress = new CheckoutConsignmentShippingAddress();
+        $shippingAddress = new ShippingAddress();
         $shippingAddress->setCity('Sydney');
         $this->entity->setShippingAddress($shippingAddress);
         $address = $this->entity->getShippingAddress();
         $this->assertIsArray($address);
 
-        $shippingOption = new CheckoutConsignmentShippingOption();
+        $shippingOption = new ShippingOption();
         $shippingOption->setId(1);
         $this->entity->setShippingOption($shippingOption);
         $this->assertEquals(1, $this->entity->getShippingOptionId());
