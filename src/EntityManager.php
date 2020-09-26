@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bigcommerce\ORM;
 
 use Bigcommerce\ORM\Client\ClientInterface;
+use Bigcommerce\ORM\Entities\PaymentAccessToken;
 use Bigcommerce\ORM\Events\EntityManagerEvent;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Relation\RelationInterface;
@@ -174,6 +175,29 @@ class EntityManager
         if (!empty($id = $entity->getId())) {
             return $this->updateEntity($entity, $writableData);
         }
+
+        // create entity
+        return $this->createEntity($entity, $writableData);
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
+     * @return bool
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     */
+    public function create(AbstractEntity $entity)
+    {
+        $this->mapper->checkEntity($entity);
+
+        if ($entity->isPatched() !== true) {
+            $entity = $this->mapper->patch($entity, [], null, true);
+        }
+
+        $this->checkEntityBeforeCreating($entity);
+        $writableData = $this->mapper->getWritableFieldValues($entity);
 
         // create entity
         return $this->createEntity($entity, $writableData);
@@ -740,6 +764,17 @@ class EntityManager
     public function setEventDispatcher(?EventDispatcherInterface $eventDispatcher = null): EntityManager
     {
         $this->eventDispatcher = $eventDispatcher;
+
+        return $this;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\PaymentAccessToken|null $token
+     * @return \Bigcommerce\ORM\EntityManager
+     */
+    public function setPaymentAccessToken(?PaymentAccessToken $token)
+    {
+        $this->client->setPaymentAccessToken($token->getId());
 
         return $this;
     }

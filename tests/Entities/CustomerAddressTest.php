@@ -25,7 +25,7 @@ class CustomerAddressTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Entities\CustomerAddress::setLastName
      * @covers \Bigcommerce\ORM\Entities\CustomerAddress::setPhone
      * @covers \Bigcommerce\ORM\Entities\CustomerAddress::setPostalCode
-     * @covers \Bigcommerce\ORM\Entities\CustomerAddress::setState
+     * @covers \Bigcommerce\ORM\Entities\CustomerAddress::setStateOrProvince
      * @covers \Bigcommerce\ORM\Entities\CustomerAddress::getId
      * @covers \Bigcommerce\ORM\Entities\CustomerAddress::getAddress1
      * @covers \Bigcommerce\ORM\Entities\CustomerAddress::getAddress2
@@ -39,7 +39,9 @@ class CustomerAddressTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Entities\CustomerAddress::getLastName
      * @covers \Bigcommerce\ORM\Entities\CustomerAddress::getPhone
      * @covers \Bigcommerce\ORM\Entities\CustomerAddress::getPostalCode
-     * @covers \Bigcommerce\ORM\Entities\CustomerAddress::getState
+     * @covers \Bigcommerce\ORM\Entities\CustomerAddress::getStateOrProvince
+     * @covers \Bigcommerce\ORM\Entities\CustomerAddress::getStateOrProvinceCode
+     * @covers \Bigcommerce\ORM\Entities\CustomerAddress::setStateOrProvinceCode
      */
     public function testSettersAndGetters()
     {
@@ -57,7 +59,8 @@ class CustomerAddressTest extends BaseTestCase
             ->setLastName('Ngo')
             ->setPhone('0123456789')
             ->setPostalCode('2000')
-            ->setState('NSW');
+            ->setStateOrProvince('NSW')
+            ->setStateOrProvinceCode('NSW');
 
         $this->assertEquals(1, $this->entity->getId());
         $this->assertEquals('add1', $this->entity->getAddress1());
@@ -72,7 +75,7 @@ class CustomerAddressTest extends BaseTestCase
         $this->assertEquals('Ngo', $this->entity->getLastName());
         $this->assertEquals('0123456789', $this->entity->getPhone());
         $this->assertEquals('2000', $this->entity->getPostalCode());
-        $this->assertEquals('NSW', $this->entity->getState());
-
+        $this->assertEquals('NSW', $this->entity->getStateOrProvince());
+        $this->assertEquals('NSW', $this->entity->getStateOrProvinceCode());
     }
 }

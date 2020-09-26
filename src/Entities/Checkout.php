@@ -116,6 +116,12 @@ class Checkout extends AbstractEntity
     protected $coupons;
 
     /**
+     * @var \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption[]|null
+     * @BC\HasMany(name="consignments.available_shipping_options", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption", field="id", targetField="checkout_id", from="include", auto=true)
+     */
+    protected $available_shipping_options;
+
+    /**
      * @return array|null
      */
     public function getTaxes(): ?array

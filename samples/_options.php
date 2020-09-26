@@ -2,7 +2,7 @@
 
 return [
     'accept' => 'application/json',
-    'timeout' => 60,
+    'timeout' => 600,
     'verify' => true,
     'debug' => true,
     'proxy' => null

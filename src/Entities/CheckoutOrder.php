@@ -20,6 +20,12 @@ class CheckoutOrder extends AbstractEntity
     protected $checkoutId;
 
     /**
+     * @var bool
+     * @BC\Field(name="is_recurring")
+     */
+    protected $isRecurring = false;
+
+    /**
      * @return int|string|null
      */
     public function getCheckoutId()
@@ -34,6 +40,25 @@ class CheckoutOrder extends AbstractEntity
     public function setCheckoutId($checkoutId)
     {
         $this->checkoutId = $checkoutId;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRecurring(): bool
+    {
+        return $this->isRecurring;
+    }
+
+    /**
+     * @param bool|null $isRecurring
+     * @return CheckoutOrder
+     */
+    public function setIsRecurring(bool $isRecurring): CheckoutOrder
+    {
+        $this->isRecurring = $isRecurring;
 
         return $this;
     }

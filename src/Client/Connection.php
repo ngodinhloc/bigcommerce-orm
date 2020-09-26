@@ -339,4 +339,19 @@ class Connection
     {
         return $this->requestOptions;
     }
+
+    /**
+     * Connection need PaymentAccessToken in order to work with payment API
+     * Payment API only accept 'application/vnd.bc.v1+json'
+     * @param string|null $token
+     * @return \Bigcommerce\ORM\Client\Connection
+     */
+    public function setPaymentAccessToken(?string $token)
+    {
+        $this->addRequestHeader('Authorization', "PAT $token");
+        $this->addRequestHeader('Accept', 'application/vnd.bc.v1+json');
+        $this->composeRequestOptions();
+
+        return $this;
+    }
 }

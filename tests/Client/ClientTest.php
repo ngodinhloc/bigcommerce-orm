@@ -173,6 +173,12 @@ class ClientTest extends BaseTestCase
         $this->client->delete('/customers?id:in=0,2', 'api');
     }
 
+    public function testSetPaymentAccessToken()
+    {
+        $this->client->setPaymentAccessToken('123');
+        $this->assertInstanceOf(Client::class, $this->client);
+    }
+
     private function getConnection()
     {
         $many = [
@@ -204,6 +210,7 @@ class ClientTest extends BaseTestCase
         $connection->delete('/customers?id:in=1,2', 'api')->willReturn($response);
         $connection->delete('/customers?id:in=0,1', 'api')->willThrow($guzzleException);
         $connection->delete('/customers?id:in=0,2', 'api')->willThrow($exception);
+        $connection->setPaymentAccessToken('123')->willReturn(true);
 
         return $connection->reveal();
     }

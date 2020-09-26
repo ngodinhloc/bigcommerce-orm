@@ -74,10 +74,22 @@ class CheckoutConsignment extends AbstractEntity
     protected $shippingAddress;
 
     /**
-     * @var \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null
-     * @BC\HasOne(name="selected_shipping_option", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption", field="id", targetField="consignment_id", from="result", auto=true)
+     * @var int|string|null
+     * @BC\Field(name="shipping_option_id")
      */
-    protected $checkoutShippingOption;
+    protected $shippingOptionId;
+
+    /**
+     * @var \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null
+     * @BC\HasOne(name="selected_shipping_option", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption", field="id", targetField="consignment_id", from="include", auto=true)
+     */
+    protected $selectedShippingOption;
+
+    /**
+     * @var \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption[]|null
+     * @BC\HasMany(name="available_shipping_options", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption", field="id", targetField="consignment_id", from="include", auto=true)
+     */
+    protected $availableShippingOptions;
 
     /**
      * @var \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress|null
@@ -245,18 +257,18 @@ class CheckoutConsignment extends AbstractEntity
     /**
      * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null
      */
-    public function getCheckoutShippingOption(): ?CheckoutConsignmentShippingOption
+    public function getSelectedShippingOption(): ?CheckoutConsignmentShippingOption
     {
-        return $this->checkoutShippingOption;
+        return $this->selectedShippingOption;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null $checkoutShippingOption
+     * @param \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null $selectedShippingOption
      * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
      */
-    public function setCheckoutShippingOption(?CheckoutConsignmentShippingOption $checkoutShippingOption): CheckoutConsignment
+    public function setSelectedShippingOption(?CheckoutConsignmentShippingOption $selectedShippingOption): CheckoutConsignment
     {
-        $this->checkoutShippingOption = $checkoutShippingOption;
+        $this->selectedShippingOption = $selectedShippingOption;
 
         return $this;
     }
@@ -295,11 +307,11 @@ class CheckoutConsignment extends AbstractEntity
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress|null $address
+     * @param \Bigcommerce\ORM\Entities\AbstractAddress|null $address
      * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function setShippingAddress(?CheckoutConsignmentShippingAddress $address = null)
+    public function setShippingAddress(?AbstractAddress $address = null)
     {
         $data = $this->mapper->getWritableFieldValues($address);
         $this->shippingAddress = $data;
@@ -324,5 +336,32 @@ class CheckoutConsignment extends AbstractEntity
         $this->checkoutId = $checkoutId;
 
         return $this;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption[]|null
+     */
+    public function getAvailableShippingOptions(): ?array
+    {
+        return $this->availableShippingOptions;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption|null $shippingOption
+     * @return \Bigcommerce\ORM\Entities\CheckoutConsignment
+     */
+    public function setShippingOption(?CheckoutConsignmentShippingOption $shippingOption = null)
+    {
+        $this->shippingOptionId = $shippingOption->getId();
+
+        return $this;
+    }
+
+    /**
+     * @return int|string|null
+     */
+    public function getShippingOptionId()
+    {
+        return $this->shippingOptionId;
     }
 }

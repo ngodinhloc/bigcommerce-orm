@@ -331,4 +331,15 @@ class Client implements ClientInterface
 
         return $this;
     }
+
+    /**
+     * @param string|null $token
+     * @return \Bigcommerce\ORM\Client\Client
+     */
+    public function setPaymentAccessToken(?string $token)
+    {
+        $this->connection->setPaymentAccessToken($token);
+
+        return $this;
+    }
 }

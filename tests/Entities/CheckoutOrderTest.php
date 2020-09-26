@@ -16,9 +16,11 @@ class CheckoutOrderTest extends BaseTestCase
         $this->entity = new CheckoutOrder();
         $this->entity
             ->setCheckoutId(2)
+            ->setIsRecurring(false)
             ->setId(1);
 
         $this->assertEquals(2, $this->entity->getCheckoutId());
         $this->assertEquals(1, $this->entity->getId());
+        $this->assertEquals(false, $this->entity->isRecurring());
     }
 }

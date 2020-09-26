@@ -10,6 +10,7 @@ use Bigcommerce\ORM\Entities\Channel;
 use Bigcommerce\ORM\Entities\Checkout;
 use Bigcommerce\ORM\Entities\CheckoutCoupon;
 use Bigcommerce\ORM\Entities\Customer;
+use Bigcommerce\ORM\Entities\PaymentAccessToken;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductImage;
 use Bigcommerce\ORM\EntityManager;
@@ -142,6 +143,11 @@ class EntityManagerTest extends BaseTestCase
         $product = new Product();
         $product->setDescription('Desc')->setName('name');
         $this->entityManager->save($product);
+        $this->assertEquals(1, $product->getId());
+
+        $product = new Product();
+        $product->setDescription('Desc')->setName('name');
+        $this->entityManager->create($product);
         $this->assertEquals(1, $product->getId());
     }
 
@@ -405,6 +411,14 @@ class EntityManagerTest extends BaseTestCase
         $this->assertInstanceOf(Repository::class, $repo);
     }
 
+    public function testSetPaymentAccessToken()
+    {
+        $token = new PaymentAccessToken();
+        $token->setId('123');
+        $this->entityManager->setPaymentAccessToken($token);
+        $this->assertInstanceOf(EntityManager::class, $this->entityManager);
+    }
+
     /**
      * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
      */
@@ -488,6 +502,7 @@ class EntityManagerTest extends BaseTestCase
         $client->update($savePath, 'api', $this->getBatchReturnedData(), null, true)->willReturn($this->getBatchReturnedData());
         $client->update('/carts', 'api', Argument::any(), null, true)->willReturn($this->getBatchReturnedEmptyId());
         $client->update('/catalog/products/2/images/1', 'api', Argument::any(), [])->willReturn(['id' => 1]);
+        $client->setPaymentAccessToken('123')->willReturn(true);
 
         return $client->reveal();
     }

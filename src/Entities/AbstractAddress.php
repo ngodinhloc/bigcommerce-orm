@@ -83,7 +83,13 @@ abstract class AbstractAddress extends AbstractEntity
      * @var string|null
      * @BC\Field(name="state_or_province")
      */
-    protected $state;
+    protected $stateOrProvince;
+
+    /**
+     * @var string|null
+     * @BC\Field(name="state_or_province_code")
+     */
+    protected $stateOrProvinceCode;
 
     /**
      * @return string|null
@@ -297,18 +303,37 @@ abstract class AbstractAddress extends AbstractEntity
     /**
      * @return string|null
      */
-    public function getState(): ?string
+    public function getStateOrProvince(): ?string
     {
-        return $this->state;
+        return $this->stateOrProvince;
     }
 
     /**
-     * @param string|null $state
+     * @param string|null $stateOrProvince
      * @return \Bigcommerce\ORM\Entities\AbstractAddress
      */
-    public function setState(?string $state): AbstractAddress
+    public function setStateOrProvince(?string $stateOrProvince): AbstractAddress
     {
-        $this->state = $state;
+        $this->stateOrProvince = $stateOrProvince;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStateOrProvinceCode(): ?string
+    {
+        return $this->stateOrProvinceCode;
+    }
+
+    /**
+     * @param string|null $stateOrProvinceCode
+     * @return \Bigcommerce\ORM\Entities\AbstractAddress
+     */
+    public function setStateOrProvinceCode(?string $stateOrProvinceCode): AbstractAddress
+    {
+        $this->stateOrProvinceCode = $stateOrProvinceCode;
 
         return $this;
     }

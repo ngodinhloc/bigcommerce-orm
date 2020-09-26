@@ -6,6 +6,7 @@ namespace Tests\Entities;
 use Bigcommerce\ORM\Entities\CartLineItem;
 use Bigcommerce\ORM\Entities\CheckoutConsignment;
 use Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress;
+use Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption;
 use Tests\BaseTestCase;
 
 class CheckoutConsignmentTest extends BaseTestCase
@@ -26,7 +27,7 @@ class CheckoutConsignmentTest extends BaseTestCase
             ->setCouponDiscounts([])
             ->setDiscounts([])
             ->setLineItemIds([])
-            ->setCheckoutShippingOption(null)
+            ->setSelectedShippingOption(null)
             ->setCheckoutShippingAddress(null);
 
         $this->assertEquals(100, $this->entity->getShippingCostTotalExTax());
@@ -38,8 +39,9 @@ class CheckoutConsignmentTest extends BaseTestCase
         $this->assertEquals([], $this->entity->getCouponDiscounts());
         $this->assertEquals([], $this->entity->getDiscounts());
         $this->assertEquals([], $this->entity->getLineItemIds());
-        $this->assertEquals(null, $this->entity->getCheckoutShippingOption());
+        $this->assertEquals(null, $this->entity->getSelectedShippingOption());
         $this->assertEquals(null, $this->entity->getCheckoutShippingAddress());
+        $this->assertEquals(null, $this->entity->getAvailableShippingOptions());
 
         $lineItem = new CartLineItem();
         $lineItem
@@ -53,5 +55,10 @@ class CheckoutConsignmentTest extends BaseTestCase
         $this->entity->setShippingAddress($shippingAddress);
         $address = $this->entity->getShippingAddress();
         $this->assertIsArray($address);
+
+        $shippingOption = new CheckoutConsignmentShippingOption();
+        $shippingOption->setId(1);
+        $this->entity->setShippingOption($shippingOption);
+        $this->assertEquals(1, $this->entity->getShippingOptionId());
     }
 }

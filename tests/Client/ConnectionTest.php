@@ -104,6 +104,16 @@ class ConnectionTest extends BaseTestCase
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 
+    public function testSetPaymentAccessToken()
+    {
+        $this->connection->setPaymentAccessToken('123');
+        $requestOption = $this->connection->getRequestOptions();
+        $header = $requestOption['headers'];
+        $this->assertArrayHasKey('Authorization', $header);
+        $token = $header['Authorization'];
+        $this->assertEquals("PAT 123", $token);
+    }
+
     private function getBasicConfig()
     {
         $basicCredentials = [
