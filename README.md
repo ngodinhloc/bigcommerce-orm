@@ -567,7 +567,7 @@ Accept: application/json
 - create order for the checkout
 - get payment access token for the order
 - get available payment methods for the order
-- create a payment with payment method and credit card
+- made a payment with payment method and credit card
 ```php
 /** create cart with line items, custom items and gift certificates */
 $newCart = new \Bigcommerce\ORM\Entities\Cart();
