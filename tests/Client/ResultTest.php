@@ -14,6 +14,9 @@ class ResultTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Client\Result */
     protected $result;
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testNullResponse()
     {
         $this->result = new Result();
@@ -21,6 +24,9 @@ class ResultTest extends BaseTestCase
         $this->result->get(Result::RETURN_TYPE_ALL);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testReturnFalse()
     {
         $many = [
@@ -37,6 +43,9 @@ class ResultTest extends BaseTestCase
         $this->assertFalse($get);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testGetAll()
     {
         $many = [
@@ -55,6 +64,9 @@ class ResultTest extends BaseTestCase
         $this->assertIsArray($all);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testGetBool()
     {
         $many = [
@@ -70,6 +82,9 @@ class ResultTest extends BaseTestCase
         $this->assertTrue($bool);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testGetDelete()
     {
         $many = [
@@ -85,6 +100,9 @@ class ResultTest extends BaseTestCase
         $this->assertTrue($bool);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testGetFirst()
     {
         $many = [
@@ -101,6 +119,9 @@ class ResultTest extends BaseTestCase
         $this->assertArrayHasKey('id', $first);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testGetCount()
     {
         $many = [
@@ -116,6 +137,9 @@ class ResultTest extends BaseTestCase
         $this->assertEquals(1, $count);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testGetOne()
     {
         $many = [

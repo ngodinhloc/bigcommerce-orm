@@ -11,6 +11,9 @@ class CartRedirectUrlTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\CartRedirectUrl */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new CartRedirectUrl();

@@ -11,6 +11,9 @@ class ProductModifierImageTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ProductModifierImage */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new ProductModifierImage();

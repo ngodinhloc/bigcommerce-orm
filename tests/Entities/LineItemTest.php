@@ -6,11 +6,14 @@ namespace Tests\Entities;
 use Bigcommerce\ORM\Entities\LineItem;
 use Tests\BaseTestCase;
 
-class ItemTest extends BaseTestCase
+class LineItemTest extends BaseTestCase
 {
     /** @var \Bigcommerce\ORM\Entities\LineItem */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new LineItem();

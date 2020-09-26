@@ -11,6 +11,10 @@ class CartItemTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\CartItem */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new CartItem();

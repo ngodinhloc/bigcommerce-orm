@@ -11,6 +11,9 @@ class ChannelTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\Channel */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new Channel();

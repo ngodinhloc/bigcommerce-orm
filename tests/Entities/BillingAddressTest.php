@@ -11,6 +11,9 @@ class BillingAddressTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\BillingAddress */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new BillingAddress();

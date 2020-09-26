@@ -11,6 +11,9 @@ class OrderTransactionTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\OrderTransaction */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new OrderTransaction();

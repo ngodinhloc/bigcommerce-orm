@@ -11,6 +11,9 @@ class ProductOptionValueTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ProductOptionValue */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new ProductOptionValue();

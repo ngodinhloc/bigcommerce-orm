@@ -11,7 +11,8 @@ class ResourceTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Annotations\Resource */
     protected $annotation;
 
-    public function testResource(){
+    public function testResource()
+    {
         $this->annotation = new Resource(['name' => 'Customer', 'path' => '/customers']);
         $this->assertEquals('Customer', $this->annotation->name);
         $this->assertEquals('/customers', $this->annotation->path);

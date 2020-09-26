@@ -71,6 +71,9 @@ class OrderRefund extends AbstractEntity
     /** @var \Bigcommerce\ORM\Mapper */
     protected $mapper;
 
+    /**
+     * OrderRefund constructor.
+     */
     public function __construct()
     {
         $this->mapper = new Mapper();

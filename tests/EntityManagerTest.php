@@ -44,6 +44,9 @@ class EntityManagerTest extends BaseTestCase
         $this->entityManager = new EntityManager($this->client, $this->mapper, $this->dispatcher);
     }
 
+    /**
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     */
     public function testSettersAndGetters()
     {
         $this->entityManager = new EntityManager($this->client, $this->mapper, $this->dispatcher);
@@ -57,6 +60,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals($this->dispatcher, $this->entityManager->getEventDispatcher());
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testFindAll()
     {
         $class = Customer::class;
@@ -68,6 +77,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals($expectedResult, $findAll);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testFindBy()
     {
         $class = Customer::class;
@@ -80,6 +95,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals($expectedResult, $findBy);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testFind()
     {
         $class = Product::class;
@@ -101,6 +122,12 @@ class EntityManagerTest extends BaseTestCase
 
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testFindProduct()
     {
         /** @var Product $product */
@@ -117,12 +144,24 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(1, $product->getId());
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testFindThrowException()
     {
         $this->expectException(EntityException::class);
         $this->entityManager->find(Customer::class, 1, null, false);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testCreateThrowException()
     {
         $customer = $this->getCustomer();
@@ -130,6 +169,12 @@ class EntityManagerTest extends BaseTestCase
         $this->entityManager->save($customer);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testCreateRequiredFields()
     {
         $product = new Product();
@@ -138,6 +183,12 @@ class EntityManagerTest extends BaseTestCase
         $this->entityManager->save($product);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testCreate()
     {
         $product = new Product();
@@ -151,6 +202,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(1, $product->getId());
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testCreateEmptyFalse()
     {
         $brand = new Brand();
@@ -159,6 +216,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertFalse($result);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testCreateEmpty()
     {
         $product = new Product();
@@ -166,6 +229,12 @@ class EntityManagerTest extends BaseTestCase
         $this->entityManager->save($product);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testSaveThrowException()
     {
         $customer = new Customer();
@@ -174,6 +243,12 @@ class EntityManagerTest extends BaseTestCase
         $this->entityManager->save($customer);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testUpdate()
     {
         $customer = $this->getCustomer();
@@ -189,6 +264,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(1, $customer->getId());
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testUpdateWithData()
     {
         $file = __DIR__ . '/assets/images/lamp.jpg';
@@ -198,6 +279,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(1, $image->getId());
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testUpdateWithInvalidFiles()
     {
         $file = __DIR__ . '/assets/images/lamp1.jpg';
@@ -207,6 +294,12 @@ class EntityManagerTest extends BaseTestCase
         $this->entityManager->save($image);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testUpdateWithUpdatable()
     {
         $coupon = new Coupon();
@@ -215,6 +308,12 @@ class EntityManagerTest extends BaseTestCase
         $this->entityManager->save($coupon);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testUpdateEarlyReturn()
     {
         $image = new ProductImage();
@@ -227,6 +326,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testUpdateThrowRequiredValidation()
     {
         $customer = new Customer();
@@ -235,6 +340,12 @@ class EntityManagerTest extends BaseTestCase
         $this->entityManager->update($customer, ['company' => 'BC']);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testDelete()
     {
         $customer = new Customer();
@@ -243,6 +354,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testDeleteNoParamField()
     {
         $customer = new Customer();
@@ -250,24 +367,48 @@ class EntityManagerTest extends BaseTestCase
         $this->entityManager->delete($customer);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testBatchDelete()
     {
         $result = $this->entityManager->batchDelete(Customer::class, null, [1, 2], null);
         $this->assertTrue($result);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testBatchDeleteEmpty()
     {
         $result = $this->entityManager->batchDelete(Customer::class, null, []);
         $this->assertFalse($result);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testDeleteThrowException()
     {
         $this->expectException(EntityException::class);
-        $result = $this->entityManager->batchDelete(Channel::class, null, [1, 2]);
+        $this->entityManager->batchDelete(Channel::class, null, [1, 2]);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testBatchCreate()
     {
         $data = $this->getBatchCreateData();
@@ -280,6 +421,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertFalse($result);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testBatchCreateReturnFalse()
     {
         $data = $this->getBatchCreateData();
@@ -289,6 +436,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertFalse($result);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testBatchCreateReturnTrue()
     {
         $data = $this->getBatchCreateData();
@@ -298,15 +451,27 @@ class EntityManagerTest extends BaseTestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testBatchCreateThrowException()
     {
         $data = $this->getBatchCreateData();
         $customer1 = $this->entityManager->new(Customer::class, $data[0]);
         $checkout2 = $this->entityManager->new(Checkout::class, $data[1]);
         $this->expectException(EntityException::class);
-        $result = $this->entityManager->batchCreate([$customer1, $checkout2]);
+        $this->entityManager->batchCreate([$customer1, $checkout2]);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testBatchUpdateEmpty()
     {
         $data = $this->getBatchCreateData();
@@ -319,6 +484,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(false, $result);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testBatchUpdateMissingRequiredValidations()
     {
         $customer1 = new Customer();
@@ -327,9 +498,15 @@ class EntityManagerTest extends BaseTestCase
         $customer2->setId(2)->setFirstName('Ngo')->setEmail('invalidemail');
 
         $this->expectException(EntityException::class);
-        $result = $this->entityManager->batchUpdate([$customer1, $customer2]);
+        $this->entityManager->batchUpdate([$customer1, $customer2]);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testBatchUpdateDifferentClass()
     {
         $data = $this->getBatchCreateData();
@@ -341,9 +518,14 @@ class EntityManagerTest extends BaseTestCase
         $this->entityManager->batchUpdate([$customer1, $product]);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testBatchUpdate()
     {
-
         $data = $this->getBatchReturnedData();
         $customer1 = new Customer();
         $customer2 = new Customer();
@@ -354,6 +536,12 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals(2, count($customers));
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testBatchUpdateReturnTrue()
     {
         $cart1 = new Cart();
@@ -362,6 +550,10 @@ class EntityManagerTest extends BaseTestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testNew()
     {
         /** @var Customer $customer */
@@ -376,6 +568,9 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals('BC', $customer->getCompany());
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testPatch()
     {
         $customer = new Customer();
@@ -390,6 +585,9 @@ class EntityManagerTest extends BaseTestCase
         $this->assertEquals('BC', $customer->getCompany());
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testToArray()
     {
         $customer = new Customer();
@@ -405,12 +603,18 @@ class EntityManagerTest extends BaseTestCase
         $this->assertArrayHasKey('company', $array);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testGetRepository()
     {
         $repo = $this->entityManager->getRepository(Customer::class);
         $this->assertInstanceOf(Repository::class, $repo);
     }
 
+    /**
+     * testSetPaymentAccessToken
+     */
     public function testSetPaymentAccessToken()
     {
         $token = new PaymentAccessToken();
@@ -424,9 +628,6 @@ class EntityManagerTest extends BaseTestCase
      */
     private function getClient()
     {
-        $countPath = '/customers';
-        $countReturn = 2;
-
         $findAllPath = '/customers?sort=date_created:asc&include=addresses';
         $findAllResult = [];
 
@@ -507,6 +708,9 @@ class EntityManagerTest extends BaseTestCase
         return $client->reveal();
     }
 
+    /**
+     * @return array
+     */
     private function getImageData()
     {
         $file = __DIR__ . '/assets/images/lamp.jpg';
@@ -525,6 +729,9 @@ class EntityManagerTest extends BaseTestCase
         ];
     }
 
+    /**
+     * @return array[]
+     */
     private function getBatchReturnedData()
     {
         return [
@@ -547,6 +754,9 @@ class EntityManagerTest extends BaseTestCase
         ];
     }
 
+    /**
+     * @return \string[][]
+     */
     private function getBatchReturnedEmptyId()
     {
         return [
@@ -567,6 +777,9 @@ class EntityManagerTest extends BaseTestCase
         ];
     }
 
+    /**
+     * @return \string[][]
+     */
     private function getBatchCreateData()
     {
         return [
@@ -587,6 +800,9 @@ class EntityManagerTest extends BaseTestCase
         ];
     }
 
+    /**
+     * @return array
+     */
     private function getProductData()
     {
         return [
@@ -620,6 +836,10 @@ class EntityManagerTest extends BaseTestCase
         ];
     }
 
+    /**
+     * @return \Bigcommerce\ORM\AbstractEntity|null
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     private function getCustomer()
     {
         $customer = new Customer();

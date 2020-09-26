@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Entities;
 
-use Bigcommerce\ORM\Entities\LineItem;
 use Bigcommerce\ORM\Entities\Consignment;
+use Bigcommerce\ORM\Entities\LineItem;
 use Bigcommerce\ORM\Entities\ShippingAddress;
 use Bigcommerce\ORM\Entities\ShippingOption;
 use Tests\BaseTestCase;
@@ -14,6 +14,10 @@ class ConsignmentTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\Consignment */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new Consignment();

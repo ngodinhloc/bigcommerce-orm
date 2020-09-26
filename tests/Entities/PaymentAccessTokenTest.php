@@ -12,6 +12,9 @@ class PaymentAccessTokenTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\PaymentAccessToken */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new PaymentAccessToken();

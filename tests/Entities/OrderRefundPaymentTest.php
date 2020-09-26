@@ -11,6 +11,9 @@ class OrderRefundPaymentTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\OrderRefundPayment */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new OrderRefundPayment();

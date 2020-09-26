@@ -78,12 +78,18 @@ class ConnectionTest extends BaseTestCase
         $this->assertEquals($this->client, $this->connection->getClient());
     }
 
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function testQuery()
     {
         $response = $this->connection->query('/customers', 'api');
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function testUpdate()
     {
         $files = ['photo' => $file = dirname(__DIR__) . '/assets/images/lamp.jpg'];
@@ -91,6 +97,9 @@ class ConnectionTest extends BaseTestCase
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function testCreate()
     {
         $files = ['photo' => $file = dirname(__DIR__) . '/assets/images/lamp.jpg'];
@@ -98,12 +107,18 @@ class ConnectionTest extends BaseTestCase
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function testDelete()
     {
         $response = $this->connection->delete('/customers?id:in=1,2,3', 'api');
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 
+    /**
+     * testSetPaymentAccessToken
+     */
     public function testSetPaymentAccessToken()
     {
         $this->connection->setPaymentAccessToken('123');
@@ -114,6 +129,10 @@ class ConnectionTest extends BaseTestCase
         $this->assertEquals("PAT 123", $token);
     }
 
+    /**
+     * @return \Bigcommerce\ORM\Client\BasicConfig
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     */
     private function getBasicConfig()
     {
         $basicCredentials = [
@@ -125,6 +144,10 @@ class ConnectionTest extends BaseTestCase
         return new BasicConfig($basicCredentials);
     }
 
+    /**
+     * @return \Bigcommerce\ORM\Client\AuthConfig
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     */
     private function getAuthConfig()
     {
         $authCredentials = [
@@ -144,6 +167,9 @@ class ConnectionTest extends BaseTestCase
         return $authConfig;
     }
 
+    /**
+     * @return \GuzzleHttp\Psr7\Response
+     */
     private function getResponse()
     {
         $many = [
@@ -157,6 +183,9 @@ class ConnectionTest extends BaseTestCase
         return new Response(200, $headers, $body);
     }
 
+    /**
+     * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
+     */
     private function getClient()
     {
         $client = $this->prophet->prophesize(Client::class);

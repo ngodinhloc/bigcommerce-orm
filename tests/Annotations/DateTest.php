@@ -17,7 +17,8 @@ class DateTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Annotations\Date::getValidator
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
-    public function testDate(){
+    public function testDate()
+    {
         $this->annotation = new Date(['format' => 'Y-m-d', 'validate' => true]);
         $this->assertEquals('Y-m-d', $this->annotation->format);
         $this->assertEquals(true, $this->annotation->validate);

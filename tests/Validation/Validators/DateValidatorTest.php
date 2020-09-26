@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace Tests\Validation\Validators;
 
-use Bigcommerce\ORM\Annotations\Date;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\Validation\Validators\DateValidator;
-use Bigcommerce\ORM\Validation\Validators\EmailValidator;
 use Tests\BaseTestCase;
 
 class DateValidatorTest extends BaseTestCase

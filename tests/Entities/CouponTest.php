@@ -11,6 +11,9 @@ class CouponTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\Coupon */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new Coupon();

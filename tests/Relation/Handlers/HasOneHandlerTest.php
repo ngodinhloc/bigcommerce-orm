@@ -3,18 +3,11 @@ declare(strict_types=1);
 
 namespace Tests\Relation\Handlers;
 
-use Bigcommerce\ORM\Annotations\BelongToMany;
-use Bigcommerce\ORM\Annotations\BelongToOne;
 use Bigcommerce\ORM\Annotations\HasOne;
-use Bigcommerce\ORM\Entities\Category;
-use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductImage;
 use Bigcommerce\ORM\EntityManager;
 use Bigcommerce\ORM\Mapper;
-use Bigcommerce\ORM\QueryBuilder;
-use Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler;
-use Bigcommerce\ORM\Relation\Handlers\BelongToOneHandler;
 use Bigcommerce\ORM\Relation\Handlers\HasOneHandler;
 use Tests\BaseTestCase;
 
@@ -72,6 +65,10 @@ class HasOneHandlerTest extends BaseTestCase
         $this->assertEquals(1, $primary->getId());
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testHandleEarlyReturn()
     {
         $entity = new Product();

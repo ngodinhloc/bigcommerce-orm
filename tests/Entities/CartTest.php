@@ -12,6 +12,10 @@ class CartTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\Cart */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testSettersAndGetters()
     {
         $mapper = new Mapper();
@@ -47,7 +51,6 @@ class CartTest extends BaseTestCase
         $this->assertEquals(null, $this->entity->getDigitalItems());
         $this->assertEquals(null, $this->entity->getPhysicalItems());
         $this->assertEquals(null, $this->entity->getRedirectUrl());
-
 
         $item1 = new \Bigcommerce\ORM\Entities\LineItem();
         $item1

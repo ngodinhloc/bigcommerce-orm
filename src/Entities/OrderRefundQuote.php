@@ -71,6 +71,9 @@ class OrderRefundQuote extends AbstractEntity
     /** @var \Bigcommerce\ORM\Mapper */
     protected $mapper;
 
+    /**
+     * OrderRefundQuote constructor.
+     */
     public function __construct()
     {
         $this->mapper = new Mapper();

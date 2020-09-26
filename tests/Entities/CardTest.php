@@ -11,6 +11,9 @@ class CardTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\Card */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new Card();

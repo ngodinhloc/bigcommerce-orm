@@ -11,7 +11,11 @@ class ProductImageTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ProductImage */
     protected $entity;
 
-    public function testSettersAndGetters(){
+    /**
+     * testSettersAndGetters
+     */
+    public function testSettersAndGetters()
+    {
         $this->entity = new ProductImage();
         $this->entity
             ->setDescription('Desc')

@@ -11,6 +11,9 @@ class CheckoutTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\Checkout */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new Checkout();

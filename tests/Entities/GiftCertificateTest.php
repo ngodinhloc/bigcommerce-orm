@@ -11,6 +11,9 @@ class GiftCertificateTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\GiftCertificate */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new GiftCertificate();

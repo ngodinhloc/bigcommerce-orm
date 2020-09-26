@@ -50,29 +50,49 @@ class RepositoryTest extends BaseTestCase
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function testFindAll(){
+    public function testFindAll()
+    {
         $findAll = $this->repository->findAll();
         $this->assertEquals([], $findAll);
     }
 
-    public function testFindBy(){
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function testFindBy()
+    {
         $findBy = $this->repository->findBy(null, $this->getQueryBuilder(), false);
         $this->assertEquals([], $findBy);
     }
 
-    public function testFind(){
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function testFind()
+    {
         $id = 1;
         $customer = $this->repository->find($id, null, false);
         $this->assertInstanceOf(Customer::class, $customer);
         $this->assertEquals(1, $customer->getId());
     }
 
-    private function getQueryBuilder(){
+    /**
+     * @return \Bigcommerce\ORM\QueryBuilder
+     */
+    private function getQueryBuilder()
+    {
         $queryBuilder = new QueryBuilder();
-        $queryBuilder->whereEqual('id',1);
+        $queryBuilder->whereEqual('id', 1);
 
         return $queryBuilder;
     }
+
     /**
      * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
      */

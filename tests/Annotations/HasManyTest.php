@@ -16,7 +16,8 @@ class HasManyTest extends BaseTestCase
     /**
      * @covers \Bigcommerce\ORM\Annotations\HasMany::getHandler
      */
-    public function testGetHandler(){
+    public function testGetHandler()
+    {
         $this->annotation = new HasMany([]);
         $entityManager = $this->prophet->prophesize(EntityManager::class)->reveal();
         /** @var \Bigcommerce\ORM\Relation\Handlers\HasManyHandler $handler */

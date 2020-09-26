@@ -11,6 +11,9 @@ class ShippingOptionTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ShippingOption */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new ShippingOption();

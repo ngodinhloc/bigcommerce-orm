@@ -11,7 +11,11 @@ class CategoryTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\Category */
     protected $entity;
 
-    public function testSettersAndGetters(){
+    /**
+     * testSettersAndGetters
+     */
+    public function testSettersAndGetters()
+    {
         $this->entity = new Category();
         $parent = new Category();
         $parent->setId(2);

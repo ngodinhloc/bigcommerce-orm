@@ -100,6 +100,9 @@ class Consignment extends AbstractEntity
     /** @var \Bigcommerce\ORM\Mapper */
     protected $mapper;
 
+    /**
+     * Consignment constructor.
+     */
     public function __construct()
     {
         $this->mapper = new Mapper();

@@ -11,6 +11,9 @@ class ShippingAddressTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ShippingAddress */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new ShippingAddress();

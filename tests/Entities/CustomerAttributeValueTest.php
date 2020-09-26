@@ -11,6 +11,9 @@ class CustomerAttributeValueTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\CustomerAttributeValue */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new CustomerAttributeValue();

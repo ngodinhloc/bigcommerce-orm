@@ -11,6 +11,9 @@ class CustomerFormFieldValueTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\CustomerFormFieldValue */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new CustomerFormFieldValue();

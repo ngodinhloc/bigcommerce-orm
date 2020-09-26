@@ -11,6 +11,9 @@ class ProductVariantTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ProductVariant */
     public $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new ProductVariant();
@@ -42,7 +45,6 @@ class ProductVariantTest extends BaseTestCase
             ->setSkuId(111)
             ->setRetailPrice(170)
             ->setSalePrice(160);
-
 
         $this->assertEquals(1, $this->entity->getId());
         $this->assertEquals(2, $this->entity->getProductId());

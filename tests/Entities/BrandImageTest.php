@@ -11,6 +11,9 @@ class BrandImageTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\BrandImage */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new BrandImage();

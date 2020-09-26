@@ -11,6 +11,9 @@ class ProductCustomFieldTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ProductCustomField */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new ProductCustomField();

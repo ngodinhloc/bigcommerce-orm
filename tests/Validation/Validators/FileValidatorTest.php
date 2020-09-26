@@ -5,7 +5,6 @@ namespace Tests\Validation\Validators;
 
 use Bigcommerce\ORM\Entities\ProductImage;
 use Bigcommerce\ORM\Mapper;
-use Bigcommerce\ORM\Validation\Validators\EmailValidator;
 use Bigcommerce\ORM\Validation\Validators\FileValidator;
 use Tests\BaseTestCase;
 

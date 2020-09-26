@@ -11,6 +11,9 @@ class ProductVariantMetafieldTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ProductVariantMetafield */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new ProductVariantMetafield();

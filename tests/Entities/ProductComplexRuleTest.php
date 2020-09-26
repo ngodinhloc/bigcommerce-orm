@@ -11,6 +11,9 @@ class ProductComplexRuleTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ProductComplexRule */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new ProductComplexRule();

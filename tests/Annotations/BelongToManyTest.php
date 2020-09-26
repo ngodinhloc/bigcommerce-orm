@@ -16,7 +16,8 @@ class BelongToManyTest extends BaseTestCase
     /**
      * @covers \Bigcommerce\ORM\Annotations\BelongToMany::getHandler
      */
-    public function testGetHandler(){
+    public function testGetHandler()
+    {
         $this->annotation = new BelongToMany([]);
         $entityManager = $this->prophet->prophesize(EntityManager::class)->reveal();
         /** @var BelongToManyHandler $handler */

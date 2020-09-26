@@ -70,7 +70,7 @@ class FileCachePoolTest extends BaseTestCase
         $this->cache = new FileCachePool($cacheDir);
         $this->assertEquals($cacheDir, $this->cache->getCacheDir());
 
-        $cacheDir = __DIR__.'/caches';
+        $cacheDir = __DIR__ . '/caches';
         $this->cache->setCacheDir($cacheDir);
         $this->assertEquals($cacheDir, $this->cache->getCacheDir());
 

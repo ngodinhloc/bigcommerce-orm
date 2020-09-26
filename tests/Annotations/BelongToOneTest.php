@@ -16,7 +16,8 @@ class BelongToOneTest extends BaseTestCase
     /**
      * @covers \Bigcommerce\ORM\Annotations\BelongToOne::getHandler
      */
-    public function testGetHandler(){
+    public function testGetHandler()
+    {
         $this->annotation = new BelongToOne([]);
         $entityManager = $this->prophet->prophesize(EntityManager::class)->reveal();
         /** @var BelongToOneHandler $handler */

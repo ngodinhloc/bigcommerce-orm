@@ -11,6 +11,9 @@ class StoredPaypalAccountTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\StoredPaypalAccount */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new StoredPaypalAccount();

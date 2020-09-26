@@ -16,7 +16,8 @@ class BasicConfigTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\BasicConfig::__construct
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      */
-    public function testConstruct(){
+    public function testConstruct()
+    {
         $basicCredentials = [
             'username' => 'username',
             'apiKey' => 'apiKey'

@@ -11,6 +11,9 @@ class CustomItemTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\CustomItem */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new CustomItem();

@@ -66,6 +66,11 @@ class HasManyHandlerTest extends BaseTestCase
         $this->assertEquals([], $reviews);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     */
     public function testHandleEarlyReturn()
     {
         $entity = new Product();
@@ -87,6 +92,11 @@ class HasManyHandlerTest extends BaseTestCase
         $this->assertNull($reviews);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     */
     public function testHandleThrowException()
     {
         $entity = new Product();

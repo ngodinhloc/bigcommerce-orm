@@ -12,6 +12,10 @@ class OrderRefundQuoteTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\OrderRefundQuote */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new OrderRefundQuote();

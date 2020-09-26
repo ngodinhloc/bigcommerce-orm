@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Events;
 
-use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Entities\Customer;
+use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Events\EntityManagerEvent;
 use Tests\BaseTestCase;
 

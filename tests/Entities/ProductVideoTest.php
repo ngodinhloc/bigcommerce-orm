@@ -11,6 +11,9 @@ class ProductVideoTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ProductVideo */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new ProductVideo();

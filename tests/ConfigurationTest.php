@@ -78,12 +78,14 @@ class ConfigurationTest extends BaseTestCase
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
-    public function testInvalidCredentials(){
+    public function testInvalidCredentials()
+    {
         $this->configuration = new Configuration([]);
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage(ConfigException::ERROR_MISSING_CONFIG);
         $this->configuration->configEntityManager();
     }
+
     /**
      * @covers \Bigcommerce\ORM\Configuration::__construct
      * @covers \Bigcommerce\ORM\Configuration::configEntityManager
@@ -194,6 +196,5 @@ class ConfigurationTest extends BaseTestCase
             'proxy' => 'tcp:localhost:8080'
         ];
     }
-
 
 }

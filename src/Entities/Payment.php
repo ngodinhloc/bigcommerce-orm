@@ -41,6 +41,9 @@ class Payment extends AbstractEntity
     /** @var \Bigcommerce\ORM\Mapper */
     protected $mapper;
 
+    /**
+     * Payment constructor.
+     */
     public function __construct()
     {
         $this->mapper = new Mapper();

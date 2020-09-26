@@ -5,13 +5,13 @@ namespace Tests;
 
 use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Entities\CartRedirectUrl;
-use Bigcommerce\ORM\Entities\ShippingAddress;
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\Entities\CustomerAddress;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductModifier;
 use Bigcommerce\ORM\Entities\ProductModifierValue;
 use Bigcommerce\ORM\Entities\ProductReview;
+use Bigcommerce\ORM\Entities\ShippingAddress;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
 use Bigcommerce\ORM\Mapper;
@@ -44,6 +44,10 @@ class MapperTest extends BaseTestCase
         $this->assertEquals('/customers', $classAnnotation->path);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testResourcePath()
     {
         $path = $this->mapper->getResourcePath($this->customer);
@@ -55,6 +59,10 @@ class MapperTest extends BaseTestCase
         $this->assertEquals('/catalog/products/111/reviews', $path);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testResourcePathThrowException()
     {
         $value = new ProductModifierValue();
@@ -63,41 +71,64 @@ class MapperTest extends BaseTestCase
         $path = $this->mapper->getResourcePath($value);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testResourcePathNotFindable()
     {
         $entity = new CartRedirectUrl();
         $this->expectException(EntityException::class);
-        $path = $this->mapper->getResourcePath($entity, 'find');
+        $this->mapper->getResourcePath($entity, 'find');
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testResourcePathNotUpdatable()
     {
         $entity = new CartRedirectUrl();
         $this->expectException(EntityException::class);
-        $path = $this->mapper->getResourcePath($entity, 'update');
+        $this->mapper->getResourcePath($entity, 'update');
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testResourcePathNotDeletable()
     {
         $entity = new CartRedirectUrl();
         $this->expectException(EntityException::class);
-        $path = $this->mapper->getResourcePath($entity, 'delete');
+        $this->mapper->getResourcePath($entity, 'delete');
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testResourcePathNotCreatable()
     {
         $entity = new Customer();
         $this->expectException(EntityException::class);
-        $path = $this->mapper->getResourcePath($entity, 'create');
+        $this->mapper->getResourcePath($entity, 'create');
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testResourcePathEmpty()
     {
         $entity = new ShippingAddress();
         $this->expectException(EntityException::class);
-        $path = $this->mapper->getResourcePath($entity, 'create');
+        $this->mapper->getResourcePath($entity, 'create');
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testPatch()
     {
         $product = new Product();
@@ -152,6 +183,9 @@ class MapperTest extends BaseTestCase
         $this->assertTrue($modifier->isPatched());
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testCheckRequiredFields()
     {
         $product = new Product();
@@ -163,6 +197,9 @@ class MapperTest extends BaseTestCase
         $this->assertEquals(true, $check);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testGetNoneReadonlyData()
     {
         $modifier = new ProductModifier();
@@ -186,6 +223,9 @@ class MapperTest extends BaseTestCase
         $this->assertEquals($expected, $data);
     }
 
+    /**
+     * testCheckNoneReadOnlyData
+     */
     public function testCheckNoneReadOnlyData()
     {
         $expected = [
@@ -201,6 +241,9 @@ class MapperTest extends BaseTestCase
         $this->assertTrue($check);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testCheckRequiredValidations()
     {
         $customer = new Customer();
@@ -213,6 +256,9 @@ class MapperTest extends BaseTestCase
         $this->assertEquals($expected, $check);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testToArray()
     {
         $modifier = new ProductModifier();
@@ -248,6 +294,9 @@ class MapperTest extends BaseTestCase
         $this->assertEquals($expected, $array);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testGetPropertyValueByName()
     {
         $modifier = new ProductModifier();
@@ -259,6 +308,9 @@ class MapperTest extends BaseTestCase
         $this->assertEquals('Name', $value);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testGetPropertyValueByNameThrowException()
     {
         $modifier = new ProductModifier();
@@ -270,6 +322,9 @@ class MapperTest extends BaseTestCase
         $this->mapper->getPropertyValueByName($modifier, 'invalid');
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testGetProperty()
     {
         $modifier = new ProductModifier();
@@ -281,6 +336,9 @@ class MapperTest extends BaseTestCase
         $this->assertFalse($get);
     }
 
+    /**
+     * testGetPropertyValue
+     */
     public function testGetPropertyValue()
     {
         $modifier = new ProductModifier();
@@ -292,6 +350,9 @@ class MapperTest extends BaseTestCase
         $this->assertNull($get);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testGetPropertyValueByFieldName()
     {
         $modifier = new ProductModifier();
@@ -303,6 +364,9 @@ class MapperTest extends BaseTestCase
         $this->assertEquals('Display Name', $value);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testGetPropertyValueByFieldNameThrowException()
     {
         $modifier = new ProductModifier();
@@ -314,42 +378,63 @@ class MapperTest extends BaseTestCase
         $this->mapper->getPropertyValueByFieldName($modifier, 'invalid');
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testObject()
     {
         $object = $this->mapper->object(Customer::class);
         $this->assertInstanceOf(Customer::class, $object);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testObjectThrowException()
     {
         $this->expectException(MapperException::class);
         $this->mapper->object('invalid_class_name');
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testReflectThrowException()
     {
         $this->expectException(\Throwable::class);
         $this->mapper->reflect(null);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     */
     public function testCheckEntity()
     {
         $this->expectException(EntityException::class);
         $this->mapper->checkEntity(null);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     */
     public function testCheckClass()
     {
         $this->expectException(EntityException::class);
         $this->mapper->checkClass('');
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     */
     public function testCheckId()
     {
         $this->expectException(EntityException::class);
         $this->mapper->checkId(0);
     }
 
+    /**
+     * testCheckPropertyValues
+     */
     public function testCheckPropertyValues()
     {
         $result = $this->mapper->checkPropertyValues(null);

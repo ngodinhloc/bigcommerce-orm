@@ -11,7 +11,11 @@ class ProductModifierTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ProductModifier */
     protected $entity;
 
-    public function testSettersAndGetters(){
+    /**
+     * testSettersAndGetters
+     */
+    public function testSettersAndGetters()
+    {
         $this->entity = new ProductModifier();
         $this->entity
             ->setProductId(111)

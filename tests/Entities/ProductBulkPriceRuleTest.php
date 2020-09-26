@@ -11,6 +11,9 @@ class ProductBulkPriceRuleTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\ProductBulkPriceRule */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new ProductBulkPriceRule();

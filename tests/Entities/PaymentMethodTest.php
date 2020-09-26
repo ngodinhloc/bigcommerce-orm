@@ -11,6 +11,9 @@ class PaymentMethodTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\PaymentMethod */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new PaymentMethod();

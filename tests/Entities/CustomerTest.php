@@ -11,7 +11,11 @@ class CustomerTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\Customer */
     protected $entity;
 
-    public function testSettersAndGetters(){
+    /**
+     * testSettersAndGetters
+     */
+    public function testSettersAndGetters()
+    {
         $this->entity = new Customer();
         $this->entity
             ->setId(1)

@@ -60,36 +60,65 @@ class ClientTest extends BaseTestCase
         $this->assertEquals($this->connection, $this->client->getConnection());
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
     public function testFindAll()
     {
         $findAll = $this->client->findAll('/customers', 'api');
         $this->assertEquals(1, count($findAll));
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
     public function testFindBy()
     {
         $findBy = $this->client->findBy('/customers?id:in=1,2,3', 'api');
         $this->assertEquals(1, count($findBy));
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
     public function testFind()
     {
         $find = $this->client->find('/customers/1', 'api');
         $this->assertIsArray($find);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
     public function testFindThrowGuzzleException()
     {
         $this->expectException(ClientException::class);
         $this->client->find('/customers/2', 'api');
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
     public function testFindThrowException()
     {
         $this->expectException(ClientException::class);
         $this->client->find('/customers/3', 'api');
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testCreate()
     {
         $data = ['id' => 1];
@@ -97,6 +126,10 @@ class ClientTest extends BaseTestCase
         $this->assertIsArray($create);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testBatchCreate()
     {
         $data = ['id' => 1];
@@ -104,6 +137,10 @@ class ClientTest extends BaseTestCase
         $this->assertIsArray($create);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testCreateThrowGuzzleException()
     {
         $data = ['id' => 1];
@@ -111,6 +148,10 @@ class ClientTest extends BaseTestCase
         $this->client->create('/customers/2', 'api', $data, []);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testCreateThrowException()
     {
         $data = ['id' => 1];
@@ -118,6 +159,10 @@ class ClientTest extends BaseTestCase
         $this->client->create('/customers/3', 'api', $data, []);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testUpdate()
     {
         $data = ['id' => 1];
@@ -128,12 +173,20 @@ class ClientTest extends BaseTestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testUpdateNull()
     {
         $this->expectException(ClientException::class);
         $result = $update = $this->client->update(null, 'api', [], []);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testBatchUpdate()
     {
         $data = ['id' => 1];
@@ -141,6 +194,10 @@ class ClientTest extends BaseTestCase
         $this->assertIsArray($update);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testUpdateThrowGuzzleException()
     {
         $data = ['id' => 1];
@@ -148,6 +205,10 @@ class ClientTest extends BaseTestCase
         $this->client->update('/customers/2', 'api', $data, []);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testUpdateThrowException()
     {
         $data = ['id' => 1];
@@ -155,30 +216,48 @@ class ClientTest extends BaseTestCase
         $this->client->update('/customers/3', 'api', $data, []);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testDelete()
     {
         $result = $this->client->delete('/customers?id:in=1,2', 'api');
         $this->assertTrue($result);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testDeleteThrowGuzzleException()
     {
         $this->expectException(ClientException::class);
         $this->client->delete('/customers?id:in=0,1', 'api');
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testDeleteThrowException()
     {
         $this->expectException(ClientException::class);
         $this->client->delete('/customers?id:in=0,2', 'api');
     }
 
+    /**
+     *
+     */
     public function testSetPaymentAccessToken()
     {
         $this->client->setPaymentAccessToken('123');
         $this->assertInstanceOf(Client::class, $this->client);
     }
 
+    /**
+     * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
+     */
     private function getConnection()
     {
         $many = [
@@ -215,6 +294,9 @@ class ClientTest extends BaseTestCase
         return $connection->reveal();
     }
 
+    /**
+     * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
+     */
     private function getCache()
     {
         $cache = $this->prophet->prophesize(FileCachePool::class);
@@ -226,6 +308,9 @@ class ClientTest extends BaseTestCase
         return $cache->reveal();
     }
 
+    /**
+     * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
+     */
     private function getLogger()
     {
         $logger = $this->prophet->prophesize(Logger::class);

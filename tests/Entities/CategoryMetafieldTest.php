@@ -11,6 +11,9 @@ class CategoryMetafieldTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\CategoryMetafield */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new CategoryMetafield();

@@ -57,6 +57,10 @@ class BelongToOneHandlerTest extends BaseTestCase
         $this->assertEquals(1, $parent->getId());
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testHandleEarlyReturn()
     {
         $entity = new Category();
@@ -77,6 +81,10 @@ class BelongToOneHandlerTest extends BaseTestCase
         $this->assertNull($parent);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testHandleException()
     {
         $entity = new Category();

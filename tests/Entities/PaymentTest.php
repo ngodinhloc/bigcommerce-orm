@@ -14,6 +14,10 @@ class PaymentTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Entities\Payment */
     protected $entity;
 
+    /**
+     * testSettersAndGetters
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
     public function testSettersAndGetters()
     {
         $this->entity = new Payment();

@@ -125,6 +125,9 @@ class Cart extends AbstractEntity
     /** @var \Bigcommerce\ORM\Mapper */
     protected $mapper;
 
+    /**
+     * Cart constructor.
+     */
     public function __construct()
     {
         $this->mapper = new Mapper();

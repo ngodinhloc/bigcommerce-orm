@@ -64,6 +64,11 @@ class BelongToManyHandlerTest extends BaseTestCase
         $this->assertEquals([], $categories);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     */
     public function testHandleThrowException()
     {
         $entity = new Product();
@@ -84,6 +89,11 @@ class BelongToManyHandlerTest extends BaseTestCase
         $this->handler->handle($entity, $property, $annotation, $data, $pathParams);
     }
 
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     */
     public function testHandleException()
     {
         $entity = new Product();
