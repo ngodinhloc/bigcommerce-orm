@@ -627,11 +627,9 @@ $newCoupon
     ->setCheckoutId($checkout1->getId())
     ->setCode('80BBCB87B0C98AA');
 $entityManager->save($newCoupon);
-echo $newCoupon->getId();
 
 /** delete coupon */
 $result = $entityManager->delete($newCoupon, 'code');
-echo $result;
 
 /** Add new billing address */
 $newBillingAddress = new \Bigcommerce\ORM\Entities\CheckoutBillingAddress();
