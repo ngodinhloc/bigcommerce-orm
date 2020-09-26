@@ -45,10 +45,10 @@ try {
     /** @var \Bigcommerce\ORM\Entities\Product $product77 */
     echo $product77->getId();
 
-//    /** update product */
-//    $product111->setDescription('This is product 111 description');
-//    $entityManager->save($product111);
-//    echo $product111->getDateModified();
+    /** update product */
+    $product111->setDescription('This is product 111 description');
+    $entityManager->save($product111);
+    echo $product111->getDateModified();
 
     /** create one product */
     $newProduct = new \Bigcommerce\ORM\Entities\Product();

@@ -5,7 +5,6 @@ $authCredentials = include('_auth.php');
 $options = include('_options.php');
 
 try {
-
     $logFile = __DIR__ . "/logs/monolog.log";
     $logger = new \Monolog\Logger('local_logger');
     $logger->pushHandler(new \Monolog\Handler\StreamHandler($logFile));

@@ -5,7 +5,6 @@ $authCredentials = include('_auth.php');
 $options = include('_options.php');
 
 try {
-
     $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options);
     $entityManager = $config->configEntityManager();
 

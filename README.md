@@ -203,6 +203,7 @@ class MyProduct extends Product
 ```
 
 @see: [samples/Entities/MyProduct.php](./samples/Entities/MyProduct.php)
+
 @see: [samples/working_with_customised_entities.php](./samples/working_with_customised_entities.php)
 
 ### Entities to array

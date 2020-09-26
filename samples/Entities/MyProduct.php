@@ -13,7 +13,6 @@ use Bigcommerce\ORM\Annotations as BC;
  */
 class MyProduct extends AbstractEntity
 {
-
     /**
      * @var string
      * @BC\Field(name="my_customised_field", customised=true, readonly=true)
