@@ -9,15 +9,20 @@ try {
     $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options);
     $entityManager = $config->configEntityManager();
 
-    /** create cart with line items, custom items and gift certificates */
+    /** create cart with one line item*/
     $newCart = new \Bigcommerce\ORM\Entities\Cart();
     $newCart->setCustomerId(3);
 
-    /** line items */
     $lineItem1 = new \Bigcommerce\ORM\Entities\CartLineItem();
     $lineItem1
         ->setProductId(111)
         ->setQuantity(2);
+
+    $newCart->addLineItem($lineItem1);
+    $result = $entityManager->save($newCart);
+    echo $newCart->getId();
+
+    /** add more items to cart: line item, gift certificate, custom item */
     $lineItem2 = new \Bigcommerce\ORM\Entities\CartLineItem();
     $lineItem2
         ->setProductId(107)
@@ -42,14 +47,14 @@ try {
         ->setSku('sku')
         ->setListPrice(100);
 
-    $newCart
-        ->addLineItem($lineItem1)
+    $cartItem = new \Bigcommerce\ORM\Entities\CartItem();
+    $cartItem
+        ->setCartId($newCart->getId())
         ->addLineItem($lineItem2)
         ->addGiftCertificate($giftCertificate)
         ->addCustomItem($customItem);
-
-    $result = $entityManager->save($newCart);
-    echo $newCart->getId();
+    $entityManager->save($cartItem);
+    echo $cartItem->getId();
 
     /** find checkout of the created cart */
     $checkout1 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $newCart->getId(), null, true);

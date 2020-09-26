@@ -556,7 +556,8 @@ Accept: application/json
 ```
 
 ### Sample shopping flow: 
-- create shopping with line items, gift certificate and custom items
+- create shopping cart with one line item 
+- add more items to cart: line items, gift certificate and custom items
 - get checkout for the created cart
 - add a coupon to checkout
 - remove the coupon from checkout
@@ -569,15 +570,19 @@ Accept: application/json
 - get available payment methods for the order
 - made a payment with payment method and credit card
 ```php
-/** create cart with line items, custom items and gift certificates */
-$newCart = new \Bigcommerce\ORM\Entities\Cart();
-$newCart->setCustomerId(3);
-
-/** line items */
+/** create cart with one line item*/
 $lineItem1 = new \Bigcommerce\ORM\Entities\CartLineItem();
 $lineItem1
     ->setProductId(111)
     ->setQuantity(2);
+
+$newCart = new \Bigcommerce\ORM\Entities\Cart();
+$newCart
+    ->setCustomerId(3)
+    ->addLineItem($lineItem1);
+$entityManager->save($newCart);
+
+/** add more items to cart: line item, gift certificate, custom item */
 $lineItem2 = new \Bigcommerce\ORM\Entities\CartLineItem();
 $lineItem2
     ->setProductId(107)
@@ -594,7 +599,7 @@ $giftCertificate
     ->setSender(['name' => 'Ken Ngo', 'email' => 'ken.ngo@bc.com'])
     ->setRecipient(['name' => 'Ken Ngo', 'email' => 'ken2.ngo@bc.com']);
 
-/** custome item */
+/** custom item */
 $customItem = new \Bigcommerce\ORM\Entities\CartCustomItem();
 $customItem
     ->setName('This is my item')
@@ -602,13 +607,13 @@ $customItem
     ->setSku('sku')
     ->setListPrice(100);
 
-$newCart
-    ->addLineItem($lineItem1)
+$cartItem = new \Bigcommerce\ORM\Entities\CartItem();
+$cartItem
+    ->setCartId($newCart->getId())
     ->addLineItem($lineItem2)
     ->addGiftCertificate($giftCertificate)
     ->addCustomItem($customItem);
-
-$result = $entityManager->save($newCart);
+$entityManager->save($cartItem);
 
 /** find checkout of the created cart */
 $checkout1 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $newCart->getId(), null, true);
@@ -645,7 +650,6 @@ $newBillingAddress
     ->setAddress2('U6')
     ->setAddress1('Longfield');
 $entityManager->save($newBillingAddress);
-
 
 /** check for coupon had been deleted and new shipping address added */
 $checkout2 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $newCart->getId(), null, true);
