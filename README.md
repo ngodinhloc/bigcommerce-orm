@@ -61,7 +61,7 @@ $config = new \Bigcommerce\ORM\Configuration($authCredentials);
 $entityManager = $config->configEntityManager();
 ```
 
-@see: [samples/config_simple.php](./samples/config_simple.php)
+@see: [samples/_simple_config.php](./samples/_simple_config.php)
 
 ### Full configs
 ```php
@@ -101,7 +101,7 @@ $config = new \Bigcommerce\ORM\Configuration(
 $entityManager = $config->configEntityManager();
 ```
 
-@see: [samples/config_full.php](./samples/config_full.php)
+@see: [samples/_full_config.php](./samples/_full_config.php)
 
 ### Multiple store managers
 ```php
@@ -139,7 +139,7 @@ $firstStoreManager = $managerFactory->getEntityManager('firstStore');
 $secondStoreManager = $managerFactory->getEntityManager('secondStore');
 ```
 
-@see: [samples/multiple_managers.php](./samples/multiple_managers.php)
+@see: [samples/working_with_multiple_managers.php](./samples/working_with_multiple_managers.php)
 
 ## Sample codes
 ### Create entities
@@ -174,7 +174,7 @@ $review3 = new \Bigcommerce\ORM\Entities\ProductReview();
 $review3 = $entityManager->patch($review3, $data);
 ```
 
-@see: [samples/entities.php](./samples/entities.php)
+@see: [samples/working_with_entities.php](./samples/working_with_entities.php)
 
 ### Customised entities
 If users add customised fields, which only they know of, 
@@ -203,6 +203,7 @@ class MyProduct extends Product
 ```
 
 @see: [samples/Entities/MyProduct.php](./samples/Entities/MyProduct.php)
+@see: [samples/working_with_customised_entities.php](./samples/working_with_customised_entities.php)
 
 ### Entities to array
 ```php
@@ -224,7 +225,7 @@ $array1 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_FIEL
 $array2 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME);
 ```
 
-@see: [samples/entity_to_array.php](./samples/entity_to_array.php)
+@see: [samples/working_with_entities.php](./samples/working_with_entities.php)
 
 ### Save and Update Entities
 ```php
@@ -319,7 +320,7 @@ $customerRepo = new \Bigcommerce\ORM\Repositories\CustomerRepository($entityMana
 $customers = $customerRepo->findAll();
 ```
 
-@see: [samples/repositories.php](./samples/repositories.php)
+@see: [samples/working_with_repositories.php](./samples/working_with_repositories.php)
 
 ### Customised Repositories
 ```php
@@ -327,7 +328,7 @@ $myRepo = new \Samples\Repositories\MyRepository($entityManager);
 $count = $myRepo->count();
 ````
 
-@see: [samples/customised_repositories.php](./samples/customised_repositories.php)
+@see: [samples/working_with_customised_repositories.php](./samples/working_with_customised_repositories.php)
 
 ### Validations
 ```php
