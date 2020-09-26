@@ -554,3 +554,177 @@ Accept: application/json
 < Content-Type: application/json
 
 ```
+
+### Sample shopping flow: 
+- create shopping with line items, gift certificate and custom items
+- get checkout for the created cart
+- add a coupon to checkout
+- remove the coupon from checkout
+- add billing address
+- update billing address
+- create consignments
+- update consignment with shipping option
+- create order for the checkout
+- get payment access token for the order
+- get available payment methods for the order
+- create a payment with payment method and credit card
+```php
+/** create cart with line items, custom items and gift certificates */
+    $newCart = new \Bigcommerce\ORM\Entities\Cart();
+    $newCart->setCustomerId(3);
+
+    /** line items */
+    $lineItem1 = new \Bigcommerce\ORM\Entities\CartLineItem();
+    $lineItem1
+        ->setProductId(111)
+        ->setQuantity(2);
+    $lineItem2 = new \Bigcommerce\ORM\Entities\CartLineItem();
+    $lineItem2
+        ->setProductId(107)
+        ->setQuantity(1);
+
+    /** gift certificate  */
+    $giftCertificate = new \Bigcommerce\ORM\Entities\CartGiftCertificate();
+    $giftCertificate
+        ->setQuantity(1)
+        ->setAmount(50)
+        ->setName('Holiday Card')
+        ->setTheme('Birthday')
+        ->setMessage('Have a good holidays')
+        ->setSender(['name' => 'Ken Ngo', 'email' => 'ken.ngo@bc.com'])
+        ->setRecipient(['name' => 'Ken Ngo', 'email' => 'ken2.ngo@bc.com']);
+
+    /** custome item */
+    $customItem = new \Bigcommerce\ORM\Entities\CartCustomItem();
+    $customItem
+        ->setName('This is my item')
+        ->setQuantity(1)
+        ->setSku('sku')
+        ->setListPrice(100);
+
+    $newCart
+        ->addLineItem($lineItem1)
+        ->addLineItem($lineItem2)
+        ->addGiftCertificate($giftCertificate)
+        ->addCustomItem($customItem);
+
+    $result = $entityManager->save($newCart);
+
+    /** find checkout of the created cart */
+    $checkout1 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $newCart->getId(), null, true);
+
+    /**
+     * Add new coupon to checkout
+     * It seems that ene checkout can have ONLY ONE coupon, new coupon added will override old coupon
+     */
+    $newCoupon = new \Bigcommerce\ORM\Entities\CheckoutCoupon();
+    $newCoupon
+        ->setCheckoutId($checkout1->getId())
+        ->setCode('80BBCB87B0C98AA');
+    $entityManager->save($newCoupon);
+    echo $newCoupon->getId();
+
+    /** delete coupon */
+    $result = $entityManager->delete($newCoupon, 'code');
+    echo $result;
+
+    /** Add new billing address */
+    $newBillingAddress = new \Bigcommerce\ORM\Entities\CheckoutBillingAddress();
+    $newBillingAddress
+        ->setCheckoutId($checkout1->getId())
+        ->setEmail('ken@bc.com')
+        ->setFirstName('Ken')
+        ->setLastName('Ngo')
+        ->setPostalCode('2166')
+        ->setStateOrProvince('New South Wales')
+        ->setStateOrProvinceCode('NSW')
+        ->setCountryCode('AU')
+        ->setCountry('Australia')
+        ->setCity('Sydney')
+        ->setAddressType('resident')
+        ->setAddress2('U6')
+        ->setAddress1('Longfield');
+    $entityManager->save($newBillingAddress);
+
+
+    /** check for coupon had been deleted and new shipping address added */
+    $checkout2 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $newCart->getId(), null, true);
+    /** @var \Bigcommerce\ORM\Entities\Checkout $checkout2 */
+    $coupons2 = $checkout2->getCoupons();
+    $billingAddress2 = $checkout2->getBillingAddress();
+
+    /** update billing address */
+    $billingAddress2->setCity('Cabra');
+    $entityManager->save($billingAddress2);
+
+    /** check for billing address updated */
+    $checkout3 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $newCart->getId(), null, true);
+    /** @var \Bigcommerce\ORM\Entities\Checkout $checkout3 */
+    $billingAddress3 = $checkout2->getBillingAddress();
+
+    /** create new consignments: consignment does not support save(), we have to use batchCreate */
+    $newLineItem1 = $digitalItems1[0];
+    $shippingAddress = $billingAddress3;
+    $newConsignment1 = new \Bigcommerce\ORM\Entities\CheckoutConsignment();
+    $newConsignment1
+        ->setCheckoutId($checkout3->getId())
+        ->addLineItem($newLineItem1)
+        ->setShippingAddress($shippingAddress);
+
+    $newConsignment2 = new \Bigcommerce\ORM\Entities\CheckoutConsignment();
+    $newLineItem2 = $physicalItems1[0];
+    $newCustomItem2 = $customItems1[0];
+    $newConsignment2
+        ->setCheckoutId($checkout3->getId())
+        ->addLineItem($newLineItem2)
+        ->setShippingAddress($shippingAddress);
+
+    $result = $entityManager->batchCreate([$newConsignment1, $newConsignment2]);
+
+    /** check for new consignment added */
+    $checkout4= $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $checkout3->getId(), null, true);
+    /** @var \Bigcommerce\ORM\Entities\Checkout $checkout4 */
+    $consignments4 = $checkout4->getConsignments();
+
+    /** update consignment with shipping_option_id */
+    $consignment4 = $consignments4[0];
+    $availableShippingOptions = $consignment4->getAvailableShippingOptions();
+    $shippingOption = $availableShippingOptions[0];
+
+    $entityManager->update($consignment4, ['shipping_option_id' => $shippingOption->getId()]);
+
+    /** create order for the checkout */
+    $checkoutOrder = new \Bigcommerce\ORM\Entities\CheckoutOrder();
+    $checkoutOrder->setCheckoutId($checkout3->getId());
+    $entityManager->create($checkoutOrder);
+
+    /** get payment access token for this order */
+    $paymentAccessToken = new \Bigcommerce\ORM\Entities\PaymentAccessToken();
+    $paymentAccessToken->setCheckoutOrder($checkoutOrder);
+    $entityManager->create($paymentAccessToken);
+
+    /** get accepted payment methods for this order */
+    $queryBuilder = new \Bigcommerce\ORM\QueryBuilder();
+    $queryBuilder->whereEqual('order_id', $checkoutOrder->getId());
+    $paymentMethods = $entityManager->findBy(\Bigcommerce\ORM\Entities\PaymentMethod::class, ['order_id' => $checkoutOrder->getId()], $queryBuilder, false);
+
+    /** made payment for this order */
+    $card = new \Bigcommerce\ORM\Entities\Card();
+    $card
+        ->setType('card')
+        ->setCardholderName('Ken Ngo')
+        ->setNumber('4111111111111111')
+        ->setExpiryMonth(2)
+        ->setExpiryYear(2021)
+        ->setVerificationValue('111');
+    $payment = new \Bigcommerce\ORM\Entities\Payment();
+    $paymentMethod = $paymentMethods[0];
+    $payment
+        ->setPaymentMethod($paymentMethod)
+        ->setPaymentInstrument($card)
+        ->setAmount(134)
+        ->setCurrencyCode('USD');
+    /** in order to process payment, we need to set EntityManager payment access token */
+    $entityManager->setPaymentAccessToken($paymentAccessToken);
+    $entityManager->create($payment);
+```

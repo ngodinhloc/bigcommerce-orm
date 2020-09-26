@@ -12,6 +12,8 @@ try {
     /** create cart with line items, custom items and gift certificates */
     $newCart = new \Bigcommerce\ORM\Entities\Cart();
     $newCart->setCustomerId(3);
+
+    /** line items */
     $lineItem1 = new \Bigcommerce\ORM\Entities\CartLineItem();
     $lineItem1
         ->setProductId(111)
@@ -21,6 +23,7 @@ try {
         ->setProductId(107)
         ->setQuantity(1);
 
+    /** gift certificate  */
     $giftCertificate = new \Bigcommerce\ORM\Entities\CartGiftCertificate();
     $giftCertificate
         ->setQuantity(1)
@@ -31,6 +34,7 @@ try {
         ->setSender(['name' => 'Ken Ngo', 'email' => 'ken.ngo@bc.com'])
         ->setRecipient(['name' => 'Ken Ngo', 'email' => 'ken2.ngo@bc.com']);
 
+    /** custome item */
     $customItem = new \Bigcommerce\ORM\Entities\CartCustomItem();
     $customItem
         ->setName('This is my item')
@@ -47,7 +51,7 @@ try {
     $result = $entityManager->save($newCart);
     echo $newCart->getId();
 
-    /** find one checkout cart id */
+    /** find checkout of the created cart */
     $checkout1 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $newCart->getId(), null, true);
     /** @var \Bigcommerce\ORM\Entities\Checkout $checkout1 */
     $billingAddress1 = $checkout1->getBillingAddress();
@@ -152,7 +156,7 @@ try {
     $entityManager->create($checkoutOrder);
     echo $checkoutOrder->getId();
 
-    /** get payment access token for order */
+    /** get payment access token for this order */
     $paymentAccessToken = new \Bigcommerce\ORM\Entities\PaymentAccessToken();
     $paymentAccessToken->setCheckoutOrder($checkoutOrder);
     $entityManager->create($paymentAccessToken);
