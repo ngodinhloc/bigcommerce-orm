@@ -728,3 +728,4 @@ Accept: application/json
     $entityManager->setPaymentAccessToken($paymentAccessToken);
     $entityManager->create($payment);
 ```
+@see: [samples/checkouts.php](./samples/checkouts.php)
