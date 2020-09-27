@@ -390,7 +390,7 @@ class Checkout extends AbstractEntity
     /**
      * @return \Bigcommerce\ORM\Entities\Cart|null
      */
-    public function getCart(): ?\Bigcommerce\ORM\Entities\Cart
+    public function getCart(): ?Cart
     {
         return $this->cart;
     }
@@ -399,7 +399,7 @@ class Checkout extends AbstractEntity
      * @param \Bigcommerce\ORM\Entities\Cart|null $cart
      * @return \Bigcommerce\ORM\Entities\Checkout
      */
-    public function setCart(?\Bigcommerce\ORM\Entities\Cart $cart): Checkout
+    public function setCart(?Cart $cart): Checkout
     {
         $this->cart = $cart;
 

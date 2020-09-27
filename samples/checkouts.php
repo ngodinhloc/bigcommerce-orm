@@ -152,7 +152,11 @@ try {
     $shippingOption = $availableShippingOptions[0];
 
     $entityManager->update($consignment4, ['shipping_option_id' => $shippingOption->getId()]);
+//    $consignment4->setShippingOption($shippingOption);
+//    $entityManager->save($shippingOption);
     echo $consignment4->getId();
+
+
 
     /** create order for the checkout */
     $order = new \Bigcommerce\ORM\Entities\Order();
