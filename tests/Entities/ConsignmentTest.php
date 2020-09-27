@@ -31,6 +31,7 @@ class ConsignmentTest extends BaseTestCase
             ->setCouponDiscounts([])
             ->setDiscounts([])
             ->setLineItemIds([])
+            ->setShippingOptionId(1)
             ->setSelectedShippingOption(null)
             ->setCheckoutShippingAddress(null);
 
@@ -43,6 +44,7 @@ class ConsignmentTest extends BaseTestCase
         $this->assertEquals([], $this->entity->getCouponDiscounts());
         $this->assertEquals([], $this->entity->getDiscounts());
         $this->assertEquals([], $this->entity->getLineItemIds());
+        $this->assertEquals(1, $this->entity->getShippingOptionId());
         $this->assertEquals(null, $this->entity->getSelectedShippingOption());
         $this->assertEquals(null, $this->entity->getCheckoutShippingAddress());
         $this->assertEquals(null, $this->entity->getAvailableShippingOptions());
@@ -61,8 +63,8 @@ class ConsignmentTest extends BaseTestCase
         $this->assertIsArray($address);
 
         $shippingOption = new ShippingOption();
-        $shippingOption->setId(1);
+        $shippingOption->setId(2);
         $this->entity->setShippingOption($shippingOption);
-        $this->assertEquals(1, $this->entity->getShippingOptionId());
+        $this->assertEquals(2, $this->entity->getShippingOptionId());
     }
 }

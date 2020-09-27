@@ -141,7 +141,7 @@ try {
     echo $result;
 
     /** check for new consignment added */
-    $checkout4= $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $checkout3->getId(), null, true);
+    $checkout4 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $checkout3->getId(), null, true);
     /** @var \Bigcommerce\ORM\Entities\Checkout $checkout4 */
     $consignments4 = $checkout4->getConsignments();
     echo count($consignments4);
@@ -151,12 +151,12 @@ try {
     $availableShippingOptions = $consignment4->getAvailableShippingOptions();
     $shippingOption = $availableShippingOptions[0];
 
-    $entityManager->update($consignment4, ['shipping_option_id' => $shippingOption->getId()]);
+    /** Because shipping option can not be updated along with shipping address and line items */
 //    $consignment4->setShippingOption($shippingOption);
-//    $entityManager->save($shippingOption);
-    echo $consignment4->getId();
+//    $entityManager->save($consignment4);
 
-
+    /** We have to update consignment shipping_option_id using update() */
+    $entityManager->update($consignment4, ['shipping_option_id' => $shippingOption->getId()]);
 
     /** create order for the checkout */
     $order = new \Bigcommerce\ORM\Entities\Order();

@@ -350,6 +350,25 @@ class Consignment extends AbstractEntity
     }
 
     /**
+     * @return int|string|null
+     */
+    public function getShippingOptionId()
+    {
+        return $this->shippingOptionId;
+    }
+
+    /**
+     * @param int|string|null $shippingOptionId
+     * @return Consignment
+     */
+    public function setShippingOptionId($shippingOptionId)
+    {
+        $this->shippingOptionId = $shippingOptionId;
+
+        return $this;
+    }
+
+    /**
      * @param \Bigcommerce\ORM\Entities\ShippingOption|null $shippingOption
      * @return \Bigcommerce\ORM\Entities\Consignment
      */
@@ -358,13 +377,5 @@ class Consignment extends AbstractEntity
         $this->shippingOptionId = $shippingOption->getId();
 
         return $this;
-    }
-
-    /**
-     * @return int|string|null
-     */
-    public function getShippingOptionId()
-    {
-        return $this->shippingOptionId;
     }
 }

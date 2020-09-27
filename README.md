@@ -695,9 +695,12 @@ $consignment4 = $consignments4[0];
 $availableShippingOptions = $consignment4->getAvailableShippingOptions();
 $shippingOption = $availableShippingOptions[0];
 
-$entityManager->update($consignment4, ['shipping_option_id' => $shippingOption->getId()]);
+/** Because shipping option can not be updated along with shipping address and line items */
 //    $consignment4->setShippingOption($shippingOption);
-//    $entityManager->save($shippingOption);
+//    $entityManager->save($consignment4);
+
+/** We have to update consignment shipping_option_id using update() */
+$entityManager->update($consignment4, ['shipping_option_id' => $shippingOption->getId()]);
 
 /** create order for the checkout */
 $order = new \Bigcommerce\ORM\Entities\Order();

@@ -203,7 +203,7 @@ class EntityManager
     }
 
     /**
-     * Update entity : allow to update entity with array of data
+     * Update entity with array of data: only the fields in data will be sent to server for updating
      *
      * @param \Bigcommerce\ORM\AbstractEntity|null $entity
      * @param array|null $data
