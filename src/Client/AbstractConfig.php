@@ -18,6 +18,7 @@ abstract class AbstractConfig
     const RESOURCE_TYPE_API = 'api';
     const RESOURCE_TYPE_PAYMENT = 'payment';
     const CONTENT_TYPE_JSON = 'application/json';
+    const CONTENT_TYPE_BCV1 = 'application/vnd.bc.v1+json';
     const CONTENT_TYPE_WWW = 'application/x-www-form-urlencoded';
 
     /** @var string */
@@ -47,6 +48,16 @@ abstract class AbstractConfig
      * @return string
      */
     abstract public function getPaymentUrl();
+
+    /**
+     * @return array|null
+     */
+    abstract public function getAuthHeaders();
+
+    /**
+     * @return array|null
+     */
+    abstract public function getAuth();
 
     /**
      * @return string

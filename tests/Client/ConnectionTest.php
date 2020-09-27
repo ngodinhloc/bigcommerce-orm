@@ -50,6 +50,7 @@ class ConnectionTest extends BaseTestCase
             ->setClient($this->client)
             ->setConfig($this->config);
 
+        $this->assertIsArray($this->connection->getRequestOptions());
         $this->assertEquals($this->config, $this->connection->getConfig());
         $this->assertEquals($this->client, $this->connection->getClient());
     }
@@ -84,6 +85,9 @@ class ConnectionTest extends BaseTestCase
     public function testQuery()
     {
         $response = $this->connection->query('/customers', 'api');
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+
+        $response = $this->connection->query('/payments', 'payment');
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 

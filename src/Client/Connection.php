@@ -189,16 +189,16 @@ class Connection
     {
         $this->apiUrl = $this->config->getApiUrl();
         $this->paymentUrl = $this->config->getPaymentUrl();
-
         $this->addRequestHeader('Content-Type', AbstractConfig::CONTENT_TYPE_JSON);
 
-        if ($this->config instanceof BasicConfig) {
-            $this->auth = [$this->config->getUsername(), $this->config->getApiKey()];
+        if (!empty($auth = $this->config->getAuth())) {
+            $this->auth = $auth;
         }
 
-        if ($this->config instanceof AuthConfig) {
-            $this->addRequestHeader('X-Auth-Client', $this->config->getClientId());
-            $this->addRequestHeader('X-Auth-Token', $this->config->getAuthToken());
+        if (!empty($authHeaders = $this->config->getAuthHeaders())) {
+            foreach ($authHeaders as $header => $value) {
+                $this->addRequestHeader($header, $value);
+            }
         }
 
         if (!empty($this->config->getAccept())) {

@@ -42,7 +42,7 @@ class Result
         switch ($this->response->getStatusCode()) {
             case ResponseCodes::HTTP_CREATED:
             case ResponseCodes::HTTP_OK:
-                if ($content = $this->response->getBody()->getContents()) {
+                if (!empty($content = $this->response->getBody()->getContents())) {
                     $array = json_decode($content, true);
                     switch ($returnType) {
                         case self::RETURN_TYPE_BOOL:
@@ -57,7 +57,8 @@ class Result
                             return $array['data'];
                     }
                 }
-                break;
+
+                return false;
             case ResponseCodes::HTTP_NO_CONTENT:
                 /** delete entities return 204 */
                 return true;

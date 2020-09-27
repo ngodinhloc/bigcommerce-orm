@@ -163,4 +163,23 @@ class AuthConfig extends AbstractConfig
     {
         return $this->getPaymentBaseUrl() . sprintf($this->getPaymentStorePrefix(), $this->getStoreHash());
     }
+
+    /**
+     * @return array|null
+     */
+    public function getAuth()
+    {
+        return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAuthHeaders()
+    {
+        return [
+            'X-Auth-Client' => $this->getClientId(),
+            'X-Auth-Token' => $this->getAuthToken()
+        ];
+    }
 }

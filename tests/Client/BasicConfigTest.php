@@ -48,6 +48,8 @@ class BasicConfigTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getTimeout
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getApiUrl
      * @covers \Bigcommerce\ORM\Client\BasicConfig::getPaymentUrl
+     * @covers \Bigcommerce\ORM\Client\BasicConfig::getAuth
+     * @covers \Bigcommerce\ORM\Client\BasicConfig::getAuthHeaders
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      */
     public function testSettersAndGetters()
@@ -94,5 +96,8 @@ class BasicConfigTest extends BaseTestCase
 
         $this->basicConfig->setAccept('invalidContentType');
         $this->assertEquals('application/json', $this->basicConfig->getAccept());
+        $this->assertNull($this->basicConfig->getAuthHeaders());
+        $this->assertEquals([$this->basicConfig->getUsername(), $this->basicConfig->getApiKey()], $this->basicConfig->getAuth());
+
     }
 }

@@ -17,7 +17,7 @@ class BasicConfig extends AbstractConfig
 
     /** @var string */
     protected $apiKey;
-    
+
     /**
      * BasicConfig constructor.
      *
@@ -110,6 +110,22 @@ class BasicConfig extends AbstractConfig
     public function getPaymentUrl()
     {
         return rtrim($this->getStoreUrl(), '/') . $this->getPathPrefix() . '/payments';
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getAuth()
+    {
+        return [$this->getUsername(), $this->getApiKey()];
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getAuthHeaders()
+    {
+        return null;
     }
 
 }

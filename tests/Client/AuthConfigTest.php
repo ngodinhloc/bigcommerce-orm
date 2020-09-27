@@ -57,6 +57,8 @@ class AuthConfigTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getApiUrl
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getPaymentUrl
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getPaymentStorePrefix
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getAuth
+     * @covers \Bigcommerce\ORM\Client\AuthConfig::getAuthHeaders
      * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
      */
     public function testSettersAndGetters()

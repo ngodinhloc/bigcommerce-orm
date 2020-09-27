@@ -46,6 +46,19 @@ class ResultTest extends BaseTestCase
     /**
      * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
      */
+    public function testReturnOkFalse()
+    {
+        $headers = ['api_version' => 'v3'];
+        $response = new Response(200, $headers, false);
+        $this->result = new Result();
+        $this->result->setResponse($response);
+        $get = $this->result->get(Result::RETURN_TYPE_ALL);
+        $this->assertFalse($get);
+    }
+
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     */
     public function testGetAll()
     {
         $many = [
