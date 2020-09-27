@@ -118,7 +118,7 @@ class Cart extends AbstractEntity
 
     /**
      * @var \Bigcommerce\ORM\Entities\Coupon[]|null
-     * @BC\HasMany(name="coupons", targetClass="\Bigcommerce\ORM\Entities\CheckoutCoupon", field="id", targetField="cart_id", from="result", auto=true)
+     * @BC\HasMany(name="coupons", targetClass="\Bigcommerce\ORM\Entities\Coupon", field="id", targetField="cart_id", from="result", auto=true)
      */
     protected $coupons;
 

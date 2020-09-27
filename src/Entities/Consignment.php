@@ -81,19 +81,19 @@ class Consignment extends AbstractEntity
 
     /**
      * @var \Bigcommerce\ORM\Entities\ShippingOption|null
-     * @BC\HasOne(name="selected_shipping_option", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption", field="id", targetField="consignment_id", from="include", auto=true)
+     * @BC\HasOne(name="selected_shipping_option", targetClass="\Bigcommerce\ORM\Entities\ShippingOption", field="id", targetField="consignment_id", from="result", auto=true)
      */
     protected $selectedShippingOption;
 
     /**
      * @var \Bigcommerce\ORM\Entities\ShippingOption[]|null
-     * @BC\HasMany(name="available_shipping_options", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption", field="id", targetField="consignment_id", from="include", auto=true)
+     * @BC\HasMany(name="available_shipping_options", targetClass="\Bigcommerce\ORM\Entities\ShippingOption", field="id", targetField="consignment_id", from="result", auto=true)
      */
     protected $availableShippingOptions;
 
     /**
      * @var \Bigcommerce\ORM\Entities\ShippingAddress|null
-     * @BC\HasOne(name="shipping_address", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingAddress", field="id", targetField="consignment_id", from="result", auto=true)
+     * @BC\HasOne(name="shipping_address", targetClass="\Bigcommerce\ORM\Entities\ShippingAddress", field="id", targetField="consignment_id", from="result", auto=true)
      */
     protected $checkoutShippingAddress;
 

@@ -349,7 +349,7 @@ class Connection
     public function setPaymentAccessToken(?string $token)
     {
         $this->addRequestHeader('Authorization', "PAT $token");
-        $this->addRequestHeader('Accept', 'application/vnd.bc.v1+json');
+        $this->addRequestHeader('Accept', AbstractConfig::CONTENT_TYPE_BCV1);
         $this->composeRequestOptions();
 
         return $this;

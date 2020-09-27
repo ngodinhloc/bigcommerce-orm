@@ -99,27 +99,27 @@ class Checkout extends AbstractEntity
 
     /**
      * @var \Bigcommerce\ORM\Entities\BillingAddress|null
-     * @BC\HasOne(name="billing_address", targetClass="\Bigcommerce\ORM\Entities\CheckoutBillingAddress", field="id", targetField="checkout_id", from="result", auto=true)
+     * @BC\HasOne(name="billing_address", targetClass="\Bigcommerce\ORM\Entities\BillingAddress", field="id", targetField="checkout_id", from="result", auto=true)
      */
     protected $billingAddress;
 
     /**
      * @var \Bigcommerce\ORM\Entities\Consignment[]|null
-     * @BC\HasMany(name="consignments", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignment", field="id", targetField="checkout_id", from="result", auto=true)
+     * @BC\HasMany(name="consignments", targetClass="\Bigcommerce\ORM\Entities\Consignment", field="id", targetField="checkout_id", from="result", auto=true)
      */
     protected $consignments;
 
     /**
      * @var \Bigcommerce\ORM\Entities\Coupon[]|null
-     * @BC\HasMany(name="coupons", targetClass="\Bigcommerce\ORM\Entities\CheckoutCoupon", field="id", targetField="checkout_id", from="result", auto=true)
+     * @BC\HasMany(name="coupons", targetClass="\Bigcommerce\ORM\Entities\Coupon", field="id", targetField="checkout_id", from="result", auto=true)
      */
     protected $coupons;
 
     /**
      * @var \Bigcommerce\ORM\Entities\ShippingOption[]|null
-     * @BC\HasMany(name="consignments.available_shipping_options", targetClass="\Bigcommerce\ORM\Entities\CheckoutConsignmentShippingOption", field="id", targetField="checkout_id", from="include", auto=true)
+     * @BC\HasMany(name="consignments.available_shipping_options", targetClass="\Bigcommerce\ORM\Entities\ShippingOption", field="id", targetField="checkout_id", from="include", auto=true)
      */
-    protected $available_shipping_options;
+    protected $availableShippingOptions;
 
     /**
      * @return array|null
