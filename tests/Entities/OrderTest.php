@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Tests\Entities;
 
-use Bigcommerce\ORM\Entities\CheckoutOrder;
+use Bigcommerce\ORM\Entities\Order;
 use Tests\BaseTestCase;
 
-class CheckoutOrderTest extends BaseTestCase
+class OrderTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CheckoutOrder */
+    /** @var \Bigcommerce\ORM\Entities\Order */
     protected $entity;
 
     /**
@@ -16,7 +16,7 @@ class CheckoutOrderTest extends BaseTestCase
      */
     public function testSettersAndGetters()
     {
-        $this->entity = new CheckoutOrder();
+        $this->entity = new Order();
         $this->entity
             ->setCheckoutId(2)
             ->setIsRecurring(false)

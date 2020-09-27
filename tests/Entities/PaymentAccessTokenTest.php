@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Entities;
 
-use Bigcommerce\ORM\Entities\CheckoutOrder;
+use Bigcommerce\ORM\Entities\Order;
 use Bigcommerce\ORM\Entities\PaymentAccessToken;
 use Tests\BaseTestCase;
 
@@ -20,16 +20,16 @@ class PaymentAccessTokenTest extends BaseTestCase
         $this->entity = new PaymentAccessToken();
         $this->entity
             ->setId('123')
-            ->setOrder([]);
+            ->setOrderValue([]);
 
         $this->assertEquals('123', $this->entity->getId());
-        $this->assertEquals([], $this->entity->getOrder());
+        $this->assertEquals([], $this->entity->getOrderValue());
 
-        $order = new CheckoutOrder();
+        $order = new Order();
         $order
             ->setId('abc-def')
             ->setIsRecurring(true);
-        $this->entity->setCheckoutOrder($order);
-        $this->assertEquals(['id' => 'abc-def', 'is_recurring' => true], $this->entity->getOrder());
+        $this->entity->setOrder($order);
+        $this->assertEquals(['id' => 'abc-def', 'is_recurring' => true], $this->entity->getOrderValue());
     }
 }

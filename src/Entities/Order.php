@@ -7,11 +7,11 @@ use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
 
 /**
- * Class CheckoutOrder
+ * Class Order
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="CheckoutOrder", path="/checkouts/{checkout_id}/orders", type="api", deletable=false, updatable=false)
+ * @BC\Resource(name="Order", path="/checkouts/{checkout_id}/orders", type="api", deletable=false, updatable=false)
  */
-class CheckoutOrder extends AbstractEntity
+class Order extends AbstractEntity
 {
     /**
      * @var int|string|null
@@ -35,7 +35,7 @@ class CheckoutOrder extends AbstractEntity
 
     /**
      * @param int|string|null $checkoutId
-     * @return \Bigcommerce\ORM\Entities\CheckoutOrder
+     * @return \Bigcommerce\ORM\Entities\Order
      */
     public function setCheckoutId($checkoutId)
     {
@@ -54,9 +54,9 @@ class CheckoutOrder extends AbstractEntity
 
     /**
      * @param bool|null $isRecurring
-     * @return CheckoutOrder
+     * @return Order
      */
-    public function setIsRecurring(bool $isRecurring): CheckoutOrder
+    public function setIsRecurring(bool $isRecurring): Order
     {
         $this->isRecurring = $isRecurring;
 

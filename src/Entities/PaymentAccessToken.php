@@ -17,34 +17,34 @@ class PaymentAccessToken extends AbstractEntity
      * @var array|null
      * @BC\Field(name="order")
      */
-    protected $order;
+    protected $orderValue;
 
     /**
      * @return array|null
      */
-    public function getOrder(): ?array
+    public function getOrderValue(): ?array
     {
-        return $this->order;
+        return $this->orderValue;
     }
 
     /**
-     * @param array|null $order
+     * @param array|null $orderValue
      * @return \Bigcommerce\ORM\Entities\PaymentAccessToken
      */
-    public function setOrder(?array $order): PaymentAccessToken
+    public function setOrderValue(?array $orderValue): PaymentAccessToken
     {
-        $this->order = $order;
+        $this->orderValue = $orderValue;
 
         return $this;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Entities\CheckoutOrder|null $order
+     * @param \Bigcommerce\ORM\Entities\Order|null $order
      * @return \Bigcommerce\ORM\Entities\PaymentAccessToken
      */
-    public function setCheckoutOrder(?CheckoutOrder $order = null)
+    public function setOrder(?Order $order = null)
     {
-        $this->order = [
+        $this->orderValue = [
             'id' => $order->getId(),
             'is_recurring' => $order->isRecurring()
         ];

@@ -155,21 +155,21 @@ try {
     echo $consignment4->getId();
 
     /** create order for the checkout */
-    $checkoutOrder = new \Bigcommerce\ORM\Entities\CheckoutOrder();
-    $checkoutOrder->setCheckoutId($checkout3->getId());
-    $entityManager->create($checkoutOrder);
-    echo $checkoutOrder->getId();
+    $order = new \Bigcommerce\ORM\Entities\Order();
+    $order->setCheckoutId($checkout3->getId());
+    $entityManager->create($order);
+    echo $order->getId();
 
-    /** get payment access token for this order */
+    /** create payment access token for this order */
     $paymentAccessToken = new \Bigcommerce\ORM\Entities\PaymentAccessToken();
-    $paymentAccessToken->setCheckoutOrder($checkoutOrder);
+    $paymentAccessToken->setOrder($order);
     $entityManager->create($paymentAccessToken);
     echo $paymentAccessToken->getId();
 
     /** get accepted payment methods for this order */
     $queryBuilder = new \Bigcommerce\ORM\QueryBuilder();
-    $queryBuilder->whereEqual('order_id', $checkoutOrder->getId());
-    $paymentMethods = $entityManager->findBy(\Bigcommerce\ORM\Entities\PaymentMethod::class, ['order_id' => $checkoutOrder->getId()], $queryBuilder, false);
+    $queryBuilder->whereEqual('order_id', $order->getId());
+    $paymentMethods = $entityManager->findBy(\Bigcommerce\ORM\Entities\PaymentMethod::class, ['order_id' => $order->getId()], $queryBuilder, false);
     echo count($paymentMethods);
 
     /** made payment for this order */
