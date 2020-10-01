@@ -237,7 +237,7 @@ class MapperTest extends BaseTestCase
             'config' => ['sku' => 111]
         ];
 
-        $check = $this->mapper->checkPropertyValues($expected);
+        $check = $this->mapper->checkFieldValues($expected);
         $this->assertTrue($check);
     }
 
@@ -437,7 +437,7 @@ class MapperTest extends BaseTestCase
      */
     public function testCheckPropertyValues()
     {
-        $result = $this->mapper->checkPropertyValues(null);
+        $result = $this->mapper->checkFieldValues(null);
         $this->assertFalse($result);
     }
 }

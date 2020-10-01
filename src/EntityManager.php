@@ -227,7 +227,7 @@ class EntityManager
             $entity = $this->mapper->patch($entity, [], null, true);
         }
 
-        if (!$this->mapper->checkPropertyValues($data)) {
+        if (!$this->mapper->checkFieldValues($data)) {
             return true;
         }
 
@@ -601,7 +601,7 @@ class EntityManager
      */
     private function createEntity(AbstractEntity $entity, array $data = null)
     {
-        if (!$this->mapper->checkPropertyValues($data)) {
+        if (!$this->mapper->checkFieldValues($data)) {
             throw new EntityException(EntityException::ERROR_EMPTY_PROPERTY_VALUES);
         }
 
@@ -638,7 +638,7 @@ class EntityManager
      */
     private function updateEntity(AbstractEntity $entity, array $data = null)
     {
-        if (!$this->mapper->checkPropertyValues($data)) {
+        if (!$this->mapper->checkFieldValues($data)) {
             return true;
         }
 

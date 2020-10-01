@@ -203,7 +203,7 @@ class Mapper
      * @param array|null $data
      * @return bool
      */
-    public function checkPropertyValues(?array $data = null)
+    public function checkFieldValues(?array $data = null)
     {
         if (empty($data)) {
             return false;
