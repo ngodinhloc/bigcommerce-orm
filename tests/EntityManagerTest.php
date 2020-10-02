@@ -661,7 +661,7 @@ class EntityManagerTest extends BaseTestCase
         ];
         $updatePath = '/customers/1';
 
-        $findProduct = '/catalog/products/1?include=primary_image,images,variants,custom_fields,modifiers,options';
+        $findProduct = '/catalog/products/1?include=primary_image,images,variants,custom_fields,modifiers,options,videos';
         $findReview = '/catalog/products/1/reviews?product_id:in=1';
 
         $updateImage = '/catalog/products/111/images/1';
