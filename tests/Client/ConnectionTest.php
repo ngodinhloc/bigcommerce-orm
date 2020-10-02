@@ -9,6 +9,7 @@ use Bigcommerce\ORM\Client\Connection;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Stream\Stream;
+use Monolog\Logger;
 use Prophecy\Argument;
 use Psr\Http\Message\ResponseInterface;
 use Tests\BaseTestCase;
@@ -24,12 +25,16 @@ class ConnectionTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Client\AbstractConfig */
     protected $config;
 
+    /** @var \Monolog\Logger|\Prophecy\Prophecy\ProphecySubjectInterface */
+    protected $logger;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->client = $this->getClient();
         $this->config = $this->getAuthConfig();
-        $this->connection = new Connection($this->config, $this->client);
+        $this->logger = $this->getLogger();
+        $this->connection = new Connection($this->config, $this->logger, $this->client);
     }
 
     /**
@@ -38,21 +43,26 @@ class ConnectionTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\Connection::setClient
      * @covers \Bigcommerce\ORM\Client\Connection::getConfig
      * @covers \Bigcommerce\ORM\Client\Connection::getClient
-     * @covers \Bigcommerce\ORM\Client\Connection::getRequestOptions
      * @covers \Bigcommerce\ORM\Client\Connection::setup
+     * @covers \Bigcommerce\ORM\Client\Connection::setLogger
+     * @covers \Bigcommerce\ORM\Client\Connection::getLogger
+     * @covers \Bigcommerce\ORM\Client\Connection::getRequestOptions
+     * @covers \Bigcommerce\ORM\Client\Connection::composeRequestOptions
      */
     public function testBasicConfig()
     {
         $this->config = $this->getBasicConfig();
-        $this->connection = new Connection($this->config, $this->client);
+        $this->connection = new Connection($this->config, $this->logger, $this->client);
 
         $this->connection
             ->setClient($this->client)
-            ->setConfig($this->config);
+            ->setConfig($this->config)
+            ->setLogger($this->logger);
 
         $this->assertIsArray($this->connection->getRequestOptions());
         $this->assertEquals($this->config, $this->connection->getConfig());
         $this->assertEquals($this->client, $this->connection->getClient());
+        $this->assertEquals($this->logger, $this->connection->getLogger());
     }
 
     /**
@@ -63,20 +73,24 @@ class ConnectionTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\Connection::getClient
      * @covers \Bigcommerce\ORM\Client\Connection::getRequestOptions
      * @covers \Bigcommerce\ORM\Client\Connection::setup
+     * @covers \Bigcommerce\ORM\Client\Connection::setLogger
+     * @covers \Bigcommerce\ORM\Client\Connection::getLogger
+     * @covers \Bigcommerce\ORM\Client\Connection::composeRequestOptions
      */
     public function testAuthConfig()
     {
         $this->config = $this->getAuthConfig();
-        $this->connection = new Connection($this->config, $this->client);
+        $this->connection = new Connection($this->config, $this->logger, $this->client);
 
         $this->connection
             ->setClient($this->client)
-            ->setConfig($this->config);
+            ->setConfig($this->config)
+            ->setLogger($this->logger);
 
         $this->assertIsArray($this->connection->getRequestOptions());
-
         $this->assertEquals($this->config, $this->connection->getConfig());
         $this->assertEquals($this->client, $this->connection->getClient());
+        $this->assertEquals($this->logger, $this->connection->getLogger());
     }
 
     /**
@@ -199,5 +213,15 @@ class ConnectionTest extends BaseTestCase
         $client->delete(Argument::any(), Argument::any())->willReturn($this->getResponse());
 
         return $client->reveal();
+    }
+
+    /**
+     * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
+     */
+    private function getLogger()
+    {
+        $logger = $this->prophet->prophesize(Logger::class);
+
+        return $logger->reveal();
     }
 }

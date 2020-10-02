@@ -8,7 +8,6 @@ use Bigcommerce\ORM\Client\Exceptions\ClientException;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Cache\CacheItemPoolInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class Client
@@ -22,20 +21,15 @@ class Client implements ClientInterface
     /** @var \Psr\Cache\CacheItemPoolInterface */
     protected $cachePool;
 
-    /** @var \Psr\Log\LoggerInterface */
-    protected $logger;
-
     /**
      * Client constructor.
      * @param \Bigcommerce\ORM\Client\Connection|null $connection
      * @param \Psr\Cache\CacheItemPoolInterface|null $cachePool
-     * @param \Psr\Log\LoggerInterface|null $logger
      */
-    public function __construct(?Connection $connection = null, ?CacheItemPoolInterface $cachePool = null, ?LoggerInterface $logger = null)
+    public function __construct(?Connection $connection = null, ?CacheItemPoolInterface $cachePool = null)
     {
         $this->connection = $connection;
         $this->cachePool = $cachePool;
-        $this->logger = $logger;
     }
 
     /**
@@ -91,10 +85,6 @@ class Client implements ClientInterface
     {
         $this->checkPath($resourcePath);
 
-        if ($this->logger) {
-            $this->logger->debug(sprintf(LogMessage::LOG_CREATE_START, $resourceType, $resourcePath, json_encode($data)));
-        }
-
         try {
             $response = $this->connection->create($resourcePath, $resourceType, $data, $files);
         } catch (GuzzleException $e) {
@@ -102,10 +92,6 @@ class Client implements ClientInterface
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_CREATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $content));
         } catch (Exception $e) {
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_CREATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $e->getMessage()));
-        }
-
-        if ($this->logger) {
-            $this->logger->debug(sprintf(LogMessage::LOG_CREATE_FINISH, $resourceType, $resourcePath, json_encode($data)));
         }
 
         if ($batch == true) {
@@ -133,10 +119,6 @@ class Client implements ClientInterface
             return true;
         }
 
-        if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(LogMessage::LOG_UPDATE_START, $resourceType, $resourcePath, json_encode($data)));
-        }
-
         try {
             $response = $this->connection->update($resourcePath, $resourceType, $data, $files);
         } catch (GuzzleException $e) {
@@ -144,10 +126,6 @@ class Client implements ClientInterface
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_UPDATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $content));
         } catch (Exception $e) {
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_UPDATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $e->getMessage()));
-        }
-
-        if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(LogMessage::LOG_UPDATE_FINISH, $resourceType, $resourcePath, json_encode($data)));
         }
 
         if ($batch == true) {
@@ -168,10 +146,6 @@ class Client implements ClientInterface
     {
         $this->checkPath($resourcePath);
 
-        if ($this->logger) {
-            $this->logger->debug(sprintf(LogMessage::LOG_DELETE_START, $resourceType, $resourcePath));
-        }
-
         try {
             $response = $this->connection->delete($resourcePath, $resourceType);
         } catch (GuzzleException $e) {
@@ -179,10 +153,6 @@ class Client implements ClientInterface
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_DELETE_OBJECT, $resourceType, $resourcePath, $content));
         } catch (Exception $e) {
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_DELETE_OBJECT, $resourceType, $resourcePath, $e->getMessage()));
-        }
-
-        if ($this->logger) {
-            $this->logger->debug(sprintf(LogMessage::LOG_DELETE_FINISH, $resourceType, $resourcePath));
         }
 
         return (new Result($response))->get(Result::RETURN_TYPE_BOOL);
@@ -208,10 +178,6 @@ class Client implements ClientInterface
             }
         }
 
-        if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(LogMessage::LOG_QUERY_START, $resourceType, $query));
-        }
-
         try {
             $response = $this->connection->query($query, $resourceType);
         } catch (GuzzleException $e) {
@@ -219,10 +185,6 @@ class Client implements ClientInterface
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_QUERY_OBJECT, $resourceType, $query, $content));
         } catch (\Exception $e) {
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_QUERY_OBJECT, $resourceType, $query, $e->getMessage()));
-        }
-
-        if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(LogMessage::LOG_QUERY_FINISH, $resourceType, $query));
         }
 
         $result = (new Result($response))->get($returnType);
@@ -237,14 +199,6 @@ class Client implements ClientInterface
         }
 
         return $result;
-    }
-
-    /**
-     * @return bool
-     */
-    private function hasLogger()
-    {
-        return ($this->logger instanceof LoggerInterface);
     }
 
     /**
@@ -300,25 +254,6 @@ class Client implements ClientInterface
     public function setCachePool(?CacheItemPoolInterface $cachePool): Client
     {
         $this->cachePool = $cachePool;
-
-        return $this;
-    }
-
-    /**
-     * @return \Psr\Log\LoggerInterface
-     */
-    public function getLogger()
-    {
-        return $this->logger;
-    }
-
-    /**
-     * @param \Psr\Log\LoggerInterface|null $logger
-     * @return \Bigcommerce\ORM\Client\Client
-     */
-    public function setLogger(?LoggerInterface $logger): Client
-    {
-        $this->logger = $logger;
 
         return $this;
     }

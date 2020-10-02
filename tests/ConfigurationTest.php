@@ -110,7 +110,6 @@ class ConfigurationTest extends BaseTestCase
         $client = $entityManager->getClient();
         $this->assertEquals($this->dispatcher, $entityManager->getEventDispatcher());
         $this->assertEquals($this->cache, $client->getCachePool());
-        $this->assertEquals($this->logger, $client->getLogger());
 
         $connection = $client->getConnection();
         /** @var BasicConfig $config */
@@ -119,6 +118,7 @@ class ConfigurationTest extends BaseTestCase
         $this->assertEquals($this->credentials['storeUrl'], $config->getStoreUrl());
         $this->assertEquals($this->credentials['username'], $config->getUsername());
         $this->assertEquals($this->credentials['apiKey'], $config->getApiKey());
+        $this->assertEquals($this->logger, $connection->getLogger());
     }
 
     /**
@@ -145,7 +145,6 @@ class ConfigurationTest extends BaseTestCase
         $client = $entityManager->getClient();
         $this->assertEquals($this->dispatcher, $entityManager->getEventDispatcher());
         $this->assertEquals($this->cache, $client->getCachePool());
-        $this->assertEquals($this->logger, $client->getLogger());
 
         $connection = $client->getConnection();
         /** @var AuthConfig $config */
@@ -155,6 +154,7 @@ class ConfigurationTest extends BaseTestCase
         $this->assertEquals($this->credentials['authToken'], $config->getAuthToken());
         $this->assertEquals($this->credentials['storeHash'], $config->getStoreHash());
         $this->assertEquals($this->credentials['apiUrl'], $config->getApiBaseUrl());
+        $this->assertEquals($this->logger, $connection->getLogger());
     }
 
     /**

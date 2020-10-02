@@ -26,36 +26,28 @@ class ClientTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Cache\FileCache\FileCachePool|\Prophecy\Prophecy\ProphecySubjectInterface */
     protected $cache;
 
-    /** @var \Monolog\Logger|\Prophecy\Prophecy\ProphecySubjectInterface */
-    protected $logger;
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->connection = $this->getConnection();
-        $this->logger = $this->getLogger();
         $this->cache = $this->getCache();
-        $this->client = new Client($this->connection, $this->cache, $this->logger);
+        $this->client = new Client($this->connection, $this->cache);
     }
 
     /**
      * @covers \Bigcommerce\ORM\Client\Client::__construct
      * @covers \Bigcommerce\ORM\Client\Client::setConnection
-     * @covers \Bigcommerce\ORM\Client\Client::setLogger
      * @covers \Bigcommerce\ORM\Client\Client::setCachePool
      * @covers \Bigcommerce\ORM\Client\Client::getConnection
-     * @covers \Bigcommerce\ORM\Client\Client::getLogger
      * @covers \Bigcommerce\ORM\Client\Client::getCachePool
      */
     public function testSettersAndGetters()
     {
-        $this->client = new Client($this->connection, $this->cache, $this->logger);
+        $this->client = new Client($this->connection, $this->cache);
         $this->client
-            ->setLogger($this->logger)
             ->setCachePool($this->cache)
             ->setConnection($this->connection);
 
-        $this->assertEquals($this->logger, $this->client->getLogger());
         $this->assertEquals($this->cache, $this->client->getCachePool());
         $this->assertEquals($this->connection, $this->client->getConnection());
     }
@@ -306,15 +298,5 @@ class ClientTest extends BaseTestCase
         $cache->save(Argument::any())->willReturn(true);
 
         return $cache->reveal();
-    }
-
-    /**
-     * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
-     */
-    private function getLogger()
-    {
-        $logger = $this->prophet->prophesize(Logger::class);
-
-        return $logger->reveal();
     }
 }

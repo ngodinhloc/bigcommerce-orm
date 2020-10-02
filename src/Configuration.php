@@ -106,8 +106,8 @@ class Configuration
             $config->setDebug($this->options['debug']);
         }
 
-        $connection = new Connection($config);
-        $client = new Client($connection, $this->cachePool, $this->logger);
+        $connection = new Connection($config, $this->logger);
+        $client = new Client($connection, $this->cachePool);
 
         return new EntityManager($client, null, $this->eventDispatcher);
     }

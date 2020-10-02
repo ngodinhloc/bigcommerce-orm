@@ -5,6 +5,7 @@ namespace Bigcommerce\ORM\Client;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Connection
@@ -17,6 +18,9 @@ class Connection
 
     /** @var \GuzzleHttp\Client */
     protected $client;
+
+    /** @var \Psr\Log\LoggerInterface */
+    protected $logger;
 
     /** @var array */
     protected $requestOptions;
@@ -48,11 +52,13 @@ class Connection
     /**
      * Connection constructor.
      * @param \Bigcommerce\ORM\Client\AbstractConfig|null $config
+     * @param \Psr\Log\LoggerInterface|null $logger
      * @param \GuzzleHttp\Client|null $client
      */
-    public function __construct(?AbstractConfig $config = null, ?Client $client = null)
+    public function __construct(?AbstractConfig $config = null, ?LoggerInterface $logger = null, ?Client $client = null)
     {
         $this->config = $config;
+        $this->logger = $logger;
         $this->client = $client ?: new Client();
         $this->setup();
     }
@@ -104,7 +110,17 @@ class Connection
     {
         $apiUrl = $this->getApiFullUrl($path, $resourceType);
 
-        return $this->client->delete($apiUrl, $this->requestOptions);
+        if ($this->hasLogger()) {
+            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_START, 'DELETE', $apiUrl, json_encode($this->requestOptions)));
+        }
+
+        $result = $this->client->delete($apiUrl, $this->requestOptions);
+
+        if ($this->hasLogger()) {
+            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_FINISH, 'DELETE', $apiUrl, json_encode($this->requestOptions)));
+        }
+
+        return $result;
     }
 
     /**
@@ -117,7 +133,17 @@ class Connection
     {
         $apiUrl = $this->getApiFullUrl($path, $resourceType);
 
-        return $this->client->get($apiUrl, $this->requestOptions);
+        if ($this->hasLogger()) {
+            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_START, 'GET', $apiUrl, json_encode($this->requestOptions)));
+        }
+
+        $result = $this->client->get($apiUrl, $this->requestOptions);
+
+        if ($this->hasLogger()) {
+            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_FINISH, 'GET', $apiUrl, json_encode($this->requestOptions)));
+        }
+
+        return $result;
     }
 
     /**
@@ -156,7 +182,17 @@ class Connection
 
         $apiUrl = $this->getApiFullUrl($path, $resourceType);
 
-        return $this->client->post($apiUrl, $this->requestOptions);
+        if ($this->hasLogger()) {
+            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_START, 'POST', $apiUrl, json_encode($this->requestOptions)));
+        }
+
+        $result = $this->client->post($apiUrl, $this->requestOptions);
+
+        if ($this->hasLogger()) {
+            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_FINISH, 'POST', $apiUrl, json_encode($this->requestOptions)));
+        }
+
+        return $result;
     }
 
     /**
@@ -179,7 +215,17 @@ class Connection
 
         $apiUrl = $this->getApiFullUrl($path, $resourceType);
 
-        return $this->client->put($apiUrl, $this->requestOptions);
+        if ($this->hasLogger()) {
+            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_START, 'PUT', $apiUrl, json_encode($this->requestOptions)));
+        }
+
+        $result = $this->client->put($apiUrl, $this->requestOptions);
+
+        if ($this->hasLogger()) {
+            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_FINISH, 'PUT', $apiUrl, json_encode($this->requestOptions)));
+        }
+
+        return $result;
     }
 
     /**
@@ -333,6 +379,25 @@ class Connection
     }
 
     /**
+     * @return \Psr\Log\LoggerInterface|null
+     */
+    public function getLogger(): ?LoggerInterface
+    {
+        return $this->logger;
+    }
+
+    /**
+     * @param \Psr\Log\LoggerInterface|null $logger
+     * @return \Bigcommerce\ORM\Client\Connection
+     */
+    public function setLogger(?LoggerInterface $logger): Connection
+    {
+        $this->logger = $logger;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getRequestOptions(): array
@@ -353,5 +418,13 @@ class Connection
         $this->composeRequestOptions();
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasLogger()
+    {
+        return ($this->logger instanceof LoggerInterface);
     }
 }
