@@ -106,14 +106,12 @@ class FileCachePool implements CacheItemPoolInterface
             if ($item->isNotExpired()) {
                 $data = $item->toArray();
                 $json = json_encode($data);
-                if (!$json) {
+                if ($json === false) {
                     throw new FileCachePoolException(FileCachePoolException::ERROR_FAILED_ENCODE_DATA . $data);
                 }
 
-                try {
-                    file_put_contents($file, $json);
-                } catch (\Throwable $exception) {
-                    throw new FileCachePoolException(FileCachePoolException::ERROR_FAILED_TO_PUT_CONTENT . $exception->getMessage());
+                if(file_put_contents($file, $json) === false){
+                    throw new FileCachePoolException(FileCachePoolException::ERROR_FAILED_TO_PUT_CONTENT);
                 }
             } else {
                 if (file_exists($file)) {
@@ -141,22 +139,18 @@ class FileCachePool implements CacheItemPoolInterface
      *
      * @param string|null $hash
      * @return \Psr\Cache\CacheItemInterface|false
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
      */
     private function retrieve(string $hash)
     {
         $data = null;
         $file = $this->cacheDir . DIRECTORY_SEPARATOR . $hash;
         if (file_exists($file)) {
-            try {
-                $content = file_get_contents($file);
-                if ($content) {
-                    $data = json_decode($content, true);
-
+            $content = file_get_contents($file);
+            if ($content !== false) {
+                $data = json_decode($content, true);
+                if($data !== null) {
                     return new FileCacheItem($data);
                 }
-            } catch (\Throwable $exception) {
-                throw new FileCachePoolException(FileCachePoolException::ERROR_FAILED_TO_GET_CONTENT . $exception->getMessage());
             }
         }
 
