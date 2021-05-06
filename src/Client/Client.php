@@ -87,13 +87,11 @@ class Client implements ClientInterface
 
         try {
             $response = $this->connection->create($resourcePath, $resourceType, $data, $files);
-        } catch (GuzzleException $e) {
-            if(empty($content = $e->getResponse()->getBody()->getContents())){
-                $content = $e->getMessage();
-            }
+        } catch (GuzzleException $exception) {
+            $content = $this->getGuzzleExceptionMessage($exception);
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_CREATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $content));
-        } catch (Exception $e) {
-            throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_CREATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $e->getMessage()));
+        } catch (Exception $exception) {
+            throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_CREATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $exception->getMessage()));
         }
 
         if ($batch == true) {
@@ -123,11 +121,11 @@ class Client implements ClientInterface
 
         try {
             $response = $this->connection->update($resourcePath, $resourceType, $data, $files);
-        } catch (GuzzleException $e) {
-            $content = $e->getResponse()->getBody()->getContents();
+        } catch (GuzzleException $exception) {
+            $content = $this->getGuzzleExceptionMessage($exception);
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_UPDATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $content));
-        } catch (Exception $e) {
-            throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_UPDATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $e->getMessage()));
+        } catch (Exception $exception) {
+            throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_UPDATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $exception->getMessage()));
         }
 
         if ($batch == true) {
@@ -150,11 +148,11 @@ class Client implements ClientInterface
 
         try {
             $response = $this->connection->delete($resourcePath, $resourceType);
-        } catch (GuzzleException $e) {
-            $content = $e->getResponse()->getBody()->getContents();
+        } catch (GuzzleException $exception) {
+            $content = $this->getGuzzleExceptionMessage($exception);
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_DELETE_OBJECT, $resourceType, $resourcePath, $content));
-        } catch (Exception $e) {
-            throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_DELETE_OBJECT, $resourceType, $resourcePath, $e->getMessage()));
+        } catch (Exception $exception) {
+            throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_DELETE_OBJECT, $resourceType, $resourcePath, $exception->getMessage()));
         }
 
         return (new Result($response))->get(Result::RETURN_TYPE_BOOL);
@@ -182,11 +180,11 @@ class Client implements ClientInterface
 
         try {
             $response = $this->connection->query($query, $resourceType);
-        } catch (GuzzleException $e) {
-            $content = $e->getResponse()->getBody()->getContents();
+        } catch (GuzzleException $exception) {
+            $content = $this->getGuzzleExceptionMessage($exception);
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_QUERY_OBJECT, $resourceType, $query, $content));
-        } catch (\Exception $e) {
-            throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_QUERY_OBJECT, $resourceType, $query, $e->getMessage()));
+        } catch (\Exception $exception) {
+            throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_QUERY_OBJECT, $resourceType, $query, $exception->getMessage()));
         }
 
         $result = (new Result($response))->get($returnType);
@@ -269,5 +267,17 @@ class Client implements ClientInterface
         $this->connection->setPaymentAccessToken($token);
 
         return $this;
+    }
+
+    /**
+     * @param \GuzzleHttp\Exception\GuzzleException $exception
+     * @return string
+     */
+    private function getGuzzleExceptionMessage(GuzzleException $exception){
+        if(empty($exception->getResponse()->getBody()->getContents())){
+            return $exception->getMessage();
+        }
+
+        return $exception->getResponse()->getBody()->getContents();
     }
 }
