@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'clientId' => 'd8hmbtfml6x62gnc9059h8xydk9s4dv',
-    'authToken' => 'h2pdfm4uz52s08291ue2i062bms1xh',
-    'storeHash' => 'y51ge8o59n',
+    'clientId' => '9igz1txprq1pkkymbiksvdf2766w79y',
+    'authToken' => 'd5hbxmhnreay9krw2vq92o9apjm1hz7',
+    'storeHash' => '8gewiw3wu0',
     'apiUrl' => 'https://api.service.bcdev',
     'paymentUrl' => 'https://bigpay.service.bcdev',
 ];

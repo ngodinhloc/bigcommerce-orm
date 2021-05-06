@@ -88,7 +88,9 @@ class Client implements ClientInterface
         try {
             $response = $this->connection->create($resourcePath, $resourceType, $data, $files);
         } catch (GuzzleException $e) {
-            $content = $e->getResponse()->getBody()->getContents();
+            if(empty($content = $e->getResponse()->getBody()->getContents())){
+                $content = $e->getMessage();
+            }
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_CREATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $content));
         } catch (Exception $e) {
             throw new ClientException(sprintf(ClientException::ERROR_FAILED_TO_CREATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $e->getMessage()));
