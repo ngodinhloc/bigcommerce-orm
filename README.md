@@ -16,7 +16,7 @@
 [link-downloads]: https://packagist.org/packages/bigcommerce/orm/stats
 
 Bigcommerce ORM (bigcommerce-orm) allows users to work with Bigcommerce v3-rest-api just like working with an orm. 
-bigcommerce-orm supports:
+Bigcommerce-orm supports:
 - working with multiple store manager
 - customised entities and repositories
 - batch create and batch update
