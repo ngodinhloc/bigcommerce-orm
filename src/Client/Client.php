@@ -7,6 +7,7 @@ use Bigcommerce\ORM\Cache\FileCache\FileCacheItem;
 use Bigcommerce\ORM\Client\Exceptions\ClientException;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
 /**
@@ -171,11 +172,9 @@ class Client implements ClientInterface
     {
         $this->checkPath($query);
 
-        if ($this->hasCachePool()) {
-            $cacheItem = $this->cachePool->getItem($query);
-            if ($cacheItem->isHit()) {
-                return $cacheItem->get();
-            }
+        $cacheItem = $this->getCache($query);
+        if ($cacheItem instanceof CacheItemInterface && $cacheItem->isHit()){
+            return $cacheItem->get();
         }
 
         try {
@@ -188,17 +187,32 @@ class Client implements ClientInterface
         }
 
         $result = (new Result($response))->get($returnType);
+        $this->saveCache(['key' => $query, 'value' => $result]);
 
+        return $result;
+    }
+
+    /**
+     * @param string $query
+     * @return false|\Psr\Cache\CacheItemInterface
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    private function getCache(string $query){
         if ($this->hasCachePool()) {
-            $data = [
-                'key' => $query,
-                'value' => $result,
-            ];
+            return $this->cachePool->getItem($query);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $data
+     */
+    private function saveCache(array $data){
+        if ($this->hasCachePool()) {
             $cacheItem = new FileCacheItem($data);
             $this->cachePool->save($cacheItem);
         }
-
-        return $result;
     }
 
     /**
@@ -274,10 +288,10 @@ class Client implements ClientInterface
      * @return string
      */
     private function getGuzzleExceptionMessage(GuzzleException $exception){
-        if(empty($exception->getResponse()->getBody()->getContents())){
+        if(empty($content = $exception->getResponse()->getBody()->getContents())){
             return $exception->getMessage();
         }
 
-        return $exception->getResponse()->getBody()->getContents();
+        return $content;
     }
 }
