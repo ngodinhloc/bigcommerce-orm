@@ -9,6 +9,8 @@ use Bigcommerce\ORM\Entities\PaymentMethod;
 use Bigcommerce\ORM\Mapper;
 use Tests\BaseTestCase;
 
+use function Webmozart\Assert\Tests\StaticAnalysis\null;
+
 class PaymentTest extends BaseTestCase
 {
     /** @coversDefaultClass \Bigcommerce\ORM\Entities\Payment */
@@ -26,13 +28,15 @@ class PaymentTest extends BaseTestCase
             ->setCurrencyCode('USD')
             ->setAmount(100)
             ->setOrderId(123)
-            ->setPaymentData([]);
+            ->setPaymentData([])
+            ->setPaymentAccessToken(null);
 
         $this->assertEquals(1, $this->entity->getId());
         $this->assertEquals('USD', $this->entity->getCurrencyCode());
         $this->assertEquals(100, $this->entity->getAmount());
         $this->assertEquals(123, $this->entity->getOrderId());
         $this->assertEquals([], $this->entity->getPaymentData());
+        $this->assertEquals(null, $this->entity->getPaymentAccessToken());
 
         $mapper = new Mapper();
         $card = new Card();

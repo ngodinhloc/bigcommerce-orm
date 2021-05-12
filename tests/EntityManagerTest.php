@@ -10,6 +10,7 @@ use Bigcommerce\ORM\Entities\Channel;
 use Bigcommerce\ORM\Entities\Checkout;
 use Bigcommerce\ORM\Entities\Coupon;
 use Bigcommerce\ORM\Entities\Customer;
+use Bigcommerce\ORM\Entities\Payment;
 use Bigcommerce\ORM\Entities\PaymentAccessToken;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductImage;
@@ -227,6 +228,35 @@ class EntityManagerTest extends BaseTestCase
         $product = new Product();
         $this->expectException(EntityException::class);
         $this->entityManager->save($product);
+    }
+
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function testCreatePaymentThrowException()
+    {
+        $payment = new Payment();
+        $this->expectException(EntityException::class);
+        $this->entityManager->create($payment);
+    }
+
+    /**
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function testCreatePayment()
+    {
+        $payment = new Payment();
+        $paymentAccessToken = new PaymentAccessToken();
+        $paymentAccessToken->setId('123');
+        $payment->setPaymentAccessToken($paymentAccessToken);
+        $this->expectException(EntityException::class);
+        $this->entityManager->create($payment);
     }
 
     /**
