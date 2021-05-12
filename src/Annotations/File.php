@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Annotations;
@@ -6,6 +7,7 @@ namespace Bigcommerce\ORM\Annotations;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\Validation\ValidationInterface;
 use Bigcommerce\ORM\Validation\ValidatorInterface;
+use Bigcommerce\ORM\Validation\Validators\FileValidator;
 use Doctrine\Common\Annotations\Annotation;
 
 /**
@@ -22,6 +24,6 @@ final class File extends Annotation implements ValidationInterface
      */
     public function getValidator(Mapper $mapper): ValidatorInterface
     {
-        return new \Bigcommerce\ORM\Validation\Validators\FileValidator($mapper);
+        return new FileValidator($mapper);
     }
 }

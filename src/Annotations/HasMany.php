@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Annotations;
 
 use Bigcommerce\ORM\EntityManager;
+use Bigcommerce\ORM\Relation\Handlers\HasManyHandler;
 use Bigcommerce\ORM\Relation\HasRelationInterface;
 use Bigcommerce\ORM\Relation\ManyRelationInterface;
 use Bigcommerce\ORM\Relation\RelationHandlerInterface;
@@ -27,6 +29,6 @@ class HasMany extends Annotation implements HasRelationInterface, ManyRelationIn
      */
     public function getHandler(EntityManager $entityManager): RelationHandlerInterface
     {
-        return new \Bigcommerce\ORM\Relation\Handlers\HasManyHandler($entityManager);
+        return new HasManyHandler($entityManager);
     }
 }

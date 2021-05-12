@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Annotations;
 
 use Bigcommerce\ORM\EntityManager;
 use Bigcommerce\ORM\Relation\BelongToRelationInterface;
+use Bigcommerce\ORM\Relation\Handlers\BelongToOneHandler;
 use Bigcommerce\ORM\Relation\OneRelationInterface;
 use Bigcommerce\ORM\Relation\RelationHandlerInterface;
 use Doctrine\Common\Annotations\Annotation;
@@ -27,6 +29,6 @@ class BelongToOne extends Annotation implements BelongToRelationInterface, OneRe
      */
     public function getHandler(EntityManager $entityManager): RelationHandlerInterface
     {
-        return new \Bigcommerce\ORM\Relation\Handlers\BelongToOneHandler($entityManager);
+        return new BelongToOneHandler($entityManager);
     }
 }
