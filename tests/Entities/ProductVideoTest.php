@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class ProductVideoTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\ProductVideo */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\ProductVideo */
     protected $entity;
 
     /**

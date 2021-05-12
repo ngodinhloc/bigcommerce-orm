@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class DateTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Annotations\Date */
+    /** @coversDefaultClass \Bigcommerce\ORM\Annotations\Date */
     protected $annotation;
 
     /**

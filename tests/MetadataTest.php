@@ -8,7 +8,7 @@ use Bigcommerce\ORM\Metadata;
 
 class MetadataTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Metadata */
+    /** @coversDefaultClass \Bigcommerce\ORM\Metadata */
     protected $metadata;
 
     protected function setUp(): void

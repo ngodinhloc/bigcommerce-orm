@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class ProductComplexRuleTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\ProductComplexRule */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\ProductComplexRule */
     protected $entity;
 
     /**

@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class CartItemTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CartItem */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\CartItem */
     protected $entity;
 
     /**

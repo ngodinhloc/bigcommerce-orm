@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class ChannelTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\Channel */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\Channel */
     protected $entity;
 
     /**

@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class FileValidatorTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Validation\Validators\FileValidator */
+    /** @coversDefaultClass \Bigcommerce\ORM\Validation\Validators\FileValidator */
     protected $validator;
 
     /** @var \Bigcommerce\ORM\Mapper */

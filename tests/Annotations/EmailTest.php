@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class EmailTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Annotations\Email */
+    /** @coversDefaultClass \Bigcommerce\ORM\Annotations\Email */
     protected $annotation;
 
     /**

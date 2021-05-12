@@ -9,7 +9,7 @@ use Tests\BaseTestCase;
 
 class BasicConfigTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Client\BasicConfig */
+    /** @coversDefaultClass \Bigcommerce\ORM\Client\BasicConfig */
     protected $basicConfig;
 
     /**

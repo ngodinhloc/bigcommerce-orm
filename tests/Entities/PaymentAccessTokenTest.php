@@ -9,7 +9,7 @@ use Tests\BaseTestCase;
 
 class PaymentAccessTokenTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\PaymentAccessToken */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\PaymentAccessToken */
     protected $entity;
 
     /**

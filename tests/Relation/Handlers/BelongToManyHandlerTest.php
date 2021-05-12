@@ -15,7 +15,7 @@ use Tests\BaseTestCase;
 
 class BelongToManyHandlerTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler */
+    /** @coversDefaultClass \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler */
     protected $handler;
 
     /** @var \Bigcommerce\ORM\Mapper */

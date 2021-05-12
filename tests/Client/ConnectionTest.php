@@ -16,7 +16,7 @@ use Tests\BaseTestCase;
 
 class ConnectionTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Client\Connection */
+    /** @coversDefaultClass \Bigcommerce\ORM\Client\Connection */
     protected $connection;
 
     /** @var  \GuzzleHttp\Client|\Prophecy\Prophecy\ProphecySubjectInterface */

@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class FileTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Annotations\File */
+    /** @coversDefaultClass \Bigcommerce\ORM\Annotations\File */
     protected $annotation;
 
     /**

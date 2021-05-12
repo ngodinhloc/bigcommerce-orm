@@ -15,7 +15,7 @@ use Tests\BaseTestCase;
 
 class HasManyHandlerTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Relation\Handlers\HasManyHandler */
+    /** @coversDefaultClass \Bigcommerce\ORM\Relation\Handlers\HasManyHandler */
     protected $handler;
 
     /** @var \Bigcommerce\ORM\Mapper */

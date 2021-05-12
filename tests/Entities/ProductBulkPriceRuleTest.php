@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class ProductBulkPriceRuleTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\ProductBulkPriceRule */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\ProductBulkPriceRule */
     protected $entity;
 
     /**

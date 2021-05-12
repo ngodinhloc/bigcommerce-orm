@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class EmailValidatorTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Validation\Validators\EmailValidator */
+    /** @coversDefaultClass \Bigcommerce\ORM\Validation\Validators\EmailValidator */
     protected $validator;
 
     /** @var \Bigcommerce\ORM\Mapper */

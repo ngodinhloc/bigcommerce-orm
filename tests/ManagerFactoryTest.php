@@ -9,7 +9,7 @@ use Bigcommerce\ORM\ManagerFactory;
 
 class ManagerFactoryTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\ManagerFactory */
+    /** @coversDefaultClass \Bigcommerce\ORM\ManagerFactory */
     protected $factory;
 
     /** @var array */

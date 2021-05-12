@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class FileCacheItemTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Cache\FileCache\FileCacheItem */
+    /** @coversDefaultClass \Bigcommerce\ORM\Cache\FileCache\FileCacheItem */
     protected $cacheItem;
 
     /**

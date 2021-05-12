@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class DateValidatorTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Validation\Validators\DateValidator */
+    /** @coversDefaultClass \Bigcommerce\ORM\Validation\Validators\DateValidator */
     protected $validator;
 
     /** @var \Bigcommerce\ORM\Mapper */

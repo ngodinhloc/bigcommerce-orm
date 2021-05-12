@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class ShippingOptionTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\ShippingOption */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\ShippingOption */
     protected $entity;
 
     /**

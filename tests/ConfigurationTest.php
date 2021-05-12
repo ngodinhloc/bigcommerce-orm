@@ -15,6 +15,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ConfigurationTest extends BaseTestCase
 {
+    /** @coversDefaultClass \Bigcommerce\ORM\Configuration */
+    protected $configuration;
+
     /** @var \Bigcommerce\ORM\Cache\FileCache\FileCachePool|\Prophecy\Prophecy\ProphecySubjectInterface */
     protected $cache;
 
@@ -29,9 +32,6 @@ class ConfigurationTest extends BaseTestCase
 
     /** @var array */
     protected $options;
-
-    /** @var \Bigcommerce\ORM\Configuration */
-    protected $configuration;
 
     protected function setUp(): void
     {

@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
 
 class HasOneHandlerTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Relation\Handlers\HasOneHandler */
+    /** @coversDefaultClass \Bigcommerce\ORM\Relation\Handlers\HasOneHandler */
     protected $handler;
 
     /** @var \Bigcommerce\ORM\Mapper */

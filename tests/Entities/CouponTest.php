@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class CouponTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\Coupon */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\Coupon */
     protected $entity;
 
     /**

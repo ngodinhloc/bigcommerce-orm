@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class CustomerAddressTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CustomerAddress */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\CustomerAddress */
     protected $entity;
 
     /**

@@ -9,7 +9,7 @@ use Tests\BaseTestCase;
 
 class OrderRefundQuoteTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\OrderRefundQuote */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\OrderRefundQuote */
     protected $entity;
 
     /**

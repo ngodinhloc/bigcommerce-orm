@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class BelongToManyTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Annotations\BelongToMany */
+    /** @coversDefaultClass \Bigcommerce\ORM\Annotations\BelongToMany */
     protected $annotation;
 
     /**

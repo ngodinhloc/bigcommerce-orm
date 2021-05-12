@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class CheckoutTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\Checkout */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\Checkout */
     protected $entity;
 
     /**

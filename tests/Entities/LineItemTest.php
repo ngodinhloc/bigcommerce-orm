@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class LineItemTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\LineItem */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\LineItem */
     protected $entity;
 
     /**

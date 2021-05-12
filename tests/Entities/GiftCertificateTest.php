@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class GiftCertificateTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\GiftCertificate */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\GiftCertificate */
     protected $entity;
 
     /**

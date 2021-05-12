@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class ProductModifierValueTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\ProductModifierValue */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\ProductModifierValue */
     protected $entity;
 
     /**

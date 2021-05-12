@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class ResourceTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Annotations\Resource */
+    /** @coversDefaultClass \Bigcommerce\ORM\Annotations\Resource */
     protected $annotation;
 
     public function testResource()

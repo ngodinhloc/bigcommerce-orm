@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class OrderTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\Order */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\Order */
     protected $entity;
 
     /**

@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class CategoryMetafieldTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CategoryMetafield */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\CategoryMetafield */
     protected $entity;
 
     /**

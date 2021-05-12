@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class ProductCustomFieldTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\ProductCustomField */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\ProductCustomField */
     protected $entity;
 
     /**

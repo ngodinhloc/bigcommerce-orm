@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class FileCachePoolTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Cache\FileCache\FileCachePool */
+    /** @coversDefaultClass \Bigcommerce\ORM\Cache\FileCache\FileCachePool */
     protected $cache;
 
     /** @var \Bigcommerce\ORM\Cache\FileCache\FileCacheItem[] */

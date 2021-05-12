@@ -23,6 +23,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class EntityManagerTest extends BaseTestCase
 {
+    /** @coversDefaultClass \Bigcommerce\ORM\EntityManager */
+    protected $entityManager;
+
     /** @var \Bigcommerce\ORM\Client\Client|\Prophecy\Prophecy\ProphecySubjectInterface */
     protected $client;
 
@@ -31,9 +34,6 @@ class EntityManagerTest extends BaseTestCase
 
     /** @var \Symfony\Component\EventDispatcher\EventDispatcher|\Prophecy\Prophecy\ProphecySubjectInterface */
     protected $dispatcher;
-
-    /** @var \Bigcommerce\ORM\EntityManager */
-    protected $entityManager;
 
     protected function setUp(): void
     {

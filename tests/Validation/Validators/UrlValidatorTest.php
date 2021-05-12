@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class UrlValidatorTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Validation\Validators\UrlValidator */
+    /** @coversDefaultClass \Bigcommerce\ORM\Validation\Validators\UrlValidator */
     protected $validator;
 
     /** @var \Bigcommerce\ORM\Mapper */

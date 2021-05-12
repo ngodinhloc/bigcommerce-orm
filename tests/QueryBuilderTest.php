@@ -7,7 +7,7 @@ use Bigcommerce\ORM\QueryBuilder;
 
 class QueryBuilderTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\QueryBuilder */
+    /** @coversDefaultClass \Bigcommerce\ORM\QueryBuilder */
     protected $queryBuilder;
 
     protected function setUp(): void

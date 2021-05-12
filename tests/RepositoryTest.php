@@ -11,7 +11,7 @@ use Bigcommerce\ORM\Repository;
 
 class RepositoryTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Repository */
+    /** @coversDefaultClass \Bigcommerce\ORM\Repository */
     protected $repository;
 
     /** @var \Bigcommerce\ORM\EntityManager|\Prophecy\Prophecy\ProphecySubjectInterface */

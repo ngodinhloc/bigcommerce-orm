@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class EntityManagerEventTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Events\EntityManagerEvent */
+    /** @coversDefaultClass \Bigcommerce\ORM\Events\EntityManagerEvent */
     protected $event;
 
     /**

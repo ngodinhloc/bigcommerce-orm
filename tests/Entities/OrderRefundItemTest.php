@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class OrderRefundItemTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\OrderRefundItem */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\OrderRefundItem */
     protected $entity;
 
     /**

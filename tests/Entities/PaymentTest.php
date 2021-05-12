@@ -11,7 +11,7 @@ use Tests\BaseTestCase;
 
 class PaymentTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\Payment */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\Payment */
     protected $entity;
 
     /**

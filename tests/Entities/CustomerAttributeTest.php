@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class CustomerAttributeTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CustomerAttribute */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\CustomerAttribute */
     protected $entity;
 
     /**

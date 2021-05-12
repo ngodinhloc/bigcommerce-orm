@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class StoredPaypalAccountTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\StoredPaypalAccount */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\StoredPaypalAccount */
     protected $entity;
 
     /**

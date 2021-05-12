@@ -11,7 +11,7 @@ use Tests\BaseTestCase;
 
 class ResultTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Client\Result */
+    /** @coversDefaultClass \Bigcommerce\ORM\Client\Result */
     protected $result;
 
     /**

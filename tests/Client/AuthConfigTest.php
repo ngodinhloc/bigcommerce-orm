@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class AuthConfigTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Client\AuthConfig */
+    /** @coversDefaultClass \Bigcommerce\ORM\Client\AuthConfig */
     protected $authConfig;
 
     /**

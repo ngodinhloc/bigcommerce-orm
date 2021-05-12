@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class BrandImageTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\BrandImage */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\BrandImage */
     protected $entity;
 
     /**

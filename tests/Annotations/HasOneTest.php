@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class HasOneTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Annotations\HasOne */
+    /** @coversDefaultClass \Bigcommerce\ORM\Annotations\HasOne */
     protected $annotation;
 
     /**

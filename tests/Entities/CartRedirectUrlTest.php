@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class CartRedirectUrlTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CartRedirectUrl */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\CartRedirectUrl */
     protected $entity;
 
     /**

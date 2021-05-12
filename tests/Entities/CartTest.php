@@ -9,7 +9,7 @@ use Tests\BaseTestCase;
 
 class CartTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\Cart */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\Cart */
     protected $entity;
 
     /**

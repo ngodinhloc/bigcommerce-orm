@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class BelongToOneTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Annotations\BelongToOne */
+    /** @@coversDefaultClass \Bigcommerce\ORM\Annotations\BelongToOne */
     protected $annotation;
 
     /**

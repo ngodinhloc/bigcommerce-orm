@@ -11,7 +11,7 @@ use Tests\BaseTestCase;
 
 class ConsignmentTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\Consignment */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\Consignment */
     protected $entity;
 
     /**

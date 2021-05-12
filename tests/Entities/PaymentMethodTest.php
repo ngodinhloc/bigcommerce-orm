@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class PaymentMethodTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\PaymentMethod */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\PaymentMethod */
     protected $entity;
 
     /**

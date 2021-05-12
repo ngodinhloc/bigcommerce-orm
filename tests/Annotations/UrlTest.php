@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 
 class UrlTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Annotations\Url */
+    /** @coversDefaultClass \Bigcommerce\ORM\Annotations\Url */
     protected $annotation;
 
     /**

@@ -17,7 +17,7 @@ use Tests\BaseTestCase;
 
 class ClientTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Client\Client */
+    /** @coversDefaultClass \Bigcommerce\ORM\Client\Client */
     protected $client;
 
     /** @var \Bigcommerce\ORM\Client\Connection|\Prophecy\Prophecy\ProphecySubjectInterface */

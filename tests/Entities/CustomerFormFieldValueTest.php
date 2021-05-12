@@ -8,7 +8,7 @@ use Tests\BaseTestCase;
 
 class CustomerFormFieldValueTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Entities\CustomerFormFieldValue */
+    /** @coversDefaultClass \Bigcommerce\ORM\Entities\CustomerFormFieldValue */
     protected $entity;
 
     /**

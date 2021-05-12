@@ -19,7 +19,7 @@ use Bigcommerce\ORM\Metadata;
 
 class MapperTest extends BaseTestCase
 {
-    /** @var \Bigcommerce\ORM\Mapper */
+    /** @coversDefaultClass \Bigcommerce\ORM\Mapper */
     protected $mapper;
 
     /** @var \Bigcommerce\ORM\Entities\Customer */
