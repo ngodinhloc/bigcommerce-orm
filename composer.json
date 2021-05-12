@@ -16,8 +16,9 @@
       "email": "ken.ngo@bigcommerce.com.au"
     }
   ],
+
   "require": {
-    "php": "^7.2",
+    "php": "^7.3",
     "doctrine/annotations": "^1.6",
     "psr/log": "^1.1",
     "psr/http-message": "^1.0",
@@ -29,8 +30,12 @@
     "phpunit/phpunit": "^8.0",
     "phpspec/prophecy": "^1.0",
     "monolog/monolog": "^2.1.1",
-    "guzzlehttp/streams": "^3.0@dev"
+    "guzzlehttp/streams": "^3.0@dev",
+    "micronative/file-cache": "1.0.0"
   },
+  "repositories": [
+    { "type": "vcs", "url": "https://github.com/micronative/file-cache" }
+  ],
   "autoload": {
     "psr-4": {
       "Bigcommerce\\ORM\\": "src/"
