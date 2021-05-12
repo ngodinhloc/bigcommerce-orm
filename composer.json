@@ -32,9 +32,6 @@
     "monolog/monolog": "^2.1.1",
     "guzzlehttp/streams": "^3.0@dev"
   },
-  "repositories": [
-    { "type": "vcs", "url": "https://github.com/micronative/file-cache" }
-  ],
   "autoload": {
     "psr-4": {
       "Bigcommerce\\ORM\\": "src/"
