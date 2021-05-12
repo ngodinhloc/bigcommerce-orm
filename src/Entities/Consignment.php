@@ -10,7 +10,7 @@ use Bigcommerce\ORM\Mapper;
 /**
  * Class Consignment
  * @package Bigcommerce\ORM\Entities
- * @BC\Resource(name="Consignment", path="/checkouts/{checkout_id}/consignments", type="api",creatable=false)
+ * @BC\Resource(name="Consignment", path="/checkouts/{checkout_id}/consignments", type="api", creatable=false)
  */
 class Consignment extends AbstractEntity
 {
