@@ -1,14 +1,12 @@
 <?php
 require_once('./vendor/autoload.php');
 
-use Micronative\FileCache\CachePool;
-
 $authCredentials = include('_auth.php');
 $options = include('_options.php');
 
 try {
     $cacheDir = __DIR__ . "/caches";
-    $cachePool = new CachePool($cacheDir);
+    $cachePool = new \Bigcommerce\ORM\Cache\FileCache\FileCachePool($cacheDir);
     $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options, $cachePool);
     $entityManager = $config->configEntityManager();
 
