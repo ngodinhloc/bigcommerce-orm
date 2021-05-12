@@ -403,7 +403,7 @@ class MyProduct extends Entity
 @see: [samples/Entities/MyProduct.php](./samples/Entities/MyProduct.php)
 
 ### Working cache
-The Configuration accepts a \Psr\Cache\CacheItemPoolInterface to use as a cache engine. Big-orm includes a built-int cache engine named FileCachePool 
+The Configuration accepts a \Psr\Cache\CacheItemPoolInterface to use as a cache engine. bigcommerce-orm includes a built-int cache engine named FileCachePool 
 ```php
 $authCredentials = [
     'clientId' => 'acxu0p8rfh15m8n0fn4obuxmb52tgwk',
@@ -510,7 +510,7 @@ $options = [
     'proxy' => null
 ];
 ```
-Big-orm will produce useful debug messages:
+Bigcommerce-orm will produce useful debug messages:
 - Verify peer
 ```text
 * Hostname api.service.bcdev was found in DNS cache
