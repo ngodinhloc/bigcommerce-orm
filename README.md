@@ -30,12 +30,15 @@ composer.json
 <pre>
 "require": {
         "bigcommerce/orm": "^1.0.0"
-    }
+},
+"repositories": [
+    { "type": "vcs", "url": "https://github.com/ngodinhloc/bigcommerce-orm" }
+],
 </pre>
 
 Run 
 <pre>
-composer require bigcommerce/orm
+composer require bigcommerce/orm:1.0.0
 </pre>
 
 ## Configuration
