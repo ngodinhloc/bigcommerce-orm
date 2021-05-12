@@ -26,6 +26,8 @@ class Payment extends AbstractEntity
      */
     protected $paymentData;
 
+    protected $paymentAccessTokenRequired = true;
+
     /** @var float|null */
     protected $amount;
 
@@ -156,7 +158,7 @@ class Payment extends AbstractEntity
     /**
      * @return \Bigcommerce\ORM\Mapper
      */
-    public function getMapper(): \Bigcommerce\ORM\Mapper
+    public function getMapper(): Mapper
     {
         return $this->mapper;
     }
@@ -175,7 +177,7 @@ class Payment extends AbstractEntity
     /**
      * @return \Bigcommerce\ORM\Entities\PaymentMethod
      */
-    public function getPaymentMethod(): \Bigcommerce\ORM\Entities\PaymentMethod
+    public function getPaymentMethod(): PaymentMethod
     {
         return $this->paymentMethod;
     }
@@ -186,5 +188,16 @@ class Payment extends AbstractEntity
     public function getPaymentInstrument(): AbstractInstrument
     {
         return $this->paymentInstrument;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Entities\PaymentAccessToken|null $paymentAccessToken
+     * @return \Bigcommerce\ORM\Entities\Payment
+     */
+    public function setPaymentAccessToken(?PaymentAccessToken $paymentAccessToken): Payment
+    {
+        $this->paymentAccessToken = $paymentAccessToken;
+
+        return $this;
     }
 }

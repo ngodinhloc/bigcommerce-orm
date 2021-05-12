@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Bigcommerce\ORM;
@@ -17,11 +18,17 @@ abstract class AbstractEntity
      */
     protected $id;
 
-    /** @var bool  */
+    /** @var bool */
     protected $isNew = false;
 
-    /** @var bool  */
+    /** @var bool */
     protected $isPatched = false;
+
+    /** @var bool */
+    protected $paymentAccessTokenRequired = false;
+
+    /** @var \Bigcommerce\ORM\Entities\PaymentAccessToken */
+    protected $paymentAccessToken = null;
 
     /** @var \Bigcommerce\ORM\Metadata */
     protected $metadata;
@@ -54,6 +61,14 @@ abstract class AbstractEntity
     }
 
     /**
+     * @return bool
+     */
+    public function isPaymentAccessTokenRequired()
+    {
+        return $this->paymentAccessTokenRequired;
+    }
+
+    /**
      * @return bool|null
      */
     public function isPatched()
@@ -69,4 +84,11 @@ abstract class AbstractEntity
         return $this->metadata;
     }
 
+    /**
+     * @return \Bigcommerce\ORM\Entities\PaymentAccessToken|null
+     */
+    public function getPaymentAccessToken()
+    {
+        return $this->paymentAccessToken;
+    }
 }

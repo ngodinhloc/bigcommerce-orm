@@ -204,12 +204,11 @@ try {
 
     $payment = new \Bigcommerce\ORM\Entities\Payment();
     $payment
+        ->setPaymentAccessToken($paymentAccessToken)
         ->setPaymentMethod($paymentMethod)
         ->setPaymentInstrument($card)
         ->setAmount(134)
         ->setCurrencyCode('USD');
-    /** in order to process payment, we need to set EntityManager payment access token */
-    $entityManager->setPaymentAccessToken($paymentAccessToken);
     $entityManager->create($payment);
     echo "Payment ID: {$payment->getId()}\n";
 } catch (\Exception $e) {

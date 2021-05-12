@@ -5,6 +5,7 @@ namespace Bigcommerce\ORM;
 
 use Bigcommerce\ORM\Client\ClientInterface;
 use Bigcommerce\ORM\Entities\PaymentAccessToken;
+use Bigcommerce\ORM\Entities\PaymentAccessTokenRequiredInterface;
 use Bigcommerce\ORM\Events\EntityManagerEvent;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Relation\RelationInterface;
@@ -412,6 +413,13 @@ class EntityManager
      */
     private function checkBeforeCreating(?AbstractEntity $entity = null)
     {
+        if ($entity->isPaymentAccessTokenRequired()) {
+            if(empty($paymentAccessToken = $entity->getPaymentAccessToken())){
+                throw new EntityException(EntityException::ERROR_PAYMENT_ACCESS_TOKEN_REQUIRED);
+            }
+            $this->setPaymentAccessToken($paymentAccessToken);
+        }
+
         $checkRequiredProperties = $this->mapper->checkRequiredFields($entity);
         if ($checkRequiredProperties !== true) {
             throw new EntityException(EntityException::ERROR_REQUIRED_PROPERTIES . implode(", ", $checkRequiredProperties));

@@ -24,4 +24,5 @@ class EntityException extends BaseException
     const ERROR_NOT_CREATABLE_RESOURCE = 'This resource does not support create. Please try batchCreate: ';
     const ERROR_NOT_UPDATABLE_RESOURCE = 'This resource does not support update. Please try batchUpdate: ';
     const ERROR_NOT_DELETABLE_RESOURCE = 'This resource does not support delete: ';
+    const ERROR_PAYMENT_ACCESS_TOKEN_REQUIRED = 'This resource require Payment Access Token in order to create.';
 }
