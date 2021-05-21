@@ -39,11 +39,11 @@ class Mapper
     }
 
     /**
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @return \Bigcommerce\ORM\Annotations\Resource|object
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function getResource(?AbstractEntity $entity = null)
+    public function getResource(AbstractEntity $entity)
     {
         $reflectionClass = $this->reflect($entity);
 
@@ -51,13 +51,13 @@ class Mapper
     }
 
     /**
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param string|null $action
      * @return string
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function getResourcePath(?AbstractEntity $entity = null, ?string $action = null)
+    public function getResourcePath(AbstractEntity $entity, ?string $action = null)
     {
         if ($entity->isPatched() !== true) {
             $entity = $this->patch($entity, [], null, true);
@@ -96,14 +96,14 @@ class Mapper
     /**
      * Patch object properties with data array
      *
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param array|null $data
      * @param array|null $pathParams
      * @param bool $propertyOnly
      * @return \Bigcommerce\ORM\AbstractEntity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function patch(?AbstractEntity $entity = null, ?array $data = null, ?array $pathParams = null, bool $propertyOnly = false)
+    public function patch(AbstractEntity $entity, ?array $data = null, ?array $pathParams = null, bool $propertyOnly = false)
     {
         if (is_array($pathParams)) {
             $data = array_merge($data, $pathParams);
@@ -145,11 +145,11 @@ class Mapper
     /**
      * Check for entity required fields
      *
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @return bool|array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function checkRequiredFields(?AbstractEntity $entity = null)
+    public function checkRequiredFields(AbstractEntity $entity)
     {
         if ($entity->isPatched() !== true) {
             $entity = $this->patch($entity, [], null, true);
@@ -177,12 +177,12 @@ class Mapper
     /**
      * Get writable data
      *
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param array|null $data
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function getWritableFieldValues(?AbstractEntity $entity = null, ?array $data = null)
+    public function getWritableFieldValues(AbstractEntity $entity, ?array $data = null)
     {
         if ($entity->isPatched() !== true) {
             $entity = $this->patch($entity, [], null, true);
@@ -221,11 +221,11 @@ class Mapper
     /**
      * Check for entity validations
      *
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @return bool|array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function checkRequiredValidations(?AbstractEntity $entity = null)
+    public function checkRequiredValidations(AbstractEntity $entity)
     {
         if ($entity->isPatched() !== true) {
             $entity = $this->patch($entity, [], null, true);
@@ -281,14 +281,14 @@ class Mapper
     /**
      * Get array of entity
      *
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param int|null $key
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @see \Bigcommerce\ORM\Mapper::KEY_BY_FIELD_NAME
      * @see \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME
      */
-    public function toArray(?AbstractEntity $entity = null, ?int $key = self::KEY_BY_FIELD_NAME)
+    public function toArray(AbstractEntity $entity, ?int $key = self::KEY_BY_FIELD_NAME)
     {
         $reflectionClass = $this->reflect($entity);
         $properties = $reflectionClass->getProperties();
@@ -327,7 +327,7 @@ class Mapper
      * @param mixed|null $value
      * @return void
      */
-    public function setPropertyValue(?AbstractEntity $entity, \ReflectionProperty $property, $value = null)
+    public function setPropertyValue(AbstractEntity $entity, \ReflectionProperty $property, $value = null)
     {
         $property->setAccessible(true);
         $property->setValue($entity, $value);
@@ -336,11 +336,11 @@ class Mapper
     /**
      * Get property value
      *
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity entity
      * @param \ReflectionProperty|null $property property
      * @return mixed
      */
-    public function getPropertyValue(?AbstractEntity $entity, ?\ReflectionProperty $property)
+    public function getPropertyValue(AbstractEntity $entity, ?\ReflectionProperty $property)
     {
         if ($property instanceof \ReflectionProperty) {
             $property->setAccessible(true);
@@ -389,7 +389,7 @@ class Mapper
      * @return mixed
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function getPropertyValueByFieldName(AbstractEntity $entity, $fieldName)
+    public function getPropertyValueByFieldName(AbstractEntity $entity, string $fieldName)
     {
         $reflectionClass = $this->reflect($entity);
         $properties = $reflectionClass->getProperties();
@@ -432,7 +432,7 @@ class Mapper
      * @return \Bigcommerce\ORM\AbstractEntity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function object($class)
+    public function object(string $class)
     {
         try {
             $object = new $class();
@@ -444,11 +444,11 @@ class Mapper
     }
 
     /**
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @return \ReflectionClass
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function reflect(AbstractEntity $entity = null)
+    public function reflect(AbstractEntity $entity)
     {
         try {
             $reflectionClass = new ReflectionClass(get_class($entity));
@@ -461,10 +461,10 @@ class Mapper
     }
 
     /**
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function checkEntity(?AbstractEntity $entity)
+    public function checkEntity(AbstractEntity $entity)
     {
         if (!$entity instanceof AbstractEntity) {
             throw new EntityException(EntityException::ERROR_NOT_ENTITY_INSTANCE);
@@ -528,13 +528,13 @@ class Mapper
     }
 
     /**
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param array|null $autoIncludes
      * @param array|null $items
      * @param array|null $pathParams
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function patchAutoIncludes(?AbstractEntity $entity = null, ?array $autoIncludes = null, ?array $items = null, ?array $pathParams = null)
+    private function patchAutoIncludes(AbstractEntity $entity, ?array $autoIncludes = null, ?array $items = null, ?array $pathParams = null)
     {
         foreach ($autoIncludes as $fieldName => $include) {
             $property = $include['property'];

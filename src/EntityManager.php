@@ -5,7 +5,6 @@ namespace Bigcommerce\ORM;
 
 use Bigcommerce\ORM\Client\ClientInterface;
 use Bigcommerce\ORM\Entities\PaymentAccessToken;
-use Bigcommerce\ORM\Entities\PaymentAccessTokenRequiredInterface;
 use Bigcommerce\ORM\Events\EntityManagerEvent;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Relation\RelationInterface;
@@ -32,7 +31,6 @@ class EntityManager
      * @param \Bigcommerce\ORM\Client\ClientInterface|null $client
      * @param \Bigcommerce\ORM\Mapper|null $mapper
      * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface|null $eventDispatcher
-     * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     public function __construct(
         ?ClientInterface $client = null,
@@ -206,7 +204,7 @@ class EntityManager
     /**
      * Update entity with array of data: only the fields in data will be sent to server for updating
      *
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param array|null $data
      * [fieldName => value]
      * @return bool
@@ -215,7 +213,7 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function update(?AbstractEntity $entity, ?array $data = [])
+    public function update(AbstractEntity $entity, ?array $data = [])
     {
         $this->mapper->checkEntity($entity);
         $this->mapper->checkId($entity->getId());
@@ -241,7 +239,7 @@ class EntityManager
     /**
      * Delete multiple entities
      *
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param string|null $paramField
      * @return bool
      * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
@@ -249,7 +247,7 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function delete(?AbstractEntity $entity = null, ?string $paramField = 'id')
+    public function delete(AbstractEntity $entity, ?string $paramField = 'id')
     {
         if (empty($paramField)) {
             $paramField = 'id';
@@ -382,13 +380,13 @@ class EntityManager
     /**
      * Patch entity with data array
      *
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param array|null $data
      * @param array|null $pathParams
      * @return \Bigcommerce\ORM\AbstractEntity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function patch(?AbstractEntity $entity = null, ?array $data = null, array $pathParams = null)
+    public function patch(AbstractEntity $entity, ?array $data = null, array $pathParams = null)
     {
         return $this->mapper->patch($entity, $data, $pathParams, false);
     }
@@ -407,11 +405,11 @@ class EntityManager
     }
 
     /**
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function checkBeforeCreating(?AbstractEntity $entity = null)
+    private function checkBeforeCreating(AbstractEntity $entity)
     {
         if ($entity->isPaymentAccessTokenRequired()) {
             if(empty($paymentAccessToken = $entity->getPaymentAccessToken())){
@@ -432,11 +430,11 @@ class EntityManager
     }
 
     /**
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function checkBeforeUpdating(?AbstractEntity $entity = null)
+    private function checkBeforeUpdating(AbstractEntity $entity)
     {
         $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
         if ($checkRequiredValidations !== true) {
@@ -574,12 +572,12 @@ class EntityManager
     /**
      * Load object in relations
      *
-     * @param \Bigcommerce\ORM\AbstractEntity|null $entity entity
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param array|null $data
      * @param array|null $pathParams
      * @return \Bigcommerce\ORM\AbstractEntity
      */
-    private function autoLoad(?AbstractEntity $entity = null, ?array $data = null, ?array $pathParams = null)
+    private function autoLoad(AbstractEntity $entity, ?array $data = null, ?array $pathParams = null)
     {
         if (empty($entity->getMetadata()->getAutoLoadFields())) {
             return $entity;
