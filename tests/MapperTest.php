@@ -410,7 +410,7 @@ class MapperTest extends BaseTestCase
      */
     public function testCheckEntity()
     {
-        $this->expectException(EntityException::class);
+        $this->expectException(\TypeError::class);
         $this->mapper->checkEntity(null);
     }
 
