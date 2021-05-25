@@ -8,7 +8,7 @@ use Bigcommerce\ORM\Entities\PaymentAccessToken;
 use Bigcommerce\ORM\Events\EntityManagerEvent;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Relation\RelationInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class EntityManager
@@ -22,7 +22,7 @@ class EntityManager
     /** @var \Bigcommerce\ORM\Mapper */
     protected $mapper;
 
-    /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface */
+    /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
@@ -30,7 +30,7 @@ class EntityManager
      *
      * @param \Bigcommerce\ORM\Client\ClientInterface|null $client
      * @param \Bigcommerce\ORM\Mapper|null $mapper
-     * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface|null $eventDispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface|null $eventDispatcher
      */
     public function __construct(
         ?ClientInterface $client = null,
@@ -622,8 +622,8 @@ class EntityManager
 
             if ($this->hasEventDispatcher()) {
                 $this->eventDispatcher->dispatch(
-                    new EntityManagerEvent(EntityManagerEvent::ENTITY_CREATED, $entity),
-                    EntityManagerEvent::ENTITY_CREATED
+                    EntityManagerEvent::ENTITY_CREATED,
+                    new EntityManagerEvent(EntityManagerEvent::ENTITY_CREATED, $entity)
                 );
             }
 
@@ -661,8 +661,8 @@ class EntityManager
 
             if ($this->hasEventDispatcher()) {
                 $this->eventDispatcher->dispatch(
-                    new EntityManagerEvent(EntityManagerEvent::ENTITY_UPDATED, $entity),
-                    EntityManagerEvent::ENTITY_UPDATED
+                    EntityManagerEvent::ENTITY_UPDATED,
+                    new EntityManagerEvent(EntityManagerEvent::ENTITY_UPDATED, $entity)
                 );
             }
 

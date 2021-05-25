@@ -6,7 +6,6 @@ namespace Samples\Events;
 use Bigcommerce\ORM\Events\EntityManagerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-
 class MySubscriber implements EventSubscriberInterface
 {
     /**

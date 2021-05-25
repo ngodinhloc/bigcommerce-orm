@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Bigcommerce\ORM\Events;
 
 use Bigcommerce\ORM\AbstractEntity;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 class EntityManagerEvent extends Event
 {
@@ -40,7 +40,7 @@ class EntityManagerEvent extends Event
      * @param string|null $name
      * @return \Bigcommerce\ORM\Events\EntityManagerEvent
      */
-    public function setName(?string $name): EntityManagerEvent
+    public function setName($name): EntityManagerEvent
     {
         $this->name = $name;
 

@@ -10,7 +10,7 @@ use Bigcommerce\ORM\Client\Connection;
 use Bigcommerce\ORM\Client\Exceptions\ConfigException;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Configuration
 {
@@ -23,7 +23,7 @@ class Configuration
     /** @var \Psr\Cache\CacheItemPoolInterface */
     protected $cachePool;
 
-    /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface */
+    /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface */
     protected $eventDispatcher;
 
     /** @var \Psr\Log\LoggerInterface */
@@ -51,9 +51,9 @@ class Configuration
      *  'accept' => 'application/json'
      *  'debug' => true
      * ]
-     * @param \Psr\Cache\CacheItemPoolInterface|null $cachePool
-     * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface|null $eventDispatcher
-     * @param \Psr\Log\LoggerInterface|null $logger
+     * @param \Psr\Cache\CacheItemPoolInterface|null
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface|null
+     * @param \Psr\Log\LoggerInterface|null
      * @see \Bigcommerce\ORM\Client\BasicConfig::__construct
      * @see \Bigcommerce\ORM\Client\AuthConfig::__construct
      */
@@ -170,7 +170,7 @@ class Configuration
     }
 
     /**
-     * @return \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
+     * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
     public function getEventDispatcher()
     {
@@ -178,7 +178,7 @@ class Configuration
     }
 
     /**
-     * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface|null $eventDispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface|null $eventDispatcher
      * @return \Bigcommerce\ORM\Configuration
      */
     public function setEventDispatcher(?EventDispatcherInterface $eventDispatcher): Configuration
