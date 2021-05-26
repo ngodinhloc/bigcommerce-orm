@@ -1,4 +1,5 @@
 <?php
+
 require_once('./vendor/autoload.php');
 
 $authCredentials = include('_auth.php');
@@ -23,8 +24,8 @@ try {
 
     $newCart->addLineItem($lineItem1);
     $result = $entityManager->save($newCart);
-    echo "Created Cart ID: {$newCart->getId()}\n";
-    echo "Line Item Count:" .count($newCart->getLineItems())."\n";
+    echo "Created Cart ID: {$newCart->getId()}" . PHP_EOL;
+    echo "Line Item Count:" . count($newCart->getLineItems()) . PHP_EOL;
 
     /** add more items to cart: line item, gift certificate, custom item */
     $lineItem2 = new \Bigcommerce\ORM\Entities\LineItem();
@@ -58,7 +59,7 @@ try {
         ->addGiftCertificate($giftCertificate)
         ->addCustomItem($customItem);
     $entityManager->save($cartItem);
-    echo "Added Custom Item ID: {$cartItem->getId()}\n";
+    echo "Added Custom Item ID: {$cartItem->getId()}" . PHP_EOL;
 
     /** find checkout of the created cart */
     $checkout1 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $newCart->getId(), null, true);
@@ -71,14 +72,14 @@ try {
     $physicalItems1 = $cart1->getPhysicalItems();
     $giftCertificates1 = $cart1->getGiftCertificates();
     $customItems1 = $cart1->getCustomItems();
-    echo "Cart Coupon Count: " . count($coupons1)."\n";
-    echo "Digital Item Count: " . count($digitalItems1)."\n";
-    echo "Physical Item Count: " . count($physicalItems1)."\n";
-    echo "Gift Certificate Count: " . count($giftCertificates1)."\n";
-    echo "Custom Item Count: " . count($customItems1)."\n";
+    echo "Cart Coupon Count: " . count($coupons1) . PHP_EOL;
+    echo "Digital Item Count: " . count($digitalItems1) . PHP_EOL;
+    echo "Physical Item Count: " . count($physicalItems1) . PHP_EOL;
+    echo "Gift Certificate Count: " . count($giftCertificates1) . PHP_EOL;
+    echo "Custom Item Count: " . count($customItems1) . PHP_EOL;
 
     /**
-     * Add new coupon to checkout
+     * Add coupon to checkout
      * It seems that one checkout can have ONLY ONE coupon, new coupon added will override old coupon
      */
     $newCoupon = new \Bigcommerce\ORM\Entities\Coupon();
@@ -86,13 +87,15 @@ try {
         ->setCheckoutId($checkout1->getId())
         ->setCode(COUPON_CODE);
     $entityManager->save($newCoupon);
-    echo "Added Coupon ID: {$newCoupon->getId()}\n";
+    echo "Added Coupon ID: {$newCoupon->getId()}" . PHP_EOL;
 
-    /** delete coupon */
-    $result = $entityManager->delete($newCoupon, 'code');
-    echo "Deleted Coupon Result: {$result}\n";
+    /** check for coupon added */
+    $checkout2 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $newCart->getId(), null, true);
+    /** @var \Bigcommerce\ORM\Entities\Checkout $checkout2 */
+    $coupons2 = $checkout2->getCoupons();
+    echo "Coupon Count:" . count($coupons2) . PHP_EOL;
 
-    /** Add new billing address */
+    /** Add billing address */
     $newBillingAddress = new \Bigcommerce\ORM\Entities\BillingAddress();
     $newBillingAddress
         ->setCheckoutId($checkout1->getId())
@@ -109,56 +112,43 @@ try {
         ->setAddress2('U6')
         ->setAddress1('Longfield');
     $entityManager->save($newBillingAddress);
-    echo "New Billing Address ID: {$newBillingAddress->getId()}\n";
 
-    /** check for coupon had been deleted and new shipping address added */
+    /** check for billing address added */
     $checkout2 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $newCart->getId(), null, true);
     /** @var \Bigcommerce\ORM\Entities\Checkout $checkout2 */
-    $coupons2 = $checkout2->getCoupons();
     $billingAddress2 = $checkout2->getBillingAddress();
-    echo "Coupon Count:".count($coupons2)."\n";
-
-    /** update billing address */
-    $billingAddress2->setCity('Cabra');
-    $entityManager->save($billingAddress2);
-    echo "Updated Billing Address ID: {$billingAddress2->getId()}\n";
-
-    /** check for billing address updated */
-    $checkout3 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $newCart->getId(), null, true);
-    /** @var \Bigcommerce\ORM\Entities\Checkout $checkout3 */
-    $billingAddress3 = $checkout2->getBillingAddress();
-    echo "New Billing Address City: {$billingAddress3->getCity()}\n";
+    echo "Added Billing Address ID: {$billingAddress2->getId()}" . PHP_EOL;
 
     /** create new consignments: consignment does not support save(), we have to use batchCreate */
-    $newLineItem1 = $digitalItems1[0];
-    $shippingAddress = $billingAddress3;
+    $newLineItem1 = current($digitalItems1);
+    $shippingAddress = $billingAddress2;
     $newConsignment1 = new \Bigcommerce\ORM\Entities\Consignment();
     $newConsignment1
-        ->setCheckoutId($checkout3->getId())
+        ->setCheckoutId($checkout2->getId())
         ->addLineItem($newLineItem1)
         ->setShippingAddress($shippingAddress);
 
     $newConsignment2 = new \Bigcommerce\ORM\Entities\Consignment();
-    $newLineItem2 = $physicalItems1[0];
-    $newCustomItem2 = $customItems1[0];
+    $newLineItem2 = current($physicalItems1);
+    $newCustomItem2 = current($customItems1);
     $newConsignment2
-        ->setCheckoutId($checkout3->getId())
+        ->setCheckoutId($checkout2->getId())
         ->addLineItem($newLineItem2)
         ->setShippingAddress($shippingAddress);
 
     $result = $entityManager->batchCreate([$newConsignment1, $newConsignment2]);
-    echo "Consignment Creating Result: {$result}\n";
+    echo "Consignment Creating Result: {$result}" . PHP_EOL;
 
     /** check for new consignment added */
-    $checkout4 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $checkout3->getId(), null, true);
+    $checkout4 = $entityManager->find(\Bigcommerce\ORM\Entities\Checkout::class, $checkout2->getId(), null, true);
     /** @var \Bigcommerce\ORM\Entities\Checkout $checkout4 */
     $consignments4 = $checkout4->getConsignments();
-    echo "Consignment Count: ".count($consignments4)."\n";
+    echo "Consignment Count: " . count($consignments4) . PHP_EOL;
 
     /** update consignment with shipping_option_id */
-    $consignment4 = $consignments4[0];
+    $consignment4 = current($consignments4);
     $availableShippingOptions = $consignment4->getAvailableShippingOptions();
-    $shippingOption = $availableShippingOptions[0];
+    $shippingOption = current($availableShippingOptions);
 
     /** Because shipping option can not be updated along with shipping address and line items */
 //    $consignment4->setShippingOption($shippingOption);
@@ -166,31 +156,36 @@ try {
 
     /** We have to update consignment shipping_option_id using update() */
     $entityManager->update($consignment4, ['shipping_option_id' => $shippingOption->getId()]);
-    echo "Shipping Option ID: {$shippingOption->getId()}\n";
+    echo "Shipping Option ID: {$shippingOption->getId()}" . PHP_EOL;
 
-    echo "Checkout ID: {$checkout3->getId()}\n";
+    echo "Checkout ID: {$checkout2->getId()}" . PHP_EOL;
 
     /** create order for the checkout */
     $order = new \Bigcommerce\ORM\Entities\Order();
-    $order->setCheckoutId($checkout3->getId());
+    $order->setCheckoutId($checkout2->getId());
     $entityManager->create($order);
-    echo "Order ID: {$order->getId()}\n";
+    echo "Order ID: {$order->getId()}" . PHP_EOL;
 
     /** create payment access token for this order */
     $paymentAccessToken = new \Bigcommerce\ORM\Entities\PaymentAccessToken();
     $paymentAccessToken->setOrder($order);
     $entityManager->create($paymentAccessToken);
-    echo "Payment Access Token: {$paymentAccessToken->getId()}\n";
+    echo "Payment Access Token: {$paymentAccessToken->getId()}" . PHP_EOL;
 
     /** get accepted payment methods for this order */
     $queryBuilder = new \Bigcommerce\ORM\QueryBuilder();
     $queryBuilder->whereEqual('order_id', $order->getId());
-    $paymentMethods = $entityManager->findBy(\Bigcommerce\ORM\Entities\PaymentMethod::class, ['order_id' => $order->getId()], $queryBuilder, false);
-    echo "Payment Method Count: ".count($paymentMethods)."\n";
+    $paymentMethods = $entityManager->findBy(
+        \Bigcommerce\ORM\Entities\PaymentMethod::class,
+        null,
+        $queryBuilder,
+        false
+    );
+    echo "Payment Method Count: " . count($paymentMethods) . PHP_EOL;
 
     /** @var \Bigcommerce\ORM\Entities\PaymentMethod $paymentMethod */
-    $paymentMethod = $paymentMethods[0];
-    echo "Select Payment Method: {$paymentMethod->getName()}\n";
+    $paymentMethod = current($paymentMethods);
+    echo "Select Payment Method: {$paymentMethod->getName()}" . PHP_EOL;
 
     /** made payment for this order */
     $card = new \Bigcommerce\ORM\Entities\Card();
@@ -210,7 +205,7 @@ try {
         ->setAmount(134)
         ->setCurrencyCode('USD');
     $entityManager->create($payment);
-    echo "Payment ID: {$payment->getId()}\n";
+    echo "Payment ID: {$payment->getId()}";
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
