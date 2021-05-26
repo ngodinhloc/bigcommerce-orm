@@ -94,7 +94,7 @@ class Cart extends AbstractEntity
 
     /**
      * @var array
-     * @BC\Field(name="line_items", required=true)
+     * @BC\Field(name="line_items")
      */
     protected $lineItems = [];
 
