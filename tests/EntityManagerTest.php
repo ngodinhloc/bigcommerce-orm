@@ -474,7 +474,7 @@ class EntityManagerTest extends BaseTestCase
      */
     public function testBatchCreateReturnTrue()
     {
-        $data = $this->getBatchCreateData();
+        $data = $this->getBatchCreateCartData();
         $cart1 = $this->entityManager->new(Cart::class, $data[0]);
         $cart2 = $this->entityManager->new(Cart::class, $data[1]);
         $result = $this->entityManager->batchCreate([$cart1, $cart2]);
@@ -818,14 +818,36 @@ class EntityManagerTest extends BaseTestCase
                 'first_name' => 'Ken',
                 'last_name' => 'Ngo',
                 'company' => 'BC',
-                'phone' => '123456789'
+                'phone' => '123456789',
             ],
             [
                 'email' => 'ken8.ngo@bc.com',
                 'first_name' => 'Ken',
                 'last_name' => 'Ngo',
                 'company' => 'BC',
-                'phone' => '123456789'
+                'phone' => '123456789',
+            ]
+        ];
+    }
+
+    private function getBatchCreateCartData()
+    {
+        return [
+            [
+                'email' => 'ken7.ngo@bc.com',
+                'first_name' => 'Ken',
+                'last_name' => 'Ngo',
+                'company' => 'BC',
+                'phone' => '123456789',
+                'customer_id' =>3,
+            ],
+            [
+                'email' => 'ken8.ngo@bc.com',
+                'first_name' => 'Ken',
+                'last_name' => 'Ngo',
+                'company' => 'BC',
+                'phone' => '123456789',
+                'customer_id' => 5,
             ]
         ];
     }
