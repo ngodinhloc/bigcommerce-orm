@@ -21,22 +21,22 @@ class CartItem extends AbstractEntity
     protected $cartId;
 
     /**
-     * @var array|null
+     * @var array
      * @BC\Field(name="line_items")
      */
-    protected $lineItems;
+    protected $lineItems = [];
 
     /**
-     * @var array|null
+     * @var array
      * @BC\Field(name="gift_certificates")
      */
-    protected $giftCertificates;
+    protected $giftCertificates = [];
 
     /**
-     * @var array|null
+     * @var array
      * @BC\Field(name="custom_items")
      */
-    protected $customItems;
+    protected $customItems = [];
 
     /** @var \Bigcommerce\ORM\Mapper */
     private $mapper;

@@ -28,7 +28,7 @@ class Cart extends AbstractEntity
 
     /**
      * @var int|null
-     * @BC\Field(name="customer_id")
+     * @BC\Field(name="customer_id", required=true)
      */
     protected $customerId;
 
@@ -93,19 +93,19 @@ class Cart extends AbstractEntity
     protected $discounts;
 
     /**
-     * @var array|null
-     * @BC\Field(name="line_items")
+     * @var array
+     * @BC\Field(name="line_items", required=true)
      */
-    protected $lineItems;
+    protected $lineItems = [];
 
     /**
-     * @var array|null
+     * @var array
      * @BC\Field(name="custom_items")
      */
     protected $customItems = [];
 
     /**
-     * @var array|null
+     * @var array
      * @BC\Field(name="gift_certificates")
      */
     protected $giftCertificates = [];
@@ -315,7 +315,7 @@ class Cart extends AbstractEntity
     }
 
     /**
-     * @return \Bigcommerce\ORM\Entities\CustomItem[]|null
+     * @return \Bigcommerce\ORM\Entities\CustomItem[]
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function getCustomItems()
