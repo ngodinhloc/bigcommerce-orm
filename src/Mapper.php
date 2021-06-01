@@ -622,15 +622,15 @@ class Mapper
 
                 if ($annotation instanceof RelationInterface) {
                     $relationFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
-                    if ($annotation->auto === true && $annotation->from == 'include') {
+                    if ($annotation->auto === true && $annotation->from === 'include') {
                         $includeFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
                     }
 
-                    if ($annotation->auto === true && $annotation->from == 'api') {
+                    if ($annotation->auto === true && $annotation->from === 'api') {
                         $autoLoadFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
                     }
 
-                    if ($annotation->from == 'result') {
+                    if ($annotation->from === 'result') {
                         $inResultFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
                     }
                 }

@@ -54,7 +54,7 @@ class EntityManager
      */
     public function findAll(string $className, ?array $pathParams = null, ?array $order = null, bool $auto = false)
     {
-        $entity = $this->getPatchedEntityWithPropertyOnly($className, $pathParams);
+        $entity = $this->getPatchedEntity($className, $pathParams);
         $resourcePath = $this->mapper->getResourcePath($entity);
         $resourceType = $entity->getMetadata()->getResource()->type;
         $autoIncludes = $entity->getMetadata()->getIncludeFields();
@@ -84,7 +84,7 @@ class EntityManager
      */
     public function findBy(string $className, ?array $pathParams = null, ?QueryBuilder $queryBuilder = null, $auto = false)
     {
-        $entity = $this->getPatchedEntityWithPropertyOnly($className, $pathParams);
+        $entity = $this->getPatchedEntity($className, $pathParams);
         $resourcePath = $this->mapper->getResourcePath($entity);
         $resourceType = $entity->getMetadata()->getResource()->type;
         $autoIncludes = $entity->getMetadata()->getIncludeFields();
@@ -107,7 +107,7 @@ class EntityManager
      */
     public function find(string $className, $id, ?array $pathParams = null, bool $auto = false)
     {
-        $entity = $this->getPatchedEntityWithPropertyOnly($className, $pathParams);
+        $entity = $this->getPatchedEntity($className, $pathParams);
         $resourcePath = $this->mapper->getResourcePath($entity, 'find');
         $resourceType = $entity->getMetadata()->getResource()->type;
         $autoIncludes = $entity->getMetadata()->getIncludeFields();
@@ -329,7 +329,7 @@ class EntityManager
             $field = 'id';
         }
 
-        $entity = $this->getPatchedEntityWithPropertyOnly($className, $pathParams);
+        $entity = $this->getPatchedEntity($className, $pathParams);
         $resourcePath = $this->mapper->getResourcePath($entity, 'delete');
         $resourceType = $entity->getMetadata()->getResource()->type;
         $queryBuilder = new QueryBuilder();
@@ -390,7 +390,7 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function getPatchedEntityWithPropertyOnly(string $className, ?array $pathParams = null)
+    private function getPatchedEntity(string $className, ?array $pathParams = null)
     {
         $this->mapper->checkClass($className);
         $object = $this->mapper->object($className);
