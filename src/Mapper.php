@@ -31,7 +31,6 @@ class Mapper
      * Mapper constructor.
      *
      * @param \Doctrine\Common\Annotations\AnnotationReader|null $reader reader
-     * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     public function __construct(?AnnotationReader $reader = null)
     {
@@ -83,7 +82,7 @@ class Mapper
             if (empty($value)) {
                 throw new MapperException(sprintf(MapperException::ERROR_MISSING_PATH_PARAMS, $path, $fieldName));
             }
-            $path = str_replace("{{$fieldName}}", $value, $path);
+            $path = str_replace("{{$fieldName}}", "$value", $path);
         }
 
         if (preg_match('/{.*}/', $path)) {
