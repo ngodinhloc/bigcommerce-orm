@@ -205,7 +205,7 @@ try {
         ->setAmount(134)
         ->setCurrencyCode('USD');
     $entityManager->create($payment);
-    echo "Payment ID: {$payment->getId()}";
+    echo "Payment ID: {$payment->getId()}".PHP_EOL;
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

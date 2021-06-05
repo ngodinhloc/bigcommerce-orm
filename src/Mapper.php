@@ -82,7 +82,7 @@ class Mapper
             if (empty($value)) {
                 throw new MapperException(sprintf(MapperException::ERROR_MISSING_PATH_PARAMS, $path, $fieldName));
             }
-            $path = str_replace("{{$fieldName}}", "$value", $path);
+            $path = str_replace("{{$fieldName}}", "{$value}", $path);
         }
 
         if (preg_match('/{.*}/', $path)) {
