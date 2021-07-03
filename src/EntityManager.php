@@ -243,7 +243,19 @@ class EntityManager
             throw new EntityException(EntityException::ERROR_EMPTY_PARAM_FIELD . $paramField);
         }
 
-        return $this->client->delete($resourcePath . '/' . $fieldValue, $resourceType);
+        $result = $this->client->delete($resourcePath . '/' . $fieldValue, $resourceType);
+        if(!empty($result)) {
+            if ($this->hasEventDispatcher()) {
+                $this->eventDispatcher->dispatch(
+                    EntityManagerEvent::ENTITY_DELETED,
+                    new EntityManagerEvent(EntityManagerEvent::ENTITY_DELETED, $entity)
+                );
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
