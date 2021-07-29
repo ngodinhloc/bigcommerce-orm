@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Client;
 
-use Bigcommerce\ORM\Client\Exceptions\ConfigException;
+use Bigcommerce\ORM\Exceptions\ConfigException;
 
 class AuthConfig extends AbstractConfig
 {
@@ -35,7 +35,7 @@ class AuthConfig extends AbstractConfig
      *  'apiUrl' =>
      *  'paymentUrl' =>
      * ]
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      */
     public function __construct(?array $config = null)
     {

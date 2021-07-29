@@ -31,8 +31,8 @@ class Repository
      * @param array|null $orders
      * @param bool $auto
      * @return array|bool
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
@@ -48,8 +48,8 @@ class Repository
      * @param \Bigcommerce\ORM\QueryBuilder|null $queryBuilder
      * @param bool $auto
      * @return array|false
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
@@ -68,8 +68,8 @@ class Repository
      * @param bool $auto
      * @return \Bigcommerce\ORM\AbstractEntity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
     public function find($id = null, ?array $pathParams = null, $auto = false)

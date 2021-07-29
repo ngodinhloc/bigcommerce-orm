@@ -7,9 +7,9 @@ use Bigcommerce\ORM\Cache\FileCache\FileCachePool;
 use Bigcommerce\ORM\Client\AuthConfig;
 use Bigcommerce\ORM\Client\BasicConfig;
 use Bigcommerce\ORM\Client\Client;
-use Bigcommerce\ORM\Client\Exceptions\ConfigException;
 use Bigcommerce\ORM\Configuration;
 use Bigcommerce\ORM\EntityManager;
+use Bigcommerce\ORM\Exceptions\ConfigException;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -75,7 +75,7 @@ class ConfigurationTest extends BaseTestCase
     /**
      * @covers \Bigcommerce\ORM\Configuration::__construct
      * @covers \Bigcommerce\ORM\Configuration::configEntityManager
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     public function testInvalidCredentials()
@@ -89,7 +89,7 @@ class ConfigurationTest extends BaseTestCase
     /**
      * @covers \Bigcommerce\ORM\Configuration::__construct
      * @covers \Bigcommerce\ORM\Configuration::configEntityManager
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     public function testBasicCredential()
@@ -124,7 +124,7 @@ class ConfigurationTest extends BaseTestCase
     /**
      * @covers \Bigcommerce\ORM\Configuration::__construct
      * @covers \Bigcommerce\ORM\Configuration::configEntityManager
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     public function testAuthCredential()

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Tests\Cache\FileCache;
 
-use Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException;
 use Bigcommerce\ORM\Cache\FileCache\FileCacheItem;
 use Bigcommerce\ORM\Cache\FileCache\FileCachePool;
+use Bigcommerce\ORM\Exceptions\FileCachePoolException;
 use Tests\BaseTestCase;
 
 class FileCachePoolTest extends BaseTestCase
@@ -46,7 +46,7 @@ class FileCachePoolTest extends BaseTestCase
 
     /**
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::__construct
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     * @throws \Bigcommerce\ORM\Exceptions\FileCachePoolException
      */
     public function testConstruct()
     {
@@ -62,7 +62,7 @@ class FileCachePoolTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getCacheDir
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::setItemPool
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItemPool
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     * @throws \Bigcommerce\ORM\Exceptions\FileCachePoolException
      */
     public function testSettersAndGetters()
     {
@@ -97,7 +97,7 @@ class FileCachePoolTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItemPool
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::saveDeferred
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::clear
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     * @throws \Bigcommerce\ORM\Exceptions\FileCachePoolException
      */
     public function testSave()
     {
@@ -130,7 +130,7 @@ class FileCachePoolTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::deleteItems
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItemPool
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::clear
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     * @throws \Bigcommerce\ORM\Exceptions\FileCachePoolException
      */
     public function testGetItems()
     {
@@ -151,7 +151,7 @@ class FileCachePoolTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getItem
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::retrieve
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::clear
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     * @throws \Bigcommerce\ORM\Exceptions\FileCachePoolException
      */
     public function testRetrieve()
     {
@@ -168,7 +168,7 @@ class FileCachePoolTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::save
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::getCacheDir
      * @covers \Bigcommerce\ORM\Cache\FileCache\FileCachePool::commit
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     * @throws \Bigcommerce\ORM\Exceptions\FileCachePoolException
      */
     public function testCommit()
     {

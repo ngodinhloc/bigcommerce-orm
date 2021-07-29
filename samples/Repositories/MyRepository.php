@@ -11,8 +11,8 @@ class MyRepository extends CustomerRepository
     /**
      * @param string $name
      * @return array|false
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */

@@ -5,7 +5,7 @@ namespace Tests\Client;
 
 use Bigcommerce\ORM\Client\AbstractConfig;
 use Bigcommerce\ORM\Client\AuthConfig;
-use Bigcommerce\ORM\Client\Exceptions\ConfigException;
+use Bigcommerce\ORM\Exceptions\ConfigException;
 use Tests\BaseTestCase;
 
 class AuthConfigTest extends BaseTestCase
@@ -15,7 +15,7 @@ class AuthConfigTest extends BaseTestCase
 
     /**
      * @covers \Bigcommerce\ORM\Client\AuthConfig::__construct
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      */
     public function testConstruct()
     {
@@ -59,7 +59,7 @@ class AuthConfigTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getPaymentStorePrefix
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getAuth
      * @covers \Bigcommerce\ORM\Client\AuthConfig::getAuthHeaders
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      */
     public function testSettersAndGetters()
     {

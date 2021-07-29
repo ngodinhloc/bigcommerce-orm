@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Client;
 
-use Bigcommerce\ORM\Client\Exceptions\ResultException;
 use Bigcommerce\ORM\Client\Result;
+use Bigcommerce\ORM\Exceptions\ResultException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Stream\Stream;
 use Tests\BaseTestCase;
@@ -15,7 +15,7 @@ class ResultTest extends BaseTestCase
     protected $result;
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testNullResponse()
     {
@@ -25,7 +25,7 @@ class ResultTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testReturnFalse()
     {
@@ -44,7 +44,7 @@ class ResultTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testReturnOkFalse()
     {
@@ -57,7 +57,7 @@ class ResultTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testGetAll()
     {
@@ -78,7 +78,7 @@ class ResultTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testGetBool()
     {
@@ -96,7 +96,7 @@ class ResultTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testGetDelete()
     {
@@ -114,7 +114,7 @@ class ResultTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testGetFirst()
     {
@@ -133,7 +133,7 @@ class ResultTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testGetCount()
     {
@@ -151,7 +151,7 @@ class ResultTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testGetOne()
     {

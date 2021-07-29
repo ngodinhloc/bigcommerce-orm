@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Cache\FileCache;
 
-use Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException;
+use Bigcommerce\ORM\Exceptions\FileCachePoolException;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -18,7 +18,7 @@ class FileCachePool implements CacheItemPoolInterface
     /**
      * FileCachePool constructor.
      * @param string|null $cacheDir
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     * @throws \Bigcommerce\ORM\Exceptions\FileCachePoolException
      */
     public function __construct(?string $cacheDir = null)
     {
@@ -29,7 +29,7 @@ class FileCachePool implements CacheItemPoolInterface
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     * @throws \Bigcommerce\ORM\Exceptions\FileCachePoolException
      */
     public function __destruct()
     {
@@ -51,7 +51,7 @@ class FileCachePool implements CacheItemPoolInterface
     /**
      * @param string $key
      * @return \Psr\Cache\CacheItemInterface|null
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     * @throws \Bigcommerce\ORM\Exceptions\FileCachePoolException
      */
     public function getItem($key)
     {
@@ -78,7 +78,7 @@ class FileCachePool implements CacheItemPoolInterface
     /**
      * @param array $keys
      * @return array|\Traversable
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     * @throws \Bigcommerce\ORM\Exceptions\FileCachePoolException
      */
     public function getItems(array $keys = array())
     {
@@ -92,7 +92,7 @@ class FileCachePool implements CacheItemPoolInterface
 
     /**
      * @return bool
-     * @throws \Bigcommerce\ORM\Cache\FileCache\Exceptions\FileCachePoolException
+     * @throws \Bigcommerce\ORM\Exceptions\FileCachePoolException
      */
     public function commit()
     {

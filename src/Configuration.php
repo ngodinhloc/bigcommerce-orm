@@ -7,7 +7,7 @@ use Bigcommerce\ORM\Client\AuthConfig;
 use Bigcommerce\ORM\Client\BasicConfig;
 use Bigcommerce\ORM\Client\Client;
 use Bigcommerce\ORM\Client\Connection;
-use Bigcommerce\ORM\Client\Exceptions\ConfigException;
+use Bigcommerce\ORM\Exceptions\ConfigException;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -73,7 +73,7 @@ class Configuration
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     public function configEntityManager()

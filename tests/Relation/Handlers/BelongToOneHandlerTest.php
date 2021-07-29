@@ -6,9 +6,9 @@ namespace Tests\Relation\Handlers;
 use Bigcommerce\ORM\Annotations\BelongToOne;
 use Bigcommerce\ORM\Entities\Category;
 use Bigcommerce\ORM\EntityManager;
+use Bigcommerce\ORM\Exceptions\HandlerException;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\Relation\Handlers\BelongToOneHandler;
-use Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException;
 use Tests\BaseTestCase;
 
 class BelongToOneHandlerTest extends BaseTestCase
@@ -33,7 +33,7 @@ class BelongToOneHandlerTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Relation\AbstractHandler::__construct
      * @covers \Bigcommerce\ORM\Relation\AbstractHandler::getOneRelationValue
      * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToOneHandler::handle
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function testHandle()
@@ -58,7 +58,7 @@ class BelongToOneHandlerTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function testHandleEarlyReturn()
@@ -82,7 +82,7 @@ class BelongToOneHandlerTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function testHandleException()

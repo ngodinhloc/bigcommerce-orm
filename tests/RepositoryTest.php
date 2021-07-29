@@ -45,8 +45,8 @@ class RepositoryTest extends BaseTestCase
 
     /**
      * @covers \Bigcommerce\ORM\Repository::findAll
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
@@ -57,8 +57,8 @@ class RepositoryTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
@@ -69,8 +69,8 @@ class RepositoryTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */

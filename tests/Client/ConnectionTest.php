@@ -149,7 +149,7 @@ class ConnectionTest extends BaseTestCase
 
     /**
      * @return \Bigcommerce\ORM\Client\BasicConfig
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      */
     private function getBasicConfig()
     {
@@ -164,7 +164,7 @@ class ConnectionTest extends BaseTestCase
 
     /**
      * @return \Bigcommerce\ORM\Client\AuthConfig
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      */
     private function getAuthConfig()
     {

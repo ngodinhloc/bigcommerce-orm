@@ -7,10 +7,10 @@ use Bigcommerce\ORM\Annotations\BelongToMany;
 use Bigcommerce\ORM\Entities\Category;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\EntityManager;
+use Bigcommerce\ORM\Exceptions\HandlerException;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler;
-use Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException;
 use Tests\BaseTestCase;
 
 class BelongToManyHandlerTest extends BaseTestCase
@@ -37,9 +37,9 @@ class BelongToManyHandlerTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Relation\AbstractHandler::getEntityManager
      * @covers \Bigcommerce\ORM\Relation\AbstractHandler::getManyRelationValue
      * @covers \Bigcommerce\ORM\Relation\Handlers\BelongToManyHandler::handle
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     * @throws \Bigcommerce\ORM\Exceptions\HandlerException
      */
     public function testHandle()
     {
@@ -65,9 +65,9 @@ class BelongToManyHandlerTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     * @throws \Bigcommerce\ORM\Exceptions\HandlerException
      */
     public function testHandleThrowException()
     {
@@ -90,9 +90,9 @@ class BelongToManyHandlerTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     * @throws \Bigcommerce\ORM\Exceptions\HandlerException
      */
     public function testHandleException()
     {

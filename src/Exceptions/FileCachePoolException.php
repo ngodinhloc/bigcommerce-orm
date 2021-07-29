@@ -1,16 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Bigcommerce\ORM\Cache\FileCache\Exceptions;
+namespace Bigcommerce\ORM\Exceptions;
 
-use Bigcommerce\ORM\Exceptions\BaseException;
 use Psr\Cache\CacheException;
 
 /**
  * Class CachePoolException
  * @package Bigcommerce\ORM\Cache\FileCache\Exceptions
  */
-class FileCachePoolException extends BaseException implements CacheException
+class FileCachePoolException extends OrmException implements CacheException
 {
     const ERROR_INVALID_CACHE_DIR = 'Invalid cache dir: ';
     const ERROR_FAILED_ENCODE_DATA = 'Failed to encode data: ';

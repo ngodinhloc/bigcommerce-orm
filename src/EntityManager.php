@@ -48,8 +48,8 @@ class EntityManager
      * @param bool $auto auto loading
      * @return array|bool
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
     public function findAll(string $className, ?array $pathParams = null, ?array $order = null, bool $auto = false)
@@ -78,8 +78,8 @@ class EntityManager
      * @param bool $auto
      * @return array|false
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
     public function findBy(string $className, ?array $pathParams = null, ?QueryBuilder $queryBuilder = null, $auto = false)
@@ -100,8 +100,8 @@ class EntityManager
      * @param array|null $pathParams
      * @param bool $auto
      * @return \Bigcommerce\ORM\AbstractEntity|false
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws Exceptions\MapperException
      */
@@ -140,8 +140,8 @@ class EntityManager
      * @return bool
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
      */
     public function save(AbstractEntity $entity)
     {
@@ -167,8 +167,8 @@ class EntityManager
      * @return bool
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
      */
     public function create(AbstractEntity $entity)
     {
@@ -192,8 +192,8 @@ class EntityManager
      * [fieldName => value]
      * @return bool
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
     public function update(AbstractEntity $entity, ?array $data = [])
@@ -225,8 +225,8 @@ class EntityManager
      * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param string|null $paramField
      * @return bool
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
@@ -264,8 +264,8 @@ class EntityManager
      * @param array|\Bigcommerce\ORM\AbstractEntity[] $entities
      * @param array|null $pathParams
      * @return array|bool
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
@@ -296,8 +296,8 @@ class EntityManager
      * @param array|\Bigcommerce\ORM\AbstractEntity[] $entities
      * @param array|null $pathParams
      * @return array|false
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
@@ -326,8 +326,8 @@ class EntityManager
      * @param array|null $values
      * @param string|null $field
      * @return array|bool
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
@@ -606,8 +606,8 @@ class EntityManager
      * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param array|null $data
      * @return bool
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
@@ -643,8 +643,8 @@ class EntityManager
      * @param \Bigcommerce\ORM\AbstractEntity $entity
      * @param array|null $data
      * @return bool
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */

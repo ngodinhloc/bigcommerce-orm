@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Client;
 
-use Bigcommerce\ORM\Client\Exceptions\ResultException;
+use Bigcommerce\ORM\Exceptions\ResultException;
 use Psr\Http\Message\ResponseInterface;
 
 class Result
@@ -30,7 +30,7 @@ class Result
     /**
      * @param string|null $returnType
      * @return array|int|bool
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function get(?string $returnType)
     {

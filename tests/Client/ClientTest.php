@@ -7,11 +7,10 @@ use Bigcommerce\ORM\Cache\FileCache\FileCacheItem;
 use Bigcommerce\ORM\Cache\FileCache\FileCachePool;
 use Bigcommerce\ORM\Client\Client;
 use Bigcommerce\ORM\Client\Connection;
-use Bigcommerce\ORM\Client\Exceptions\ClientException;
+use Bigcommerce\ORM\Exceptions\ClientException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Stream\Stream;
-use Monolog\Logger;
 use Prophecy\Argument;
 use Tests\BaseTestCase;
 
@@ -53,8 +52,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function testFindAll()
@@ -64,8 +63,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function testFindBy()
@@ -75,8 +74,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function testFind()
@@ -86,8 +85,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function testFindThrowGuzzleException()
@@ -97,8 +96,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function testFindThrowException()
@@ -108,8 +107,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testCreate()
     {
@@ -119,8 +118,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testBatchCreate()
     {
@@ -130,8 +129,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testCreateThrowGuzzleException()
     {
@@ -141,8 +140,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testCreateThrowException()
     {
@@ -152,8 +151,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testUpdate()
     {
@@ -166,8 +165,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testUpdateNull()
     {
@@ -176,8 +175,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testBatchUpdate()
     {
@@ -187,8 +186,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testUpdateThrowGuzzleException()
     {
@@ -198,8 +197,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testUpdateThrowException()
     {
@@ -209,8 +208,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testDelete()
     {
@@ -219,8 +218,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testDeleteThrowGuzzleException()
     {
@@ -229,8 +228,8 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function testDeleteThrowException()
     {

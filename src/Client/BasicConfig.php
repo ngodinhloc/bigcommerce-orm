@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Client;
 
-use Bigcommerce\ORM\Client\Exceptions\ConfigException;
+use Bigcommerce\ORM\Exceptions\ConfigException;
 
 class BasicConfig extends AbstractConfig
 {
@@ -27,7 +27,7 @@ class BasicConfig extends AbstractConfig
      *  'username' =>
      *  'apiKey' =>
      * ]
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      */
     public function __construct(?array $config = null)
     {

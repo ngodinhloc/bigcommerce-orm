@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Bigcommerce\ORM\Relation;
 
 use Bigcommerce\ORM\EntityManager;
-use Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException;
+use Bigcommerce\ORM\Exceptions\HandlerException;
 
 /**
  * Class AbstractHandler
@@ -28,7 +28,7 @@ abstract class AbstractHandler
     /**
      * @param null $value
      * @return int|string
-     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     * @throws \Bigcommerce\ORM\Exceptions\HandlerException
      */
     protected function getOneRelationValue($value = null)
     {
@@ -42,7 +42,7 @@ abstract class AbstractHandler
     /**
      * @param null $value
      * @return array|int|string
-     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     * @throws \Bigcommerce\ORM\Exceptions\HandlerException
      */
     protected function getManyRelationValue($value = null)
     {

@@ -25,7 +25,7 @@ class ManagerFactory
     /**
      * @param string $name
      * @return \Bigcommerce\ORM\EntityManager
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Bigcommerce\ORM\Exceptions\ManagerFactoryException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
@@ -46,7 +46,7 @@ class ManagerFactory
      * @param string $name
      * @param array $config
      * @return \Bigcommerce\ORM\EntityManager
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Bigcommerce\ORM\Exceptions\ManagerFactoryException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */

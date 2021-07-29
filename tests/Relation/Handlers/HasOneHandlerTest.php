@@ -33,7 +33,7 @@ class HasOneHandlerTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Relation\AbstractHandler::__construct
      * @covers \Bigcommerce\ORM\Relation\AbstractHandler::getOneRelationValue
      * @covers \Bigcommerce\ORM\Relation\Handlers\HasOneHandler::handle
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function testHandle()
@@ -66,7 +66,7 @@ class HasOneHandlerTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function testHandleEarlyReturn()

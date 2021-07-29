@@ -22,7 +22,7 @@ class HasOneHandler extends AbstractHandler implements RelationHandlerInterface
      * @param array|null $pathParams
      * @return void
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Exception
      */
     public function handle(AbstractEntity $entity, \ReflectionProperty $property, RelationInterface $annotation, array $data, array $pathParams = null)

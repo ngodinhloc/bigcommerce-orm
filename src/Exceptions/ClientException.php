@@ -1,11 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Bigcommerce\ORM\Client\Exceptions;
+namespace Bigcommerce\ORM\Exceptions;
 
-use Bigcommerce\ORM\Exceptions\BaseException;
-
-class ClientException extends BaseException
+class ClientException extends OrmException
 {
     const ERROR_QUERY_MISSING = 'Query string is empty.';
     const ERROR_FAILED_TO_DELETE_OBJECT = 'Failed to delete objects. Resource type: %s. Query: %s. Error: %s';

@@ -49,7 +49,7 @@ class ManagerFactoryTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\ManagerFactory::__construct
      * @covers \Bigcommerce\ORM\ManagerFactory::getEntityManager
      * @covers \Bigcommerce\ORM\ManagerFactory::getManager
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Bigcommerce\ORM\Exceptions\ManagerFactoryException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
@@ -65,7 +65,7 @@ class ManagerFactoryTest extends BaseTestCase
     /**
      * @covers \Bigcommerce\ORM\ManagerFactory::getEntityManager
      * @covers \Bigcommerce\ORM\ManagerFactory::getManager
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Bigcommerce\ORM\Exceptions\ManagerFactoryException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
@@ -80,7 +80,7 @@ class ManagerFactoryTest extends BaseTestCase
     /**
      * @covers \Bigcommerce\ORM\ManagerFactory::getEntityManager
      * @covers \Bigcommerce\ORM\ManagerFactory::getManager
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ConfigException
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Bigcommerce\ORM\Exceptions\ManagerFactoryException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Bigcommerce\ORM\Client;
 
 use Bigcommerce\ORM\Cache\FileCache\FileCacheItem;
-use Bigcommerce\ORM\Client\Exceptions\ClientException;
+use Bigcommerce\ORM\Exceptions\ClientException;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Cache\CacheItemInterface;
@@ -37,8 +37,8 @@ class Client implements ClientInterface
      * @param string|null $query
      * @param string|null $resourceType
      * @return array|bool
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function findAll(?string $query, ?string $resourceType)
@@ -50,8 +50,8 @@ class Client implements ClientInterface
      * @param string|null $query
      * @param string|null $resourceType
      * @return array|bool
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function findBy(?string $query, ?string $resourceType)
@@ -63,8 +63,8 @@ class Client implements ClientInterface
      * @param string|null $query
      * @param string|null $resourceType
      * @return array|bool
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function find(?string $query, ?string $resourceType)
@@ -79,8 +79,8 @@ class Client implements ClientInterface
      * @param array|null $files
      * @param bool $batch
      * @return array
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function create(?string $resourcePath, ?string $resourceType, ?array $data, ?array $files, bool $batch = false)
     {
@@ -109,8 +109,8 @@ class Client implements ClientInterface
      * @param array|null $files
      * @param bool $batch
      * @return array|false
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function update(?string $resourcePath, ?string $resourceType, ?array $data, ?array $files, bool $batch = false)
     {
@@ -140,8 +140,8 @@ class Client implements ClientInterface
      * @param string|null $resourcePath
      * @param string|null $resourceType
      * @return array|bool|int
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
     public function delete(?string $resourcePath, ?string $resourceType)
     {
@@ -164,8 +164,8 @@ class Client implements ClientInterface
      * @param string|null $returnType
      * @param string|null $resourceType
      * @return array|bool|int|mixed
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Psr\Cache\InvalidArgumentException
      */
     private function query(?string $query, ?string $resourceType, ?string $returnType)
@@ -225,7 +225,7 @@ class Client implements ClientInterface
 
     /**
      * @param string|null $path
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ClientException
+     * @throws \Bigcommerce\ORM\Exceptions\ClientException
      */
     private function checkPath(?string $path)
     {

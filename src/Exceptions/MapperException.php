@@ -7,7 +7,7 @@ namespace Bigcommerce\ORM\Exceptions;
  * Class MapperException
  * @package Bigcommerce\ORM\Exceptions
  */
-class MapperException extends BaseException
+class MapperException extends OrmException
 {
     const ERROR_MISSING_PATH_PARAMS = "Path params required. Path: %s. Missing: %s";
     const ERROR_PATH_PARAMS_REQUIRED = "Path params required. Path: %s.";

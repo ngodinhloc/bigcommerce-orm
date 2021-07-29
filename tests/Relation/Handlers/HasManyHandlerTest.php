@@ -7,9 +7,9 @@ use Bigcommerce\ORM\Annotations\HasMany;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductReview;
 use Bigcommerce\ORM\EntityManager;
+use Bigcommerce\ORM\Exceptions\HandlerException;
 use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\QueryBuilder;
-use Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException;
 use Bigcommerce\ORM\Relation\Handlers\HasManyHandler;
 use Tests\BaseTestCase;
 
@@ -35,9 +35,9 @@ class HasManyHandlerTest extends BaseTestCase
      * @covers \Bigcommerce\ORM\Relation\AbstractHandler::__construct
      * @covers \Bigcommerce\ORM\Relation\AbstractHandler::getManyRelationValue
      * @covers \Bigcommerce\ORM\Relation\Handlers\HasManyHandler::handle
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     * @throws \Bigcommerce\ORM\Exceptions\HandlerException
      */
     public function testHandle()
     {
@@ -67,9 +67,9 @@ class HasManyHandlerTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     * @throws \Bigcommerce\ORM\Exceptions\HandlerException
      */
     public function testHandleEarlyReturn()
     {
@@ -93,9 +93,9 @@ class HasManyHandlerTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Client\Exceptions\ResultException
+     * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @throws \Bigcommerce\ORM\Relation\Handlers\Exceptions\HandlerException
+     * @throws \Bigcommerce\ORM\Exceptions\HandlerException
      */
     public function testHandleThrowException()
     {
