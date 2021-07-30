@@ -8,14 +8,13 @@ use Bigcommerce\ORM\Annotations\Field;
 use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Bigcommerce\ORM\Mapper\Reflection;
 use Bigcommerce\ORM\Relation\ManyRelationInterface;
 use Bigcommerce\ORM\Relation\OneRelationInterface;
 use Bigcommerce\ORM\Relation\RelationInterface;
 use Bigcommerce\ORM\Validation\ValidationInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use ReflectionClass;
 
 /**
  * Class Mapper
@@ -29,6 +28,9 @@ class Mapper
     /** @var \Doctrine\Common\Annotations\AnnotationReader */
     protected $reader;
 
+    /** @var \Bigcommerce\ORM\Mapper\EntityMapper */
+    protected $entityMapper;
+
     /**
      * Mapper constructor.
      *
@@ -37,6 +39,7 @@ class Mapper
     public function __construct(?AnnotationReader $reader = null)
     {
         $this->reader = $reader ?: new AnnotationReader();
+        $this->entityMapper = new EntityMapper($this->reader);
     }
 
     /**
@@ -121,7 +124,7 @@ class Mapper
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof Field) {
                     if (isset($data[$annotation->name])) {
-                        $this->setPropertyValue($entity, $property, $data[$annotation->name]);
+                        $this->entityMapper->setPropertyValue($entity, $property, $data[$annotation->name]);
                     }
                 }
             }
@@ -325,20 +328,6 @@ class Mapper
     }
 
     /**
-     * Set property value
-     *
-     * @param \Bigcommerce\ORM\AbstractEntity $entity
-     * @param \ReflectionProperty $property
-     * @param mixed|null $value
-     * @return void
-     */
-    public function setPropertyValue(AbstractEntity $entity, \ReflectionProperty $property, $value = null)
-    {
-        $property->setAccessible(true);
-        $property->setValue($entity, $value);
-    }
-
-    /**
      * Get property value
      *
      * @param \Bigcommerce\ORM\AbstractEntity $entity entity
@@ -367,8 +356,8 @@ class Mapper
      */
     public function setPropertyValueByName(AbstractEntity $entity, string $propertyName, $value)
     {
-        $property = $this->getProperty($entity, $propertyName);
-        $this->setPropertyValue($entity, $property, $value);
+        $property = $this->entityMapper->getProperty($entity, $propertyName);
+        $this->entityMapper->setPropertyValue($entity, $property, $value);
     }
 
     /**
@@ -381,7 +370,7 @@ class Mapper
      */
     public function getPropertyValueByName(AbstractEntity $entity, string $propertyName)
     {
-        $property = $this->getProperty($entity, $propertyName);
+        $property = $this->entityMapper->getProperty($entity, $propertyName);
 
         return $this->getPropertyValue($entity, $property);
     }
@@ -407,27 +396,6 @@ class Mapper
         }
 
         throw new MapperException(MapperException::ERROR_NO_FIELD_FOUND . $fieldName);
-    }
-
-    /**
-     * Get enity property by property name
-     *
-     * @param \Bigcommerce\ORM\AbstractEntity $entity entity
-     * @param string $propertyName name
-     * @return bool|\ReflectionProperty
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function getProperty(AbstractEntity $entity, string $propertyName)
-    {
-        $reflectionClass = (new Reflection())->reflect($entity);
-        $properties = $reflectionClass->getProperties();
-        foreach ($properties as $property) {
-            if ($property->name == $propertyName) {
-                return $property;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -544,13 +512,13 @@ class Mapper
                         $items[$annotation->name],
                         $pathParams
                     );
-                    $this->setPropertyValue($entity, $property, $propertyValue);
+                    $this->entityMapper->setPropertyValue($entity, $property, $propertyValue);
                 }
 
                 if ($annotation instanceof OneRelationInterface) {
                     $object = $this->object($annotation->targetClass);
                     $propertyValue = $this->patch($object, $items[$annotation->name], $pathParams, false);
-                    $this->setPropertyValue($entity, $property, $propertyValue);
+                    $this->entityMapper->setPropertyValue($entity, $property, $propertyValue);
                 }
             }
         }
@@ -654,5 +622,24 @@ class Mapper
             ->setParamFields($paramFields);
 
         return $metadata;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Mapper\EntityMapper
+     */
+    public function getEntityMapper(): \Bigcommerce\ORM\Mapper\EntityMapper
+    {
+        return $this->entityMapper;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Mapper\EntityMapper $entityMapper
+     * @return \Bigcommerce\ORM\Mapper
+     */
+    public function setEntityMapper(\Bigcommerce\ORM\Mapper\EntityMapper $entityMapper): Mapper
+    {
+        $this->entityMapper = $entityMapper;
+
+        return $this;
     }
 }

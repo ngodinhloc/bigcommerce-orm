@@ -33,7 +33,7 @@ class DateValidatorTest extends BaseTestCase
         $this->validator = new DateValidator($this->mapper);
 
         $entity = new Customer();
-        $property = $this->mapper->getProperty($entity, 'dateCreated');
+        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'dateCreated');
         $annotation = new \Bigcommerce\ORM\Annotations\Date([]);
 
         $entity->setDateCreated(null);

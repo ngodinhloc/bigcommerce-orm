@@ -41,6 +41,6 @@ class BelongToOneHandler extends AbstractHandler implements RelationHandlerInter
         $value = $this->getOneRelationValue($data[$annotation->field]);
         $find = $this->entityManager->find($annotation->targetClass, $value, $pathParams, $annotation->auto);
         $mapper = $this->entityManager->getMapper();
-        $mapper->setPropertyValue($entity, $property, $find);
+        $mapper->getEntityMapper()->setPropertyValue($entity, $property, $find);
     }
 }

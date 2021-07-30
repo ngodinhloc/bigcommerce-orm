@@ -332,7 +332,7 @@ class MapperTest extends BaseTestCase
             ->setName('Name')
             ->setType('file')
             ->setDisplayName('Display Name');
-        $get = $this->mapper->getProperty($modifier, 'invalid');
+        $get = $this->mapper->getEntityMapper()->getProperty($modifier, 'invalid');
         $this->assertFalse($get);
     }
 

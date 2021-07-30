@@ -37,7 +37,7 @@ class EmailValidatorTest extends BaseTestCase
         $this->assertEquals($this->mapper, $this->validator->getMapper());
 
         $entity = new Customer();
-        $property = $this->mapper->getProperty($entity, 'email');
+        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'email');
         $annotation = new \Bigcommerce\ORM\Annotations\Email([]);
 
         $entity->setEmail(null);

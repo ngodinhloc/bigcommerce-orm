@@ -33,7 +33,7 @@ class UrlValidatorTest extends BaseTestCase
         $this->validator = new UrlValidator($this->mapper);
 
         $entity = new Customer();
-        $property = $this->mapper->getProperty($entity, 'email');
+        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'email');
         $annotation = new \Bigcommerce\ORM\Annotations\Url([]);
 
         $entity->setEmail(null);

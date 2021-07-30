@@ -44,7 +44,7 @@ class BelongToManyHandlerTest extends BaseTestCase
     public function testHandle()
     {
         $entity = new Product();
-        $property = $this->mapper->getProperty($entity, 'categories');
+        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'categories');
         $annotation = new BelongToMany([]);
         $annotation->targetClass = Category::class;
         $annotation->field = 'categories';
@@ -72,7 +72,7 @@ class BelongToManyHandlerTest extends BaseTestCase
     public function testHandleThrowException()
     {
         $entity = new Product();
-        $property = $this->mapper->getProperty($entity, 'categories');
+        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'categories');
         $annotation = new BelongToMany([]);
         $annotation->targetClass = Category::class;
         $annotation->field = 'categories';
@@ -97,7 +97,7 @@ class BelongToManyHandlerTest extends BaseTestCase
     public function testHandleException()
     {
         $entity = new Product();
-        $property = $this->mapper->getProperty($entity, 'categories');
+        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'categories');
         $annotation = new BelongToMany([]);
         $annotation->targetClass = Category::class;
         $annotation->field = 'categories';

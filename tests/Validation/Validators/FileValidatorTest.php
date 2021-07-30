@@ -33,7 +33,7 @@ class FileValidatorTest extends BaseTestCase
         $this->validator = new FileValidator($this->mapper);
 
         $entity = new ProductImage();
-        $property = $this->mapper->getProperty($entity, 'imageFile');
+        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'imageFile');
         $annotation = new \Bigcommerce\ORM\Annotations\File([]);
 
         $file = dirname(dirname(__DIR__)) . '/assets/images/lamp.jpg';
