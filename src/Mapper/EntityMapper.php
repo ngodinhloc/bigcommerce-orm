@@ -46,8 +46,8 @@ class EntityMapper
         $this->reader = $reader ?: new AnnotationReader();
         $this->entityReader = new EntityReader($this->reader);
         $this->metadataBuilder = new MetadataBuilder($this->reader);
-        $this->entityTransformer = new EntityTransformer($this->reader, $this->entityReader);
         $this->entityPatcher = new EntityPatcher($this->reader, $this->entityReader, $this->metadataBuilder);
+        $this->entityTransformer = new EntityTransformer($this->reader, $this->entityReader, $this->entityPatcher);
         $this->entityValidator = new EntityValidator();
     }
 
@@ -141,7 +141,7 @@ class EntityMapper
         }
 
         if (empty($data)) {
-            $data = $this->entityTransformer->toArray($entity);
+            $data = $this->entityTransformer->entityToArray($entity);
         }
 
         if (empty($readonlyFields = $entity->getMetadata()->getReadonlyFields())) {

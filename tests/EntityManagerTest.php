@@ -563,7 +563,7 @@ class EntityManagerTest extends BaseTestCase
         $customer2 = $this->mapper->getEntityPatcher()->patch($customer2, $data[1], null, true);
 
         $customers = $this->entityManager->batchUpdate([$customer1, $customer2]);
-        $this->assertEquals(2, count($customers));
+        $this->assertCount(2, $customers);
     }
 
     /**
@@ -581,7 +581,6 @@ class EntityManagerTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function testNew()

@@ -37,7 +37,7 @@ class EntityTransformerTest extends TestCase
             'config' => null,
             'id' => null
         ];
-        $array = $this->transformer->toArray($modifier);
+        $array = $this->transformer->entityToArray($modifier);
         $this->assertEquals($expected, $array);
 
         $expected = [
@@ -51,7 +51,7 @@ class EntityTransformerTest extends TestCase
             'id' => null
         ];
 
-        $array = $this->transformer->toArray($modifier, EntityTransformer::KEY_BY_PROPERTY_NAME);
+        $array = $this->transformer->entityToArray($modifier, EntityTransformer::KEY_BY_PROPERTY_NAME);
         $this->assertEquals($expected, $array);
     }
 }

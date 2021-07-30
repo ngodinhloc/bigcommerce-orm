@@ -131,4 +131,13 @@ class EntityPatcherTest extends TestCase
         $this->assertEquals('Product Name 1', $product1->getName());
         $this->assertEquals('Product Name 2', $product2->getName());
     }
+
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function testGetPatchedEntity()
+    {
+        $entity = $this->patcher->patchFromClass(Product::class);
+        $this->assertInstanceOf(Product::class, $entity);
+    }
 }

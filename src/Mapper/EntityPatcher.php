@@ -39,6 +39,22 @@ class EntityPatcher
     }
 
     /**
+     * Create an entity from data
+     *
+     * @param string $class
+     * @param array|null $data
+     * @param array|null $pathParams
+     * @return \Bigcommerce\ORM\AbstractEntity
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function new(string $class, ?array $data = null, ?array $pathParams = null)
+    {
+        $object = $this->object($class);
+
+        return $this->patch($object, $data, $pathParams, false);
+    }
+
+    /**
      * Patch object properties with data array
      *
      * @param \Bigcommerce\ORM\AbstractEntity $entity
@@ -92,6 +108,19 @@ class EntityPatcher
     }
 
     /**
+     * @param string $className
+     * @param array|null $pathParams
+     * @return \Bigcommerce\ORM\AbstractEntity
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function patchFromClass(string $className, ?array $pathParams = null)
+    {
+        $object = $this->object($className);
+
+        return $this->patch($object, [], $pathParams, true);
+    }
+
+    /**
      * @param array|null $array
      * @param string|null $className
      * @param array|null $pathParams
@@ -101,7 +130,6 @@ class EntityPatcher
     public function patchArrayToCollection(?array $array = null, ?string $className = null, ?array $pathParams = null)
     {
         $collections = [];
-
         if (!empty($array)) {
             foreach ($array as $item) {
                 $object = $this->object($className);
