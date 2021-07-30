@@ -77,7 +77,6 @@ class Configuration
 
     /**
      * @throws \Bigcommerce\ORM\Exceptions\ConfigException
-     * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     public function configEntityManager()
     {
