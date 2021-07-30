@@ -5,7 +5,7 @@ namespace Bigcommerce\ORM\Entities;
 
 use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 
 /**
  * Class Cart
@@ -122,7 +122,7 @@ class Cart extends AbstractEntity
      */
     protected $coupons;
 
-    /** @var \Bigcommerce\ORM\Mapper */
+    /** @var \Bigcommerce\ORM\Mapper\EntityMapper */
     protected $mapper;
 
     /**
@@ -130,7 +130,7 @@ class Cart extends AbstractEntity
      */
     public function __construct()
     {
-        $this->mapper = new Mapper();
+        $this->mapper = new EntityMapper();
     }
 
     /**

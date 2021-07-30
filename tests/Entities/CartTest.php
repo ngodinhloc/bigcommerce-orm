@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Tests\Entities;
 
 use Bigcommerce\ORM\Entities\Cart;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Tests\BaseTestCase;
 
 class CartTest extends BaseTestCase
@@ -18,7 +18,7 @@ class CartTest extends BaseTestCase
      */
     public function testSettersAndGetters()
     {
-        $mapper = new Mapper();
+        $mapper = new EntityMapper();
         $this->entity = new Cart();
         $this->entity
             ->setId(1)

@@ -7,7 +7,7 @@ use Bigcommerce\ORM\Annotations\HasOne;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductImage;
 use Bigcommerce\ORM\EntityManager;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Bigcommerce\ORM\Relation\Handlers\HasOneHandler;
 use Tests\BaseTestCase;
 
@@ -16,7 +16,7 @@ class HasOneHandlerTest extends BaseTestCase
     /** @coversDefaultClass \Bigcommerce\ORM\Relation\Handlers\HasOneHandler */
     protected $handler;
 
-    /** @var \Bigcommerce\ORM\Mapper */
+    /** @var \Bigcommerce\ORM\Mapper\EntityMapper */
     protected $mapper;
 
     /** @var \Bigcommerce\ORM\EntityManager|\Prophecy\Prophecy\ProphecySubjectInterface */
@@ -25,7 +25,7 @@ class HasOneHandlerTest extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->mapper = new Mapper();
+        $this->mapper = new EntityMapper();
         $this->entityManager = $this->getEntityManager();
     }
 

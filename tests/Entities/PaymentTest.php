@@ -6,7 +6,7 @@ namespace Tests\Entities;
 use Bigcommerce\ORM\Entities\Card;
 use Bigcommerce\ORM\Entities\Payment;
 use Bigcommerce\ORM\Entities\PaymentMethod;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Tests\BaseTestCase;
 
 use function Webmozart\Assert\Tests\StaticAnalysis\null;
@@ -38,7 +38,7 @@ class PaymentTest extends BaseTestCase
         $this->assertEquals([], $this->entity->getPaymentData());
         $this->assertEquals(null, $this->entity->getPaymentAccessToken());
 
-        $mapper = new Mapper();
+        $mapper = new EntityMapper();
         $card = new Card();
         $paymentMethod = new PaymentMethod();
 

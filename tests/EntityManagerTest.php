@@ -16,7 +16,7 @@ use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductImage;
 use Bigcommerce\ORM\EntityManager;
 use Bigcommerce\ORM\Exceptions\EntityException;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Repository;
 use Prophecy\Argument;
@@ -30,7 +30,7 @@ class EntityManagerTest extends BaseTestCase
     /** @var \Bigcommerce\ORM\Client\Client|\Prophecy\Prophecy\ProphecySubjectInterface */
     protected $client;
 
-    /** @var \Bigcommerce\ORM\Mapper|\Prophecy\Prophecy\ProphecySubjectInterface */
+    /** @var \Bigcommerce\ORM\Mapper\EntityMapper|\Prophecy\Prophecy\ProphecySubjectInterface */
     protected $mapper;
 
     /** @var \Symfony\Component\EventDispatcher\EventDispatcher|\Prophecy\Prophecy\ProphecySubjectInterface */
@@ -911,11 +911,11 @@ class EntityManagerTest extends BaseTestCase
     }
 
     /**
-     * @return \Bigcommerce\ORM\Mapper
+     * @return \Bigcommerce\ORM\Mapper\EntityMapper
      */
     private function getMapper()
     {
-        return new Mapper();
+        return new EntityMapper();
     }
 
     /**

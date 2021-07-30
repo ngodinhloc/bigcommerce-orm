@@ -15,12 +15,12 @@ use Bigcommerce\ORM\Entities\ProductReview;
 use Bigcommerce\ORM\Entities\ShippingAddress;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Bigcommerce\ORM\Meta\Metadata;
 
 class MapperTest extends BaseTestCase
 {
-    /** @coversDefaultClass \Bigcommerce\ORM\Mapper */
+    /** @coversDefaultClass \Bigcommerce\ORM\Mapper\EntityMapper */
     protected $mapper;
 
     /** @var \Bigcommerce\ORM\Entities\Customer */
@@ -29,7 +29,7 @@ class MapperTest extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->mapper = new Mapper();
+        $this->mapper = new EntityMapper();
         $this->customer = new Customer();
     }
 

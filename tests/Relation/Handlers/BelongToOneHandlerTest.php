@@ -7,7 +7,7 @@ use Bigcommerce\ORM\Annotations\BelongToOne;
 use Bigcommerce\ORM\Entities\Category;
 use Bigcommerce\ORM\EntityManager;
 use Bigcommerce\ORM\Exceptions\HandlerException;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Bigcommerce\ORM\Relation\Handlers\BelongToOneHandler;
 use Tests\BaseTestCase;
 
@@ -16,7 +16,7 @@ class BelongToOneHandlerTest extends BaseTestCase
     /** @coversDefaultClass \Bigcommerce\ORM\Relation\Handlers\BelongToOneHandler */
     protected $handler;
 
-    /** @var \Bigcommerce\ORM\Mapper */
+    /** @var \Bigcommerce\ORM\Mapper\EntityMapper */
     protected $mapper;
 
     /** @var \Bigcommerce\ORM\EntityManager|\Prophecy\Prophecy\ProphecySubjectInterface */
@@ -25,7 +25,7 @@ class BelongToOneHandlerTest extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->mapper = new Mapper();
+        $this->mapper = new EntityMapper();
         $this->entityManager = $this->getEntityManager();
     }
 

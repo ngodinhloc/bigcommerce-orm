@@ -50,7 +50,7 @@ class Metadata
 
     /**
      * @param \Bigcommerce\ORM\Annotations\Resource $resource
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     public function setResource(Resource $resource): Metadata
     {
@@ -69,7 +69,7 @@ class Metadata
 
     /**
      * @param array $relationFields
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     public function setRelationFields(array $relationFields): Metadata
     {
@@ -88,7 +88,7 @@ class Metadata
 
     /**
      * @param array $includeFields
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     public function setIncludeFields(array $includeFields): Metadata
     {
@@ -107,7 +107,7 @@ class Metadata
 
     /**
      * @param array $autoLoadFields
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     public function setAutoLoadFields(array $autoLoadFields): Metadata
     {
@@ -126,7 +126,7 @@ class Metadata
 
     /**
      * @param array $requiredFields
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     public function setRequiredFields(array $requiredFields): Metadata
     {
@@ -145,7 +145,7 @@ class Metadata
 
     /**
      * @param array $readonlyFields
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     public function setReadonlyFields(array $readonlyFields): Metadata
     {
@@ -164,7 +164,7 @@ class Metadata
 
     /**
      * @param array $customisedFields
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     public function setCustomisedFields(array $customisedFields): Metadata
     {
@@ -183,7 +183,7 @@ class Metadata
 
     /**
      * @param array $validationProperties
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     public function setValidationProperties(array $validationProperties): Metadata
     {
@@ -202,7 +202,7 @@ class Metadata
 
     /**
      * @param array $uploadFields
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     public function setUploadFields(array $uploadFields): Metadata
     {
@@ -221,7 +221,7 @@ class Metadata
 
     /**
      * @param array $paramFields
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     public function setParamFields(array $paramFields): Metadata
     {
@@ -240,7 +240,7 @@ class Metadata
 
     /**
      * @param array $inResultFields
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     public function setInResultFields(array $inResultFields): Metadata
     {

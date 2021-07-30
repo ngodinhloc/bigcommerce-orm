@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Tests\Validation\Validators;
 
 use Bigcommerce\ORM\Entities\Customer;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Bigcommerce\ORM\Validation\Validators\DateValidator;
 use Tests\BaseTestCase;
 
@@ -13,13 +13,13 @@ class DateValidatorTest extends BaseTestCase
     /** @coversDefaultClass \Bigcommerce\ORM\Validation\Validators\DateValidator */
     protected $validator;
 
-    /** @var \Bigcommerce\ORM\Mapper */
+    /** @var \Bigcommerce\ORM\Mapper\EntityMapper */
     protected $mapper;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->mapper = new Mapper();
+        $this->mapper = new EntityMapper();
     }
 
     /**

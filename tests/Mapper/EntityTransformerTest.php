@@ -3,7 +3,6 @@
 namespace Tests\Mapper;
 
 use Bigcommerce\ORM\Entities\ProductModifier;
-use Bigcommerce\ORM\Mapper;
 use Bigcommerce\ORM\Mapper\EntityTransformer;
 use PHPUnit\Framework\TestCase;
 

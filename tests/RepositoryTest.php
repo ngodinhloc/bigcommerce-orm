@@ -5,7 +5,7 @@ namespace Tests;
 
 use Bigcommerce\ORM\Entities\Customer;
 use Bigcommerce\ORM\EntityManager;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Bigcommerce\ORM\QueryBuilder;
 use Bigcommerce\ORM\Repository;
 
@@ -99,7 +99,7 @@ class RepositoryTest extends BaseTestCase
     private function getEntityManager()
     {
         $entityManager = $this->prophet->prophesize(EntityManager::class);
-        $entityManager->getMapper()->willReturn(new Mapper());
+        $entityManager->getMapper()->willReturn(new EntityMapper());
         $entityManager->findAll(Customer::class, null, null, false)->willReturn([]);
         $entityManager->findBy(Customer::class, null, $this->getQueryBuilder(), false)->willReturn([]);
         $customer = new Customer();

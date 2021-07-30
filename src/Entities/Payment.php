@@ -5,7 +5,7 @@ namespace Bigcommerce\ORM\Entities;
 
 use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 
 /**
  * Class Payment
@@ -40,7 +40,7 @@ class Payment extends AbstractEntity
     /** @var \Bigcommerce\ORM\Entities\AbstractInstrument */
     protected $paymentInstrument;
 
-    /** @var \Bigcommerce\ORM\Mapper */
+    /** @var \Bigcommerce\ORM\Mapper\EntityMapper */
     protected $mapper;
 
     /**
@@ -48,7 +48,7 @@ class Payment extends AbstractEntity
      */
     public function __construct()
     {
-        $this->mapper = new Mapper();
+        $this->mapper = new EntityMapper();
     }
 
     /**
@@ -156,18 +156,18 @@ class Payment extends AbstractEntity
     }
 
     /**
-     * @return \Bigcommerce\ORM\Mapper
+     * @return \Bigcommerce\ORM\Mapper\EntityMapper
      */
-    public function getMapper(): Mapper
+    public function getMapper(): EntityMapper
     {
         return $this->mapper;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Mapper $mapper
+     * @param \Bigcommerce\ORM\Mapper\EntityMapper $mapper
      * @return \Bigcommerce\ORM\Entities\Payment
      */
-    public function setMapper(\Bigcommerce\ORM\Mapper $mapper): Payment
+    public function setMapper(\Bigcommerce\ORM\Mapper\EntityMapper $mapper): Payment
     {
         $this->mapper = $mapper;
 

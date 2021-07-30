@@ -2,15 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Bigcommerce\ORM;
+namespace Bigcommerce\ORM\Mapper;
 
+use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
-use Bigcommerce\ORM\Mapper\EntityPatcher;
-use Bigcommerce\ORM\Mapper\EntityReader;
-use Bigcommerce\ORM\Mapper\EntityTransformer;
-use Bigcommerce\ORM\Mapper\EntityValidator;
 use Bigcommerce\ORM\Meta\MetadataBuilder;
 use Bigcommerce\ORM\Validation\ValidationInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -19,7 +16,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
  * Class Mapper
  * @package Bigcommerce\ORM
  */
-class Mapper
+class EntityMapper
 {
     /** @var \Doctrine\Common\Annotations\AnnotationReader */
     protected $reader;
@@ -236,9 +233,9 @@ class Mapper
 
     /**
      * @param \Bigcommerce\ORM\Mapper\EntityReader $entityReader
-     * @return \Bigcommerce\ORM\Mapper
+     * @return \Bigcommerce\ORM\Mapper\EntityMapper
      */
-    public function setEntityReader(\Bigcommerce\ORM\Mapper\EntityReader $entityReader): Mapper
+    public function setEntityReader(\Bigcommerce\ORM\Mapper\EntityReader $entityReader): EntityMapper
     {
         $this->entityReader = $entityReader;
 
@@ -255,9 +252,9 @@ class Mapper
 
     /**
      * @param \Bigcommerce\ORM\Mapper\EntityTransformer $entityTransformer
-     * @return \Bigcommerce\ORM\Mapper
+     * @return \Bigcommerce\ORM\Mapper\EntityMapper
      */
-    public function setEntityTransformer(\Bigcommerce\ORM\Mapper\EntityTransformer $entityTransformer): Mapper
+    public function setEntityTransformer(\Bigcommerce\ORM\Mapper\EntityTransformer $entityTransformer): EntityMapper
     {
         $this->entityTransformer = $entityTransformer;
 
@@ -276,7 +273,7 @@ class Mapper
      * @param \Bigcommerce\ORM\Meta\MetadataBuilder $metadataBuilder
      * @return \Bigcommerce\ORM\Mapper
      */
-    public function setMetadataBuilder(\Bigcommerce\ORM\Meta\MetadataBuilder $metadataBuilder): Mapper
+    public function setMetadataBuilder(\Bigcommerce\ORM\Meta\MetadataBuilder $metadataBuilder): EntityMapper
     {
         $this->metadataBuilder = $metadataBuilder;
 
@@ -293,9 +290,9 @@ class Mapper
 
     /**
      * @param \Bigcommerce\ORM\Mapper\EntityPatcher $entityPatcher
-     * @return \Bigcommerce\ORM\Mapper
+     * @return \Bigcommerce\ORM\Mapper\EntityMapper
      */
-    public function setEntityPatcher(\Bigcommerce\ORM\Mapper\EntityPatcher $entityPatcher): Mapper
+    public function setEntityPatcher(\Bigcommerce\ORM\Mapper\EntityPatcher $entityPatcher): EntityMapper
     {
         $this->entityPatcher = $entityPatcher;
 
@@ -314,7 +311,7 @@ class Mapper
      * @param \Bigcommerce\ORM\Mapper\EntityValidator $entityValidator
      * @return \Bigcommerce\ORM\Mapper
      */
-    public function setEntityValidator(\Bigcommerce\ORM\Mapper\EntityValidator $entityValidator): Mapper
+    public function setEntityValidator(\Bigcommerce\ORM\Mapper\EntityValidator $entityValidator): EntityMapper
     {
         $this->entityValidator = $entityValidator;
 

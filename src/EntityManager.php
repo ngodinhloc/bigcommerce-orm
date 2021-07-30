@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Bigcommerce\ORM;
@@ -8,6 +9,7 @@ use Bigcommerce\ORM\Entities\PaymentAccessToken;
 use Bigcommerce\ORM\Events\EntityManagerEvent;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Mapper\EntityTransformer;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Bigcommerce\ORM\Relation\RelationInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -20,7 +22,7 @@ class EntityManager
     /** @var \Bigcommerce\ORM\Client\ClientInterface */
     protected $client;
 
-    /** @var \Bigcommerce\ORM\Mapper */
+    /** @var \Bigcommerce\ORM\Mapper\EntityMapper */
     protected $mapper;
 
     /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface */
@@ -30,13 +32,16 @@ class EntityManager
      * EntityManager constructor.
      *
      * @param \Bigcommerce\ORM\Client\ClientInterface $client
-     * @param \Bigcommerce\ORM\Mapper|null $mapper
+     * @param \Bigcommerce\ORM\Mapper\EntityMapper|null $mapper
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct(ClientInterface $client, ?Mapper $mapper = null, ?EventDispatcherInterface $eventDispatcher = null)
-    {
+    public function __construct(
+        ClientInterface $client,
+        ?EntityMapper $mapper = null,
+        ?EventDispatcherInterface $eventDispatcher = null
+    ) {
         $this->client = $client;
-        $this->mapper = $mapper ?: new Mapper();
+        $this->mapper = $mapper ?: new EntityMapper();
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -83,8 +88,12 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\ResultException
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function findBy(string $className, ?array $pathParams = null, ?QueryBuilder $queryBuilder = null, $auto = false)
-    {
+    public function findBy(
+        string $className,
+        ?array $pathParams = null,
+        ?QueryBuilder $queryBuilder = null,
+        $auto = false
+    ) {
         $entity = $this->getPatchedEntity($className, $pathParams);
         $resourcePath = $this->mapper->getResourcePath($entity);
         $resourceType = $entity->getMetadata()->getResource()->type;
@@ -245,7 +254,7 @@ class EntityManager
         }
 
         $result = $this->client->delete($resourcePath . '/' . $fieldValue, $resourceType);
-        if(!empty($result)) {
+        if (!empty($result)) {
             if ($this->hasEventDispatcher()) {
                 $this->eventDispatcher->dispatch(
                     EntityManagerEvent::ENTITY_DELETED,
@@ -332,8 +341,12 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function batchDelete(string $className, ?array $pathParams = null, ?array $values = null, ?string $field = 'id')
-    {
+    public function batchDelete(
+        string $className,
+        ?array $pathParams = null,
+        ?array $values = null,
+        ?string $field = 'id'
+    ) {
         if (empty($values)) {
             return false;
         }
@@ -419,7 +432,7 @@ class EntityManager
     private function checkBeforeCreating(AbstractEntity $entity)
     {
         if ($entity->isPaymentAccessTokenRequired()) {
-            if(empty($paymentAccessToken = $entity->getPaymentAccessToken())){
+            if (empty($paymentAccessToken = $entity->getPaymentAccessToken())) {
                 throw new EntityException(EntityException::ERROR_PAYMENT_ACCESS_TOKEN_REQUIRED);
             }
             $this->setPaymentAccessToken($paymentAccessToken);
@@ -427,12 +440,16 @@ class EntityManager
 
         $checkRequiredProperties = $this->mapper->checkRequiredFields($entity);
         if ($checkRequiredProperties !== true) {
-            throw new EntityException(EntityException::ERROR_REQUIRED_PROPERTIES . implode(", ", $checkRequiredProperties));
+            throw new EntityException(
+                EntityException::ERROR_REQUIRED_PROPERTIES . implode(", ", $checkRequiredProperties)
+            );
         }
 
         $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
         if ($checkRequiredValidations !== true) {
-            throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
+            throw new EntityException(
+                EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations)
+            );
         }
     }
 
@@ -445,7 +462,9 @@ class EntityManager
     {
         $checkRequiredValidations = $this->mapper->checkRequiredValidations($entity);
         if ($checkRequiredValidations !== true) {
-            throw new EntityException(EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations));
+            throw new EntityException(
+                EntityException::ERROR_REQUIRED_VALIDATIONS . implode(", ", $checkRequiredValidations)
+            );
         }
     }
 
@@ -552,8 +571,12 @@ class EntityManager
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function arrayToCollection(?array $array = null, ?string $className = null, ?array $pathParams = null, bool $auto = false)
-    {
+    private function arrayToCollection(
+        ?array $array = null,
+        ?string $className = null,
+        ?array $pathParams = null,
+        bool $auto = false
+    ) {
         $collections = [];
 
         if (!empty($array)) {
@@ -725,7 +748,7 @@ class EntityManager
     }
 
     /**
-     * @return \Bigcommerce\ORM\Mapper
+     * @return \Bigcommerce\ORM\Mapper\EntityMapper
      */
     public function getMapper()
     {
@@ -733,10 +756,10 @@ class EntityManager
     }
 
     /**
-     * @param \Bigcommerce\ORM\Mapper|null $mapper
+     * @param \Bigcommerce\ORM\Mapper\EntityMapper|null $mapper
      * @return \Bigcommerce\ORM\EntityManager
      */
-    public function setMapper(?Mapper $mapper = null)
+    public function setMapper(?EntityMapper $mapper = null)
     {
         $this->mapper = $mapper;
 

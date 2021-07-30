@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Tests\Annotations;
 
 use Bigcommerce\ORM\Annotations\Email;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Bigcommerce\ORM\Validation\Validators\EmailValidator;
 use Tests\BaseTestCase;
 
@@ -22,7 +22,7 @@ class EmailTest extends BaseTestCase
         $this->annotation = new Email(['validate' => true]);
         $this->assertEquals(true, $this->annotation->validate);
 
-        $mapper = $this->prophet->prophesize(Mapper::class)->reveal();
+        $mapper = $this->prophet->prophesize(EntityMapper::class)->reveal();
         /** @var \Bigcommerce\ORM\Validation\Validators\EmailValidator $validator */
         $validator = $this->annotation->getValidator($mapper);
         $this->assertInstanceOf(EmailValidator::class, $validator);

@@ -5,7 +5,7 @@ namespace Bigcommerce\ORM\Entities;
 
 use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations as BC;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 
 /**
  * Class Consignment
@@ -97,7 +97,7 @@ class Consignment extends AbstractEntity
      */
     protected $checkoutShippingAddress;
 
-    /** @var \Bigcommerce\ORM\Mapper */
+    /** @var \Bigcommerce\ORM\Mapper\EntityMapper */
     protected $mapper;
 
     /**
@@ -105,7 +105,7 @@ class Consignment extends AbstractEntity
      */
     public function __construct()
     {
-        $this->mapper = new Mapper();
+        $this->mapper = new EntityMapper();
     }
 
     /**

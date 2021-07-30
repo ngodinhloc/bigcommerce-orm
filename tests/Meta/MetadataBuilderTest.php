@@ -5,7 +5,7 @@ namespace Tests\Meta;
 use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Entities\Product;
 use Bigcommerce\ORM\Entities\ProductModifier;
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Bigcommerce\ORM\Mapper\Reflection;
 use Bigcommerce\ORM\Meta\Metadata;
 use Bigcommerce\ORM\Meta\MetadataBuilder;
@@ -16,14 +16,14 @@ class MetadataBuilderTest extends TestCase
     /** @var \Bigcommerce\ORM\Meta\MetadataBuilder */
     private $builder;
 
-    /** @var \Bigcommerce\ORM\Mapper */
+    /** @var \Bigcommerce\ORM\Mapper\EntityMapper */
     private $mapper;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->builder = new MetadataBuilder();
-        $this->mapper = new Mapper();
+        $this->mapper = new EntityMapper();
     }
 
     /**

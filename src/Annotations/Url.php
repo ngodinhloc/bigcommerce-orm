@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Annotations;
 
-use Bigcommerce\ORM\Mapper;
+use Bigcommerce\ORM\Mapper\EntityMapper;
 use Bigcommerce\ORM\Validation\ValidationInterface;
 use Bigcommerce\ORM\Validation\ValidatorInterface;
 use Bigcommerce\ORM\Validation\Validators\UrlValidator;
@@ -18,11 +18,11 @@ final class Url extends Annotation implements ValidationInterface
     public $validate = false;
 
     /**
-     * @param \Bigcommerce\ORM\Mapper $mapper
+     * @param \Bigcommerce\ORM\Mapper\EntityMapper $mapper
      * @return \Bigcommerce\ORM\Validation\ValidatorInterface
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
-    public function getValidator(Mapper $mapper): ValidatorInterface
+    public function getValidator(EntityMapper $mapper): ValidatorInterface
     {
         return new UrlValidator($mapper);
     }
