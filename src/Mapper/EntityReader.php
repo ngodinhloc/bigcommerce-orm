@@ -3,9 +3,47 @@
 namespace Bigcommerce\ORM\Mapper;
 
 use Bigcommerce\ORM\AbstractEntity;
+use Bigcommerce\ORM\Annotations\Field;
+use Bigcommerce\ORM\Exceptions\MapperException;
+use Doctrine\Common\Annotations\AnnotationReader;
 
 class EntityReader
 {
+    /** @var \Doctrine\Common\Annotations\AnnotationReader */
+    protected $reader;
+
+    /**
+     * EntityReader constructor.
+     * @param \Doctrine\Common\Annotations\AnnotationReader|null $reader
+     */
+    public function __construct(?AnnotationReader $reader = null)
+    {
+        $this->reader = $reader ?: new AnnotationReader();
+    }
+
+    /**
+     * Get value of a property by field name
+     *
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
+     * @param string $fieldName
+     * @return mixed
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getPropertyValueByFieldName(AbstractEntity $entity, string $fieldName)
+    {
+        $reflectionClass = (new Reflection())->reflect($entity);
+        $properties = $reflectionClass->getProperties();
+
+        foreach ($properties as $property) {
+            $annotation = $this->reader->getPropertyAnnotation($property, Field::class);
+            if ($annotation instanceof Field && $annotation->name == $fieldName) {
+                return $this->getPropertyValue($entity, $property);
+            }
+        }
+
+        throw new MapperException(MapperException::ERROR_NO_FIELD_FOUND . $fieldName);
+    }
+
     /**
      * Set property value by name
      *

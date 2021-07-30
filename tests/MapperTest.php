@@ -297,34 +297,6 @@ class MapperTest extends BaseTestCase
     /**
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function testGetPropertyValueByFieldName()
-    {
-        $modifier = new ProductModifier();
-        $modifier
-            ->setName('Name')
-            ->setType('file')
-            ->setDisplayName('Display Name');
-        $value = $this->mapper->getPropertyValueByFieldName($modifier, 'display_name');
-        $this->assertEquals('Display Name', $value);
-    }
-
-    /**
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function testGetPropertyValueByFieldNameThrowException()
-    {
-        $modifier = new ProductModifier();
-        $modifier
-            ->setName('Name')
-            ->setType('file')
-            ->setDisplayName('Display Name');
-        $this->expectException(MapperException::class);
-        $this->mapper->getPropertyValueByFieldName($modifier, 'invalid');
-    }
-
-    /**
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
     public function testObject()
     {
         $object = $this->mapper->object(Customer::class);

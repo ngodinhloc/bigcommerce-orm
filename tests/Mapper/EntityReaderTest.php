@@ -3,6 +3,7 @@
 namespace Tests\Mapper;
 
 use Bigcommerce\ORM\Entities\ProductModifier;
+use Bigcommerce\ORM\Exceptions\MapperException;
 use Bigcommerce\ORM\Mapper\EntityReader;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
@@ -100,5 +101,33 @@ class EntityReaderTest extends TestCase
             ->setDisplayName('Display Name');
         $this->entityReader->setPropertyValueByName($modifier, 'name', 'New Name');
         $this->assertEquals('New Name', $modifier->getName());
+    }
+
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function testGetPropertyValueByFieldName()
+    {
+        $modifier = new ProductModifier();
+        $modifier
+            ->setName('Name')
+            ->setType('file')
+            ->setDisplayName('Display Name');
+        $value = $this->entityReader->getPropertyValueByFieldName($modifier, 'display_name');
+        $this->assertEquals('Display Name', $value);
+    }
+
+    /**
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function testGetPropertyValueByFieldNameThrowException()
+    {
+        $modifier = new ProductModifier();
+        $modifier
+            ->setName('Name')
+            ->setType('file')
+            ->setDisplayName('Display Name');
+        $this->expectException(MapperException::class);
+        $this->entityReader->getPropertyValueByFieldName($modifier, 'invalid');
     }
 }

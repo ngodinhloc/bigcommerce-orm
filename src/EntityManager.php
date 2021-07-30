@@ -238,7 +238,7 @@ class EntityManager
 
         $resourcePath = $this->mapper->getResourcePath($entity, 'delete');
         $resourceType = $entity->getMetadata()->getResource()->type;
-        $fieldValue = $this->mapper->getPropertyValueByFieldName($entity, $paramField);
+        $fieldValue = $this->mapper->getEntityReader()->getPropertyValueByFieldName($entity, $paramField);
         if (empty($fieldValue)) {
             throw new EntityException(EntityException::ERROR_EMPTY_PARAM_FIELD . $paramField);
         }
