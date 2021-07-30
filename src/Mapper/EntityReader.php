@@ -4,7 +4,7 @@ namespace Bigcommerce\ORM\Mapper;
 
 use Bigcommerce\ORM\AbstractEntity;
 
-class EntityMapper
+class EntityReader
 {
     /**
      * Get enity property by property name

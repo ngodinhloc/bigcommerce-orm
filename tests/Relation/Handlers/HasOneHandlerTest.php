@@ -40,7 +40,7 @@ class HasOneHandlerTest extends BaseTestCase
     {
         $entity = new Product();
         $entity->setId(1);
-        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'primaryImage');
+        $property = $this->mapper->getEntityReader()->getProperty($entity, 'primaryImage');
         $annotation = new HasOne([]);
         $annotation->targetClass = ProductImage::class;
         $annotation->field = 'primary_id';
@@ -73,7 +73,7 @@ class HasOneHandlerTest extends BaseTestCase
     {
         $entity = new Product();
         $entity->setId(1);
-        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'primaryImage');
+        $property = $this->mapper->getEntityReader()->getProperty($entity, 'primaryImage');
         $annotation = new HasOne([]);
         $annotation->targetClass = ProductImage::class;
         $annotation->field = 'primary_id';

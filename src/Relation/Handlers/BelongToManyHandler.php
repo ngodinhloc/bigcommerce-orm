@@ -45,6 +45,6 @@ class BelongToManyHandler extends AbstractHandler implements RelationHandlerInte
         $queryBuilder->whereIn($annotation->targetField, $value);
         $collections = $this->entityManager->findBy($annotation->targetClass, $pathParams, $queryBuilder, $annotation->auto);
         $mapper = $this->entityManager->getMapper();
-        $mapper->getEntityMapper()->setPropertyValue($entity, $property, $collections);
+        $mapper->getEntityReader()->setPropertyValue($entity, $property, $collections);
     }
 }

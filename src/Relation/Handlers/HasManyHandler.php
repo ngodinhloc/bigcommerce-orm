@@ -46,6 +46,6 @@ class HasManyHandler extends AbstractHandler implements RelationHandlerInterface
         $queryBuilder->whereIn($annotation->targetField, $values);
         $collections = $this->entityManager->findBy($annotation->targetClass, $pathParams, $queryBuilder, $annotation->auto);
         $mapper = $this->entityManager->getMapper();
-        $mapper->getEntityMapper()->setPropertyValue($entity, $property, $collections);
+        $mapper->getEntityReader()->setPropertyValue($entity, $property, $collections);
     }
 }

@@ -43,7 +43,7 @@ class HasManyHandlerTest extends BaseTestCase
     {
         $entity = new Product();
         $entity->setId(1);
-        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'reviews');
+        $property = $this->mapper->getEntityReader()->getProperty($entity, 'reviews');
         $annotation = new HasMany([]);
         $annotation->targetClass = ProductReview::class;
         $annotation->field = 'reviews';
@@ -75,7 +75,7 @@ class HasManyHandlerTest extends BaseTestCase
     {
         $entity = new Product();
         $entity->setId(1);
-        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'reviews');
+        $property = $this->mapper->getEntityReader()->getProperty($entity, 'reviews');
         $annotation = new HasMany([]);
         $annotation->targetClass = ProductReview::class;
         $annotation->field = 'reviews';
@@ -101,7 +101,7 @@ class HasManyHandlerTest extends BaseTestCase
     {
         $entity = new Product();
         $entity->setId(1);
-        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'reviews');
+        $property = $this->mapper->getEntityReader()->getProperty($entity, 'reviews');
         $annotation = new HasMany([]);
         $annotation->targetClass = ProductReview::class;
         $annotation->field = 'reviews';

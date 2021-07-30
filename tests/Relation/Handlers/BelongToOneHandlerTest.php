@@ -39,7 +39,7 @@ class BelongToOneHandlerTest extends BaseTestCase
     public function testHandle()
     {
         $entity = new Category();
-        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'parent');
+        $property = $this->mapper->getEntityReader()->getProperty($entity, 'parent');
         $annotation = new BelongToOne([]);
         $annotation->targetClass = Category::class;
         $annotation->field = 'parent';
@@ -64,7 +64,7 @@ class BelongToOneHandlerTest extends BaseTestCase
     public function testHandleEarlyReturn()
     {
         $entity = new Category();
-        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'parent');
+        $property = $this->mapper->getEntityReader()->getProperty($entity, 'parent');
         $annotation = new BelongToOne([]);
         $annotation->targetClass = Category::class;
         $annotation->field = 'parent';
@@ -88,7 +88,7 @@ class BelongToOneHandlerTest extends BaseTestCase
     public function testHandleException()
     {
         $entity = new Category();
-        $property = $this->mapper->getEntityMapper()->getProperty($entity, 'parent');
+        $property = $this->mapper->getEntityReader()->getProperty($entity, 'parent');
         $annotation = new BelongToOne([]);
         $annotation->targetClass = Category::class;
         $annotation->field = 'parent';

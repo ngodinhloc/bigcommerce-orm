@@ -3,19 +3,19 @@
 namespace Tests\Mapper;
 
 use Bigcommerce\ORM\Entities\ProductModifier;
-use Bigcommerce\ORM\Mapper\EntityMapper;
+use Bigcommerce\ORM\Mapper\EntityReader;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 
 class EntityMapperTest extends TestCase
 {
-    /** @coversDefaultClass \Bigcommerce\ORM\Mapper\EntityMapper */
-    private $entityMapper;
+    /** @coversDefaultClass \Bigcommerce\ORM\Mapper\EntityReader */
+    private $entityReader;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->entityMapper = new EntityMapper();
+        $this->entityReader = new EntityReader();
     }
 
     /**
@@ -28,8 +28,8 @@ class EntityMapperTest extends TestCase
             ->setName('Name')
             ->setType('file')
             ->setDisplayName('Display Name');
-        $this->assertFalse($this->entityMapper->getProperty($modifier, 'invalid'));
-        $property = $this->entityMapper->getProperty($modifier, 'name');
+        $this->assertFalse($this->entityReader->getProperty($modifier, 'invalid'));
+        $property = $this->entityReader->getProperty($modifier, 'name');
         $this->assertInstanceOf(ReflectionProperty::class, $property);
         $this->assertEquals('name', $property->getName());
     }
@@ -42,7 +42,7 @@ class EntityMapperTest extends TestCase
             ->setType('file')
             ->setDisplayName('Display Name');
         $property = new ReflectionProperty(ProductModifier::class, 'name');
-        $this->entityMapper->setPropertyValue($modifier, $property, 'New Name');
+        $this->entityReader->setPropertyValue($modifier, $property, 'New Name');
         $this->assertEquals('New Name', $modifier->getName());
     }
 }

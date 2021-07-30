@@ -42,6 +42,6 @@ class HasOneHandler extends AbstractHandler implements RelationHandlerInterface
 
         $find = $this->entityManager->find($annotation->targetClass, $value, $pathParams, $annotation->auto);
         $mapper = $this->entityManager->getMapper();
-        $mapper->getEntityMapper()->setPropertyValue($entity, $property, $find);
+        $mapper->getEntityReader()->setPropertyValue($entity, $property, $find);
     }
 }

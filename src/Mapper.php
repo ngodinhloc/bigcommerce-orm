@@ -8,7 +8,7 @@ use Bigcommerce\ORM\Annotations\Field;
 use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
-use Bigcommerce\ORM\Mapper\EntityMapper;
+use Bigcommerce\ORM\Mapper\EntityReader;
 use Bigcommerce\ORM\Mapper\Reflection;
 use Bigcommerce\ORM\Relation\ManyRelationInterface;
 use Bigcommerce\ORM\Relation\OneRelationInterface;
@@ -28,8 +28,8 @@ class Mapper
     /** @var \Doctrine\Common\Annotations\AnnotationReader */
     protected $reader;
 
-    /** @var \Bigcommerce\ORM\Mapper\EntityMapper */
-    protected $entityMapper;
+    /** @var \Bigcommerce\ORM\Mapper\EntityReader */
+    protected $entityReader;
 
     /**
      * Mapper constructor.
@@ -39,7 +39,7 @@ class Mapper
     public function __construct(?AnnotationReader $reader = null)
     {
         $this->reader = $reader ?: new AnnotationReader();
-        $this->entityMapper = new EntityMapper($this->reader);
+        $this->entityReader = new EntityReader($this->reader);
     }
 
     /**
@@ -124,7 +124,7 @@ class Mapper
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof Field) {
                     if (isset($data[$annotation->name])) {
-                        $this->entityMapper->setPropertyValue($entity, $property, $data[$annotation->name]);
+                        $this->entityReader->setPropertyValue($entity, $property, $data[$annotation->name]);
                     }
                 }
             }
@@ -356,8 +356,8 @@ class Mapper
      */
     public function setPropertyValueByName(AbstractEntity $entity, string $propertyName, $value)
     {
-        $property = $this->entityMapper->getProperty($entity, $propertyName);
-        $this->entityMapper->setPropertyValue($entity, $property, $value);
+        $property = $this->entityReader->getProperty($entity, $propertyName);
+        $this->entityReader->setPropertyValue($entity, $property, $value);
     }
 
     /**
@@ -370,7 +370,7 @@ class Mapper
      */
     public function getPropertyValueByName(AbstractEntity $entity, string $propertyName)
     {
-        $property = $this->entityMapper->getProperty($entity, $propertyName);
+        $property = $this->entityReader->getProperty($entity, $propertyName);
 
         return $this->getPropertyValue($entity, $property);
     }
@@ -512,13 +512,13 @@ class Mapper
                         $items[$annotation->name],
                         $pathParams
                     );
-                    $this->entityMapper->setPropertyValue($entity, $property, $propertyValue);
+                    $this->entityReader->setPropertyValue($entity, $property, $propertyValue);
                 }
 
                 if ($annotation instanceof OneRelationInterface) {
                     $object = $this->object($annotation->targetClass);
                     $propertyValue = $this->patch($object, $items[$annotation->name], $pathParams, false);
-                    $this->entityMapper->setPropertyValue($entity, $property, $propertyValue);
+                    $this->entityReader->setPropertyValue($entity, $property, $propertyValue);
                 }
             }
         }
@@ -625,20 +625,20 @@ class Mapper
     }
 
     /**
-     * @return \Bigcommerce\ORM\Mapper\EntityMapper
+     * @return \Bigcommerce\ORM\Mapper\EntityReader
      */
-    public function getEntityMapper(): \Bigcommerce\ORM\Mapper\EntityMapper
+    public function getEntityReader(): \Bigcommerce\ORM\Mapper\EntityReader
     {
-        return $this->entityMapper;
+        return $this->entityReader;
     }
 
     /**
-     * @param \Bigcommerce\ORM\Mapper\EntityMapper $entityMapper
+     * @param \Bigcommerce\ORM\Mapper\EntityReader $entityReader
      * @return \Bigcommerce\ORM\Mapper
      */
-    public function setEntityMapper(\Bigcommerce\ORM\Mapper\EntityMapper $entityMapper): Mapper
+    public function setEntityReader(\Bigcommerce\ORM\Mapper\EntityReader $entityReader): Mapper
     {
-        $this->entityMapper = $entityMapper;
+        $this->entityReader = $entityReader;
 
         return $this;
     }
