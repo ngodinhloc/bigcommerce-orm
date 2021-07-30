@@ -38,7 +38,7 @@ class Repository
      */
     public function findAll(?array $pathParams = null, ?array $orders = null, bool $auto = false)
     {
-        $this->entityManager->getMapper()->checkClass($this->className);
+        $this->entityManager->getMapper()->getEntityValidator()->checkClass($this->className);
 
         return $this->entityManager->findAll($this->className, $pathParams, $orders, $auto);
     }
@@ -55,7 +55,7 @@ class Repository
      */
     public function findBy(?array $pathParams = null, ?QueryBuilder $queryBuilder = null, bool $auto = false)
     {
-        $this->entityManager->getMapper()->checkClass($this->className);
+        $this->entityManager->getMapper()->getEntityValidator()->checkClass($this->className);
 
         return $this->entityManager->findBy($this->className, $pathParams, $queryBuilder, $auto);
     }
@@ -74,7 +74,7 @@ class Repository
      */
     public function find($id = null, ?array $pathParams = null, $auto = false)
     {
-        $this->entityManager->getMapper()->checkClass($this->className);
+        $this->entityManager->getMapper()->getEntityValidator()->checkClass($this->className);
 
         return $this->entityManager->find($this->className, $id, $pathParams, $auto);
     }

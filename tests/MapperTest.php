@@ -156,24 +156,6 @@ class MapperTest extends BaseTestCase
     }
 
     /**
-     * testCheckNoneReadOnlyData
-     */
-    public function testCheckNoneReadOnlyData()
-    {
-        $expected = [
-            'name' => 'name',
-            'display_name' => 'display name',
-            'type' => 'type',
-            'required' => false,
-            'sort_order' => 2,
-            'config' => ['sku' => 111]
-        ];
-
-        $check = $this->mapper->checkFieldValues($expected);
-        $this->assertTrue($check);
-    }
-
-    /**
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function testCheckRequiredValidations()
@@ -204,41 +186,5 @@ class MapperTest extends BaseTestCase
     {
         $this->expectException(MapperException::class);
         $this->mapper->getEntityPatcher()->object('invalid_class_name');
-    }
-
-    /**
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     */
-    public function testCheckEntity()
-    {
-        $this->expectException(\TypeError::class);
-        $this->mapper->checkEntity(null);
-    }
-
-    /**
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     */
-    public function testCheckClass()
-    {
-        $this->expectException(EntityException::class);
-        $this->mapper->checkClass('');
-    }
-
-    /**
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     */
-    public function testCheckId()
-    {
-        $this->expectException(EntityException::class);
-        $this->mapper->checkId(0);
-    }
-
-    /**
-     * testCheckPropertyValues
-     */
-    public function testCheckPropertyValues()
-    {
-        $result = $this->mapper->checkFieldValues(null);
-        $this->assertFalse($result);
     }
 }

@@ -146,7 +146,7 @@ class EntityManager
      */
     public function save(AbstractEntity $entity)
     {
-        $this->mapper->checkEntity($entity);
+        $this->mapper->getEntityValidator()->checkEntity($entity);
         if ($entity->isPatched() !== true) {
             $entity = $this->mapper->getEntityPatcher()->patch($entity, [], null, true);
         }
@@ -173,7 +173,7 @@ class EntityManager
      */
     public function create(AbstractEntity $entity)
     {
-        $this->mapper->checkEntity($entity);
+        $this->mapper->getEntityValidator()->checkEntity($entity);
 
         if ($entity->isPatched() !== true) {
             $entity = $this->mapper->getEntityPatcher()->patch($entity, [], null, true);
@@ -199,8 +199,8 @@ class EntityManager
      */
     public function update(AbstractEntity $entity, ?array $data = [])
     {
-        $this->mapper->checkEntity($entity);
-        $this->mapper->checkId($entity->getId());
+        $this->mapper->getEntityValidator()->checkEntity($entity);
+        $this->mapper->getEntityValidator()->checkId($entity->getId());
 
         if (empty($data)) {
             return true;
@@ -210,7 +210,7 @@ class EntityManager
             $entity = $this->mapper->getEntityPatcher()->patch($entity, [], null, true);
         }
 
-        if (!$this->mapper->checkFieldValues($data)) {
+        if (!$this->mapper->getEntityValidator()->checkFieldValues($data)) {
             return true;
         }
 
@@ -363,7 +363,7 @@ class EntityManager
      */
     public function new(string $class, ?array $data = null, ?array $pathParams = null)
     {
-        $this->mapper->checkClass($class);
+        $this->mapper->getEntityValidator()->checkClass($class);
         $object = $this->mapper->getEntityPatcher()->object($class);
 
         return $this->mapper->getEntityPatcher()->patch($object, $data, $pathParams, false);
@@ -405,7 +405,7 @@ class EntityManager
      */
     private function getPatchedEntity(string $className, ?array $pathParams = null)
     {
-        $this->mapper->checkClass($className);
+        $this->mapper->getEntityValidator()->checkClass($className);
         $object = $this->mapper->getEntityPatcher()->object($className);
 
         return $this->mapper->getEntityPatcher()->patch($object, [], $pathParams, true);
@@ -614,7 +614,7 @@ class EntityManager
      */
     private function createEntity(AbstractEntity $entity, array $data = null)
     {
-        if (!$this->mapper->checkFieldValues($data)) {
+        if (!$this->mapper->getEntityValidator()->checkFieldValues($data)) {
             throw new EntityException(EntityException::ERROR_EMPTY_PROPERTY_VALUES);
         }
 
@@ -651,7 +651,7 @@ class EntityManager
      */
     private function updateEntity(AbstractEntity $entity, array $data = null)
     {
-        if (!$this->mapper->checkFieldValues($data)) {
+        if (!$this->mapper->getEntityValidator()->checkFieldValues($data)) {
             return true;
         }
 

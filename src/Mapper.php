@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM;
 
-use Bigcommerce\ORM\Annotations\Field;
 use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
 use Bigcommerce\ORM\Mapper\EntityPatcher;
 use Bigcommerce\ORM\Mapper\EntityReader;
 use Bigcommerce\ORM\Mapper\EntityTransformer;
-use Bigcommerce\ORM\Mapper\Reflection;
+use Bigcommerce\ORM\Mapper\EntityValidator;
 use Bigcommerce\ORM\Meta\MetadataBuilder;
-use Bigcommerce\ORM\Relation\ManyRelationInterface;
-use Bigcommerce\ORM\Relation\OneRelationInterface;
 use Bigcommerce\ORM\Validation\ValidationInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
 
@@ -36,6 +33,9 @@ class Mapper
     /** @var \Bigcommerce\ORM\Mapper\EntityPatcher */
     protected $entityPatcher;
 
+    /** @var \Bigcommerce\ORM\Mapper\EntityValidator */
+    protected $entityValidator;
+
     /** @var \Bigcommerce\ORM\Meta\MetadataBuilder */
     protected $metadataBuilder;
 
@@ -51,6 +51,7 @@ class Mapper
         $this->metadataBuilder = new MetadataBuilder($this->reader);
         $this->entityTransformer = new EntityTransformer($this->reader, $this->entityReader);
         $this->entityPatcher = new EntityPatcher($this->reader, $this->entityReader, $this->metadataBuilder);
+        $this->entityValidator = new EntityValidator();
     }
 
     /**
@@ -63,7 +64,7 @@ class Mapper
     public function getResourcePath(AbstractEntity $entity, ?string $action = null)
     {
         if ($entity->isPatched() !== true) {
-            throw new MapperException(MapperException::ERROR_ENTITY_NOT_PATCHED);
+            $entity = $this->entityPatcher->patch($entity, [], null, true);
         }
 
         $resource = $entity->getMetadata()->getResource();
@@ -106,7 +107,7 @@ class Mapper
     public function checkRequiredFields(AbstractEntity $entity)
     {
         if ($entity->isPatched() !== true) {
-            throw new MapperException(MapperException::ERROR_ENTITY_NOT_PATCHED);
+            $entity = $this->entityPatcher->patch($entity, [], null, true);
         }
 
         if (empty($requiredFields = $entity->getMetadata()->getRequiredFields())) {
@@ -139,7 +140,7 @@ class Mapper
     public function getWritableFieldValues(AbstractEntity $entity, ?array $data = null)
     {
         if ($entity->isPatched() !== true) {
-            throw new MapperException(MapperException::ERROR_ENTITY_NOT_PATCHED);
+            $entity = $this->entityPatcher->patch($entity, [], null, true);
         }
 
         if (empty($data)) {
@@ -154,25 +155,6 @@ class Mapper
     }
 
     /**
-     * @param array|null $data
-     * @return bool
-     */
-    public function checkFieldValues(?array $data = null)
-    {
-        if (empty($data)) {
-            return false;
-        }
-
-        foreach ($data as $field => $value) {
-            if ($value !== null) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Check for entity validations
      *
      * @param \Bigcommerce\ORM\AbstractEntity $entity
@@ -182,7 +164,7 @@ class Mapper
     public function checkRequiredValidations(AbstractEntity $entity)
     {
         if ($entity->isPatched() !== true) {
-            throw new MapperException(MapperException::ERROR_ENTITY_NOT_PATCHED);
+            $entity = $this->entityPatcher->patch($entity, [], null, true);
         }
 
         if (empty($validationProperties = $entity->getMetadata()->getValidationProperties())) {
@@ -208,39 +190,6 @@ class Mapper
         }
 
         return $validationRules;
-    }
-
-    /**
-     * @param \Bigcommerce\ORM\AbstractEntity $entity
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     */
-    public function checkEntity(AbstractEntity $entity)
-    {
-        if (!$entity instanceof AbstractEntity) {
-            throw new EntityException(EntityException::ERROR_NOT_ENTITY_INSTANCE);
-        }
-    }
-
-    /**
-     * @param string|null $className
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     */
-    public function checkClass(?string $className)
-    {
-        if (empty($className)) {
-            throw new EntityException(EntityException::ERROR_EMPTY_CLASS_NAME);
-        }
-    }
-
-    /**
-     * @param int|string|null $id
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     */
-    public function checkId($id = null)
-    {
-        if (empty($id)) {
-            throw new EntityException(EntityException::ERROR_ID_IS_NOT_PROVIDED);
-        }
     }
 
     /**
@@ -349,6 +298,25 @@ class Mapper
     public function setEntityPatcher(\Bigcommerce\ORM\Mapper\EntityPatcher $entityPatcher): Mapper
     {
         $this->entityPatcher = $entityPatcher;
+
+        return $this;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Mapper\EntityValidator
+     */
+    public function getEntityValidator(): \Bigcommerce\ORM\Mapper\EntityValidator
+    {
+        return $this->entityValidator;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Mapper\EntityValidator $entityValidator
+     * @return \Bigcommerce\ORM\Mapper
+     */
+    public function setEntityValidator(\Bigcommerce\ORM\Mapper\EntityValidator $entityValidator): Mapper
+    {
+        $this->entityValidator = $entityValidator;
 
         return $this;
     }

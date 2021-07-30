@@ -16,5 +16,4 @@ class MapperException extends OrmException
     const ERROR_INVALID_CLASS_NAME = 'Class name not found: ';
     const ERROR_NO_CLASS_NAME_PROVIDED = "No class provided. Please check repository class.";
     const ERROR_NO_FIELD_FOUND = "No properties has been map for this field: ";
-    const ERROR_ENTITY_NOT_PATCHED = 'This entity is not patched yet.';
 }
