@@ -4,6 +4,7 @@ namespace Bigcommerce\ORM\Mapper;
 
 use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations\Field;
+use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
 use Doctrine\Common\Annotations\AnnotationReader;
 
@@ -125,5 +126,29 @@ class EntityReader
     {
         $property->setAccessible(true);
         $property->setValue($entity, $value);
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
+     * @return array
+     * @throws \Bigcommerce\ORM\Exceptions\EntityException
+     */
+    public function getUploadFiles(AbstractEntity $entity)
+    {
+        $files = [];
+        if (!empty($uploadFields = $entity->getMetadata()->getUploadFields())) {
+            foreach ($uploadFields as $fieldName => $property) {
+                $location = $this->getPropertyValue($entity, $property);
+                if (!empty($location)) {
+                    if (!file_exists($location)) {
+                        throw new EntityException(EntityException::ERROR_INVALID_UPLOAD_FILE . $location);
+                    }
+
+                    $files[$fieldName] = $location;
+                }
+            }
+        }
+
+        return $files;
     }
 }

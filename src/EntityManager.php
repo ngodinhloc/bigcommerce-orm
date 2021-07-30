@@ -551,7 +551,7 @@ class EntityManager
 
         $resourcePath = $this->mapper->getResourcePath($entity, 'create');
         $resourceType = $entity->getMetadata()->getResource()->type;
-        $files = $this->getUploadFiles($entity);
+        $files = $this->mapper->getEntityReader()->getUploadFiles($entity);
 
         $result = $this->client->create($resourcePath, $resourceType, $data, $files);
         if (!empty($result)) {
@@ -588,7 +588,7 @@ class EntityManager
 
         $resourcePath = $this->mapper->getResourcePath($entity, 'update');
         $resourceType = $entity->getMetadata()->getResource()->type;
-        $files = $this->getUploadFiles($entity);
+        $files = $this->mapper->getEntityReader()->getUploadFiles($entity);
 
         $result = $this->client->update($resourcePath . "/{$entity->getId()}", $resourceType, $data, $files);
         if (!empty($result)) {
@@ -608,30 +608,6 @@ class EntityManager
         }
 
         return false;
-    }
-
-    /**
-     * @param \Bigcommerce\ORM\AbstractEntity $entity
-     * @return array
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     */
-    private function getUploadFiles(AbstractEntity $entity)
-    {
-        $files = [];
-        if (!empty($uploadFields = $entity->getMetadata()->getUploadFields())) {
-            foreach ($uploadFields as $fieldName => $property) {
-                $location = $this->mapper->getEntityReader()->getPropertyValue($entity, $property);
-                if (!empty($location)) {
-                    if (!file_exists($location)) {
-                        throw new EntityException(EntityException::ERROR_INVALID_UPLOAD_FILE . $location);
-                    }
-
-                    $files[$fieldName] = $location;
-                }
-            }
-        }
-
-        return $files;
     }
 
     /**
