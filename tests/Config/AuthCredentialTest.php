@@ -27,8 +27,8 @@ class AuthCredentialTest extends BaseTestCase
         $this->assertEquals($authCredentials['clientId'], $this->credential->getClientId());
         $this->assertEquals($authCredentials['authToken'], $this->credential->getAuthToken());
         $this->assertEquals($authCredentials['storeHash'], $this->credential->getStoreHash());
-        $this->assertEquals(AuthCredential::API_BASE_URL, $this->credential->getApiBaseUrl());
-        $this->assertEquals(AuthCredential::PAYMENT_BASE_URL, $this->credential->getPaymentBaseUrl());
+        $this->assertEquals(AuthCredential::DEFAULT_API_BASE_URL, $this->credential->getApiBaseUrl());
+        $this->assertEquals(AuthCredential::DEFAULT_PAYMENT_BASE_URL, $this->credential->getPaymentBaseUrl());
 
         $this->credential
             ->setClientId('clientId')

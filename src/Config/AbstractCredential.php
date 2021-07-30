@@ -4,20 +4,14 @@ namespace Bigcommerce\ORM\Config;
 
 class AbstractCredential
 {
-    const API_BASE_URL = 'https://api.bigcommerce.com';
-    const API_VERSION_V3 = "v3";
-    const API_STORE_PREFIX_V3 = '/stores/%s/v3';
-    const API_PATH_PREFIX_V3 = '/api/v3';
-    const PAYMENT_BASE_URL = 'https://payments.bigcommerce.com';
-    const PAYMENT_STORE_PREFIX = '/stores/%s';
-    const RESOURCE_TYPE_API = 'api';
-    const RESOURCE_TYPE_PAYMENT = 'payment';
+    const DEFAULT_API_BASE_URL = 'https://api.bigcommerce.com';
+    const DEFAULT_PAYMENT_BASE_URL = 'https://payments.bigcommerce.com';
 
     /** @var string */
-    protected $apiBaseUrl = self::API_BASE_URL;
+    protected $apiBaseUrl = self::DEFAULT_API_BASE_URL;
 
     /** @var string */
-    protected $paymentBaseUrl = self::PAYMENT_BASE_URL;
+    protected $paymentBaseUrl = self::DEFAULT_PAYMENT_BASE_URL;
 
     /**
      * @return string|null

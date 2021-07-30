@@ -23,8 +23,8 @@ class BasicCredentialTest extends BaseTestCase
         $this->assertEquals($basicCredentials['storeUrl'], $this->basicCredential->getStoreUrl());
         $this->assertEquals($basicCredentials['username'], $this->basicCredential->getUsername());
         $this->assertEquals($basicCredentials['apiKey'], $this->basicCredential->getApiKey());
-        $this->assertEquals(BasicCredential::API_BASE_URL, $this->basicCredential->getApiBaseUrl());
-        $this->assertEquals(BasicCredential::PAYMENT_BASE_URL, $this->basicCredential->getPaymentBaseUrl());
+        $this->assertEquals(BasicCredential::DEFAULT_API_BASE_URL, $this->basicCredential->getApiBaseUrl());
+        $this->assertEquals(BasicCredential::DEFAULT_PAYMENT_BASE_URL, $this->basicCredential->getPaymentBaseUrl());
 
         $this->basicCredential
             ->setStoreUrl('url')
