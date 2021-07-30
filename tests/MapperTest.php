@@ -182,6 +182,7 @@ class MapperTest extends BaseTestCase
         $modifier = new ProductModifier();
         $modifier = $this->mapper->patch($modifier, ['name' => 'Modifier Name'], ['product_id' => 111]);
         $this->assertTrue($modifier->isPatched());
+
     }
 
     /**

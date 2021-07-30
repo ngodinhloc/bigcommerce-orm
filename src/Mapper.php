@@ -12,6 +12,7 @@ use Bigcommerce\ORM\Mapper\EntityReader;
 use Bigcommerce\ORM\Mapper\EntityTransformer;
 use Bigcommerce\ORM\Mapper\Reflection;
 use Bigcommerce\ORM\Meta\Metadata;
+use Bigcommerce\ORM\Meta\MetadataBuilder;
 use Bigcommerce\ORM\Relation\ManyRelationInterface;
 use Bigcommerce\ORM\Relation\OneRelationInterface;
 use Bigcommerce\ORM\Relation\RelationInterface;
@@ -36,6 +37,9 @@ class Mapper
     /** @var \Bigcommerce\ORM\Mapper\EntityTransformer */
     protected $entityTransformer;
 
+    /** @var \Bigcommerce\ORM\Meta\MetadataBuilder */
+    protected $metadataBuilder;
+
     /**
      * Mapper constructor.
      *
@@ -46,6 +50,7 @@ class Mapper
         $this->reader = $reader ?: new AnnotationReader();
         $this->entityReader = new EntityReader($this->reader);
         $this->entityTransformer = new EntityTransformer($this->reader);
+        $this->metadataBuilder = new MetadataBuilder($this->reader);
     }
 
     /**
@@ -138,7 +143,7 @@ class Mapper
 
         $this->entityReader->setPropertyValueByName($entity, 'isPatched', true);
         $resource = $this->getResource($entity);
-        $metadata = $this->getMetadata($resource, $properties);
+        $metadata = $this->metadataBuilder->build($resource, $properties);
         $this->entityReader->setPropertyValueByName($entity, 'metadata', $metadata);
 
         if ($propertyOnly == true) {
@@ -440,85 +445,6 @@ class Mapper
     }
 
     /**
-     * @param \Bigcommerce\ORM\Annotations\Resource|null $resource
-     * @param \ReflectionProperty[] $properties
-     * @return \Bigcommerce\ORM\Meta\Metadata
-     */
-    private function getMetadata(?Resource $resource = null, ?array $properties = null)
-    {
-        $relationFields = [];
-        $autoLoadFields = [];
-        $includeFields = [];
-        $inResultFields = [];
-        $requiredFields = [];
-        $readonlyFields = [];
-        $customisedFields = [];
-        $validationFields = [];
-        $uploadFiles = [];
-        $paramFields = [];
-
-        foreach ($properties as $property) {
-            $annotations = $this->reader->getPropertyAnnotations($property);
-            foreach ($annotations as $annotation) {
-                if ($annotation instanceof Field) {
-                    if ($annotation->required == true) {
-                        $requiredFields[$annotation->name] = $property;
-                    }
-                    if ($annotation->readonly == true) {
-                        $readonlyFields[$annotation->name] = $property;
-                    }
-                    if ($annotation->customised == true) {
-                        $customisedFields[$annotation->name] = $property;
-                    }
-                    if ($annotation->upload == true) {
-                        $uploadFiles[$annotation->name] = $property;
-                    }
-                    if ($annotation->pathParam == true) {
-                        $paramFields[$annotation->name] = $property;
-                    }
-                }
-
-                if ($annotation instanceof RelationInterface) {
-                    $relationFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
-                    if ($annotation->auto === true && $annotation->from === 'include') {
-                        $includeFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
-                    }
-
-                    if ($annotation->auto === true && $annotation->from === 'api') {
-                        $autoLoadFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
-                    }
-
-                    if ($annotation->from === 'result') {
-                        $inResultFields[$annotation->name] = ['property' => $property, 'annotation' => $annotation];
-                    }
-                }
-
-                if ($annotation instanceof ValidationInterface) {
-                    if ($annotation->validate === true) {
-                        $validationFields[$property->name] = ['property' => $property, 'annotation' => $annotation];
-                    }
-                }
-            }
-        }
-
-        $metadata = new Metadata();
-        $metadata
-            ->setResource($resource)
-            ->setReadonlyFields($readonlyFields)
-            ->setRequiredFields($requiredFields)
-            ->setCustomisedFields($customisedFields)
-            ->setRelationFields($relationFields)
-            ->setIncludeFields($includeFields)
-            ->setAutoLoadFields($autoLoadFields)
-            ->setInResultFields($inResultFields)
-            ->setValidationProperties($validationFields)
-            ->setUploadFields($uploadFiles)
-            ->setParamFields($paramFields);
-
-        return $metadata;
-    }
-
-    /**
      * @return \Bigcommerce\ORM\Mapper\EntityReader
      */
     public function getEntityReader(): \Bigcommerce\ORM\Mapper\EntityReader
@@ -552,6 +478,25 @@ class Mapper
     public function setEntityTransformer(\Bigcommerce\ORM\Mapper\EntityTransformer $entityTransformer): Mapper
     {
         $this->entityTransformer = $entityTransformer;
+
+        return $this;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Meta\MetadataBuilder
+     */
+    public function getMetadataBuilder(): \Bigcommerce\ORM\Meta\MetadataBuilder
+    {
+        return $this->metadataBuilder;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Meta\MetadataBuilder $metadataBuilder
+     * @return \Bigcommerce\ORM\Mapper
+     */
+    public function setMetadataBuilder(\Bigcommerce\ORM\Meta\MetadataBuilder $metadataBuilder): Mapper
+    {
+        $this->metadataBuilder = $metadataBuilder;
 
         return $this;
     }
