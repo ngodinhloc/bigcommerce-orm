@@ -9,6 +9,7 @@ use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
 use Bigcommerce\ORM\Mapper\EntityReader;
+use Bigcommerce\ORM\Mapper\EntityTransformer;
 use Bigcommerce\ORM\Mapper\Reflection;
 use Bigcommerce\ORM\Relation\ManyRelationInterface;
 use Bigcommerce\ORM\Relation\OneRelationInterface;
@@ -31,6 +32,9 @@ class Mapper
     /** @var \Bigcommerce\ORM\Mapper\EntityReader */
     protected $entityReader;
 
+    /** @var \Bigcommerce\ORM\Mapper\EntityTransformer */
+    protected $entityTransformer;
+
     /**
      * Mapper constructor.
      *
@@ -40,6 +44,7 @@ class Mapper
     {
         $this->reader = $reader ?: new AnnotationReader();
         $this->entityReader = new EntityReader($this->reader);
+        $this->entityTransformer = new EntityTransformer($this->reader);
     }
 
     /**
@@ -197,7 +202,7 @@ class Mapper
         }
 
         if (empty($data)) {
-            $data = $this->toArray($entity);
+            $data = $this->entityTransformer->toArray($entity);
         }
 
         if (empty($readonlyFields = $entity->getMetadata()->getReadonlyFields())) {
@@ -284,47 +289,6 @@ class Mapper
         }
 
         return $collections;
-    }
-
-    /**
-     * Get array of entity
-     *
-     * @param \Bigcommerce\ORM\AbstractEntity $entity
-     * @param int|null $key
-     * @return array
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @see \Bigcommerce\ORM\Mapper::KEY_BY_FIELD_NAME
-     * @see \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME
-     */
-    public function toArray(AbstractEntity $entity, ?int $key = self::KEY_BY_FIELD_NAME)
-    {
-        $reflectionClass = (new Reflection())->reflect($entity);
-        $properties = $reflectionClass->getProperties();
-
-        $array = [];
-        switch ($key) {
-            case self::KEY_BY_PROPERTY_NAME:
-                /** @var \ReflectionProperty $property */
-                foreach ($properties as $property) {
-                    $annotation = $this->reader->getPropertyAnnotation($property, Field::class);
-                    if ($annotation instanceof Field) {
-                        $array[$property->getName()] = $this->entityReader->getPropertyValue($entity, $property);
-                    }
-                }
-                break;
-            case self::KEY_BY_FIELD_NAME:
-            default:
-                /** @var \ReflectionProperty $property */
-                foreach ($properties as $property) {
-                    $annotation = $this->reader->getPropertyAnnotation($property, Field::class);
-                    if ($annotation instanceof Field) {
-                        $array[$annotation->name] = $this->entityReader->getPropertyValue($entity, $property);
-                    }
-                }
-                break;
-        }
-
-        return $array;
     }
 
     /**
@@ -568,6 +532,25 @@ class Mapper
     public function setEntityReader(\Bigcommerce\ORM\Mapper\EntityReader $entityReader): Mapper
     {
         $this->entityReader = $entityReader;
+
+        return $this;
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Mapper\EntityTransformer
+     */
+    public function getEntityTransformer(): \Bigcommerce\ORM\Mapper\EntityTransformer
+    {
+        return $this->entityTransformer;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Mapper\EntityTransformer $entityTransformer
+     * @return \Bigcommerce\ORM\Mapper
+     */
+    public function setEntityTransformer(\Bigcommerce\ORM\Mapper\EntityTransformer $entityTransformer): Mapper
+    {
+        $this->entityTransformer = $entityTransformer;
 
         return $this;
     }

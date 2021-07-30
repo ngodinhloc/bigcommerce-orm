@@ -392,7 +392,7 @@ class EntityManager
      */
     public function toArray(AbstractEntity $entity, int $key = Mapper::KEY_BY_FIELD_NAME)
     {
-        return $this->mapper->toArray($entity, $key);
+        return $this->mapper->getEntityTransformer()->toArray($entity, $key);
     }
 
     /**

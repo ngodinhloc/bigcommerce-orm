@@ -259,44 +259,6 @@ class MapperTest extends BaseTestCase
     /**
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function testToArray()
-    {
-        $modifier = new ProductModifier();
-        $modifier
-            ->setName('Name')
-            ->setType('file')
-            ->setDisplayName('Display Name');
-        $expected = [
-            'product_id' => null,
-            'name' => 'Name',
-            'display_name' => 'Display Name',
-            'type' => 'file',
-            'required' => false,
-            'sort_order' => null,
-            'config' => null,
-            'id' => null
-        ];
-        $array = $this->mapper->toArray($modifier);
-        $this->assertEquals($expected, $array);
-
-        $expected = [
-            'productId' => null,
-            'name' => 'Name',
-            'displayName' => 'Display Name',
-            'type' => 'file',
-            'required' => false,
-            'sortOrder' => null,
-            'config' => null,
-            'id' => null
-        ];
-
-        $array = $this->mapper->toArray($modifier, Mapper::KEY_BY_PROPERTY_NAME);
-        $this->assertEquals($expected, $array);
-    }
-
-    /**
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
     public function testObject()
     {
         $object = $this->mapper->object(Customer::class);

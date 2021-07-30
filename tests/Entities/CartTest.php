@@ -86,16 +86,16 @@ class CartTest extends BaseTestCase
 
         $lines = [
             'physical_items' => [
-                $mapper->toArray($item1)
+                $mapper->getEntityTransformer()->toArray($item1)
             ],
             'digital_items' => [
-                $mapper->toArray($item2)
+                $mapper->getEntityTransformer()->toArray($item2)
             ],
             'custom_items' => [
-                $mapper->toArray($custom)
+                $mapper->getEntityTransformer()->toArray($custom)
             ],
             'gift_certificates' => [
-                $mapper->toArray($gift)
+                $mapper->getEntityTransformer()->toArray($gift)
             ],
         ];
 
