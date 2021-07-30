@@ -7,6 +7,54 @@ use Bigcommerce\ORM\AbstractEntity;
 class EntityReader
 {
     /**
+     * Set property value by name
+     *
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
+     * @param string $propertyName
+     * @param mixed $value
+     * @return void
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function setPropertyValueByName(AbstractEntity $entity, string $propertyName, $value)
+    {
+        $property = $this->getProperty($entity, $propertyName);
+        $this->setPropertyValue($entity, $property, $value);
+    }
+
+    /**
+     * Get property value by name
+     *
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
+     * @param string $propertyName
+     * @return mixed
+     * @throws \Bigcommerce\ORM\Exceptions\MapperException
+     */
+    public function getPropertyValueByName(AbstractEntity $entity, string $propertyName)
+    {
+        $property = $this->getProperty($entity, $propertyName);
+
+        return $this->getPropertyValue($entity, $property);
+    }
+
+    /**
+     * Get property value
+     *
+     * @param \Bigcommerce\ORM\AbstractEntity $entity entity
+     * @param \ReflectionProperty|null $property property
+     * @return mixed
+     */
+    public function getPropertyValue(AbstractEntity $entity, ?\ReflectionProperty $property)
+    {
+        if ($property instanceof \ReflectionProperty) {
+            $property->setAccessible(true);
+
+            return $property->getValue($entity);
+        }
+
+        return null;
+    }
+
+    /**
      * Get enity property by property name
      *
      * @param \Bigcommerce\ORM\AbstractEntity $entity entity

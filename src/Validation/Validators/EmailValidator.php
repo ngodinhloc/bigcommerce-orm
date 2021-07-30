@@ -23,7 +23,7 @@ class EmailValidator extends AbstractValidator implements ValidatorInterface
      */
     public function validate(AbstractEntity $entity, \ReflectionProperty $property, ValidationInterface $annotation)
     {
-        $email = $this->mapper->getPropertyValue($entity, $property);
+        $email = $this->mapper->getEntityReader()->getPropertyValue($entity, $property);
         if ($email === null) {
             return true;
         }

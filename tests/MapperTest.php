@@ -297,62 +297,6 @@ class MapperTest extends BaseTestCase
     /**
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function testGetPropertyValueByName()
-    {
-        $modifier = new ProductModifier();
-        $modifier
-            ->setName('Name')
-            ->setType('file')
-            ->setDisplayName('Display Name');
-        $value = $this->mapper->getPropertyValueByName($modifier, 'name');
-        $this->assertEquals('Name', $value);
-    }
-
-    /**
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function testGetPropertyValueByNameThrowException()
-    {
-        $modifier = new ProductModifier();
-        $modifier
-            ->setName('Name')
-            ->setType('file')
-            ->setDisplayName('Display Name');
-        $this->expectException(\TypeError::class);
-        $this->mapper->getPropertyValueByName($modifier, 'invalid');
-    }
-
-    /**
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function testGetProperty()
-    {
-        $modifier = new ProductModifier();
-        $modifier
-            ->setName('Name')
-            ->setType('file')
-            ->setDisplayName('Display Name');
-        $get = $this->mapper->getEntityReader()->getProperty($modifier, 'invalid');
-        $this->assertFalse($get);
-    }
-
-    /**
-     * testGetPropertyValue
-     */
-    public function testGetPropertyValue()
-    {
-        $modifier = new ProductModifier();
-        $modifier
-            ->setName('Name')
-            ->setType('file')
-            ->setDisplayName('Display Name');
-        $get = $this->mapper->getPropertyValue($modifier, null);
-        $this->assertNull($get);
-    }
-
-    /**
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
     public function testGetPropertyValueByFieldName()
     {
         $modifier = new ProductModifier();

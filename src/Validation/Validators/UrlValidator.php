@@ -23,7 +23,7 @@ class UrlValidator extends AbstractValidator implements ValidatorInterface
      */
     public function validate(AbstractEntity $entity, \ReflectionProperty $property, ValidationInterface $annotation)
     {
-        $url = $this->mapper->getPropertyValue($entity, $property);
+        $url = $this->mapper->getEntityReader()->getPropertyValue($entity, $property);
         if ($url === null) {
             return true;
         }

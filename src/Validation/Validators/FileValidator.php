@@ -23,7 +23,7 @@ class FileValidator extends AbstractValidator implements ValidatorInterface
      */
     public function validate(AbstractEntity $entity, \ReflectionProperty $property, ValidationInterface $annotation)
     {
-        $file = $this->mapper->getPropertyValue($entity, $property);
+        $file = $this->mapper->getEntityReader()->getPropertyValue($entity, $property);
         if ($file === null) {
             return true;
         }

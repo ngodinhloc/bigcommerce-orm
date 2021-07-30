@@ -83,7 +83,7 @@ class Mapper
         }
 
         foreach ($paramFields as $fieldName => $property) {
-            $value = $this->getPropertyValue($entity, $property);
+            $value = $this->entityReader->getPropertyValue($entity, $property);
             if (empty($value)) {
                 throw new MapperException(sprintf(MapperException::ERROR_MISSING_PATH_PARAMS, $path, $fieldName));
             }
@@ -130,10 +130,10 @@ class Mapper
             }
         }
 
-        $this->setPropertyValueByName($entity, 'isPatched', true);
+        $this->entityReader->setPropertyValueByName($entity, 'isPatched', true);
         $resource = $this->getResource($entity);
         $metadata = $this->getMetadata($resource, $properties);
-        $this->setPropertyValueByName($entity, 'metadata', $metadata);
+        $this->entityReader->setPropertyValueByName($entity, 'metadata', $metadata);
 
         if ($propertyOnly == true) {
             return $entity;
@@ -170,7 +170,7 @@ class Mapper
         $missingFields = [];
         /* @var \ReflectionProperty $property */
         foreach ($requiredFields as $fieldName => $property) {
-            if ($this->getPropertyValue($entity, $property) === null) {
+            if ($this->entityReader->getPropertyValue($entity, $property) === null) {
                 $missingFields[$fieldName] = $property->name;
             }
         }
@@ -308,7 +308,7 @@ class Mapper
                 foreach ($properties as $property) {
                     $annotation = $this->reader->getPropertyAnnotation($property, Field::class);
                     if ($annotation instanceof Field) {
-                        $array[$property->getName()] = $this->getPropertyValue($entity, $property);
+                        $array[$property->getName()] = $this->entityReader->getPropertyValue($entity, $property);
                     }
                 }
                 break;
@@ -318,61 +318,13 @@ class Mapper
                 foreach ($properties as $property) {
                     $annotation = $this->reader->getPropertyAnnotation($property, Field::class);
                     if ($annotation instanceof Field) {
-                        $array[$annotation->name] = $this->getPropertyValue($entity, $property);
+                        $array[$annotation->name] = $this->entityReader->getPropertyValue($entity, $property);
                     }
                 }
                 break;
         }
 
         return $array;
-    }
-
-    /**
-     * Get property value
-     *
-     * @param \Bigcommerce\ORM\AbstractEntity $entity entity
-     * @param \ReflectionProperty|null $property property
-     * @return mixed
-     */
-    public function getPropertyValue(AbstractEntity $entity, ?\ReflectionProperty $property)
-    {
-        if ($property instanceof \ReflectionProperty) {
-            $property->setAccessible(true);
-
-            return $property->getValue($entity);
-        }
-
-        return null;
-    }
-
-    /**
-     * Set property value by name
-     *
-     * @param \Bigcommerce\ORM\AbstractEntity $entity
-     * @param string $propertyName
-     * @param mixed $value
-     * @return void
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function setPropertyValueByName(AbstractEntity $entity, string $propertyName, $value)
-    {
-        $property = $this->entityReader->getProperty($entity, $propertyName);
-        $this->entityReader->setPropertyValue($entity, $property, $value);
-    }
-
-    /**
-     * Get property value by name
-     *
-     * @param \Bigcommerce\ORM\AbstractEntity $entity
-     * @param string $propertyName
-     * @return mixed
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function getPropertyValueByName(AbstractEntity $entity, string $propertyName)
-    {
-        $property = $this->entityReader->getProperty($entity, $propertyName);
-
-        return $this->getPropertyValue($entity, $property);
     }
 
     /**
@@ -391,7 +343,7 @@ class Mapper
         foreach ($properties as $property) {
             $annotation = $this->reader->getPropertyAnnotation($property, Field::class);
             if ($annotation instanceof Field && $annotation->name == $fieldName) {
-                return $this->getPropertyValue($entity, $property);
+                return $this->entityReader->getPropertyValue($entity, $property);
             }
         }
 

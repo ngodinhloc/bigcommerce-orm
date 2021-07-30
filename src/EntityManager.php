@@ -624,7 +624,7 @@ class EntityManager
         $result = $this->client->create($resourcePath, $resourceType, $data, $files);
         if (!empty($result)) {
             $this->mapper->patch($entity, $result, null, false);
-            $this->mapper->setPropertyValueByName($entity, 'isNew', true);
+            $this->mapper->getEntityReader()->setPropertyValueByName($entity, 'isNew', true);
 
             if ($this->hasEventDispatcher()) {
                 $this->eventDispatcher->dispatch(
@@ -663,7 +663,7 @@ class EntityManager
             if (isset($result['id']) && $result['id'] == $entity->getId()) {
                 $this->mapper->patch($entity, $result, null, false);
             }
-            $this->mapper->setPropertyValueByName($entity, 'isNew', false);
+            $this->mapper->getEntityReader()->setPropertyValueByName($entity, 'isNew', false);
 
             if ($this->hasEventDispatcher()) {
                 $this->eventDispatcher->dispatch(
@@ -688,7 +688,7 @@ class EntityManager
         $files = [];
         if (!empty($uploadFields = $entity->getMetadata()->getUploadFields())) {
             foreach ($uploadFields as $fieldName => $property) {
-                $location = $this->mapper->getPropertyValue($entity, $property);
+                $location = $this->mapper->getEntityReader()->getPropertyValue($entity, $property);
                 if (!empty($location)) {
                     if (!file_exists($location)) {
                         throw new EntityException(EntityException::ERROR_INVALID_UPLOAD_FILE . $location);

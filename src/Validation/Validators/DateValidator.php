@@ -23,7 +23,7 @@ class DateValidator extends AbstractValidator implements ValidatorInterface
      */
     public function validate(AbstractEntity $entity, \ReflectionProperty $property, ValidationInterface $annotation)
     {
-        $date = $this->mapper->getPropertyValue($entity, $property);
+        $date = $this->mapper->getEntityReader()->getPropertyValue($entity, $property);
         if ($date === null) {
             return true;
         }
