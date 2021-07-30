@@ -46,7 +46,7 @@ class Mapper
      */
     public function getResource(AbstractEntity $entity)
     {
-        $reflectionClass = $this->reflect($entity);
+        $reflectionClass = (new Reflection())->reflect($entity);
 
         return $this->reader->getClassAnnotation($reflectionClass, Resource::class);
     }
@@ -114,7 +114,7 @@ class Mapper
             $data = array_merge($data, $pathParams);
         }
 
-        $reflectionClass = $this->reflect($entity);
+        $reflectionClass = (new Reflection())->reflect($entity);
         $properties = $reflectionClass->getProperties();
         foreach ($properties as $property) {
             $annotations = $this->reader->getPropertyAnnotations($property);
@@ -295,7 +295,7 @@ class Mapper
      */
     public function toArray(AbstractEntity $entity, ?int $key = self::KEY_BY_FIELD_NAME)
     {
-        $reflectionClass = $this->reflect($entity);
+        $reflectionClass = (new Reflection())->reflect($entity);
         $properties = $reflectionClass->getProperties();
 
         $array = [];
@@ -396,7 +396,7 @@ class Mapper
      */
     public function getPropertyValueByFieldName(AbstractEntity $entity, string $fieldName)
     {
-        $reflectionClass = $this->reflect($entity);
+        $reflectionClass = (new Reflection())->reflect($entity);
         $properties = $reflectionClass->getProperties();
 
         foreach ($properties as $property) {
@@ -419,7 +419,7 @@ class Mapper
      */
     public function getProperty(AbstractEntity $entity, string $propertyName)
     {
-        $reflectionClass = $this->reflect($entity);
+        $reflectionClass = (new Reflection())->reflect($entity);
         $properties = $reflectionClass->getProperties();
         foreach ($properties as $property) {
             if ($property->name == $propertyName) {
@@ -446,16 +446,6 @@ class Mapper
         }
 
         return $object;
-    }
-
-    /**
-     * @param \Bigcommerce\ORM\AbstractEntity $entity
-     * @return \ReflectionClass
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function reflect(AbstractEntity $entity)
-    {
-        return (new Reflection())->reflect($entity);
     }
 
     /**

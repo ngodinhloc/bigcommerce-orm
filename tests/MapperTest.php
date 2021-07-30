@@ -397,15 +397,6 @@ class MapperTest extends BaseTestCase
     }
 
     /**
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function testReflectThrowException()
-    {
-        $this->expectException(\Throwable::class);
-        $this->mapper->reflect(null);
-    }
-
-    /**
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
     public function testCheckEntity()
