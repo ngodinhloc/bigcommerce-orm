@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Bigcommerce\ORM;
@@ -7,6 +8,9 @@ use Bigcommerce\ORM\Client\AuthConfig;
 use Bigcommerce\ORM\Client\BasicConfig;
 use Bigcommerce\ORM\Client\Client;
 use Bigcommerce\ORM\Client\Connection;
+use Bigcommerce\ORM\Config\AuthCredential;
+use Bigcommerce\ORM\Config\BasicCredential;
+use Bigcommerce\ORM\Config\ConfigOption;
 use Bigcommerce\ORM\Exceptions\ConfigException;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
@@ -63,8 +67,7 @@ class Configuration
         ?CacheItemPoolInterface $cachePool = null,
         ?EventDispatcherInterface $eventDispatcher = null,
         ?LoggerInterface $logger = null
-    )
-    {
+    ) {
         $this->credentials = $credentials;
         $this->options = $options;
         $this->cachePool = $cachePool;
@@ -78,32 +81,18 @@ class Configuration
      */
     public function configEntityManager()
     {
+        $configOption = new ConfigOption($this->options);
         if (isset($this->credentials['clientId'])) {
-            $config = new AuthConfig($this->credentials);
+            $authCredential = new AuthCredential($this->credentials);
+            $config = new AuthConfig($authCredential, $configOption);
         } elseif (isset($this->credentials['storeUrl'])) {
-            $config = new BasicConfig($this->credentials);
+            $basicCredential = new BasicCredential($this->credentials);
+            $config = new BasicConfig($basicCredential, $configOption);
         } else {
-            throw new ConfigException(ConfigException::ERROR_MISSING_CONFIG);
-        }
-
-        if (isset($this->options['proxy'])) {
-            $config->setProxy($this->options['proxy']);
-        }
-
-        if (isset($this->options['verify'])) {
-            $config->setVerify($this->options['verify']);
-        }
-
-        if (isset($this->options['timeout'])) {
-            $config->setTimeout($this->options['timeout']);
-        }
-
-        if (isset($this->options['accept'])) {
-            $config->setAccept($this->options['accept']);
-        }
-
-        if (isset($this->options['debug'])) {
-            $config->setDebug($this->options['debug']);
+            throw new ConfigException(
+                ConfigException::ERROR_MISSING_CONFIG . implode(",", BasicCredential::REQUIRED_CONFIGURATION_DATA)
+                .' or '.implode(",", AuthCredential::REQUIRED_CONFIGURATION_DATA)
+            );
         }
 
         $connection = new Connection($config, $this->logger);

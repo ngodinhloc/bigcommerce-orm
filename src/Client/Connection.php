@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Client;
 
+use Bigcommerce\ORM\Config\ConfigOption;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -235,7 +236,7 @@ class Connection
     {
         $this->apiUrl = $this->config->getApiUrl();
         $this->paymentUrl = $this->config->getPaymentUrl();
-        $this->addRequestHeader('Content-Type', AbstractConfig::CONTENT_TYPE_JSON);
+        $this->addRequestHeader('Content-Type', ConfigOption::CONTENT_TYPE_JSON);
 
         if (!empty($auth = $this->config->getAuth())) {
             $this->auth = $auth;
@@ -247,23 +248,23 @@ class Connection
             }
         }
 
-        if (!empty($this->config->getAccept())) {
-            $this->addRequestHeader('Accept', $this->config->getAccept());
+        if (!empty($this->config->getConfigOption()->getAccept())) {
+            $this->addRequestHeader('Accept', $this->config->getConfigOption()->getAccept());
         }
 
-        if (!empty($this->config->getTimeout())) {
-            $this->timeout = $this->config->getTimeout();
+        if (!empty($this->config->getConfigOption()->getTimeout())) {
+            $this->timeout = $this->config->getConfigOption()->getTimeout();
         }
 
-        if (!empty($this->config->isVerify())) {
-            $this->verify = $this->config->isVerify();
+        if (!empty($this->config->getConfigOption()->isVerify())) {
+            $this->verify = $this->config->getConfigOption()->isVerify();
         }
 
-        if (!empty($this->config->getProxy())) {
-            $this->proxy = $this->config->getProxy();
+        if (!empty($this->config->getConfigOption()->getProxy())) {
+            $this->proxy = $this->config->getConfigOption()->getProxy();
         }
 
-        if ($this->config->isDebug() == true) {
+        if ($this->config->getConfigOption()->isDebug() == true) {
             $this->debug = true;
         }
 
@@ -414,7 +415,7 @@ class Connection
     public function setPaymentAccessToken(?string $token)
     {
         $this->addRequestHeader('Authorization', "PAT $token");
-        $this->addRequestHeader('Accept', AbstractConfig::CONTENT_TYPE_BCV1);
+        $this->addRequestHeader('Accept', ConfigOption::CONTENT_TYPE_BCV1);
         $this->composeRequestOptions();
 
         return $this;

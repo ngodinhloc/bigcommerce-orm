@@ -1,151 +1,26 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Client;
 
-use Bigcommerce\ORM\Exceptions\ConfigException;
+use Bigcommerce\ORM\Config\AuthCredential;
+use Bigcommerce\ORM\Config\ConfigOption;
 
 class AuthConfig extends AbstractConfig
 {
-    const REQUIRED_CONFIGURATION_DATA = ['clientId', 'authToken', 'storeHash'];
-
-    /** @var string */
-    protected $apiBaseUrl = self::API_BASE_URL;
-
-    /** @var string */
-    protected $paymentBaseUrl = self::PAYMENT_BASE_URL;
-
-    /** @var string */
-    protected $clientId;
-
-    /** @var string */
-    protected $authToken;
-
-    /** @var string */
-    protected $storeHash;
+    /** @var \Bigcommerce\ORM\Config\AuthCredential */
+    protected $credential;
 
     /**
      * AuthConfig constructor.
-     *
-     * @param array|null $config config
-     * [
-     *  'clientId' =>
-     *  'authToken' =>
-     *  'storeHash' =>
-     *  'apiUrl' =>
-     *  'paymentUrl' =>
-     * ]
-     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
+     * @param \Bigcommerce\ORM\Config\AuthCredential $credential
+     * @param \Bigcommerce\ORM\Config\ConfigOption $configOption
      */
-    public function __construct(?array $config = null)
+    public function __construct(AuthCredential $credential, ConfigOption $configOption)
     {
-        if (!isset($config['clientId']) || !isset($config['authToken']) || !isset($config['storeHash'])) {
-            throw new ConfigException(ConfigException::ERROR_MISSING_CONFIG . implode(",", self::REQUIRED_CONFIGURATION_DATA));
-        }
-        $this->clientId = $config['clientId'];
-        $this->authToken = $config['authToken'];
-        $this->storeHash = $config['storeHash'];
-        if (isset($config['apiUrl'])) {
-            $this->apiBaseUrl = $config['apiUrl'];
-        }
-        if (isset($config['paymentUrl'])) {
-            $this->paymentBaseUrl = $config['paymentUrl'];
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getClientId(): string
-    {
-        return $this->clientId;
-    }
-
-    /**
-     * @param string|null $clientId
-     * @return \Bigcommerce\ORM\Client\AuthConfig
-     */
-    public function setClientId(?string $clientId): AuthConfig
-    {
-        $this->clientId = $clientId;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getAuthToken(): ?string
-    {
-        return $this->authToken;
-    }
-
-    /**
-     * @param string|null $authToken
-     * @return \Bigcommerce\ORM\Client\AuthConfig
-     */
-    public function setAuthToken(?string $authToken): AuthConfig
-    {
-        $this->authToken = $authToken;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getStoreHash(): ?string
-    {
-        return $this->storeHash;
-    }
-
-    /**
-     * @param string|null $storeHash
-     * @return \Bigcommerce\ORM\Client\AuthConfig
-     */
-    public function setStoreHash(?string $storeHash): AuthConfig
-    {
-        $this->storeHash = $storeHash;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getApiBaseUrl(): ?string
-    {
-        return $this->apiBaseUrl;
-    }
-
-    /**
-     * @param string|null $apiBaseUrl
-     * @return \Bigcommerce\ORM\Client\AuthConfig
-     */
-    public function setApiBaseUrl(?string $apiBaseUrl): AuthConfig
-    {
-        $this->apiBaseUrl = $apiBaseUrl;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPaymentBaseUrl(): ?string
-    {
-        return $this->paymentBaseUrl;
-    }
-
-    /**
-     * @param string|null $paymentBaseUrl
-     * @return \Bigcommerce\ORM\Client\AuthConfig
-     */
-    public function setPaymentBaseUrl(?string $paymentBaseUrl): AuthConfig
-    {
-        $this->paymentBaseUrl = $paymentBaseUrl;
-
-        return $this;
+        $this->credential = $credential;
+        $this->configOption = $configOption;
     }
 
     /**
@@ -153,7 +28,10 @@ class AuthConfig extends AbstractConfig
      */
     public function getApiUrl()
     {
-        return $this->getApiBaseUrl() . sprintf($this->getApiStorePrefix(), $this->getStoreHash());
+        return $this->credential->getApiBaseUrl() . sprintf(
+                $this->getApiStorePrefix(),
+                $this->credential->getStoreHash()
+            );
     }
 
     /**
@@ -161,7 +39,10 @@ class AuthConfig extends AbstractConfig
      */
     public function getPaymentUrl()
     {
-        return $this->getPaymentBaseUrl() . sprintf($this->getPaymentStorePrefix(), $this->getStoreHash());
+        return $this->credential->getPaymentBaseUrl() . sprintf(
+                $this->getPaymentStorePrefix(),
+                $this->credential->getStoreHash()
+            );
     }
 
     /**
@@ -178,8 +59,27 @@ class AuthConfig extends AbstractConfig
     public function getAuthHeaders()
     {
         return [
-            'X-Auth-Client' => $this->getClientId(),
-            'X-Auth-Token' => $this->getAuthToken()
+            'X-Auth-Client' => $this->credential->getClientId(),
+            'X-Auth-Token' => $this->credential->getAuthToken()
         ];
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Config\AuthCredential
+     */
+    public function getCredential(): AuthCredential
+    {
+        return $this->credential;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Config\AuthCredential $credential
+     * @return \Bigcommerce\ORM\Client\AuthConfig
+     */
+    public function setCredential(AuthCredential $credential): AuthConfig
+    {
+        $this->credential = $credential;
+
+        return $this;
     }
 }

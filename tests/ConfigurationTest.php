@@ -115,9 +115,9 @@ class ConfigurationTest extends BaseTestCase
         /** @var BasicConfig $config */
         $config = $connection->getConfig();
         $this->assertInstanceOf(BasicConfig::class, $config);
-        $this->assertEquals($this->credentials['storeUrl'], $config->getStoreUrl());
-        $this->assertEquals($this->credentials['username'], $config->getUsername());
-        $this->assertEquals($this->credentials['apiKey'], $config->getApiKey());
+        $this->assertEquals($this->credentials['storeUrl'], $config->getCredential()->getStoreUrl());
+        $this->assertEquals($this->credentials['username'], $config->getCredential()->getUsername());
+        $this->assertEquals($this->credentials['apiKey'], $config->getCredential()->getApiKey());
         $this->assertEquals($this->logger, $connection->getLogger());
     }
 
@@ -150,10 +150,10 @@ class ConfigurationTest extends BaseTestCase
         /** @var AuthConfig $config */
         $config = $connection->getConfig();
         $this->assertInstanceOf(AuthConfig::class, $config);
-        $this->assertEquals($this->credentials['clientId'], $config->getClientId());
-        $this->assertEquals($this->credentials['authToken'], $config->getAuthToken());
-        $this->assertEquals($this->credentials['storeHash'], $config->getStoreHash());
-        $this->assertEquals($this->credentials['apiUrl'], $config->getApiBaseUrl());
+        $this->assertEquals($this->credentials['clientId'], $config->getCredential()->getClientId());
+        $this->assertEquals($this->credentials['authToken'], $config->getCredential()->getAuthToken());
+        $this->assertEquals($this->credentials['storeHash'], $config->getCredential()->getStoreHash());
+        $this->assertEquals($this->credentials['apiUrl'], $config->getCredential()->getApiBaseUrl());
         $this->assertEquals($this->logger, $connection->getLogger());
     }
 

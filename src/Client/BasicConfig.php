@@ -1,99 +1,26 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Client;
 
-use Bigcommerce\ORM\Exceptions\ConfigException;
+use Bigcommerce\ORM\Config\BasicCredential;
+use Bigcommerce\ORM\Config\ConfigOption;
 
 class BasicConfig extends AbstractConfig
 {
-    const REQUIRED_CONFIGURATION_DATA = ['storeUrl', 'username', 'apiKey'];
-
-    /** @var string */
-    protected $storeUrl;
-
-    /** @var string */
-    protected $username;
-
-    /** @var string */
-    protected $apiKey;
+    /** @var \Bigcommerce\ORM\Config\BasicCredential */
+    protected $credential;
 
     /**
      * BasicConfig constructor.
-     *
-     * @param array|null $config config
-     * [
-     *  'storeUrl' =>
-     *  'username' =>
-     *  'apiKey' =>
-     * ]
-     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
+     * @param \Bigcommerce\ORM\Config\BasicCredential $credential
+     * @param \Bigcommerce\ORM\Config\ConfigOption $configOption
      */
-    public function __construct(?array $config = null)
+    public function __construct(BasicCredential $credential, ConfigOption $configOption)
     {
-        if (!isset($config['storeUrl']) || !isset($config['username']) || !isset($config['apiKey'])) {
-            throw new ConfigException(ConfigException::ERROR_MISSING_CONFIG . implode(",", self::REQUIRED_CONFIGURATION_DATA));
-        }
-        $this->storeUrl = $config['storeUrl'];
-        $this->username = $config['username'];
-        $this->apiKey = $config['apiKey'];
-    }
-
-    /**
-     * @return string
-     */
-    public function getStoreUrl()
-    {
-        return $this->storeUrl;
-    }
-
-    /**
-     * @param string|null $storeUrl
-     * @return \Bigcommerce\ORM\Client\BasicConfig
-     */
-    public function setStoreUrl(?string $storeUrl)
-    {
-        $this->storeUrl = $storeUrl;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param string|null $username
-     * @return \Bigcommerce\ORM\Client\BasicConfig
-     */
-    public function setUsername(?string $username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getApiKey()
-    {
-        return $this->apiKey;
-    }
-
-    /**
-     * @param string|null $apiKey
-     * @return \Bigcommerce\ORM\Client\BasicConfig
-     */
-    public function setApiKey(?string $apiKey)
-    {
-        $this->apiKey = $apiKey;
-
-        return $this;
+        $this->credential = $credential;
+        $this->configOption = $configOption;
     }
 
     /**
@@ -101,7 +28,7 @@ class BasicConfig extends AbstractConfig
      */
     public function getApiUrl()
     {
-        return rtrim($this->getStoreUrl(), '/') . $this->getPathPrefix();
+        return rtrim($this->credential->getStoreUrl(), '/') . $this->getPathPrefix();
     }
 
     /**
@@ -109,7 +36,7 @@ class BasicConfig extends AbstractConfig
      */
     public function getPaymentUrl()
     {
-        return rtrim($this->getStoreUrl(), '/') . $this->getPathPrefix() . '/payments';
+        return rtrim($this->credential->getStoreUrl(), '/') . $this->getPathPrefix() . '/payments';
     }
 
     /**
@@ -117,7 +44,7 @@ class BasicConfig extends AbstractConfig
      */
     public function getAuth()
     {
-        return [$this->getUsername(), $this->getApiKey()];
+        return [$this->credential->getUsername(), $this->credential->getApiKey()];
     }
 
     /**
@@ -128,4 +55,22 @@ class BasicConfig extends AbstractConfig
         return null;
     }
 
+    /**
+     * @return \Bigcommerce\ORM\Config\BasicCredential
+     */
+    public function getCredential(): BasicCredential
+    {
+        return $this->credential;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Config\BasicCredential $credential
+     * @return \Bigcommerce\ORM\Client\BasicConfig
+     */
+    public function setCredential(BasicCredential $credential): BasicConfig
+    {
+        $this->credential = $credential;
+
+        return $this;
+    }
 }

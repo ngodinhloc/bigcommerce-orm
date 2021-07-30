@@ -6,6 +6,9 @@ namespace Tests\Client;
 use Bigcommerce\ORM\Client\AuthConfig;
 use Bigcommerce\ORM\Client\BasicConfig;
 use Bigcommerce\ORM\Client\Connection;
+use Bigcommerce\ORM\Config\AuthCredential;
+use Bigcommerce\ORM\Config\BasicCredential;
+use Bigcommerce\ORM\Config\ConfigOption;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Stream\Stream;
@@ -158,8 +161,15 @@ class ConnectionTest extends BaseTestCase
             'username' => 'username',
             'apiKey' => 'apiKey'
         ];
-
-        return new BasicConfig($basicCredentials);
+        $credential = new BasicCredential($basicCredentials);
+        $configOption = new ConfigOption();
+        $configOption
+            ->setTimeout(60)
+            ->setAccept('application/json')
+            ->setVerify(true)
+            ->setDebug(true)
+            ->setProxy('tcp://localhost:8080');
+        return new BasicConfig($credential, $configOption);
     }
 
     /**
@@ -174,15 +184,16 @@ class ConnectionTest extends BaseTestCase
             'storeHash' => 'storeHash',
             'baseUrl' => 'baseUrl',
         ];
-        $authConfig = new AuthConfig($authCredentials);
-        $authConfig
+        $credential = new AuthCredential($authCredentials);
+        $configOption = new ConfigOption();
+        $configOption
             ->setTimeout(60)
             ->setAccept('application/json')
             ->setVerify(true)
             ->setDebug(true)
             ->setProxy('tcp://localhost:8080');
 
-        return $authConfig;
+        return new AuthConfig($credential, $configOption);
     }
 
     /**

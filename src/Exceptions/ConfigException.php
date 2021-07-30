@@ -5,5 +5,5 @@ namespace Bigcommerce\ORM\Exceptions;
 
 class ConfigException extends OrmException
 {
-    const ERROR_MISSING_CONFIG = "Configs are missing. Required following data: ";
+    const ERROR_MISSING_CONFIG = "Configs are missing. Required following data set: ";
 }
