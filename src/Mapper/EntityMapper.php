@@ -271,7 +271,7 @@ class EntityMapper
 
     /**
      * @param \Bigcommerce\ORM\Meta\MetadataBuilder $metadataBuilder
-     * @return \Bigcommerce\ORM\Mapper
+     * @return \Bigcommerce\ORM\Mapper\EntityMapper
      */
     public function setMetadataBuilder(\Bigcommerce\ORM\Meta\MetadataBuilder $metadataBuilder): EntityMapper
     {
@@ -309,7 +309,7 @@ class EntityMapper
 
     /**
      * @param \Bigcommerce\ORM\Mapper\EntityValidator $entityValidator
-     * @return \Bigcommerce\ORM\Mapper
+     * @return \Bigcommerce\ORM\Mapper\EntityMapper
      */
     public function setEntityValidator(\Bigcommerce\ORM\Mapper\EntityValidator $entityValidator): EntityMapper
     {

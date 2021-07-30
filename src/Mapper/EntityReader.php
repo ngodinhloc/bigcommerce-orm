@@ -7,6 +7,7 @@ use Bigcommerce\ORM\Annotations\Field;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
 use Doctrine\Common\Annotations\AnnotationReader;
+use ReflectionProperty;
 
 class EntityReader
 {
@@ -82,9 +83,9 @@ class EntityReader
      * @param \ReflectionProperty|null $property property
      * @return mixed
      */
-    public function getPropertyValue(AbstractEntity $entity, ?\ReflectionProperty $property)
+    public function getPropertyValue(AbstractEntity $entity, ?ReflectionProperty $property)
     {
-        if ($property instanceof \ReflectionProperty) {
+        if ($property instanceof ReflectionProperty) {
             $property->setAccessible(true);
 
             return $property->getValue($entity);

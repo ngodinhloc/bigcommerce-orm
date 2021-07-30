@@ -9,9 +9,8 @@ use Bigcommerce\ORM\Entities\PaymentAccessToken;
 use Bigcommerce\ORM\Events\EntityManagerEvent;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Mapper\Autoloader;
-use Bigcommerce\ORM\Mapper\EntityTransformer;
 use Bigcommerce\ORM\Mapper\EntityMapper;
-use Bigcommerce\ORM\Relation\RelationInterface;
+use Bigcommerce\ORM\Mapper\EntityTransformer;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -296,7 +295,11 @@ class EntityManager
 
         $result = $this->client->create($resourcePath, $resourceType, $data, null, true);
         if (!empty($result)) {
-            return $this->getMapper()->getEntityTransformer()->batchCreateResultToEntities($className, $result, $pathParams);
+            return $this->getMapper()->getEntityTransformer()->batchCreateResultToEntities(
+                $className,
+                $result,
+                $pathParams
+            );
         }
 
         return false;
@@ -343,8 +346,12 @@ class EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function batchDelete(string $className, ?array $pathParams = null, ?array $values = null, ?string $field = 'id')
-    {
+    public function batchDelete(
+        string $className,
+        ?array $pathParams = null,
+        ?array $values = null,
+        ?string $field = 'id'
+    ) {
         if (empty($values)) {
             return false;
         }

@@ -10,6 +10,7 @@ use Bigcommerce\ORM\Meta\MetadataBuilder;
 use Bigcommerce\ORM\Relation\ManyRelationInterface;
 use Bigcommerce\ORM\Relation\OneRelationInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Throwable;
 
 class EntityPatcher
 {
@@ -214,7 +215,7 @@ class EntityPatcher
     {
         try {
             $object = new $class();
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             throw new MapperException(MapperException::ERROR_INVALID_CLASS_NAME . $class);
         }
 

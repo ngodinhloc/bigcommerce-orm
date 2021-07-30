@@ -24,9 +24,13 @@ class EntityTransformer
      * EntityTransformer constructor.
      * @param \Doctrine\Common\Annotations\AnnotationReader|null $reader
      * @param \Bigcommerce\ORM\Mapper\EntityReader|null $entityReader
+     * @param \Bigcommerce\ORM\Mapper\EntityPatcher|null $entityPatcher
      */
-    public function __construct(?AnnotationReader $reader = null, EntityReader $entityReader = null, EntityPatcher $entityPatcher = null)
-    {
+    public function __construct(
+        ?AnnotationReader $reader = null,
+        EntityReader $entityReader = null,
+        EntityPatcher $entityPatcher = null
+    ) {
         $this->reader = $reader ?: new AnnotationReader();
         $this->entityReader = $entityReader ?? new EntityReader($this->reader);
         $this->entityPatcher = $entityPatcher ?? new EntityPatcher($this->reader);
@@ -102,8 +106,11 @@ class EntityTransformer
      * @return \Bigcommerce\ORM\AbstractEntity[]|bool
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function batchUpdateResultToEntities(?array $entities = null, ?array $result = null, ?array $pathParams = null)
-    {
+    public function batchUpdateResultToEntities(
+        ?array $entities = null,
+        ?array $result = null,
+        ?array $pathParams = null
+    ) {
         $output = [];
         foreach ($result as $data) {
             if (isset($data['id']) && isset($entities[$data['id']])) {
