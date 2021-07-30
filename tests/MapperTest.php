@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests;
@@ -15,7 +16,7 @@ use Bigcommerce\ORM\Entities\ShippingAddress;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
 use Bigcommerce\ORM\Mapper;
-use Bigcommerce\ORM\Metadata;
+use Bigcommerce\ORM\Meta\Metadata;
 
 class MapperTest extends BaseTestCase
 {

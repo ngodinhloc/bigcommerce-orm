@@ -30,7 +30,7 @@ abstract class AbstractEntity
     /** @var \Bigcommerce\ORM\Entities\PaymentAccessToken */
     protected $paymentAccessToken = null;
 
-    /** @var \Bigcommerce\ORM\Metadata */
+    /** @var \Bigcommerce\ORM\Meta\Metadata */
     protected $metadata;
 
     /**
@@ -77,7 +77,7 @@ abstract class AbstractEntity
     }
 
     /**
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     public function getMetadata()
     {

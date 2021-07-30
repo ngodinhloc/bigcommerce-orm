@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Bigcommerce\ORM;
+namespace Bigcommerce\ORM\Meta;
 
 use Bigcommerce\ORM\Annotations\Resource;
 

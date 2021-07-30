@@ -6,7 +6,7 @@ use Bigcommerce\ORM\AbstractEntity;
 use Bigcommerce\ORM\Annotations\Field;
 use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Exceptions\MapperException;
-use Bigcommerce\ORM\Metadata;
+use Bigcommerce\ORM\Meta\Metadata;
 use Bigcommerce\ORM\Relation\ManyRelationInterface;
 use Bigcommerce\ORM\Relation\OneRelationInterface;
 use Bigcommerce\ORM\Relation\RelationInterface;
@@ -124,7 +124,7 @@ class Patcher
     /**
      * @param \Bigcommerce\ORM\Annotations\Resource|null $resource
      * @param \ReflectionProperty[] $properties
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     private function getMetadata(?Resource $resource = null, ?array $properties = null)
     {

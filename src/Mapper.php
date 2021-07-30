@@ -11,6 +11,7 @@ use Bigcommerce\ORM\Exceptions\MapperException;
 use Bigcommerce\ORM\Mapper\EntityReader;
 use Bigcommerce\ORM\Mapper\EntityTransformer;
 use Bigcommerce\ORM\Mapper\Reflection;
+use Bigcommerce\ORM\Meta\Metadata;
 use Bigcommerce\ORM\Relation\ManyRelationInterface;
 use Bigcommerce\ORM\Relation\OneRelationInterface;
 use Bigcommerce\ORM\Relation\RelationInterface;
@@ -441,7 +442,7 @@ class Mapper
     /**
      * @param \Bigcommerce\ORM\Annotations\Resource|null $resource
      * @param \ReflectionProperty[] $properties
-     * @return \Bigcommerce\ORM\Metadata
+     * @return \Bigcommerce\ORM\Meta\Metadata
      */
     private function getMetadata(?Resource $resource = null, ?array $properties = null)
     {

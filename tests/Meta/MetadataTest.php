@@ -1,14 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests;
+namespace Tests\Meta;
 
 use Bigcommerce\ORM\Annotations\Resource;
-use Bigcommerce\ORM\Metadata;
+use Bigcommerce\ORM\Meta\Metadata;
+use Tests\BaseTestCase;
 
 class MetadataTest extends BaseTestCase
 {
-    /** @coversDefaultClass \Bigcommerce\ORM\Metadata */
+    /** @coversDefaultClass \Bigcommerce\ORM\Meta\Metadata */
     protected $metadata;
 
     protected function setUp(): void
@@ -18,24 +19,24 @@ class MetadataTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\Metadata::setResource
-     * @covers \Bigcommerce\ORM\Metadata::setRelationFields
-     * @covers \Bigcommerce\ORM\Metadata::setUploadFields
-     * @covers \Bigcommerce\ORM\Metadata::setIncludeFields
-     * @covers \Bigcommerce\ORM\Metadata::setValidationProperties
-     * @covers \Bigcommerce\ORM\Metadata::setCustomisedFields
-     * @covers \Bigcommerce\ORM\Metadata::setReadonlyFields
-     * @covers \Bigcommerce\ORM\Metadata::setAutoLoadFields
-     * @covers \Bigcommerce\ORM\Metadata::setRequiredFields
-     * @covers \Bigcommerce\ORM\Metadata::getResource
-     * @covers \Bigcommerce\ORM\Metadata::getRelationFields
-     * @covers \Bigcommerce\ORM\Metadata::getUploadFields
-     * @covers \Bigcommerce\ORM\Metadata::getIncludeFields
-     * @covers \Bigcommerce\ORM\Metadata::getValidationProperties
-     * @covers \Bigcommerce\ORM\Metadata::getCustomisedFields
-     * @covers \Bigcommerce\ORM\Metadata::getReadonlyFields
-     * @covers \Bigcommerce\ORM\Metadata::getAutoLoadFields
-     * @covers \Bigcommerce\ORM\Metadata::getRequiredFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::setResource
+     * @covers \Bigcommerce\ORM\Meta\Metadata::setRelationFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::setUploadFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::setIncludeFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::setValidationProperties
+     * @covers \Bigcommerce\ORM\Meta\Metadata::setCustomisedFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::setReadonlyFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::setAutoLoadFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::setRequiredFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::getResource
+     * @covers \Bigcommerce\ORM\Meta\Metadata::getRelationFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::getUploadFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::getIncludeFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::getValidationProperties
+     * @covers \Bigcommerce\ORM\Meta\Metadata::getCustomisedFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::getReadonlyFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::getAutoLoadFields
+     * @covers \Bigcommerce\ORM\Meta\Metadata::getRequiredFields
      */
     public function testSettersAndGetters()
     {
