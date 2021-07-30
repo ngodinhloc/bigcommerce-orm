@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Bigcommerce\ORM;
@@ -7,6 +8,7 @@ use Bigcommerce\ORM\Annotations\Field;
 use Bigcommerce\ORM\Annotations\Resource;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Exceptions\MapperException;
+use Bigcommerce\ORM\Mapper\Reflection;
 use Bigcommerce\ORM\Relation\ManyRelationInterface;
 use Bigcommerce\ORM\Relation\OneRelationInterface;
 use Bigcommerce\ORM\Relation\RelationInterface;
@@ -102,8 +104,12 @@ class Mapper
      * @return \Bigcommerce\ORM\AbstractEntity
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function patch(AbstractEntity $entity, ?array $data = null, ?array $pathParams = null, bool $propertyOnly = false)
-    {
+    public function patch(
+        AbstractEntity $entity,
+        ?array $data = null,
+        ?array $pathParams = null,
+        bool $propertyOnly = false
+    ) {
         if (is_array($pathParams)) {
             $data = array_merge($data, $pathParams);
         }
@@ -449,14 +455,7 @@ class Mapper
      */
     public function reflect(AbstractEntity $entity)
     {
-        try {
-            $reflectionClass = new ReflectionClass(get_class($entity));
-            $this->register();
-        } catch (\Throwable $exception) {
-            throw new MapperException(MapperException::ERROR_FAILED_TO_CREATE_REFLECT_CLASS . $exception->getMessage());
-        }
-
-        return $reflectionClass;
+        return (new Reflection())->reflect($entity);
     }
 
     /**
@@ -533,8 +532,12 @@ class Mapper
      * @param array|null $pathParams
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    private function patchAutoIncludes(AbstractEntity $entity, ?array $autoIncludes = null, ?array $items = null, ?array $pathParams = null)
-    {
+    private function patchAutoIncludes(
+        AbstractEntity $entity,
+        ?array $autoIncludes = null,
+        ?array $items = null,
+        ?array $pathParams = null
+    ) {
         foreach ($autoIncludes as $fieldName => $include) {
             $property = $include['property'];
             $annotation = $include['annotation'];
@@ -546,7 +549,11 @@ class Mapper
                 }
 
                 if ($annotation instanceof ManyRelationInterface) {
-                    $propertyValue = $this->includesToCollection($annotation->targetClass, $items[$annotation->name], $pathParams);
+                    $propertyValue = $this->includesToCollection(
+                        $annotation->targetClass,
+                        $items[$annotation->name],
+                        $pathParams
+                    );
                     $this->setPropertyValue($entity, $property, $propertyValue);
                 }
 
@@ -657,17 +664,5 @@ class Mapper
             ->setParamFields($paramFields);
 
         return $metadata;
-    }
-
-    /**
-     * Register annotation classes
-     *
-     * @return void
-     */
-    private function register()
-    {
-        if (class_exists(AnnotationRegistry::class)) {
-            AnnotationRegistry::registerLoader('class_exists');
-        }
     }
 }
