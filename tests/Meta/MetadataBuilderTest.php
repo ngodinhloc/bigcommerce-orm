@@ -58,7 +58,7 @@ class MetadataBuilderTest extends TestCase
 
         $reflectionClass = (new Reflection())->reflect($product);
         $properties = $reflectionClass->getProperties();
-        $resource = $this->mapper->getResource($product);
+        $resource = $this->mapper->getEntityPatcher()->getResource($product);
         $metadata = $this->builder->build($resource, $properties);
         $relationFields = $metadata->getRelationFields();
         $includeFields = $metadata->getIncludeFields();

@@ -231,7 +231,7 @@ class OrderRefund extends AbstractEntity
             return null;
         }
 
-        return $this->mapper->arrayToCollection($this->items, OrderRefundItem::class, ['order_id' => $this->orderId]);
+        return $this->mapper->getEntityPatcher()->patchArrayToCollection($this->items, OrderRefundItem::class, ['order_id' => $this->orderId]);
     }
 
     /**
@@ -244,6 +244,6 @@ class OrderRefund extends AbstractEntity
             return null;
         }
 
-        return $this->mapper->arrayToCollection($this->payments, OrderRefundPayment::class, ['order_id' => $this->orderId]);
+        return $this->mapper->getEntityPatcher()->patchArrayToCollection($this->payments, OrderRefundPayment::class, ['order_id' => $this->orderId]);
     }
 }

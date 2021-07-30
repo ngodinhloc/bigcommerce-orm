@@ -34,18 +34,6 @@ class MapperTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\Mapper::getResource
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    public function testGetClassAnnotation()
-    {
-        $classAnnotation = $this->mapper->getResource($this->customer);
-        $this->assertInstanceOf(Resource::class, $classAnnotation);
-        $this->assertEquals('Customer', $classAnnotation->name);
-        $this->assertEquals('/customers', $classAnnotation->path);
-    }
-
-    /**
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
@@ -130,64 +118,6 @@ class MapperTest extends BaseTestCase
     /**
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function testPatch()
-    {
-        $product = new Product();
-        $data = [
-            'name' => 'Product Name',
-            'type' => 'physic',
-            'primary_image' => [
-                "id" => 372,
-                "product_id" => 111,
-                "is_thumbnail" => true,
-                "sort_order" => 1,
-                "description" => "",
-                "image_file" => "lamp.jpg",
-            ],
-            'images' => [
-                [
-                    "id" => 372,
-                    "product_id" => 111,
-                    "is_thumbnail" => false,
-                    "sort_order" => 1,
-                    "description" => "",
-                    "image_file" => "lamp.jpg",
-                ],
-            ]
-        ];
-
-        /** @var Product $product */
-        $product = $this->mapper->patch($product, $data);
-        $this->assertTrue($product->isPatched());
-
-        $metadata = $product->getMetadata();
-        $resource = $metadata->getResource();
-        $relationFields = $metadata->getRelationFields();
-        $includeFields = $metadata->getIncludeFields();
-        $autoLoadFields = $metadata->getAutoLoadFields();
-        $requiredFields = $metadata->getRequiredFields();
-        $readonlyFields = $metadata->getReadonlyFields();
-
-        $this->assertInstanceOf(Metadata::class, $metadata);
-        $this->assertInstanceOf(Resource::class, $resource);
-        $this->assertEquals(9, count($relationFields));
-        $this->assertEquals(7, count($includeFields));
-        $this->assertEquals(2, count($autoLoadFields));
-        $this->assertEquals(1, count($requiredFields));
-        $this->assertEquals(3, count($readonlyFields));
-
-        $primaryImage = $product->getPrimaryImage();
-        $this->assertEquals('lamp.jpg', $primaryImage->getImageFile());
-
-        $modifier = new ProductModifier();
-        $modifier = $this->mapper->patch($modifier, ['name' => 'Modifier Name'], ['product_id' => 111]);
-        $this->assertTrue($modifier->isPatched());
-
-    }
-
-    /**
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
     public function testCheckRequiredFields()
     {
         $product = new Product();
@@ -263,7 +193,7 @@ class MapperTest extends BaseTestCase
      */
     public function testObject()
     {
-        $object = $this->mapper->object(Customer::class);
+        $object = $this->mapper->getEntityPatcher()->object(Customer::class);
         $this->assertInstanceOf(Customer::class, $object);
     }
 
@@ -273,7 +203,7 @@ class MapperTest extends BaseTestCase
     public function testObjectThrowException()
     {
         $this->expectException(MapperException::class);
-        $this->mapper->object('invalid_class_name');
+        $this->mapper->getEntityPatcher()->object('invalid_class_name');
     }
 
     /**

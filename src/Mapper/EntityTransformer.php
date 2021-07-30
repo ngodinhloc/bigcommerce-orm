@@ -20,11 +20,12 @@ class EntityTransformer
     /**
      * EntityTransformer constructor.
      * @param \Doctrine\Common\Annotations\AnnotationReader|null $reader
+     * @param \Bigcommerce\ORM\Mapper\EntityReader|null $entityReader
      */
-    public function __construct(?AnnotationReader $reader = null)
+    public function __construct(?AnnotationReader $reader = null, EntityReader $entityReader = null)
     {
         $this->reader = $reader ?: new AnnotationReader();
-        $this->entityReader = new EntityReader($this->reader);
+        $this->entityReader = $entityReader ?? new EntityReader($this->reader);
     }
 
     /**
@@ -34,8 +35,8 @@ class EntityTransformer
      * @param int|null $key
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @see \Bigcommerce\ORM\Mapper::KEY_BY_FIELD_NAME
-     * @see \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME
+     * @see \Bigcommerce\ORM\Mapper\EntityTransformer::KEY_BY_FIELD_NAME
+     * @see \Bigcommerce\ORM\Mapper\EntityTransformer::KEY_BY_PROPERTY_NAME
      */
     public function toArray(AbstractEntity $entity, ?int $key = self::KEY_BY_FIELD_NAME)
     {

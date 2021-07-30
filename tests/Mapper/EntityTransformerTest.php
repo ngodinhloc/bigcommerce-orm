@@ -52,7 +52,7 @@ class EntityTransformerTest extends TestCase
             'id' => null
         ];
 
-        $array = $this->transformer->toArray($modifier, Mapper::KEY_BY_PROPERTY_NAME);
+        $array = $this->transformer->toArray($modifier, EntityTransformer::KEY_BY_PROPERTY_NAME);
         $this->assertEquals($expected, $array);
     }
 }

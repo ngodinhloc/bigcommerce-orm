@@ -507,8 +507,8 @@ class EntityManagerTest extends BaseTestCase
         $data = $this->getBatchCreateData();
         $customer1 = new Customer();
         $customer2 = new Customer();
-        $customer1 = $this->mapper->patch($customer1, $data[0], null, true);
-        $customer2 = $this->mapper->patch($customer2, $data[1], null, true);
+        $customer1 = $this->mapper->getEntityPatcher()->patch($customer1, $data[0], null, true);
+        $customer2 = $this->mapper->getEntityPatcher()->patch($customer2, $data[1], null, true);
 
         $result = $this->entityManager->batchUpdate([$customer1, $customer2]);
         $this->assertEquals(false, $result);
@@ -541,7 +541,7 @@ class EntityManagerTest extends BaseTestCase
     {
         $data = $this->getBatchCreateData();
         $customer1 = new Customer();
-        $customer1 = $this->mapper->patch($customer1, $data[0], null, true);
+        $customer1 = $this->mapper->getEntityPatcher()->patch($customer1, $data[0], null, true);
         $product = new Product();
 
         $this->expectException(EntityException::class);
@@ -559,8 +559,8 @@ class EntityManagerTest extends BaseTestCase
         $data = $this->getBatchReturnedData();
         $customer1 = new Customer();
         $customer2 = new Customer();
-        $customer1 = $this->mapper->patch($customer1, $data[0], null, true);
-        $customer2 = $this->mapper->patch($customer2, $data[1], null, true);
+        $customer1 = $this->mapper->getEntityPatcher()->patch($customer1, $data[0], null, true);
+        $customer2 = $this->mapper->getEntityPatcher()->patch($customer2, $data[1], null, true);
 
         $customers = $this->entityManager->batchUpdate([$customer1, $customer2]);
         $this->assertEquals(2, count($customers));
@@ -896,7 +896,7 @@ class EntityManagerTest extends BaseTestCase
     {
         $customer = new Customer();
         $mapper = $this->getMapper();
-        $customer = $mapper->patch(
+        $customer = $mapper->getEntityPatcher()->patch(
             $customer,
             [
                 'company' => 'BC',

@@ -7,6 +7,7 @@ use Bigcommerce\ORM\Client\ClientInterface;
 use Bigcommerce\ORM\Entities\PaymentAccessToken;
 use Bigcommerce\ORM\Events\EntityManagerEvent;
 use Bigcommerce\ORM\Exceptions\EntityException;
+use Bigcommerce\ORM\Mapper\EntityTransformer;
 use Bigcommerce\ORM\Relation\RelationInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -119,7 +120,7 @@ class EntityManager
             return false;
         }
 
-        $entity = $this->mapper->patch($entity, $result, $pathParams, false);
+        $entity = $this->mapper->getEntityPatcher()->patch($entity, $result, $pathParams, false);
         if ($auto == false) {
             return $entity;
         }
@@ -147,7 +148,7 @@ class EntityManager
     {
         $this->mapper->checkEntity($entity);
         if ($entity->isPatched() !== true) {
-            $entity = $this->mapper->patch($entity, [], null, true);
+            $entity = $this->mapper->getEntityPatcher()->patch($entity, [], null, true);
         }
 
         $this->checkBeforeCreating($entity);
@@ -175,7 +176,7 @@ class EntityManager
         $this->mapper->checkEntity($entity);
 
         if ($entity->isPatched() !== true) {
-            $entity = $this->mapper->patch($entity, [], null, true);
+            $entity = $this->mapper->getEntityPatcher()->patch($entity, [], null, true);
         }
 
         $this->checkBeforeCreating($entity);
@@ -206,7 +207,7 @@ class EntityManager
         }
 
         if ($entity->isPatched() !== true) {
-            $entity = $this->mapper->patch($entity, [], null, true);
+            $entity = $this->mapper->getEntityPatcher()->patch($entity, [], null, true);
         }
 
         if (!$this->mapper->checkFieldValues($data)) {
@@ -277,7 +278,7 @@ class EntityManager
 
         $entity = current($entities);
         $className = get_class($entity);
-        $entity = $this->mapper->patch($entity, [], $pathParams, true);
+        $entity = $this->mapper->getEntityPatcher()->patch($entity, [], $pathParams, true);
         $resourcePath = $this->mapper->getResourcePath($entity);
         $resourceType = $entity->getMetadata()->getResource()->type;
         $data = $this->getBatchCreateData($className, $entities);
@@ -305,7 +306,7 @@ class EntityManager
     {
         $entity = current($entities);
         $className = get_class($entity);
-        $entity = $this->mapper->patch($entity, [], $pathParams, true);
+        $entity = $this->mapper->getEntityPatcher()->patch($entity, [], $pathParams, true);
         $resourcePath = $this->mapper->getResourcePath($entity);
         $resourceType = $entity->getMetadata()->getResource()->type;
         $data = $this->getBatchUpdateData($className, $entities);
@@ -363,9 +364,9 @@ class EntityManager
     public function new(string $class, ?array $data = null, ?array $pathParams = null)
     {
         $this->mapper->checkClass($class);
-        $object = $this->mapper->object($class);
+        $object = $this->mapper->getEntityPatcher()->object($class);
 
-        return $this->mapper->patch($object, $data, $pathParams, false);
+        return $this->mapper->getEntityPatcher()->patch($object, $data, $pathParams, false);
     }
 
     /**
@@ -379,7 +380,7 @@ class EntityManager
      */
     public function patch(AbstractEntity $entity, ?array $data = null, array $pathParams = null)
     {
-        return $this->mapper->patch($entity, $data, $pathParams, false);
+        return $this->mapper->getEntityPatcher()->patch($entity, $data, $pathParams, false);
     }
 
     /**
@@ -387,10 +388,10 @@ class EntityManager
      * @param int $key
      * @return array
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     * @see \Bigcommerce\ORM\Mapper::KEY_BY_FIELD_NAME
-     * @see \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME
+     * @see \Bigcommerce\ORM\Mapper\EntityTransformer::KEY_BY_FIELD_NAME
+     * @see \Bigcommerce\ORM\Mapper\EntityTransformer::KEY_BY_PROPERTY_NAME
      */
-    public function toArray(AbstractEntity $entity, int $key = Mapper::KEY_BY_FIELD_NAME)
+    public function toArray(AbstractEntity $entity, int $key = EntityTransformer::KEY_BY_FIELD_NAME)
     {
         return $this->mapper->getEntityTransformer()->toArray($entity, $key);
     }
@@ -405,9 +406,9 @@ class EntityManager
     private function getPatchedEntity(string $className, ?array $pathParams = null)
     {
         $this->mapper->checkClass($className);
-        $object = $this->mapper->object($className);
+        $object = $this->mapper->getEntityPatcher()->object($className);
 
-        return $this->mapper->patch($object, [], $pathParams, true);
+        return $this->mapper->getEntityPatcher()->patch($object, [], $pathParams, true);
     }
 
     /**
@@ -534,7 +535,7 @@ class EntityManager
         foreach ($result as $data) {
             if (isset($data['id']) && isset($entities[$data['id']])) {
                 $entity = $entities[$data['id']];
-                $output[] = $this->mapper->patch($entity, $data, $pathParams, false);
+                $output[] = $this->mapper->getEntityPatcher()->patch($entity, $data, $pathParams, false);
             } else {
                 return true;
             }
@@ -557,8 +558,8 @@ class EntityManager
 
         if (!empty($array)) {
             foreach ($array as $item) {
-                $object = $this->mapper->object($className);
-                $relationEntity = $this->mapper->patch($object, $item, $pathParams, false);
+                $object = $this->mapper->getEntityPatcher()->object($className);
+                $relationEntity = $this->mapper->getEntityPatcher()->patch($object, $item, $pathParams, false);
 
                 if ($auto == false) {
                     $collections[] = $relationEntity;
@@ -623,7 +624,7 @@ class EntityManager
 
         $result = $this->client->create($resourcePath, $resourceType, $data, $files);
         if (!empty($result)) {
-            $this->mapper->patch($entity, $result, null, false);
+            $this->mapper->getEntityPatcher()->patch($entity, $result, null, false);
             $this->mapper->getEntityReader()->setPropertyValueByName($entity, 'isNew', true);
 
             if ($this->hasEventDispatcher()) {
@@ -661,7 +662,7 @@ class EntityManager
         $result = $this->client->update($resourcePath . "/{$entity->getId()}", $resourceType, $data, $files);
         if (!empty($result)) {
             if (isset($result['id']) && $result['id'] == $entity->getId()) {
-                $this->mapper->patch($entity, $result, null, false);
+                $this->mapper->getEntityPatcher()->patch($entity, $result, null, false);
             }
             $this->mapper->getEntityReader()->setPropertyValueByName($entity, 'isNew', false);
 

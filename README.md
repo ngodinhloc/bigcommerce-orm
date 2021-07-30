@@ -219,10 +219,10 @@ $review1
     ->setDateReviewed(date('c'));
     
 /** return array of entity : key by field name */
-$array1 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_FIELD_NAME);
+$array1 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper\EntityTransformer::KEY_BY_FIELD_NAME);
 
 /** return array of entity : key by property name */
-$array2 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME);
+$array2 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper\EntityTransformer::KEY_BY_PROPERTY_NAME);
 ```
 
 @see: [samples/working_with_entities.php](./samples/working_with_entities.php)

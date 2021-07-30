@@ -44,10 +44,10 @@ try {
     echo $isPatch3 . PHP_EOL;
 
     /** entity to array */
-    $array1 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_FIELD_NAME);
+    $array1 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper\EntityTransformer::KEY_BY_FIELD_NAME);
     print_r($array1);
 
-    $array2 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper::KEY_BY_PROPERTY_NAME);
+    $array2 = $entityManager->toArray($review1, \Bigcommerce\ORM\Mapper\EntityTransformer::KEY_BY_PROPERTY_NAME);
     print_r($array2);
 
 } catch (\Exception $e) {

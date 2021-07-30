@@ -324,7 +324,7 @@ class Cart extends AbstractEntity
             return null;
         }
 
-        return $this->mapper->arrayToCollection($this->lineItems['custom_items'], CustomItem::class, ['cart_id' => $this->id]);
+        return $this->mapper->getEntityPatcher()->patchArrayToCollection($this->lineItems['custom_items'], CustomItem::class, ['cart_id' => $this->id]);
     }
 
     /**
@@ -337,7 +337,7 @@ class Cart extends AbstractEntity
             return null;
         }
 
-        return $this->mapper->arrayToCollection($this->lineItems['gift_certificates'], GiftCertificate::class, ['cart_id' => $this->id]);
+        return $this->mapper->getEntityPatcher()->patchArrayToCollection($this->lineItems['gift_certificates'], GiftCertificate::class, ['cart_id' => $this->id]);
     }
 
     /**
@@ -350,7 +350,7 @@ class Cart extends AbstractEntity
             return null;
         }
 
-        return $this->mapper->arrayToCollection($this->lineItems['digital_items'], LineItem::class, ['cart_id' => $this->id]);
+        return $this->mapper->getEntityPatcher()->patchArrayToCollection($this->lineItems['digital_items'], LineItem::class, ['cart_id' => $this->id]);
     }
 
     /**
@@ -363,7 +363,7 @@ class Cart extends AbstractEntity
             return null;
         }
 
-        return $this->mapper->arrayToCollection($this->lineItems['physical_items'], LineItem::class, ['cart_id' => $this->id]);
+        return $this->mapper->getEntityPatcher()->patchArrayToCollection($this->lineItems['physical_items'], LineItem::class, ['cart_id' => $this->id]);
     }
 
     /**
