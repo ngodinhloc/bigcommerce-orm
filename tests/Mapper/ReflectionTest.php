@@ -11,17 +11,12 @@ class ReflectionTest extends TestCase
     /** @coversDefaultClass \Bigcommerce\ORM\Mapper\Reflection */
     private $reflection;
 
-   protected function setUp(): void
-   {
-       parent::setUp();
-       $this->reflection = new Reflection();
-   }
-
     /**
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
     public function testReflectThrowException()
     {
+        $this->reflection = new Reflection();
         $this->expectException(\Throwable::class);
         $this->reflection->reflect(null);
     }
@@ -31,6 +26,7 @@ class ReflectionTest extends TestCase
      */
     public function testReflect()
     {
+        $this->reflection = new Reflection();
         $modifier = new ProductModifier();
         $reflectionClass = $this->reflection->reflect($modifier);
         $this->assertInstanceOf(\ReflectionClass::class, $reflectionClass);

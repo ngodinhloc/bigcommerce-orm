@@ -354,6 +354,10 @@ class EntityManagerTest extends BaseTestCase
         $image->setProductId(2);
         $result = $this->entityManager->update($image, ['product_id' => null]);
         $this->assertTrue($result);
+
+        $image->setProductId(2);
+        $result = $this->entityManager->update($image, ['product_id' => 123]);
+        $this->assertTrue($result);
     }
 
     /**
@@ -655,7 +659,7 @@ class EntityManagerTest extends BaseTestCase
     /**
      * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
      */
-    private function getClient()
+    protected function getClient()
     {
         $findAllPath = '/customers?sort=date_created:asc&include=addresses';
         $findAllResult = [];
@@ -912,7 +916,7 @@ class EntityManagerTest extends BaseTestCase
     /**
      * @return \Bigcommerce\ORM\Mapper\EntityMapper
      */
-    private function getMapper()
+    protected function getMapper()
     {
         return new EntityMapper();
     }
@@ -920,7 +924,7 @@ class EntityManagerTest extends BaseTestCase
     /**
      * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
      */
-    private function getDispatcher()
+    protected function getDispatcher()
     {
         return new EventDispatcher();
     }

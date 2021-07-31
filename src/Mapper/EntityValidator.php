@@ -30,10 +30,10 @@ class EntityValidator
     }
 
     /**
-     * @param \Bigcommerce\ORM\AbstractEntity $entity
+     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function checkEntity(AbstractEntity $entity)
+    public function checkEntity(AbstractEntity $entity = null)
     {
         if (!$entity instanceof AbstractEntity) {
             throw new EntityException(EntityException::ERROR_NOT_ENTITY_INSTANCE);
@@ -51,6 +51,7 @@ class EntityValidator
         }
 
         foreach ($data as $field => $value) {
+            /** if there is one field value that is not null */
             if ($value !== null) {
                 return true;
             }

@@ -10,11 +10,11 @@ use ReflectionClass;
 class Reflection
 {
     /**
-     * @param \Bigcommerce\ORM\AbstractEntity $entity
+     * @param \Bigcommerce\ORM\AbstractEntity|null $entity
      * @return \ReflectionClass
      * @throws \Bigcommerce\ORM\Exceptions\MapperException
      */
-    public function reflect(AbstractEntity $entity)
+    public function reflect(AbstractEntity $entity = null)
     {
         try {
             $reflectionClass = new ReflectionClass(get_class($entity));

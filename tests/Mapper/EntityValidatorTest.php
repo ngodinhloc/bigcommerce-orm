@@ -6,6 +6,8 @@ use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Mapper\EntityValidator;
 use PHPUnit\Framework\TestCase;
 
+use function Webmozart\Assert\Tests\StaticAnalysis\null;
+
 class EntityValidatorTest extends TestCase
 {
     /** @coversDefaultClass \Bigcommerce\ORM\Mapper\EntityValidator */
@@ -47,9 +49,9 @@ class EntityValidatorTest extends TestCase
     /**
      * @throws \Bigcommerce\ORM\Exceptions\EntityException
      */
-    public function testCheckEntity()
+    public function testCheckEntityThrowException()
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(EntityException::class);
         $this->validator->checkEntity(null);
     }
 
