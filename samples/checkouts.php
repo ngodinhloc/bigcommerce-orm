@@ -4,10 +4,10 @@ require_once('./vendor/autoload.php');
 
 $authCredentials = include('_auth.php');
 $options = include('_options.php');
-const CUSTOMER_ID = 1;
-const DIGITAL_PRODUCT_ID = 111;
-const PHYSICAL_PRODUCT_ID = 107;
-const COUPON_CODE = '9F6C3D7E4D4A64C';
+$customerId = 1;
+$digitalProductId = 111;
+$physicalProductId = 107;
+$couponCode = '9F6C3D7E4D4A64C';
 
 try {
     $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options);
@@ -15,7 +15,7 @@ try {
 
     /** create cart with one digital line item */
     $newCart = new \Bigcommerce\ORM\Entities\Cart();
-    $newCart->setCustomerId(CUSTOMER_ID);
+    $newCart->setCustomerId($customerId);
 
     $lineItem1 = new \Bigcommerce\ORM\Entities\LineItem();
     $lineItem1
@@ -85,7 +85,7 @@ try {
     $newCoupon = new \Bigcommerce\ORM\Entities\Coupon();
     $newCoupon
         ->setCheckoutId($checkout1->getId())
-        ->setCode(COUPON_CODE);
+        ->setCode($couponCode);
     $entityManager->save($newCoupon);
     echo "Added Coupon ID: {$newCoupon->getId()}" . PHP_EOL;
 

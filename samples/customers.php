@@ -1,4 +1,5 @@
 <?php
+
 require_once('./vendor/autoload.php');
 
 $authCredentials = include('_auth.php');
@@ -22,17 +23,22 @@ try {
         ->orderBy('date_created', 'desc')
         ->order(['last_name' => 'asc']);
     $someCustomers = $entityManager->findBy(\Bigcommerce\ORM\Entities\Customer::class, null, $queryBuilder);
-    echo count($someCustomers);
+    echo count($someCustomers) . PHP_EOL;
 
     /** batch update customers */
     /** @var \Bigcommerce\ORM\Entities\Customer $customer1 */
     $customer1 = $allCustomers[0];
-    /** @var \Bigcommerce\ORM\Entities\Customer $customer2 */
-    $customer2 = $allCustomers[1];
     $customer1->setFirstName('Ken1')->setCompany('BC1');
-    $customer2->setFirstName('Ken2')->setCompany('BC2');
-    $updatedCustomers = $entityManager->batchUpdate([$customer1, $customer2]);
-    echo count($updatedCustomers);
+    $updatedCustomers = $entityManager->batchUpdate([$customer1]);
+    echo count($updatedCustomers) . PHP_EOL;
+
+    if (isset($allCustomers[1])) {
+        /** @var \Bigcommerce\ORM\Entities\Customer $customer2 */
+        $customer2 = $allCustomers[1];
+        $customer2->setFirstName('Ken2')->setCompany('BC2');
+        $updatedCustomers = $entityManager->batchUpdate([$customer1, $customer2]);
+        echo count($updatedCustomers) . PHP_EOL;
+    }
 
     /**
      * you can't get customer by id . Please use findBy
@@ -57,12 +63,11 @@ try {
     $newCustomer1 = $entityManager->new(\Bigcommerce\ORM\Entities\Customer::class, $data1);
     $newCustomer2 = $entityManager->new(\Bigcommerce\ORM\Entities\Customer::class, $data2);
     $newCustomers = $entityManager->batchCreate([$newCustomer1, $newCustomer2]);
-    echo count($newCustomers);
+    echo count($newCustomers) . PHP_EOL;
 
     /** delete customers */
     $deleted = $entityManager->batchDelete(\Bigcommerce\ORM\Entities\Customer::class, null, [10, 11]);
-    echo $deleted;
-
+    echo $deleted . PHP_EOL;
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

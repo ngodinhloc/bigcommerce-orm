@@ -1,15 +1,17 @@
 <?php
+
 require_once('./vendor/autoload.php');
 
 $authCredentials = include('_auth.php');
 $options = include('_options.php');
+$cartId  = '7fab54f6-c107-4da3-ab8f-ad07df28dd52';
 
 try {
     $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options);
     $entityManager = $config->configEntityManager();
 
     /** find one cart by id = e9e687cd-6711-4a93-99a1-b7d5aa5ad122 */
-    $cart = $entityManager->find(\Bigcommerce\ORM\Entities\Cart::class, 'e9e687cd-6711-4a93-99a1-b7d5aa5ad122', null, true);
+    $cart = $entityManager->find(\Bigcommerce\ORM\Entities\Cart::class, $cartId, null, true);
     /** @var \Bigcommerce\ORM\Entities\Cart $cart */
     $digitalItems = $cart->getDigitalItems();
     $physicalItems = $cart->getPhysicalItems();
@@ -17,12 +19,12 @@ try {
     $gifsCertificates = $cart->getGiftCertificates();
     $coupons = $cart->getCoupons();
     $redirectUrl = $cart->getRedirectUrl();
-    echo $redirectUrl->getCartUrl();
+    echo $redirectUrl->getCartUrl() . PHP_EOL;
 
     /** update cart will only change customer_id */
     $cart->setCustomerId(3);
     $result = $entityManager->save($cart);
-    echo $result;
+    echo $result . PHP_EOL;
 
     /** create cart with line items, custom items and gift certificates */
     $newCart = new \Bigcommerce\ORM\Entities\Cart();
@@ -63,13 +65,13 @@ try {
     $digitalItems1 = $newCart->getDigitalItems();
     $customItems1 = $newCart->getCustomItems();
     $giftCertificates1 = $newCart->getGiftCertificates();
-    echo $result;
+    echo $result . PHP_EOL;
 
     /** create redirect url for cart */
     $newUrl = new \Bigcommerce\ORM\Entities\CartRedirectUrl();
     $newUrl->setCartId($newCart->getId());
     $entityManager->save($newUrl);
-    echo $newUrl->getCartUrl();
+    echo $newUrl->getCartUrl() . PHP_EOL;
 
     /** add more items to cart after creating by using CartItem */
     $cartItem = new \Bigcommerce\ORM\Entities\CartItem();
@@ -86,8 +88,7 @@ try {
     $physicalItems2 = $updatedCart->getPhysicalItems();
     $customItems2 = $updatedCart->getCustomItems();
     $gifsCertificates2 = $updatedCart->getGiftCertificates();
-    echo $updatedCart->getId();
-
+    echo $updatedCart->getId() . PHP_EOL;
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
