@@ -336,7 +336,7 @@ class Connection
         }
 
         $this->requestOptions['multipart'] = $multi;
-        /** when upload file, guzzle takes care what header Content-Type to use */
+        /** when using multipart, guzzle takes care what header Content-Type to use */
         unset($this->requestOptions['headers']['Content-Type']);
     }
 
