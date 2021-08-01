@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Client;
@@ -23,32 +24,8 @@ class Connection
     /** @var \Psr\Log\LoggerInterface */
     protected $logger;
 
-    /** @var array */
-    protected $requestOptions;
-
-    /** @var string */
-    protected $apiUrl;
-
-    /** @var string */
-    protected $paymentUrl;
-
-    /** @var array */
-    protected $auth = [];
-
-    /** @var array */
-    protected $headers = [];
-
-    /** @var float */
-    protected $timeout = 60;
-
-    /** @var string */
-    protected $proxy;
-
-    /** @var bool */
-    protected $verify = false;
-
-    /** @var bool */
-    protected $debug = false;
+    /** @var \Bigcommerce\ORM\Client\RequestOption */
+    protected $option;
 
     /**
      * Connection constructor.
@@ -61,14 +38,13 @@ class Connection
         $this->config = $config;
         $this->logger = $logger;
         $this->client = $client ?: new Client();
-        $this->setup();
+        $this->option = new RequestOption($this->config);
     }
 
     /**
      * @param string|null $path
      * @param string|null $resourceType
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function query(?string $path, ?string $resourceType): ResponseInterface
     {
@@ -81,7 +57,6 @@ class Connection
      * @param array|null $body
      * @param array|null $files
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function update(?string $path, ?string $resourceType, ?array $body, ?array $files): ResponseInterface
     {
@@ -94,7 +69,6 @@ class Connection
      * @param array|null $body
      * @param array|null $file
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function create(?string $path, ?string $resourceType, ?array $body, ?array $file): ResponseInterface
     {
@@ -105,43 +79,61 @@ class Connection
      * @param string|null $path
      * @param string|null $resourceType
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function delete(?string $path, ?string $resourceType)
     {
-        $apiUrl = $this->getApiFullUrl($path, $resourceType);
+        $apiUrl = $this->apiFullUrl($path, $resourceType);
 
         if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_START, 'DELETE', $apiUrl, json_encode($this->requestOptions)));
+            $this->logger->debug(
+                sprintf(LogMessage::LOG_REQUEST_START, 'DELETE', $apiUrl, json_encode($this->option->toArray()))
+            );
         }
 
-        $result = $this->client->delete($apiUrl, $this->requestOptions);
+        $result = $this->client->delete($apiUrl, $this->option->toArray());
 
         if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_FINISH, 'DELETE', $apiUrl, json_encode($this->requestOptions)));
+            $this->logger->debug(
+                sprintf(LogMessage::LOG_REQUEST_FINISH, 'DELETE', $apiUrl, json_encode($this->option->toArray()))
+            );
         }
 
         return $result;
     }
 
     /**
+     * Connection need PaymentAccessToken in order to work with payment API
+     * Payment API only accept 'application/vnd.bc.v1+json'
+     * @param string|null $token
+     * @return \Bigcommerce\ORM\Client\Connection
+     */
+    public function setPaymentAccessToken(?string $token)
+    {
+        $this->option->addRequestHeader('Authorization', "PAT $token");
+        $this->option->addRequestHeader('Accept', ConfigOption::CONTENT_TYPE_BCV1);
+
+        return $this;
+    }
+
+    /**
      * @param string|null $path
      * @param string|null $resourceType
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function get(?string $path, ?string $resourceType)
     {
-        $apiUrl = $this->getApiFullUrl($path, $resourceType);
-
+        $apiUrl = $this->apiFullUrl($path, $resourceType);
         if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_START, 'GET', $apiUrl, json_encode($this->requestOptions)));
+            $this->logger->debug(
+                sprintf(LogMessage::LOG_REQUEST_START, 'GET', $apiUrl, json_encode($this->option->toArray()))
+            );
         }
 
-        $result = $this->client->get($apiUrl, $this->requestOptions);
-
+        $result = $this->client->get($apiUrl, $this->option->toArray());
         if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_FINISH, 'GET', $apiUrl, json_encode($this->requestOptions)));
+            $this->logger->debug(
+                sprintf(LogMessage::LOG_REQUEST_FINISH, 'GET', $apiUrl, json_encode($this->option->toArray()))
+            );
         }
 
         return $result;
@@ -152,14 +144,14 @@ class Connection
      * @param string|null $resourceType
      * @return string
      */
-    private function getApiFullUrl(?string $path, ?string $resourceType)
+    private function apiFullUrl(?string $path, ?string $resourceType)
     {
         switch ($resourceType) {
             case AbstractConfig::RESOURCE_TYPE_PAYMENT:
-                return $this->paymentUrl . $path;
+                return $this->config->getPaymentUrl() . $path;
             case AbstractConfig::RESOURCE_TYPE_API:
             default:
-                return $this->apiUrl . $path;
+                return $this->config->getApiUrl() . $path;
         }
     }
 
@@ -169,28 +161,29 @@ class Connection
      * @param array|null $body
      * @param array|null $files
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function post(?string $path, ?string $resourceType, ?array $body, ?array $files)
     {
         if (!empty($body)) {
-            $this->addRequestBody($body);
+            $this->option->addRequestBody($body);
         }
 
         if (!empty($files)) {
-            $this->addRequestFile($files);
+            $this->option->addRequestFile($files);
         }
 
-        $apiUrl = $this->getApiFullUrl($path, $resourceType);
-
+        $apiUrl = $this->apiFullUrl($path, $resourceType);
         if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_START, 'POST', $apiUrl, json_encode($this->requestOptions)));
+            $this->logger->debug(
+                sprintf(LogMessage::LOG_REQUEST_START, 'POST', $apiUrl, json_encode($this->option->toArray()))
+            );
         }
 
-        $result = $this->client->post($apiUrl, $this->requestOptions);
-
+        $result = $this->client->post($apiUrl, $this->option->toArray());
         if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_FINISH, 'POST', $apiUrl, json_encode($this->requestOptions)));
+            $this->logger->debug(
+                sprintf(LogMessage::LOG_REQUEST_FINISH, 'POST', $apiUrl, json_encode($this->option->toArray()))
+            );
         }
 
         return $result;
@@ -206,138 +199,28 @@ class Connection
     private function put(?string $path, ?string $resourceType, ?array $body, ?array $files)
     {
         if (!empty($body)) {
-            $this->addRequestBody($body);
+            $this->option->addRequestBody($body);
         }
 
         if (!empty($files)) {
-            $this->addRequestFile($files);
+            $this->option->addRequestFile($files);
         }
 
-        $apiUrl = $this->getApiFullUrl($path, $resourceType);
-
+        $apiUrl = $this->apiFullUrl($path, $resourceType);
         if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_START, 'PUT', $apiUrl, json_encode($this->requestOptions)));
+            $this->logger->debug(
+                sprintf(LogMessage::LOG_REQUEST_START, 'PUT', $apiUrl, json_encode($this->option->toArray()))
+            );
         }
 
-        $result = $this->client->put($apiUrl, $this->requestOptions);
-
+        $result = $this->client->put($apiUrl, $this->option->toArray());
         if ($this->hasLogger()) {
-            $this->logger->debug(sprintf(LogMessage::LOG_REQUEST_FINISH, 'PUT', $apiUrl, json_encode($this->requestOptions)));
+            $this->logger->debug(
+                sprintf(LogMessage::LOG_REQUEST_FINISH, 'PUT', $apiUrl, json_encode($this->option->toArray()))
+            );
         }
 
         return $result;
-    }
-
-    /**
-     * Setup connection
-     */
-    private function setup()
-    {
-        $this->apiUrl = $this->config->getApiUrl();
-        $this->paymentUrl = $this->config->getPaymentUrl();
-        $this->addRequestHeader('Content-Type', ConfigOption::CONTENT_TYPE_JSON);
-
-        if (!empty($auth = $this->config->getAuth())) {
-            $this->auth = $auth;
-        }
-
-        if (!empty($authHeaders = $this->config->getAuthHeaders())) {
-            foreach ($authHeaders as $header => $value) {
-                $this->addRequestHeader($header, $value);
-            }
-        }
-
-        if (!empty($this->config->getConfigOption()->getAccept())) {
-            $this->addRequestHeader('Accept', $this->config->getConfigOption()->getAccept());
-        }
-
-        if (!empty($this->config->getConfigOption()->getTimeout())) {
-            $this->timeout = $this->config->getConfigOption()->getTimeout();
-        }
-
-        if (!empty($this->config->getConfigOption()->isVerify())) {
-            $this->verify = $this->config->getConfigOption()->isVerify();
-        }
-
-        if (!empty($this->config->getConfigOption()->getProxy())) {
-            $this->proxy = $this->config->getConfigOption()->getProxy();
-        }
-
-        if ($this->config->getConfigOption()->isDebug() == true) {
-            $this->debug = true;
-        }
-
-        $this->composeRequestOptions();
-    }
-
-    /**
-     * Set request options
-     */
-    private function composeRequestOptions()
-    {
-        $this->requestOptions = [];
-
-        if (!empty($this->auth)) {
-            $this->requestOptions['auth'] = $this->auth;
-        }
-
-        if (!empty($this->headers)) {
-            $this->requestOptions['headers'] = $this->headers;
-        }
-
-        if (!empty($this->timeout)) {
-            $this->requestOptions['connect_timeout'] = $this->timeout;
-        }
-
-        if (!empty($this->proxy)) {
-            $this->requestOptions['proxy'] = $this->proxy;
-        }
-
-        if (!empty($this->verify)) {
-            $this->requestOptions['verify'] = true;
-        }
-
-        if (!empty($this->debug)) {
-            $this->requestOptions['debug'] = true;
-        }
-    }
-
-    /**
-     * Add a custom header to the request.
-     *
-     * @param string $header
-     * @param string $value
-     */
-    private function addRequestHeader(string $header, string $value)
-    {
-        $this->headers[$header] = $value;
-    }
-
-    /**
-     * @param array $body
-     */
-    private function addRequestBody(array $body)
-    {
-        $this->requestOptions['body'] = json_encode($body);
-    }
-
-    /**
-     * @param array $files
-     */
-    private function addRequestFile(array $files)
-    {
-        $multi = [];
-        foreach ($files as $field => $location) {
-            $multi[] = [
-                'name' => $field,
-                'filename' => $location,
-                'contents' => file_get_contents($location)
-            ];
-        }
-
-        $this->requestOptions['multipart'] = $multi;
-        /** when using multipart, guzzle takes care what header Content-Type to use */
-        unset($this->requestOptions['headers']['Content-Type']);
     }
 
     /**
@@ -355,7 +238,7 @@ class Connection
     public function setConfig(?AbstractConfig $config): Connection
     {
         $this->config = $config;
-        $this->setup();
+        $this->option = new RequestOption($config);
 
         return $this;
     }
@@ -399,24 +282,20 @@ class Connection
     }
 
     /**
-     * @return array
+     * @return \Bigcommerce\ORM\Client\RequestOption
      */
-    public function getRequestOptions(): array
+    public function getOption(): RequestOption
     {
-        return $this->requestOptions;
+        return $this->option;
     }
 
     /**
-     * Connection need PaymentAccessToken in order to work with payment API
-     * Payment API only accept 'application/vnd.bc.v1+json'
-     * @param string|null $token
+     * @param \Bigcommerce\ORM\Client\RequestOption $option
      * @return \Bigcommerce\ORM\Client\Connection
      */
-    public function setPaymentAccessToken(?string $token)
+    public function setOption(RequestOption $option): Connection
     {
-        $this->addRequestHeader('Authorization', "PAT $token");
-        $this->addRequestHeader('Accept', ConfigOption::CONTENT_TYPE_BCV1);
-        $this->composeRequestOptions();
+        $this->option = $option;
 
         return $this;
     }
