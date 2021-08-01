@@ -19,10 +19,10 @@ class ProductImage extends AbstractImage
     protected $productId;
 
     /**
-     * @var bool|null
+     * @var bool
      * @BC\Field(name="is_thumbnail")
      */
-    protected $isThumbnail;
+    protected $isThumbnail = false;
 
     /**
      * @var int|null
@@ -87,7 +87,7 @@ class ProductImage extends AbstractImage
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
     public function isThumbnail(): ?bool
     {
@@ -95,10 +95,10 @@ class ProductImage extends AbstractImage
     }
 
     /**
-     * @param bool|null $isThumbnail
+     * @param bool $isThumbnail
      * @return \Bigcommerce\ORM\Entities\ProductImage
      */
-    public function setIsThumbnail(?bool $isThumbnail): ProductImage
+    public function setIsThumbnail(bool $isThumbnail): ProductImage
     {
         $this->isThumbnail = $isThumbnail;
 
