@@ -6,6 +6,7 @@ namespace Tests\Client;
 use Bigcommerce\ORM\Client\AuthConfig;
 use Bigcommerce\ORM\Client\BasicConfig;
 use Bigcommerce\ORM\Client\Connection;
+use Bigcommerce\ORM\Client\RequestOption;
 use Bigcommerce\ORM\Config\AuthCredential;
 use Bigcommerce\ORM\Config\BasicCredential;
 use Bigcommerce\ORM\Config\ConfigOption;
@@ -40,18 +41,6 @@ class ConnectionTest extends BaseTestCase
         $this->connection = new Connection($this->config, $this->logger, $this->client);
     }
 
-    /**
-     * @covers \Bigcommerce\ORM\Client\Connection::__construct
-     * @covers \Bigcommerce\ORM\Client\Connection::setConfig
-     * @covers \Bigcommerce\ORM\Client\Connection::setClient
-     * @covers \Bigcommerce\ORM\Client\Connection::getConfig
-     * @covers \Bigcommerce\ORM\Client\Connection::getClient
-     * @covers \Bigcommerce\ORM\Client\Connection::setup
-     * @covers \Bigcommerce\ORM\Client\Connection::setLogger
-     * @covers \Bigcommerce\ORM\Client\Connection::getLogger
-     * @covers \Bigcommerce\ORM\Client\Connection::getRequestOptions
-     * @covers \Bigcommerce\ORM\Client\Connection::composeRequestOptions
-     */
     public function testBasicConfig()
     {
         $this->config = $this->getBasicConfig();
@@ -62,24 +51,12 @@ class ConnectionTest extends BaseTestCase
             ->setConfig($this->config)
             ->setLogger($this->logger);
 
-        $this->assertIsArray($this->connection->getRequestOptions());
+        $this->assertInstanceOf(RequestOption::class, $this->connection->getOption());
         $this->assertEquals($this->config, $this->connection->getConfig());
         $this->assertEquals($this->client, $this->connection->getClient());
         $this->assertEquals($this->logger, $this->connection->getLogger());
     }
 
-    /**
-     * @covers \Bigcommerce\ORM\Client\Connection::__construct
-     * @covers \Bigcommerce\ORM\Client\Connection::setConfig
-     * @covers \Bigcommerce\ORM\Client\Connection::setClient
-     * @covers \Bigcommerce\ORM\Client\Connection::getConfig
-     * @covers \Bigcommerce\ORM\Client\Connection::getClient
-     * @covers \Bigcommerce\ORM\Client\Connection::getRequestOptions
-     * @covers \Bigcommerce\ORM\Client\Connection::setup
-     * @covers \Bigcommerce\ORM\Client\Connection::setLogger
-     * @covers \Bigcommerce\ORM\Client\Connection::getLogger
-     * @covers \Bigcommerce\ORM\Client\Connection::composeRequestOptions
-     */
     public function testAuthConfig()
     {
         $this->config = $this->getAuthConfig();
@@ -90,7 +67,7 @@ class ConnectionTest extends BaseTestCase
             ->setConfig($this->config)
             ->setLogger($this->logger);
 
-        $this->assertIsArray($this->connection->getRequestOptions());
+        $this->assertInstanceOf(RequestOption::class, $this->connection->getOption());
         $this->assertEquals($this->config, $this->connection->getConfig());
         $this->assertEquals($this->client, $this->connection->getClient());
         $this->assertEquals($this->logger, $this->connection->getLogger());
@@ -143,8 +120,8 @@ class ConnectionTest extends BaseTestCase
     public function testSetPaymentAccessToken()
     {
         $this->connection->setPaymentAccessToken('123');
-        $requestOption = $this->connection->getRequestOptions();
-        $header = $requestOption['headers'];
+        $requestOption = $this->connection->getOption();
+        $header = $requestOption->getHeaders();
         $this->assertArrayHasKey('Authorization', $header);
         $token = $header['Authorization'];
         $this->assertEquals("PAT 123", $token);

@@ -121,4 +121,61 @@ class RequestOption
             $this->options['debug']  = true;
         }
     }
+
+    /**
+     * @return \Bigcommerce\ORM\Client\AbstractConfig
+     */
+    public function getConfig(): \Bigcommerce\ORM\Client\AbstractConfig
+    {
+        return $this->config;
+    }
+
+    /**
+     * @param \Bigcommerce\ORM\Client\AbstractConfig $config
+     * @return \Bigcommerce\ORM\Client\RequestOption
+     */
+    public function setConfig(\Bigcommerce\ORM\Client\AbstractConfig $config): RequestOption
+    {
+        $this->config = $config;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param array $headers
+     * @return \Bigcommerce\ORM\Client\RequestOption
+     */
+    public function setHeaders(array $headers): RequestOption
+    {
+        $this->headers = $headers;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     * @return \Bigcommerce\ORM\Client\RequestOption
+     */
+    public function setOptions(array $options): RequestOption
+    {
+        $this->options = $options;
+
+        return $this;
+    }
 }
