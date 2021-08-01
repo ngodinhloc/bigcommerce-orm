@@ -202,7 +202,6 @@ class Connection
      * @param array|null $body
      * @param array|null $files
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function put(?string $path, ?string $resourceType, ?array $body, ?array $files)
     {
