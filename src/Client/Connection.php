@@ -328,7 +328,6 @@ class Connection
     private function addRequestFile(array $files)
     {
         $multi = [];
-
         foreach ($files as $field => $location) {
             $multi[] = [
                 'name' => $field,
@@ -338,6 +337,8 @@ class Connection
         }
 
         $this->requestOptions['multipart'] = $multi;
+        /** when upload file, guzzle takes care what header Content-Type to use */
+        unset($this->requestOptions['headers']['Content-Type']);
     }
 
     /**
