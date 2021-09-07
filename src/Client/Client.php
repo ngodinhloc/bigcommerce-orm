@@ -108,13 +108,8 @@ class Client implements ClientInterface
      * @throws \Bigcommerce\ORM\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
-    public function create(
-        ?string $resourcePath,
-        ?string $resourceType,
-        ?array $data,
-        ?array $files,
-        bool $batch = false
-    ) {
+    public function create(?string $resourcePath, ?string $resourceType, ?array $data, ?array $files, bool $batch = false)
+    {
         $this->checkPath($resourcePath);
 
         try {
@@ -122,23 +117,11 @@ class Client implements ClientInterface
         } catch (GuzzleException $exception) {
             $content = $this->getGuzzleExceptionMessage($exception);
             throw new ClientException(
-                sprintf(
-                    ClientException::ERROR_FAILED_TO_CREATE_OBJECT,
-                    $resourceType,
-                    $resourcePath,
-                    json_encode($data),
-                    $content
-                )
+                sprintf(ClientException::ERROR_FAILED_TO_CREATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $content)
             );
         } catch (Exception $exception) {
             throw new ClientException(
-                sprintf(
-                    ClientException::ERROR_FAILED_TO_CREATE_OBJECT,
-                    $resourceType,
-                    $resourcePath,
-                    json_encode($data),
-                    $exception->getMessage()
-                )
+                sprintf(ClientException::ERROR_FAILED_TO_CREATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $exception->getMessage())
             );
         }
 
@@ -159,13 +142,8 @@ class Client implements ClientInterface
      * @throws \Bigcommerce\ORM\Exceptions\ClientException
      * @throws \Bigcommerce\ORM\Exceptions\ResultException
      */
-    public function update(
-        ?string $resourcePath,
-        ?string $resourceType,
-        ?array $data,
-        ?array $files,
-        bool $batch = false
-    ) {
+    public function update(?string $resourcePath, ?string $resourceType, ?array $data, ?array $files, bool $batch = false)
+    {
         $this->checkPath($resourcePath);
 
         if (empty($data)) {
@@ -177,23 +155,11 @@ class Client implements ClientInterface
         } catch (GuzzleException $exception) {
             $content = $this->getGuzzleExceptionMessage($exception);
             throw new ClientException(
-                sprintf(
-                    ClientException::ERROR_FAILED_TO_UPDATE_OBJECT,
-                    $resourceType,
-                    $resourcePath,
-                    json_encode($data),
-                    $content
-                )
+                sprintf(ClientException::ERROR_FAILED_TO_UPDATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $content)
             );
         } catch (Exception $exception) {
             throw new ClientException(
-                sprintf(
-                    ClientException::ERROR_FAILED_TO_UPDATE_OBJECT,
-                    $resourceType,
-                    $resourcePath,
-                    json_encode($data),
-                    $exception->getMessage()
-                )
+                sprintf(ClientException::ERROR_FAILED_TO_UPDATE_OBJECT, $resourceType, $resourcePath, json_encode($data), $exception->getMessage())
             );
         }
 
@@ -224,12 +190,7 @@ class Client implements ClientInterface
             );
         } catch (Exception $exception) {
             throw new ClientException(
-                sprintf(
-                    ClientException::ERROR_FAILED_TO_DELETE_OBJECT,
-                    $resourceType,
-                    $resourcePath,
-                    $exception->getMessage()
-                )
+                sprintf(ClientException::ERROR_FAILED_TO_DELETE_OBJECT, $resourceType, $resourcePath, $exception->getMessage())
             );
         }
 
