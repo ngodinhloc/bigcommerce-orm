@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Bigcommerce\ORM\Client;
 
+use Bigcommerce\ORM\Client\Commands\DeleteCommand;
+use Bigcommerce\ORM\Client\Commands\GetCommand;
+use Bigcommerce\ORM\Client\Commands\PostCommand;
+use Bigcommerce\ORM\Client\Commands\PutCommand;
 use Bigcommerce\ORM\Config\ConfigOption;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
@@ -45,6 +49,7 @@ class Connection
      * @param string|null $path
      * @param string|null $resourceType
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function query(?string $path, ?string $resourceType): ResponseInterface
     {
@@ -57,6 +62,7 @@ class Connection
      * @param array|null $body
      * @param array|null $files
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function update(?string $path, ?string $resourceType, ?array $body, ?array $files): ResponseInterface
     {
@@ -69,6 +75,7 @@ class Connection
      * @param array|null $body
      * @param array|null $file
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function create(?string $path, ?string $resourceType, ?array $body, ?array $file): ResponseInterface
     {
@@ -79,26 +86,14 @@ class Connection
      * @param string|null $path
      * @param string|null $resourceType
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function delete(?string $path, ?string $resourceType)
     {
         $apiUrl = $this->apiFullUrl($path, $resourceType);
+        $command = new DeleteCommand($this->client, $apiUrl, $this->option->toArray(), $this->logger);
 
-        if ($this->hasLogger()) {
-            $this->logger->debug(
-                sprintf(LogMessage::LOG_REQUEST_START, 'DELETE', $apiUrl, json_encode($this->option->toArray()))
-            );
-        }
-
-        $result = $this->client->delete($apiUrl, $this->option->toArray());
-
-        if ($this->hasLogger()) {
-            $this->logger->debug(
-                sprintf(LogMessage::LOG_REQUEST_FINISH, 'DELETE', $apiUrl, json_encode($this->option->toArray()))
-            );
-        }
-
-        return $result;
+        return $command->execute();
     }
 
     /**
@@ -119,24 +114,62 @@ class Connection
      * @param string|null $path
      * @param string|null $resourceType
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function get(?string $path, ?string $resourceType)
     {
         $apiUrl = $this->apiFullUrl($path, $resourceType);
-        if ($this->hasLogger()) {
-            $this->logger->debug(
-                sprintf(LogMessage::LOG_REQUEST_START, 'GET', $apiUrl, json_encode($this->option->toArray()))
-            );
+        $command = new GetCommand($this->client, $apiUrl, $this->option->toArray(), $this->logger);
+
+        return $command->execute();
+    }
+
+    /**
+     * @param string|null $path
+     * @param string|null $resourceType
+     * @param array|null $body
+     * @param array|null $files
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    private function post(?string $path, ?string $resourceType, ?array $body, ?array $files)
+    {
+        if (!empty($body)) {
+            $this->option->addRequestBody($body);
         }
 
-        $result = $this->client->get($apiUrl, $this->option->toArray());
-        if ($this->hasLogger()) {
-            $this->logger->debug(
-                sprintf(LogMessage::LOG_REQUEST_FINISH, 'GET', $apiUrl, json_encode($this->option->toArray()))
-            );
+        if (!empty($files)) {
+            $this->option->addRequestFile($files);
         }
 
-        return $result;
+        $apiUrl = $this->apiFullUrl($path, $resourceType);
+        $command = new PostCommand($this->client, $apiUrl, $this->option->toArray(), $this->logger);
+
+        return $command->execute();
+    }
+
+    /**
+     * @param string|null $path
+     * @param string|null $resourceType
+     * @param array|null $body
+     * @param array|null $files
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    private function put(?string $path, ?string $resourceType, ?array $body, ?array $files)
+    {
+        if (!empty($body)) {
+            $this->option->addRequestBody($body);
+        }
+
+        if (!empty($files)) {
+            $this->option->addRequestFile($files);
+        }
+
+        $apiUrl = $this->apiFullUrl($path, $resourceType);
+        $command = new PutCommand($this->client, $apiUrl, $this->option->toArray(), $this->logger);
+
+        return $command->execute();
     }
 
     /**
@@ -153,74 +186,6 @@ class Connection
             default:
                 return $this->config->getApiUrl() . $path;
         }
-    }
-
-    /**
-     * @param string|null $path
-     * @param string|null $resourceType
-     * @param array|null $body
-     * @param array|null $files
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    private function post(?string $path, ?string $resourceType, ?array $body, ?array $files)
-    {
-        if (!empty($body)) {
-            $this->option->addRequestBody($body);
-        }
-
-        if (!empty($files)) {
-            $this->option->addRequestFile($files);
-        }
-
-        $apiUrl = $this->apiFullUrl($path, $resourceType);
-        if ($this->hasLogger()) {
-            $this->logger->debug(
-                sprintf(LogMessage::LOG_REQUEST_START, 'POST', $apiUrl, json_encode($this->option->toArray()))
-            );
-        }
-
-        $result = $this->client->post($apiUrl, $this->option->toArray());
-        if ($this->hasLogger()) {
-            $this->logger->debug(
-                sprintf(LogMessage::LOG_REQUEST_FINISH, 'POST', $apiUrl, json_encode($this->option->toArray()))
-            );
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param string|null $path
-     * @param string|null $resourceType
-     * @param array|null $body
-     * @param array|null $files
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    private function put(?string $path, ?string $resourceType, ?array $body, ?array $files)
-    {
-        if (!empty($body)) {
-            $this->option->addRequestBody($body);
-        }
-
-        if (!empty($files)) {
-            $this->option->addRequestFile($files);
-        }
-
-        $apiUrl = $this->apiFullUrl($path, $resourceType);
-        if ($this->hasLogger()) {
-            $this->logger->debug(
-                sprintf(LogMessage::LOG_REQUEST_START, 'PUT', $apiUrl, json_encode($this->option->toArray()))
-            );
-        }
-
-        $result = $this->client->put($apiUrl, $this->option->toArray());
-        if ($this->hasLogger()) {
-            $this->logger->debug(
-                sprintf(LogMessage::LOG_REQUEST_FINISH, 'PUT', $apiUrl, json_encode($this->option->toArray()))
-            );
-        }
-
-        return $result;
     }
 
     /**
