@@ -1,16 +1,23 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Client;
 
 use Bigcommerce\ORM\Cache\FileCache\FileCacheItem;
 use Bigcommerce\ORM\Cache\FileCache\FileCachePool;
+use Bigcommerce\ORM\Client\AuthConfig;
+use Bigcommerce\ORM\Client\BasicConfig;
 use Bigcommerce\ORM\Client\Client;
-use Bigcommerce\ORM\Client\Connection;
+use Bigcommerce\ORM\Client\RequestOption;
+use Bigcommerce\ORM\Config\AuthCredential;
+use Bigcommerce\ORM\Config\BasicCredential;
+use Bigcommerce\ORM\Config\ConfigOption;
 use Bigcommerce\ORM\Exceptions\ClientException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Stream\Stream;
+use Monolog\Logger;
 use Prophecy\Argument;
 use Tests\BaseTestCase;
 
@@ -19,8 +26,17 @@ class ClientTest extends BaseTestCase
     /** @coversDefaultClass \Bigcommerce\ORM\Client\Client */
     protected $client;
 
-    /** @var \Bigcommerce\ORM\Client\Connection|\Prophecy\Prophecy\ProphecySubjectInterface */
-    protected $connection;
+    /** @var \Bigcommerce\ORM\Client\AbstractConfig */
+    protected $config;
+
+    /** @var \Bigcommerce\ORM\Client\RequestOption */
+    protected $requestOption;
+
+    /** @var \GuzzleHttp\Client|\Prophecy\Prophecy\ProphecySubjectInterface */
+    protected $guzzleClient;
+
+    /** @var \Monolog\Logger|\Prophecy\Prophecy\ProphecySubjectInterface */
+    protected $logger;
 
     /** @var \Bigcommerce\ORM\Cache\FileCache\FileCachePool|\Prophecy\Prophecy\ProphecySubjectInterface */
     protected $cache;
@@ -28,27 +44,24 @@ class ClientTest extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->connection = $this->getConnection();
+        $this->config = $this->getAuthConfig();
+        $this->requestOption = new RequestOption($this->config);
+        $this->logger = $this->getLogger();
         $this->cache = $this->getCache();
-        $this->client = new Client($this->connection, $this->cache);
+        $this->guzzleClient = $this->getGuzzleClient();
+        $this->client = new Client($this->config, $this->guzzleClient, $this->logger, $this->cache);
     }
 
-    /**
-     * @covers \Bigcommerce\ORM\Client\Client::__construct
-     * @covers \Bigcommerce\ORM\Client\Client::setConnection
-     * @covers \Bigcommerce\ORM\Client\Client::setCachePool
-     * @covers \Bigcommerce\ORM\Client\Client::getConnection
-     * @covers \Bigcommerce\ORM\Client\Client::getCachePool
-     */
     public function testSettersAndGetters()
     {
-        $this->client = new Client($this->connection, $this->cache);
+        $this->client = new Client($this->config, $this->guzzleClient, $this->logger, $this->cache);
         $this->client
-            ->setCachePool($this->cache)
-            ->setConnection($this->connection);
+            ->setConfig($this->config)
+            ->setGuzzleClient($this->guzzleClient)
+            ->setLogger($this->logger)
+            ->setCachePool($this->cache);
 
         $this->assertEquals($this->cache, $this->client->getCachePool());
-        $this->assertEquals($this->connection, $this->client->getConnection());
     }
 
     /**
@@ -249,7 +262,7 @@ class ClientTest extends BaseTestCase
     /**
      * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
      */
-    private function getConnection()
+    private function getGuzzleClient()
     {
         $many = [
             'data' => [
@@ -261,28 +274,29 @@ class ClientTest extends BaseTestCase
         $response = new Response(200, $headers, $body);
         $request = new Request('GET', 'http://www.someurl.com');
 
-        $connection = $this->prophet->prophesize(Connection::class);
-        $connection->query('/customers', 'api')->willReturn($response);
-        $connection->query('/customers?id:in=1,2,3', 'api')->willReturn($response);
-        $connection->query('/customers', 'api')->willReturn($response);
-        $connection->query('/customers/1', 'api')->willReturn($response);
-        $connection->create('/customers', 'api', ['id' => 1], [])->willReturn($response);
-        $connection->update('/customers/1', 'api', ['id' => 1], [])->willReturn($response);
+        $client = $this->prophet->prophesize(\GuzzleHttp\Client::class);
+        $client->get($this->config->getApiUrl() . '/customers', $this->getRequestOptionArray())->willReturn($response);
+        $client->get($this->config->getApiUrl() . '/customers?id:in=1,2,3', $this->getRequestOptionArray())->willReturn($response);
+        $client->get($this->config->getApiUrl() . '/customers', $this->getRequestOptionArray())->willReturn($response);
+        $client->get($this->config->getApiUrl() . '/customers/1', $this->getRequestOptionArray())->willReturn($response);
+        $client->post($this->config->getApiUrl() . '/customers', $this->getRequestOptionArray(['id' => 1]))->willReturn($response);
+        $client->put($this->config->getApiUrl() . '/customers/1', $this->getRequestOptionArray(['id' => 1]))->willReturn($response);
         $guzzleException = new \GuzzleHttp\Exception\ClientException('Guzzle Client Exception', $request, $response);
         $exception = new \Exception('Exception error');
 
-        $connection->query('/customers/2', 'api')->willThrow($guzzleException);
-        $connection->query('/customers/3', 'api')->willThrow($exception);
-        $connection->create('/customers/2', 'api', ['id' => 1], [])->willThrow($guzzleException);
-        $connection->create('/customers/3', 'api', ['id' => 1], [])->willThrow($exception);
-        $connection->update('/customers/2', 'api', ['id' => 1], [])->willThrow($guzzleException);
-        $connection->update('/customers/3', 'api', ['id' => 1], [])->willThrow($exception);
-        $connection->delete('/customers?id:in=1,2', 'api')->willReturn($response);
-        $connection->delete('/customers?id:in=0,1', 'api')->willThrow($guzzleException);
-        $connection->delete('/customers?id:in=0,2', 'api')->willThrow($exception);
-        $connection->setPaymentAccessToken('123')->willReturn(true);
+        $client->get($this->config->getApiUrl() . '/customers/2', $this->getRequestOptionArray())->willThrow($guzzleException);
+        $client->get($this->config->getApiUrl() . '/customers/3', $this->getRequestOptionArray())->willThrow($exception);
+        $client->post($this->config->getApiUrl() . '/customers/2', $this->getRequestOptionArray(['id' => 1]))->willThrow($guzzleException);
+        $client->post($this->config->getApiUrl() . '/customers/3', $this->getRequestOptionArray(['id' => 1]))->willThrow($exception);
+        $client->put($this->config->getApiUrl() . '/customers/2', $this->getRequestOptionArray(['id' => 1]))->willThrow($guzzleException);
+        $client->put($this->config->getApiUrl() . '/customers/3', $this->getRequestOptionArray(['id' => 1]))->willThrow($exception);
+        $client->delete($this->config->getApiUrl() . '/customers?id:in=1,2', $this->getRequestOptionArray())->willReturn($response);
+        $client->delete($this->config->getApiUrl() . '/customers?id:in=0,1', $this->getRequestOptionArray())->willThrow($guzzleException);
+        $client->delete($this->config->getApiUrl() . '/customers?id:in=0,2', $this->getRequestOptionArray())->willThrow($exception);
 
-        return $connection->reveal();
+//        $connection->setPaymentAccessToken('123')->willReturn(true);
+
+        return $client->reveal();
     }
 
     /**
@@ -297,5 +311,75 @@ class ClientTest extends BaseTestCase
         $cache->save(Argument::any())->willReturn(true);
 
         return $cache->reveal();
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Client\AuthConfig
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
+     */
+    private function getAuthConfig()
+    {
+        $authCredentials = [
+            'clientId' => 'clientId',
+            'authToken' => 'authToken',
+            'storeHash' => 'storeHash',
+            'baseUrl' => 'baseUrl',
+        ];
+        $credential = new AuthCredential($authCredentials);
+        $configOption = new ConfigOption();
+        $configOption
+            ->setTimeout(60)
+            ->setAccept('application/json')
+            ->setVerify(true)
+            ->setDebug(true)
+            ->setProxy('tcp://localhost:8080');
+
+        return new AuthConfig($credential, $configOption);
+    }
+
+    /**
+     * @return \Bigcommerce\ORM\Client\BasicConfig
+     * @throws \Bigcommerce\ORM\Exceptions\ConfigException
+     */
+    private function getBasicConfig()
+    {
+        $basicCredentials = [
+            'storeUrl' => 'storeUrl',
+            'username' => 'username',
+            'apiKey' => 'apiKey'
+        ];
+        $credential = new BasicCredential($basicCredentials);
+        $configOption = new ConfigOption();
+        $configOption
+            ->setTimeout(60)
+            ->setAccept('application/json')
+            ->setVerify(true)
+            ->setDebug(true)
+            ->setProxy('tcp://localhost:8080');
+
+        return new BasicConfig($credential, $configOption);
+    }
+
+    /**
+     * @return object|\Prophecy\Prophecy\ProphecySubjectInterface
+     */
+    private function getLogger()
+    {
+        $logger = $this->prophet->prophesize(Logger::class);
+
+        return $logger->reveal();
+    }
+
+    private function getRequestOptionArray(array $data = null, array $files = null)
+    {
+        $requestOption = new RequestOption($this->config);
+        if (!empty($data)) {
+            $requestOption->addRequestBody($data);
+        }
+        if (!empty($files)) {
+            $requestOption->addRequestFiles($files);
+        }
+
+        return $requestOption->toArray();
     }
 }

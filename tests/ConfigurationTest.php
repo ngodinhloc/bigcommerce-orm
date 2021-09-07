@@ -42,18 +42,6 @@ class ConfigurationTest extends BaseTestCase
         $this->options = $this->getOptions();
     }
 
-    /**
-     * @covers \Bigcommerce\ORM\Configuration::setCredentials
-     * @covers \Bigcommerce\ORM\Configuration::setOptions
-     * @covers \Bigcommerce\ORM\Configuration::setEventDispatcher
-     * @covers \Bigcommerce\ORM\Configuration::setCachePool
-     * @covers \Bigcommerce\ORM\Configuration::setLogger
-     * @covers \Bigcommerce\ORM\Configuration::getCredentials
-     * @covers \Bigcommerce\ORM\Configuration::getOptions
-     * @covers \Bigcommerce\ORM\Configuration::getEventDispatcher
-     * @covers \Bigcommerce\ORM\Configuration::getCachePool
-     * @covers \Bigcommerce\ORM\Configuration::getLogger
-     */
     public function testSettersAndGetters()
     {
         $this->credentials = $this->getBasicCredential();
@@ -73,8 +61,6 @@ class ConfigurationTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\Configuration::__construct
-     * @covers \Bigcommerce\ORM\Configuration::configEntityManager
      * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
@@ -87,8 +73,6 @@ class ConfigurationTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bigcommerce\ORM\Configuration::__construct
-     * @covers \Bigcommerce\ORM\Configuration::configEntityManager
      * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
@@ -111,14 +95,13 @@ class ConfigurationTest extends BaseTestCase
         $this->assertEquals($this->dispatcher, $entityManager->getEventDispatcher());
         $this->assertEquals($this->cache, $client->getCachePool());
 
-        $connection = $client->getConnection();
         /** @var BasicConfig $config */
-        $config = $connection->getConfig();
+        $config = $client->getConfig();
         $this->assertInstanceOf(BasicConfig::class, $config);
         $this->assertEquals($this->credentials['storeUrl'], $config->getCredential()->getStoreUrl());
         $this->assertEquals($this->credentials['username'], $config->getCredential()->getUsername());
         $this->assertEquals($this->credentials['apiKey'], $config->getCredential()->getApiKey());
-        $this->assertEquals($this->logger, $connection->getLogger());
+        $this->assertEquals($this->logger, $client->getLogger());
     }
 
     /**
@@ -146,15 +129,14 @@ class ConfigurationTest extends BaseTestCase
         $this->assertEquals($this->dispatcher, $entityManager->getEventDispatcher());
         $this->assertEquals($this->cache, $client->getCachePool());
 
-        $connection = $client->getConnection();
         /** @var AuthConfig $config */
-        $config = $connection->getConfig();
+        $config = $client->getConfig();
         $this->assertInstanceOf(AuthConfig::class, $config);
         $this->assertEquals($this->credentials['clientId'], $config->getCredential()->getClientId());
         $this->assertEquals($this->credentials['authToken'], $config->getCredential()->getAuthToken());
         $this->assertEquals($this->credentials['storeHash'], $config->getCredential()->getStoreHash());
         $this->assertEquals($this->credentials['apiUrl'], $config->getCredential()->getApiBaseUrl());
-        $this->assertEquals($this->logger, $connection->getLogger());
+        $this->assertEquals($this->logger, $client->getLogger());
     }
 
     /**

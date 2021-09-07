@@ -34,10 +34,19 @@ class RequestOptionTest extends TestCase
         $this->assertSame($this->config, $this->option->getConfig());
     }
 
-    public function testAddEmptyRequestFile()
+    public function testAddEmptyRequestFiles()
     {
-        $this->option->addRequestFile([]);
+        $this->option->addRequestFiles([]);
         $this->assertArrayNotHasKey('multipart', $this->option->getOptions());
+    }
+
+    public function testAddRequestFiles()
+    {
+        $file = dirname(dirname(__FILE__)). '/assets/images/lamp.jpg';
+        $files = ["image_file" => $file];
+        $this->option->addRequestFiles($files);
+        $this->assertArrayHasKey('multipart', $this->option->getOptions());
+        $this->assertArrayNotHasKey('Content-Type', $this->option->getOptions());
     }
 
     /**

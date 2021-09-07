@@ -7,7 +7,6 @@ namespace Bigcommerce\ORM;
 use Bigcommerce\ORM\Client\AuthConfig;
 use Bigcommerce\ORM\Client\BasicConfig;
 use Bigcommerce\ORM\Client\Client;
-use Bigcommerce\ORM\Client\Connection;
 use Bigcommerce\ORM\Config\AuthCredential;
 use Bigcommerce\ORM\Config\BasicCredential;
 use Bigcommerce\ORM\Config\ConfigOption;
@@ -94,8 +93,7 @@ class Configuration
             );
         }
 
-        $connection = new Connection($config, $this->logger);
-        $client = new Client($connection, $this->cachePool);
+        $client = new Client($config, null, $this->logger, $this->cachePool);
 
         return new EntityManager($client, null, $this->eventDispatcher);
     }

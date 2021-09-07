@@ -63,7 +63,7 @@ class RequestOption
      * @param array $files
      * @return \Bigcommerce\ORM\Client\RequestOption
      */
-    public function addRequestFile(array $files)
+    public function addRequestFiles(array $files)
     {
         if(empty($files)){
             return $this;
