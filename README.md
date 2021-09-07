@@ -4,7 +4,7 @@
 [![Coverage][ico-codecov]][link-codecov]
 
 [ico-license]: https://img.shields.io/github/license/nrk/predis.svg?style=flat-square
-[ico-travis]: https://travis-ci.com/github/ngodinhloc/bigcommerce-orm.svg?branch=master
+[ico-travis]: https://travis-ci.com/ngodinhloc/bigcommerce-orm.svg?branch=master
 [ico-codecov]: https://codecov.io/gh/ngodinhloc/bigcommerce-orm/branch/master/graph/badge.svg
 
 [link-travis]: https://travis-ci.com/github/ngodinhloc/bigcommerce-orm
