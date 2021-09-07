@@ -27,7 +27,7 @@ try {
         ->setProductId($product111->getId())
         ->setSortOrder(1)
         ->setDescription('New image by url')
-        ->setImageUrl('https://upload.wikimedia.org/wikipedia/commons/9/9e/Xenon_short_arc_1.jpg');
+        ->setImageUrl('https://img.vntg.com/large/15687120107881/kosta-boda-glass-table-lamp-by-ove-sandeberg-sweden.jpg');
     $entityManager->save($newImage);
     $urlZoom = $newImage->getUrlZoom();
     echo $urlZoom . PHP_EOL;

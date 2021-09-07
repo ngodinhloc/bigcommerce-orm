@@ -7,7 +7,7 @@ $options = include('_options.php');
 $customerId = 1;
 $digitalProductId = 111;
 $physicalProductId = 107;
-$couponCode = '9F6C3D7E4D4A64C';
+$couponCode = 'C2CD2B567A7D409';
 
 try {
     $config = new \Bigcommerce\ORM\Configuration($authCredentials, $options);
