@@ -9,6 +9,8 @@ use Bigcommerce\ORM\Entities\PaymentAccessToken;
 use Bigcommerce\ORM\Events\EntityManagerEvent;
 use Bigcommerce\ORM\Exceptions\EntityException;
 use Bigcommerce\ORM\Mapper\Autoloader;
+use Bigcommerce\ORM\Mapper\Converter;
+use Bigcommerce\ORM\Mapper\DataBuilder;
 use Bigcommerce\ORM\Mapper\EntityMapper;
 use Bigcommerce\ORM\Mapper\EntityTransformer;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -122,8 +124,7 @@ class EntityManager
         $resourceType = $entity->getMetadata()->getResource()->type;
         $autoIncludes = $entity->getMetadata()->getIncludeFields();
 
-        $queryBuilder = new QueryBuilder();
-        $query = $queryBuilder->include(array_keys($autoIncludes))->getQueryString();
+        $query = (new QueryBuilder())->include(array_keys($autoIncludes))->getQueryString();
         $result = $this->client->find($resourcePath . "/{$id}?" . $query, $resourceType);
         if (empty($result)) {
             return false;
@@ -256,12 +257,7 @@ class EntityManager
 
         $result = $this->client->delete($resourcePath . '/' . $fieldValue, $resourceType);
         if (!empty($result)) {
-            if ($this->hasEventDispatcher()) {
-                $this->eventDispatcher->dispatch(
-                    EntityManagerEvent::ENTITY_DELETED,
-                    new EntityManagerEvent(EntityManagerEvent::ENTITY_DELETED, $entity)
-                );
-            }
+            $this->dispatchEvent(EntityManagerEvent::ENTITY_DELETED, $entity);
 
             return true;
         }
@@ -286,14 +282,21 @@ class EntityManager
             return false;
         }
 
-        $entity = current($entities);
-        $className = get_class($entity);
-        $entity = $this->mapper->getEntityPatcher()->patch($entity, [], $pathParams, true);
-        $resourcePath = $this->mapper->getResourcePath($entity);
-        $resourceType = $entity->getMetadata()->getResource()->type;
-        $data = $this->getBatchCreateData($className, $entities);
+        foreach ($entities as $en) {
+            $this->checkBeforeCreating($en);
+        }
 
-        $result = $this->client->create($resourcePath, $resourceType, $data, null, true);
+        $className = get_class(current($entities));
+        $entity = $this->mapper->getEntityPatcher()->patchFromClass($className, $pathParams);
+        $batchCreateData = (new DataBuilder($this->mapper))->buildBatchCreateData($className, $entities);
+
+        $result = $this->client->create(
+            $this->mapper->getResourcePath($entity),
+            $entity->getMetadata()->getResource()->type,
+            $batchCreateData,
+            null,
+            true
+        );
         if (!empty($result)) {
             return $this->getMapper()->getEntityTransformer()->batchCreateResultToEntities(
                 $className,
@@ -318,14 +321,21 @@ class EntityManager
      */
     public function batchUpdate(?array $entities = null, ?array $pathParams = null)
     {
-        $entity = current($entities);
-        $className = get_class($entity);
-        $entity = $this->mapper->getEntityPatcher()->patch($entity, [], $pathParams, true);
-        $resourcePath = $this->mapper->getResourcePath($entity);
-        $resourceType = $entity->getMetadata()->getResource()->type;
-        $data = $this->getBatchUpdateData($className, $entities);
+        foreach ($entities as $en) {
+            $this->checkBeforeUpdating($en);
+        }
 
-        $result = $this->client->update($resourcePath, $resourceType, $data, null, true);
+        $className = get_class(current($entities));
+        $entity = $this->mapper->getEntityPatcher()->patchFromClass($className, $pathParams);
+        $batchUpdateData = (new DataBuilder($this->mapper))->buildBatchUpdateData($className, $entities);
+
+        $result = $this->client->update(
+            $this->mapper->getResourcePath($entity),
+            $entity->getMetadata()->getResource()->type,
+            $batchUpdateData,
+            null,
+            true
+        );
         if (!empty($result)) {
             return $this->mapper->getEntityTransformer()->batchUpdateResultToEntities($entities, $result, $pathParams);
         }
@@ -363,8 +373,7 @@ class EntityManager
         $entity = $this->mapper->getEntityPatcher()->patchFromClass($className, $pathParams);
         $resourcePath = $this->mapper->getResourcePath($entity, 'delete');
         $resourceType = $entity->getMetadata()->getResource()->type;
-        $queryBuilder = new QueryBuilder();
-        $query = $queryBuilder->whereIn($field, array_values($values))->getQueryString();
+        $query = (new QueryBuilder())->whereIn($field, array_values($values))->getQueryString();
 
         return $this->client->delete($resourcePath . "?" . $query, $resourceType);
     }
@@ -455,57 +464,6 @@ class EntityManager
     }
 
     /**
-     * @param string $className
-     * @param \Bigcommerce\ORM\AbstractEntity[]|null $entities
-     * @return array
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    private function getBatchCreateData(string $className, ?array $entities = null)
-    {
-        $data = [];
-        foreach ($entities as $entity) {
-            if ($className != get_class($entity)) {
-                throw new EntityException(EntityException::ERROR_DIFFERENT_CLASS_NAME);
-            }
-
-            $this->checkBeforeCreating($entity);
-            $writableData = $this->mapper->getWritableFieldValues($entity);
-            $data[] = $writableData;
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param string $className
-     * @param \Bigcommerce\ORM\AbstractEntity[]|null $entities
-     * @return array
-     * @throws \Bigcommerce\ORM\Exceptions\EntityException
-     * @throws \Bigcommerce\ORM\Exceptions\MapperException
-     */
-    private function getBatchUpdateData(string $className, ?array &$entities = null)
-    {
-        $data = [];
-        foreach ($entities as $entity) {
-            if ($className != get_class($entity)) {
-                throw new EntityException(EntityException::ERROR_DIFFERENT_CLASS_NAME);
-            }
-
-            if (empty($entity->getId())) {
-                continue;
-            }
-
-            $this->checkBeforeUpdating($entity);
-            $writableData = $this->mapper->getWritableFieldValues($entity);
-            $entities[$entity->getId()] = $entity;
-            $data[] = array_merge($writableData, ['id' => $entity->getId()]);
-        }
-
-        return $data;
-    }
-
-    /**
      * @param array|null $array
      * @param string|null $className
      * @param array|null $pathParams
@@ -519,26 +477,7 @@ class EntityManager
         ?array $pathParams = null,
         bool $auto = false
     ) {
-        $collections = [];
-        if (!empty($array)) {
-            $autoloader = new Autoloader($this);
-            foreach ($array as $item) {
-                $object = $this->mapper->getEntityPatcher()->object($className);
-                $relationEntity = $this->mapper->getEntityPatcher()->patch($object, $item, $pathParams, false);
-
-                if ($auto == false) {
-                    $collections[] = $relationEntity;
-                } else {
-                    if (empty($relationEntity->getMetadata()->getAutoLoadFields())) {
-                        $collections[] = $relationEntity;
-                    } else {
-                        $collections[] = $autoloader->autoLoad($relationEntity, $item, $pathParams);
-                    }
-                }
-            }
-        }
-
-        return $collections;
+        return (new Converter($this))->arrayToCollection($array, $className, $pathParams, $auto);
     }
 
     /**
@@ -564,13 +503,7 @@ class EntityManager
         if (!empty($result)) {
             $this->mapper->getEntityPatcher()->patch($entity, $result, null, false);
             $this->mapper->getEntityReader()->setPropertyValueByName($entity, 'isNew', true);
-
-            if ($this->hasEventDispatcher()) {
-                $this->eventDispatcher->dispatch(
-                    EntityManagerEvent::ENTITY_CREATED,
-                    new EntityManagerEvent(EntityManagerEvent::ENTITY_CREATED, $entity)
-                );
-            }
+            $this->dispatchEvent(EntityManagerEvent::ENTITY_CREATED, $entity);
 
             return true;
         }
@@ -603,18 +536,23 @@ class EntityManager
                 $this->mapper->getEntityPatcher()->patch($entity, $result, null, false);
             }
             $this->mapper->getEntityReader()->setPropertyValueByName($entity, 'isNew', false);
-
-            if ($this->hasEventDispatcher()) {
-                $this->eventDispatcher->dispatch(
-                    EntityManagerEvent::ENTITY_UPDATED,
-                    new EntityManagerEvent(EntityManagerEvent::ENTITY_UPDATED, $entity)
-                );
-            }
+            $this->dispatchEvent(EntityManagerEvent::ENTITY_UPDATED, $entity);
 
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * @param string $eventName
+     * @param \Bigcommerce\ORM\AbstractEntity $entity
+     */
+    private function dispatchEvent(string $eventName, AbstractEntity $entity)
+    {
+        if ($this->hasEventDispatcher()) {
+            $this->eventDispatcher->dispatch($eventName, new EntityManagerEvent($eventName, $entity));
+        }
     }
 
     /**

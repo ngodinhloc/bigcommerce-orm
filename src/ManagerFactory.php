@@ -27,7 +27,6 @@ class ManagerFactory
      * @return \Bigcommerce\ORM\EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Bigcommerce\ORM\Exceptions\ManagerFactoryException
-     * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     public function getEntityManager(string $name)
     {
@@ -48,7 +47,6 @@ class ManagerFactory
      * @return \Bigcommerce\ORM\EntityManager
      * @throws \Bigcommerce\ORM\Exceptions\ConfigException
      * @throws \Bigcommerce\ORM\Exceptions\ManagerFactoryException
-     * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     private function getManager(string $name, array $config)
     {
