@@ -30,11 +30,11 @@ class Autoloader
      */
     public function autoLoad(AbstractEntity $entity, ?array $data = null, ?array $pathParams = null)
     {
-        if (empty($entity->getMetadata()->getAutoLoadFields())) {
+        if (empty($autoLoadFields = $entity->getMetadata()->getAutoLoadFields())) {
             return $entity;
         }
 
-        foreach ($entity->getMetadata()->getAutoLoadFields() as $fieldName => $load) {
+        foreach ($autoLoadFields as $fieldName => $load) {
             $property = $load['property'];
             $annotation = $load['annotation'];
 
