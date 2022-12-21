@@ -8,8 +8,7 @@ use Prophecy\Prophet;
 
 class BaseTestCase extends TestCase
 {
-    /** @var \Prophecy\Prophet */
-    protected $prophet;
+    protected \Prophecy\Prophet $prophet;
 
     protected function setUp(): void
     {

@@ -7,11 +7,10 @@ use Bigcommerce\ORM\Exceptions\ManagerFactoryException;
 
 class ManagerFactory
 {
-    /** @var array */
-    protected $configs;
+    protected array $configs;
 
     /** @var \Bigcommerce\ORM\EntityManager[] */
-    protected $managerPool;
+    protected array $managerPool;
 
     /**
      * ManagerFactory constructor.
@@ -55,10 +54,10 @@ class ManagerFactory
         }
 
         $credentials = $config['credentials'];
-        $options = isset($config['options']) ? $config['options'] : null;
-        $cache = isset($config['cache']) ? $config['cache'] : null;
-        $dispatcher = isset($config['dispatcher']) ? $config['dispatcher'] : null;
-        $logger = isset($config['logger']) ? $config['logger'] : null;
+        $options = $config['options'] ?? null;
+        $cache = $config['cache'] ?? null;
+        $dispatcher = $config['dispatcher'] ?? null;
+        $logger = $config['logger'] ?? null;
 
         $configuration = new Configuration($credentials, $options, $cache, $dispatcher, $logger);
         $entityManager = $configuration->configEntityManager();

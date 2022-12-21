@@ -24,20 +24,11 @@ use Psr\Log\LoggerInterface;
  */
 class Client implements ClientInterface
 {
-    /** @var \Bigcommerce\ORM\Client\AbstractConfig */
-    protected $config;
-
-    /** @var \GuzzleHttp\Client */
-    protected $guzzleClient;
-
-    /** @var \Psr\Log\LoggerInterface */
-    protected $logger;
-
-    /** @var \Bigcommerce\ORM\Client\RequestOption */
-    protected $option;
-
-    /** @var \Psr\Cache\CacheItemPoolInterface */
-    protected $cachePool;
+    protected \Bigcommerce\ORM\Client\AbstractConfig $config;
+    protected \GuzzleHttp\Client $guzzleClient;
+    protected \Psr\Log\LoggerInterface $logger;
+    protected \Bigcommerce\ORM\Client\RequestOption $option;
+    protected \Psr\Cache\CacheItemPoolInterface $cachePool;
 
     /**
      * Client constructor.

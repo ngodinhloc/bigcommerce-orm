@@ -6,12 +6,8 @@ class AbstractCredential
 {
     const DEFAULT_API_BASE_URL = 'https://api.bigcommerce.com';
     const DEFAULT_PAYMENT_BASE_URL = 'https://payments.bigcommerce.com';
-
-    /** @var string */
-    protected $apiBaseUrl = self::DEFAULT_API_BASE_URL;
-
-    /** @var string */
-    protected $paymentBaseUrl = self::DEFAULT_PAYMENT_BASE_URL;
+    protected string $apiBaseUrl = self::DEFAULT_API_BASE_URL;
+    protected string $paymentBaseUrl = self::DEFAULT_PAYMENT_BASE_URL;
 
     /**
      * @return string|null

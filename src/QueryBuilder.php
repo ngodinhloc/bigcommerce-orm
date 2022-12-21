@@ -9,14 +9,9 @@ namespace Bigcommerce\ORM;
  */
 class QueryBuilder
 {
-    /** @var array */
-    protected $query = [];
-
-    /** @var array */
-    protected $fields = [];
-
-    /** @var array */
-    protected $includes = [];
+    protected array $query = [];
+    protected array $fields = [];
+    protected array $includes = [];
 
     /**
      * @param string|array $fields

@@ -6,14 +6,9 @@ use Bigcommerce\ORM\Config\ConfigOption;
 
 class RequestOption
 {
-    /** @var \Bigcommerce\ORM\Client\AbstractConfig */
-    protected $config;
-
-    /** @var array */
-    protected $headers = [];
-
-    /** @var array */
-    protected $options = [];
+    protected \Bigcommerce\ORM\Client\AbstractConfig $config;
+    protected array $headers = [];
+    protected array $options = [];
 
     public function __construct(AbstractConfig $config = null)
     {

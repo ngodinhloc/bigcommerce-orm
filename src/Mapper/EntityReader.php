@@ -11,8 +11,7 @@ use ReflectionProperty;
 
 class EntityReader
 {
-    /** @var \Doctrine\Common\Annotations\AnnotationReader */
-    protected $reader;
+    protected \Doctrine\Common\Annotations\AnnotationReader $reader;
 
     /**
      * EntityReader constructor.

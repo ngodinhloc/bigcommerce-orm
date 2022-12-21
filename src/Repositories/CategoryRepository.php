@@ -11,5 +11,5 @@ use Bigcommerce\ORM\Repository;
  */
 class CategoryRepository extends Repository
 {
-    protected $className = \Bigcommerce\ORM\Entities\Customer::class;
+    protected string $className = \Bigcommerce\ORM\Entities\Customer::class;
 }

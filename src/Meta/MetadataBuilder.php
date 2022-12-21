@@ -10,8 +10,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 
 class MetadataBuilder
 {
-    /** @var \Doctrine\Common\Annotations\AnnotationReader */
-    protected $reader;
+    protected \Doctrine\Common\Annotations\AnnotationReader $reader;
 
     /**
      * MetadataBuilder constructor.

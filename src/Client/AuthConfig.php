@@ -9,8 +9,7 @@ use Bigcommerce\ORM\Config\ConfigOption;
 
 class AuthConfig extends AbstractConfig
 {
-    /** @var \Bigcommerce\ORM\Config\AuthCredential */
-    protected $credential;
+    protected \Bigcommerce\ORM\Config\AuthCredential $credential;
 
     /**
      * AuthConfig constructor.
