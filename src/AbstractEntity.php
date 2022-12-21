@@ -18,20 +18,11 @@ abstract class AbstractEntity
      */
     protected $id;
 
-    /** @var bool */
-    protected $isNew = false;
-
-    /** @var bool */
-    protected $isPatched = false;
-
-    /** @var bool */
-    protected $paymentAccessTokenRequired = false;
-
-    /** @var \Bigcommerce\ORM\Entities\PaymentAccessToken */
-    protected $paymentAccessToken = null;
-
-    /** @var \Bigcommerce\ORM\Meta\Metadata */
-    protected $metadata;
+    protected bool $isNew = false;
+    protected bool $isPatched = false;
+    protected bool $paymentAccessTokenRequired = false;
+    protected ?\Bigcommerce\ORM\Entities\PaymentAccessToken $paymentAccessToken = null;
+    protected \Bigcommerce\ORM\Meta\Metadata $metadata;
 
     /**
      * @return int|string|null

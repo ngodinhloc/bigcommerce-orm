@@ -11,8 +11,7 @@ use Bigcommerce\ORM\Mapper\EntityMapper;
  */
 abstract class AbstractValidator
 {
-    /** @var \Bigcommerce\ORM\Mapper\EntityMapper */
-    protected $mapper;
+    protected \Bigcommerce\ORM\Mapper\EntityMapper $mapper;
 
     /**
      * AbstractValidator constructor.

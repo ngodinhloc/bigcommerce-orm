@@ -7,17 +7,10 @@ use Psr\Log\LoggerInterface;
 
 class AbstractCommand
 {
-    /** @var \GuzzleHttp\Client */
-    protected $client;
-
-    /** @var string */
-    protected $apiUrl;
-
-    /** @var array */
-    protected $options;
-
-    /** @var \Psr\Log\LoggerInterface */
-    protected $logger;
+    protected \GuzzleHttp\Client $client;
+    protected string $apiUrl;
+    protected array $options;
+    protected \Psr\Log\LoggerInterface $logger;
 
     public function __construct(Client $client, string $apiUrl, array $options, LoggerInterface $logger = null)
     {

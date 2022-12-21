@@ -26,7 +26,7 @@ class Payment extends AbstractEntity
      */
     protected $paymentData;
 
-    protected $paymentAccessTokenRequired = true;
+    protected bool $paymentAccessTokenRequired = true;
 
     /** @var float|null */
     protected $amount;

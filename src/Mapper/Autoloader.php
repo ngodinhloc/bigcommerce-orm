@@ -8,8 +8,7 @@ use Bigcommerce\ORM\Relation\RelationInterface;
 
 class Autoloader
 {
-    /** @var \Bigcommerce\ORM\EntityManager */
-    protected $entityManager;
+    protected \Bigcommerce\ORM\EntityManager $entityManager;
 
     /**
      * Autoloader constructor.

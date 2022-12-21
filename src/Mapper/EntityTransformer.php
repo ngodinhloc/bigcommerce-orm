@@ -11,14 +11,9 @@ class EntityTransformer
     const KEY_BY_FIELD_NAME = 1;
     const KEY_BY_PROPERTY_NAME = 2;
 
-    /** @var \Doctrine\Common\Annotations\AnnotationReader */
-    protected $reader;
-
-    /** @var \Bigcommerce\ORM\Mapper\EntityReader */
-    protected $entityReader;
-
-    /** @var \Bigcommerce\ORM\Mapper\EntityPatcher */
-    protected $entityPatcher;
+    protected \Doctrine\Common\Annotations\AnnotationReader $reader;
+    protected \Bigcommerce\ORM\Mapper\EntityReader $entityReader;
+    protected \Bigcommerce\ORM\Mapper\EntityPatcher $entityPatcher;
 
     /**
      * EntityTransformer constructor.

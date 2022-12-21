@@ -6,8 +6,7 @@ use Bigcommerce\ORM\EntityManager;
 
 class Converter
 {
-    /** @var \Bigcommerce\ORM\EntityManager */
-    protected $entityManager;
+    protected \Bigcommerce\ORM\EntityManager  $entityManager;
 
     /**
      * Converter constructor.

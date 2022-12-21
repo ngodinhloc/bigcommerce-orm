@@ -11,5 +11,5 @@ use Bigcommerce\ORM\Repository;
  */
 class ProductRepository extends Repository
 {
-    protected $className = \Bigcommerce\ORM\Entities\Product::class;
+    protected string $className = \Bigcommerce\ORM\Entities\Product::class;
 }

@@ -9,11 +9,10 @@ use Psr\Cache\CacheItemPoolInterface;
 
 class FileCachePool implements CacheItemPoolInterface
 {
-    /** @var string|null */
-    protected $cacheDir;
+    protected string|null $cacheDir;
 
     /** @var \Psr\Cache\CacheItemInterface[] */
-    protected $itemPool;
+    protected array $itemPool;
 
     /**
      * FileCachePool constructor.

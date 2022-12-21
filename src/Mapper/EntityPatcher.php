@@ -14,14 +14,9 @@ use Throwable;
 
 class EntityPatcher
 {
-    /** @var \Doctrine\Common\Annotations\AnnotationReader */
-    protected $reader;
-
-    /** @var \Bigcommerce\ORM\Mapper\EntityReader */
-    protected $entityReader;
-
-    /** @var \Bigcommerce\ORM\Meta\MetadataBuilder */
-    protected $metadataBuilder;
+    protected \Doctrine\Common\Annotations\AnnotationReader $reader;
+    protected \Bigcommerce\ORM\Mapper\EntityReader $entityReader;
+    protected \Bigcommerce\ORM\Meta\MetadataBuilder $metadataBuilder;
 
     /**
      * EntityPatcher constructor.

@@ -6,8 +6,7 @@ use Bigcommerce\ORM\Exceptions\EntityException;
 
 class DataBuilder
 {
-    /** @var \Bigcommerce\ORM\Mapper\EntityMapper */
-    protected $mapper;
+    protected \Bigcommerce\ORM\Mapper\EntityMapper $mapper;
 
     /**
      * DataBuilder constructor.

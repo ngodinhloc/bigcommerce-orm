@@ -7,26 +7,17 @@ use Psr\Cache\CacheItemInterface;
 
 class FileCacheItem implements CacheItemInterface
 {
-    /** @var string */
-    protected $key;
+    protected string $key;
+    protected mixed $value;
+    protected bool $isHit = false;
+    protected int $hitCount = 0;
+    protected int $expiresAfter = 3600; // seconds
 
-    /** @var mixed */
-    protected $value;
+    /** @var  */
+    protected int $cachesAt;
 
-    /** @var bool */
-    protected $isHit = false;
-
-    /** @var int */
-    protected $hitCount = 0;
-
-    /** @var int seconds */
-    protected $expiresAfter = 3600;
-
-    /** @var int */
-    protected $cachesAt;
-
-    /** @var int */
-    protected $expiresAt;
+    /** @var  */
+    protected int $expiresAt;
 
     /**
      * FileCacheItem constructor.

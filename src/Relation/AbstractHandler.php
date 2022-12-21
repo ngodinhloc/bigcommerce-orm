@@ -12,8 +12,7 @@ use Bigcommerce\ORM\Exceptions\HandlerException;
  */
 abstract class AbstractHandler
 {
-    /** @var \Bigcommerce\ORM\EntityManager */
-    protected $entityManager;
+    protected \Bigcommerce\ORM\EntityManager $entityManager;
 
     /**
      * AbstractHandler constructor.

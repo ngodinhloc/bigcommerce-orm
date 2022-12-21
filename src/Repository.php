@@ -9,11 +9,8 @@ namespace Bigcommerce\ORM;
  */
 class Repository
 {
-    /* @var string */
-    protected $className;
-
-    /** @var \Bigcommerce\ORM\EntityManager */
-    protected $entityManager;
+    protected string $className;
+    protected \Bigcommerce\ORM\EntityManager $entityManager;
 
     /**
      * Repository constructor.

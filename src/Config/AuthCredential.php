@@ -7,15 +7,9 @@ use Bigcommerce\ORM\Exceptions\ConfigException;
 class AuthCredential extends AbstractCredential
 {
     const REQUIRED_CONFIGURATION_DATA = ['clientId', 'authToken', 'storeHash'];
-
-    /** @var string */
-    private $clientId;
-
-    /** @var string */
-    private $authToken;
-
-    /** @var string */
-    private $storeHash;
+    private string $clientId;
+    private string $authToken;
+    private string $storeHash;
 
     /**
      * AuthCredential constructor.

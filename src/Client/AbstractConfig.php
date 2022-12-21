@@ -17,9 +17,7 @@ abstract class AbstractConfig
     const PAYMENT_STORE_PREFIX = '/stores/%s';
     const RESOURCE_TYPE_API = 'api';
     const RESOURCE_TYPE_PAYMENT = 'payment';
-
-    /** @var \Bigcommerce\ORM\Config\ConfigOption */
-    protected $configOption;
+    protected \Bigcommerce\ORM\Config\ConfigOption $configOption;
 
     /**
      * @return string

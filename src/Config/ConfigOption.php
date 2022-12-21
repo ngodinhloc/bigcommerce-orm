@@ -8,24 +8,12 @@ class ConfigOption
     const CONTENT_TYPE_JSON = 'application/json';
     const CONTENT_TYPE_BCV1 = 'application/vnd.bc.v1+json';
     const CONTENT_TYPE_WWW = 'application/x-www-form-urlencoded';
-
-    /** @var bool */
-    protected $verify = false;
-
-    /** @var float */
-    protected $timeout = 60;
-
-    /** @var string */
-    protected $accept = self::CONTENT_TYPE_JSON;
-
-    /** @var bool */
-    protected $debug = false;
-
-    /** @var string */
-    protected $apiVersion = self::API_VERSION_V3;
-
-    /** @var string|null */
-    protected $proxy;
+    protected bool $verify = false;
+    protected float $timeout = 60;  // seconds
+    protected string $accept = self::CONTENT_TYPE_JSON;
+    protected bool $debug = false;
+    protected string $apiVersion = self::API_VERSION_V3;
+    protected string|null $proxy;
 
     public function __construct(array $options = null)
     {

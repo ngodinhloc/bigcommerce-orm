@@ -12,8 +12,7 @@ class EntityManagerEvent extends Event
     const ENTITY_UPDATED = 'Entity.Updated';
     const ENTITY_DELETED = 'Entity.Deleted';
 
-    /** @var string */
-    protected $name;
+    protected string $name;
 
     /** @var \Bigcommerce\ORM\AbstractEntity */
     protected $entity;

@@ -18,23 +18,12 @@ use Doctrine\Common\Annotations\AnnotationReader;
  */
 class EntityMapper
 {
-    /** @var \Doctrine\Common\Annotations\AnnotationReader */
-    protected $reader;
-
-    /** @var \Bigcommerce\ORM\Mapper\EntityReader */
-    protected $entityReader;
-
-    /** @var \Bigcommerce\ORM\Mapper\EntityTransformer */
-    protected $entityTransformer;
-
-    /** @var \Bigcommerce\ORM\Mapper\EntityPatcher */
-    protected $entityPatcher;
-
-    /** @var \Bigcommerce\ORM\Mapper\EntityValidator */
-    protected $entityValidator;
-
-    /** @var \Bigcommerce\ORM\Meta\MetadataBuilder */
-    protected $metadataBuilder;
+    protected \Doctrine\Common\Annotations\AnnotationReader $reader;
+    protected \Bigcommerce\ORM\Mapper\EntityReader $entityReader;
+    protected \Bigcommerce\ORM\Mapper\EntityTransformer $entityTransformer;
+    protected \Bigcommerce\ORM\Mapper\EntityPatcher  $entityPatcher;
+    protected \Bigcommerce\ORM\Mapper\EntityValidator $entityValidator;
+    protected \Bigcommerce\ORM\Meta\MetadataBuilder $metadataBuilder;
 
     /**
      * Mapper constructor.

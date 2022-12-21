@@ -13,9 +13,7 @@ class Result
     const RETURN_TYPE_COUNT = 'count';
     const RETURN_TYPE_ALL = 'all';
     const RETURN_TYPE_BOOL = "bool";
-
-    /* @var \Psr\Http\Message\ResponseInterface|null */
-    protected $response;
+    protected \Psr\Http\Message\ResponseInterface|null $response;
 
     /**
      * Result constructor.
