@@ -13,7 +13,7 @@ class ConfigOption
     protected string $accept = self::CONTENT_TYPE_JSON;
     protected bool $debug = false;
     protected string $apiVersion = self::API_VERSION_V3;
-    protected string|null $proxy;
+    protected ?string $proxy = null;
 
     public function __construct(array $options = null)
     {

@@ -17,11 +17,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Configuration
 {
-    protected array $credentials;
-    protected array $options;
-    protected \Psr\Cache\CacheItemPoolInterface $cachePool;
-    protected \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher;
-    protected \Psr\Log\LoggerInterface $logger;
+    protected ?array $credentials;
+    protected ?array $options;
+    protected ?\Psr\Cache\CacheItemPoolInterface $cachePool;
+    protected ?\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher;
+    protected ?\Psr\Log\LoggerInterface $logger;
 
     /**
      * Configuration constructor.
