@@ -21,9 +21,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class EntityManager
 {
-    protected \Bigcommerce\ORM\Client\ClientInterface $client;
-    protected \Bigcommerce\ORM\Mapper\EntityMapper $mapper;
-    protected \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher;
+    protected ?\Bigcommerce\ORM\Client\ClientInterface $client;
+    protected ?\Bigcommerce\ORM\Mapper\EntityMapper $mapper;
+    protected ?\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher;
 
     /**
      * EntityManager constructor.
